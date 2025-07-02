@@ -6,12 +6,14 @@
 <!-- badges: start -->
 
 [![Version](https://img.shields.io/badge/version-0.1-blue.svg)]()
+[![R-CMD-check.yaml](https://github.com/sebasquirarte/biostats_CRAN/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sebasquirarte/biostats_CRAN/actions/workflows/R-CMD-check.yaml)
 [![Under
 Development](https://img.shields.io/badge/status-under%20development-orange.svg)]()
 [![CRAN
 status](https://www.r-pkg.org/badges/version/biostats)](https://cran.r-project.org/package=biostats)
 [![Codecov test
-coverage](https://codecov.io/gh/sebasquirarte/biostats/graph/badge.svg)](https://app.codecov.io/gh/sebasquirarte/biostats)
+coverage](https://codecov.io/gh/sebasquirarte/biostats_CRAN/graph/badge.svg)](https://app.codecov.io/gh/sebasquirarte/biostats_CRAN)
+<!-- badges: end -->
 
 ## Overview
 
