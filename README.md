@@ -5,12 +5,12 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check.yaml](https://github.com/sebasquirarte/biostats_CRAN/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sebasquirarte/biostats_CRAN/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check.yaml](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yaml)
+[![Tests](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/biostats)](https://cran.r-project.org/package=biostats)
-[![Tests](https://github.com/sebasquirarte/biostats_CRAN/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/sebasquirarte/biostats_CRAN/actions/workflows/test-coverage.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/sebasquirarte/biostats_CRAN/graph/badge.svg?token=ba2a281e-60be-4036-a40c-a3afaadee1ed)](https://app.codecov.io/gh/sebasquirarte/biostats_CRAN)
+coverage](https://codecov.io/gh/sebasquirarte/biostats/graph/badge.svg?token=ba2a281e-60be-4036-a40c-a3afaadee1ed)](https://app.codecov.io/gh/sebasquirarte/biostats)
 <!-- badges: end -->
 
 ## Overview
