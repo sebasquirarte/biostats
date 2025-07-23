@@ -74,7 +74,18 @@ normality <- function(x,
 
   # Calculate basic statistics and tests
   mean_val <- mean(x); sd_val <- sd(x); median_val <- median(x); iqr_val <- IQR(x)
-  sw_test <- shapiro.test(x)
+  # Handle constant data gracefully
+  sw_test <- tryCatch(
+    shapiro.test(x),
+    error = function(e) {
+      if (grepl("identical", e$message)) {
+        list(statistic = NA, p.value = NA, method = "Shapiro-Wilk normality test",
+             data.name = "x (constant data)")
+      } else {
+        stop(e)
+      }
+    }
+  )
 
   # Calculate skewness and kurtosis (simplified)
   centered <- x - mean_val
@@ -83,42 +94,66 @@ normality <- function(x,
   kurtosis <- sum(centered^4) / n / (m2^2) - 3
 
   # Assessment and formatting
-  normal <- sw_test$p.value > 0.05 && abs(skewness) < 1
-  p_display <- if (sw_test$p.value < 0.001) "< 0.001" else sprintf("%.3f", sw_test$p.value)
+  normal <- !is.na(sw_test$p.value) && sw_test$p.value > 0.05 && abs(skewness) < 1
+  p_display <- if (is.na(sw_test$p.value)) "NA" else if (sw_test$p.value < 0.001) "< 0.001" else sprintf("%.3f", sw_test$p.value)
 
   # QQ plot data with confidence bands and outlier detection
-  y <- scale(x); p <- ppoints(n); theoretical <- qnorm(p)
-  se <- sqrt(p * (1 - p) / n) / dnorm(theoretical)
-  conf_upper <- theoretical + se * qnorm(0.975)
-  conf_lower <- theoretical - se * qnorm(0.975)
+  y <- scale(x)
+  if (length(unique(y)) == 1) {
+    # Handle constant data - create minimal Q-Q plot data
+    n <- length(x)
+    theoretical <- qnorm(ppoints(n))
+    qq_data <- data.frame(
+      theoretical = theoretical,
+      sample = as.numeric(y),
+      upper = theoretical + 1,
+      lower = theoretical - 1,
+      is_outlier = rep(FALSE, n),
+      is_extreme = rep(FALSE, n),
+      row_num = seq_len(n)
+    )
+    outlier_indices <- integer(0)
+    extreme_indices <- integer(0)
+    outlier_mask <- rep(FALSE, n)
+  } else {
+    # Normal Q-Q plot calculations for variable data
+    p <- ppoints(n)
+    theoretical <- qnorm(p)
+    se <- sqrt(p * (1 - p) / n) / dnorm(theoretical)
+    conf_upper <- theoretical + se * qnorm(0.975)
+    conf_lower <- theoretical - se * qnorm(0.975)
 
-  # Find outliers and extreme outliers
-  sorted_y <- sort(y); sorted_indices <- order(x)
-  outlier_mask <- sorted_y < conf_lower | sorted_y > conf_upper
-  outlier_indices <- sorted_indices[outlier_mask]
+    # Find outliers and extreme outliers
+    sorted_y <- sort(y)
+    sorted_indices <- order(x)
+    outlier_mask <- sorted_y < conf_lower | sorted_y > conf_upper
+    outlier_indices <- sorted_indices[outlier_mask]
 
-  # Get up to 4 most extreme outliers for labeling
-  extreme_indices <- if (any(outlier_mask)) {
-    deviation <- abs(sorted_y[outlier_mask] - theoretical[outlier_mask])
-    extreme_positions <- which(outlier_mask)[order(deviation, decreasing = TRUE)[1:min(4, sum(outlier_mask))]]
-    sorted_indices[extreme_positions]
-  } else integer(0)
+    # Get up to 4 most extreme outliers for labeling
+    extreme_indices <- if (any(outlier_mask)) {
+      deviation <- abs(sorted_y[outlier_mask] - theoretical[outlier_mask])
+      extreme_positions <- which(outlier_mask)[order(deviation, decreasing = TRUE)[1:min(4, sum(outlier_mask))]]
+      sorted_indices[extreme_positions]
+    } else integer(0)
 
-  # Create QQ plot data
-  qq_data <- data.frame(
-    theoretical = theoretical, sample = sorted_y,
-    upper = conf_upper, lower = conf_lower,
-    is_outlier = outlier_mask,
-    is_extreme = sorted_indices %in% extreme_indices,
-    row_num = sorted_indices
-  )
+    # Create QQ plot data
+    qq_data <- data.frame(
+      theoretical = theoretical,
+      sample = sorted_y,
+      upper = conf_upper,
+      lower = conf_lower,
+      is_outlier = outlier_mask,
+      is_extreme = sorted_indices %in% extreme_indices,
+      row_num = sorted_indices
+    )
+  }
 
   # Create QQ plot using explicit .data$ notation
   qq_plot <- ggplot2::ggplot(qq_data, ggplot2::aes(x = .data$theoretical, y = .data$sample)) +
     ggplot2::geom_ribbon(ggplot2::aes(ymin = .data$lower, ymax = .data$upper),
                          alpha = 0.2, fill = "grey70") +
     ggplot2::geom_point(ggplot2::aes(color = .data$is_outlier), size = 2, alpha = 0.6) +
-    ggplot2::geom_abline(intercept = 0, slope = 1, color = "red", linetype = "dashed", size = 1) +
+    ggplot2::geom_abline(intercept = 0, slope = 1, color = "red", linetype = "dashed", linewidth = 1) +
     ggplot2::scale_color_manual(values = c(color, "red"), guide = "none") +
     ggplot2::labs(title = "Normal Q-Q Plot",
                   subtitle = sprintf("Points outside 95%%CI: %d / %d (%.1f%%)",
@@ -146,7 +181,7 @@ normality <- function(x,
     ggplot2::geom_histogram(ggplot2::aes(y = ggplot2::after_stat(density)),
                             bins = bins, fill = color, color = "white", alpha = 0.6) +
     ggplot2::stat_function(fun = dnorm, args = list(mean = mean_val, sd = sd_val),
-                           color = "red", linetype = "dashed", size = 1) +
+                           color = "red", linetype = "dashed", linewidth = 1) +
     ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0, 0.05))) +
     ggplot2::labs(title = "Histogram with Normal Distribution",
                   subtitle = sprintf("Shapiro-Wilk: %s | Skewness: %.2f | Kurtosis: %.2f",
