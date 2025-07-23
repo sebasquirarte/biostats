@@ -9,7 +9,6 @@
 #' @param arms Character vector. Treatment arm names. Default is c("Placebo", "Treatment").
 #' @param dropout_rate Numeric. Proportion of subjects who dropout (0-1). Default is 0.
 #' @param na_rate Numeric. Proportion of values missing at random (0-1). Default is 0.
-#' @param seed Integer or NULL. Random seed for reproducibility. Default is NULL.
 #'
 #' @return A data.frame with columns: subject_id, visit, sex, treatment, age,
 #'   weight, biomarker, and response. Data is in long format.
@@ -17,17 +16,15 @@
 #' @examples
 #' # Basic dataset
 #' clinical_df <- clinical_data()
-#'
-#' # Multiple treatment arms with missing data
-#' clinical_df <- clinical_data(arms = c("Placebo", "Low", "High"), na_rate = 0.05)
+#' # Multiple treatment arms with dropout rate and missing data
+#' clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), na_rate = 0.05, dropout_rate = 0.10)
 #'
 #' @export
 clinical_data <- function(n = 100,
                           visits = 3,
                           arms = c("Placebo", "Treatment"),
                           dropout_rate = 0,
-                          na_rate = 0,
-                          seed = NULL) {
+                          na_rate = 0) {
 
   # Input validation
   if (!is.numeric(n) || length(n) != 1 || n != round(n) || n < 1 || n > 999) {
@@ -45,18 +42,12 @@ clinical_data <- function(n = 100,
   if (!is.numeric(na_rate) || length(na_rate) != 1 || na_rate < 0 || na_rate > 1) {
     stop("na_rate must be between 0 and 1.", call. = FALSE)
   }
-  if (!is.null(seed)) {
-    if (!is.numeric(seed) || length(seed) != 1) {
-      stop("seed must be a single number or NULL.", call. = FALSE)
-    }
-    set.seed(seed)
-  }
 
-  # Generate subject data
+  # Asign treatment arm
   treatment <- sample(arms, n, replace = TRUE)
   arm_positions <- match(treatment, arms)
 
-  # Create trial data
+  # Create clinical trial data
   trial_data <- data.frame(
     subject_id = rep(sprintf("%03d", seq_len(n)), each = visits),
     visit = rep(seq_len(visits), times = n),
@@ -80,7 +71,6 @@ clinical_data <- function(n = 100,
   if (dropout_rate > 0 && visits > 1) {
     unique_subjects <- unique(trial_data$subject_id)
     dropout_subjects <- sample(unique_subjects, round(length(unique_subjects) * dropout_rate))
-
     for (subj in dropout_subjects) {
       dropout_visit <- sample(2:visits, 1)
       subject_rows <- trial_data$subject_id == subj & trial_data$visit >= dropout_visit

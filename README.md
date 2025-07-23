@@ -15,8 +15,8 @@ coverage](https://codecov.io/gh/sebasquirarte/biostats/graph/badge.svg?token=ba2
 
 ## Overview
 
-***biostats*** is a versatile R toolbox that aids in biostatistics and
-clinical data analysis workflows.
+***biostats*** is a toolbox for biostatistics and clinical data analysis
+in R.
 
 #### Key features
 
@@ -126,46 +126,32 @@ tail(clinical_df)
 ```
 
 ``` r
-# Multiple treatment arms with missing data
-clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), na_rate = 0.05)
+# Multiple treatment arms with dropout rate and missing data
+clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), na_rate = 0.05, dropout_rate = 0.10)
 
-head(clinical_df)
-#>   subject_id visit    sex treatment age weight biomarker response
-#> 1        001     1 Female   Placebo  36   75.8     46.79  Partial
-#> 2        001     2 Female   Placebo  36   75.8     54.09  Partial
-#> 3        001     3 Female   Placebo  36   75.8        NA     None
-#> 4        002     1   Male         A  25   73.1     45.67     None
-#> 5        002     2   Male         A  25   73.1     80.03 Complete
-#> 6        002     3   Male         A  25   73.1     45.34     None
+head(clinical_df, 10)
+#>    subject_id visit    sex treatment age weight biomarker response
+#> 1         001     1 Female   Placebo  36   75.8     46.79  Partial
+#> 2         001     2 Female   Placebo  36   75.8     54.09  Partial
+#> 3         001     3 Female   Placebo  36   75.8     65.65     None
+#> 4         002     1   Male         A  25   73.1     45.67     None
+#> 5         002     2   Male         A  25   73.1     80.03 Complete
+#> 6         002     3   Male         A  25   73.1     45.34     None
+#> 7         003     1   Male         B  35   99.2     68.62 Complete
+#> 8         003     2   Male         B  35   99.2        NA     <NA>
+#> 9         003     3   Male         B  35   99.2        NA     <NA>
+#> 10        004     1 Female         B  53   60.1     46.44 Complete
 
-tail(clinical_df)
+tail(clinical_df, 10)
 #>     subject_id visit    sex treatment age weight biomarker response
+#> 291        097     3   Male   Placebo  47   74.7     48.46     None
+#> 292        098     1 Female         B  50   76.0     54.35     None
+#> 293        098     2 Female         B  50   76.0     71.05     None
+#> 294        098     3 Female         B  50   76.0     41.29  Partial
 #> 295        099     1 Female   Placebo  53   83.1     51.99     None
 #> 296        099     2 Female   Placebo  53   83.1     82.51 Complete
 #> 297        099     3 Female   Placebo  53   83.1     53.03  Partial
-#> 298        100     1   Male         A  27   62.5     47.56 Complete
+#> 298        100     1   Male         A  27   62.5        NA Complete
 #> 299        100     2   Male         A  27   62.5     53.75  Partial
-#> 300        100     3   Male         A  27   62.5     53.18  Partial
-```
-
-``` r
-# 20% of subjects drop out and 5% of values missing at random
-clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), dropout_rate = 0.10)
-head(clinical_df)
-#>   subject_id visit    sex treatment age weight biomarker response
-#> 1        001     1   Male   Placebo  31   61.8     36.11     None
-#> 2        001     2   Male   Placebo  31   61.8     56.81  Partial
-#> 3        001     3   Male   Placebo  31   61.8     52.64  Partial
-#> 4        002     1 Female   Placebo  36   91.9     51.32     None
-#> 5        002     2 Female   Placebo  36   91.9     46.48     None
-#> 6        002     3 Female   Placebo  36   91.9     33.18     None
-
-tail(clinical_df)
-#>     subject_id visit    sex treatment age weight biomarker response
-#> 295        099     1 Female   Placebo  37   45.0     55.13     None
-#> 296        099     2 Female   Placebo  37   45.0     54.05  Partial
-#> 297        099     3 Female   Placebo  37   45.0     47.27  Partial
-#> 298        100     1 Female         B  18   70.5     30.46 Complete
-#> 299        100     2 Female         B  18   70.5     39.93     None
-#> 300        100     3 Female         B  18   70.5     50.43  Partial
+#> 300        100     3   Male         A  27   62.5     53.18     <NA>
 ```

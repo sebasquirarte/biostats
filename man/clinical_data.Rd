@@ -9,8 +9,7 @@ clinical_data(
   visits = 3,
   arms = c("Placebo", "Treatment"),
   dropout_rate = 0,
-  na_rate = 0,
-  seed = NULL
+  na_rate = 0
 )
 }
 \arguments{
@@ -23,8 +22,6 @@ clinical_data(
 \item{dropout_rate}{Numeric. Proportion of subjects who dropout (0-1). Default is 0.}
 
 \item{na_rate}{Numeric. Proportion of values missing at random (0-1). Default is 0.}
-
-\item{seed}{Integer or NULL. Random seed for reproducibility. Default is NULL.}
 }
 \value{
 A data.frame with columns: subject_id, visit, sex, treatment, age,
@@ -38,8 +35,7 @@ categorical variables, as well as optional missing data and dropout rates.
 \examples{
 # Basic dataset
 clinical_df <- clinical_data()
-
-# Multiple treatment arms with missing data
-clinical_df <- clinical_data(arms = c("Placebo", "Low", "High"), na_rate = 0.05)
+# Multiple treatment arms with dropout rate and missing data
+clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), na_rate = 0.05, dropout_rate = 0.10)
 
 }

@@ -28,7 +28,7 @@ set.seed(100)
 
 ## Overview
 
-_**biostats**_ is a versatile R toolbox that aids in biostatistics and clinical data analysis workflows.
+_**biostats**_ is a toolbox for biostatistics and clinical data analysis in R.
 
 #### Key features
 - Summary statistics
@@ -50,7 +50,7 @@ options(repos = c(CRAN = "https://cran.rstudio.com/"))
 install.packages("remotes") 
 library(remotes)
 remotes::install_github("sebasquirarte/biostats",
-                        auth_token = "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",
+                        auth_token = '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',
                         upgrade = FALSE)
 library(biostats)
 ```
@@ -61,7 +61,7 @@ The biostats toolbox includes the following exported functions.
 
 - [**Summary Statistics and Exploratory Data Analysis (EDA)**](#summary-and-exploratory-data-analysis-eda)
   - [clinical_data()](#clinical_data) ✔️
-  - [summary_table()](#summary_table) 
+  - [summary_table()](#summary_table) ✔️
   - [normality()](#normality) 
   - [missing_values()](#missing_values) 
 - [**Sample Size and Power Calculation**](#sample-size-and-power-calculation)
@@ -119,17 +119,75 @@ head(clinical_df)
 tail(clinical_df)
 ```
 ```{r}
-# Multiple treatment arms with missing data
-clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), na_rate = 0.05)
+# Multiple treatment arms with dropout rate and missing data
+clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), na_rate = 0.05, dropout_rate = 0.10)
 
-head(clinical_df)
+head(clinical_df, 10)
 
-tail(clinical_df)
+tail(clinical_df, 10)
 ```
-```{r}
-# 20% of subjects drop out and 5% of values missing at random
-clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), dropout_rate = 0.10)
-head(clinical_df)
 
-tail(clinical_df)
+#### **summary_table()**
+
+##### Description
+
+Generates summary tables for biostatistics and clinical data analysis with automatic statistical test selection and effect size calculations. Handles both numeric and categorical variables, performing appropriate descriptive statistics and inferential tests for single-group summaries or two-group comparisons.
+
+##### Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `data` | A data frame containing the variables to be summarized | `Required` |
+| `group_var` | Name of the grouping variable for two-group comparisons | `NULL` |
+| `all_stats` | Logical; if TRUE, provides detailed statistical summary | `FALSE` |
+| `effect_size` | Logical; if TRUE, includes effect size estimates | `FALSE` |
+| `exclude` | Character vector; variable names to exclude from the summary | `NULL` |
+
+##### Examples
+
+```{r}
+clinical_df <- clinical_data()
+
+# General summary without considering treatment groups
+clinical_summary <- summary_table(clinical_df,
+                                  exclude = c('subject_id', 'visit'))
+```
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(clinical_summary, format = "markdown")
+```
+    
+```{r}
+# Grouped summary for each tratment group
+clinical_summary <- summary_table(clinical_df,
+                                  group_var = 'treatment',
+                                  exclude = c('subject_id', 'visit'))
+```
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(clinical_summary, format = "markdown")
+```
+    
+```{r}
+# Grouped summary for each tratment group with all stats
+clinical_summary <- summary_table(clinical_df,
+                                  group_var = 'treatment',
+                                  all_stats = TRUE,
+                                  exclude = c('subject_id', 'visit'))
+```
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(clinical_summary, format = "markdown")
+```
+    
+```{r}
+# Grouped summary for each tratment group with effect size
+clinical_summary <- summary_table(clinical_df,
+                                  group_var = 'treatment',
+                                  effect_size = TRUE,
+                                  exclude = c('subject_id', 'visit'))
+```
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(clinical_summary, format = "markdown")
 ```

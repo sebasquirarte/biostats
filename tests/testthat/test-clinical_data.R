@@ -22,27 +22,33 @@ test_that("clinical_data creates basic dataset correctly", {
 
 test_that("clinical_data handles different parameters", {
   # Different sample size
-  result1 <- clinical_data(n = 10, seed = 123)
+  set.seed(123)
+  result1 <- clinical_data(n = 10)
   expect_equal(length(unique(result1$subject_id)), 10)
 
   # Different visit count
-  result2 <- clinical_data(visits = 5, seed = 123)
+  set.seed(123)
+  result2 <- clinical_data(visits = 5)
   expect_equal(max(result2$visit), 5)
   expect_equal(nrow(result2), 100 * 5)
 
   # Different treatment arms
-  result3 <- clinical_data(arms = c("A", "B", "C"), seed = 123)
+  set.seed(123)
+  result3 <- clinical_data(arms = c("A", "B", "C"))
   expect_equal(levels(result3$treatment), c("A", "B", "C"))
   expect_true(all(result3$treatment %in% c("A", "B", "C")))
 })
 
-test_that("clinical_data produces consistent results with seed", {
-  result1 <- clinical_data(seed = 42)
-  result2 <- clinical_data(seed = 42)
+test_that("clinical_data produces consistent results with set.seed", {
+  set.seed(42)
+  result1 <- clinical_data()
+  set.seed(42)
+  result2 <- clinical_data()
   expect_identical(result1, result2)
 
   # Different seeds produce different results
-  result3 <- clinical_data(seed = 43)
+  set.seed(43)
+  result3 <- clinical_data()
   expect_false(identical(result1, result3))
 })
 
@@ -81,21 +87,18 @@ test_that("clinical_data validates inputs correctly", {
   expect_error(clinical_data(visits = 1.5), "visits must be a positive integer")
 
   # arms validation
-  expect_error(clinical_data(arms = character(0)), "arms must be a character vector")
-  expect_error(clinical_data(arms = 123), "arms must be a character vector")
+  expect_error(clinical_data(arms = character(0)), "arms must be a character vector with at least one element")
+  expect_error(clinical_data(arms = 123), "arms must be a character vector with at least one element")
 
   # rates validation
   expect_error(clinical_data(dropout_rate = -0.1), "dropout_rate must be between 0 and 1")
   expect_error(clinical_data(dropout_rate = 1.1), "dropout_rate must be between 0 and 1")
   expect_error(clinical_data(na_rate = 1.5), "na_rate must be between 0 and 1")
-
-  # seed validation
-  expect_error(clinical_data(seed = "123"), "seed must be a single number or NULL")
-  expect_error(clinical_data(seed = c(123, 456)), "seed must be a single number or NULL")
 })
 
 test_that("clinical_data maintains data integrity", {
-  result <- clinical_data(n = 50, visits = 4, seed = 123)
+  set.seed(123)
+  result <- clinical_data(n = 50, visits = 4)
 
   # Check subject ID format
   expect_true(all(nchar(result$subject_id) == 3))
@@ -134,18 +137,22 @@ test_that("clinical_data shows treatment effects", {
 
 test_that("clinical_data works with edge cases", {
   # Single subject
-  result_small <- clinical_data(n = 1, visits = 1, seed = 123)
+  set.seed(123)
+  result_small <- clinical_data(n = 1, visits = 1)
   expect_equal(nrow(result_small), 1)
   expect_equal(unique(result_small$subject_id), "001")
 
   # Maximum n
-  expect_silent(clinical_data(n = 999, visits = 1, seed = 123))
+  set.seed(123)
+  expect_silent(clinical_data(n = 999, visits = 1))
 
   # High dropout rate
-  result_high_dropout <- clinical_data(dropout_rate = 0.9, visits = 3, seed = 123)
+  set.seed(123)
+  result_high_dropout <- clinical_data(dropout_rate = 0.9, visits = 3)
   expect_gt(mean(is.na(result_high_dropout$biomarker)), 0.4)
 
   # Single visit (no dropout possible)
-  result_single_visit <- clinical_data(visits = 1, dropout_rate = 0.5, seed = 123)
+  set.seed(123)
+  result_single_visit <- clinical_data(visits = 1, dropout_rate = 0.5)
   expect_true(all(!is.na(result_single_visit$biomarker)))
 })
