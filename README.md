@@ -36,7 +36,7 @@ and data analysts.*
 install.packages("remotes") 
 library(remotes)
 remotes::install_github("sebasquirarte/biostats",
-                        auth_token = "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",
+                        auth_token = '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',
                         upgrade = FALSE)
 library(biostats)
 ```
@@ -48,7 +48,7 @@ The biostats toolbox includes the following exported functions.
 - [**Summary Statistics and Exploratory Data Analysis
   (EDA)**](#summary-and-exploratory-data-analysis-eda)
   - [clinical_data()](#clinical_data) ✔️
-  - [summary_table()](#summary_table)
+  - [summary_table()](#summary_table) ✔️
   - [normality()](#normality)
   - [missing_values()](#missing_values)
 - [**Sample Size and Power
@@ -155,3 +155,89 @@ tail(clinical_df, 10)
 #> 299        100     2   Male         A  27   62.5     53.75  Partial
 #> 300        100     3   Male         A  27   62.5     53.18     <NA>
 ```
+
+#### **summary_table()**
+
+##### Description
+
+Generates summary tables for biostatistics and clinical data analysis
+with automatic statistical test selection and effect size calculations.
+Handles both numeric and categorical variables, performing appropriate
+descriptive statistics and inferential tests for single-group summaries
+or two-group comparisons.
+
+##### Parameters
+
+| Parameter | Description | Default |
+|----|----|----|
+| `data` | A data frame containing the variables to be summarized | `Required` |
+| `group_var` | Name of the grouping variable for two-group comparisons | `NULL` |
+| `all_stats` | Logical; if TRUE, provides detailed statistical summary | `FALSE` |
+| `effect_size` | Logical; if TRUE, includes effect size estimates | `FALSE` |
+| `exclude` | Character vector; variable names to exclude from the summary | `NULL` |
+
+##### Examples
+
+``` r
+clinical_df <- clinical_data()
+
+# General summary without considering treatment groups
+clinical_summary <- summary_table(clinical_df,
+                                  exclude = c('subject_id', 'visit'))
+```
+
+| variable | n | summary | normality |
+|:---|---:|:---|:---|
+| sex | 300 | Male: 168 (56.0%); Female: 132 (44.0%) | NA |
+| treatment | 300 | Placebo: 168 (56.0%); Treatment: 132 (44.0%) | NA |
+| age | 300 | Median (IQR): 45.00 (24.00) | \< 0.001 |
+| weight | 300 | Median (IQR): 70.00 (20.80) | \< 0.001 |
+| biomarker | 300 | Mean (SD): 47.85 (9.52) | 0.397 |
+| response | 300 | Complete: 85 (28.3%); Partial: 63 (21.0%); None: 152 (50.7%) | NA |
+
+``` r
+# Grouped summary for each tratment group
+clinical_summary <- summary_table(clinical_df,
+                                  group_var = 'treatment',
+                                  exclude = c('subject_id', 'visit'))
+```
+
+| variable | n | Placebo (Group A) | Treatment (Group B) | normality | test | p_value |
+|:---|:---|:---|:---|:---|:---|:---|
+| sex | A: 168, B: 132 | Male: 90 (53.6%); Female: 78 (46.4%) | Male: 78 (59.1%); Female: 54 (40.9%) | NA | Chi-squared | 0.339 |
+| age | A: 168, B: 132 | Median (IQR): 43.00 (21.25) | Median (IQR): 46.00 (27.50) | A: 0.002, B: \< 0.001 | Mann-Whitney U | 0.608 |
+| weight | A: 168, B: 132 | Median (IQR): 68.85 (21.92) | Median (IQR): 70.40 (17.02) | A: 0.002, B: 0.006 | Mann-Whitney U | 0.786 |
+| biomarker | A: 168, B: 132 | Median (IQR): 48.84 (11.61) | Median (IQR): 45.04 (15.00) | A: 0.798, B: 0.031 | Mann-Whitney U | 0.008 |
+| response | A: 168, B: 132 | Complete: 38 (22.6%); Partial: 35 (20.8%); None: 95 (56.5%) | Complete: 47 (35.6%); Partial: 28 (21.2%); None: 57 (43.2%) | NA | Chi-squared | 0.030 |
+
+``` r
+# Grouped summary for each tratment group with all stats
+clinical_summary <- summary_table(clinical_df,
+                                  group_var = 'treatment',
+                                  all_stats = TRUE,
+                                  exclude = c('subject_id', 'visit'))
+```
+
+| variable | n | Placebo (Group A) | Treatment (Group B) | normality | test | p_value |
+|:---|:---|:---|:---|:---|:---|:---|
+| sex | A: 168, B: 132 | Male: 90 (53.6%); Female: 78 (46.4%) | Male: 78 (59.1%); Female: 54 (40.9%) | NA | Chi-squared | 0.339 |
+| age | A: 168, B: 132 | Mean (SD): 44.93 (16.2); Median (IQR): 43.00 (35.0,56.2); Range: 18.00,85.00 | Mean (SD): 45.09 (16.2); Median (IQR): 46.00 (28.8,56.2); Range: 18.00,79.00 | A: 0.002, B: \< 0.001 | Mann-Whitney U | 0.608 |
+| weight | A: 168, B: 132 | Mean (SD): 71.08 (15.7); Median (IQR): 68.85 (60.2,82.1); Range: 45.00,116.20 | Mean (SD): 70.89 (13.2); Median (IQR): 70.40 (63.9,80.9); Range: 45.00,108.60 | A: 0.002, B: 0.006 | Mann-Whitney U | 0.786 |
+| biomarker | A: 168, B: 132 | Mean (SD): 48.99 (9.0); Median (IQR): 48.84 (43.1,54.7); Range: 24.74,72.57 | Mean (SD): 46.41 (10.0); Median (IQR): 45.04 (38.5,53.5); Range: 24.96,78.20 | A: 0.798, B: 0.031 | Mann-Whitney U | 0.008 |
+| response | A: 168, B: 132 | Complete: 38 (22.6%); Partial: 35 (20.8%); None: 95 (56.5%) | Complete: 47 (35.6%); Partial: 28 (21.2%); None: 57 (43.2%) | NA | Chi-squared | 0.030 |
+
+``` r
+# Grouped summary for each tratment group with effect size
+clinical_summary <- summary_table(clinical_df,
+                                  group_var = 'treatment',
+                                  effect_size = TRUE,
+                                  exclude = c('subject_id', 'visit'))
+```
+
+| variable | n | Placebo (Group A) | Treatment (Group B) | normality | test | p_value | effect_size | effect_param |
+|:---|:---|:---|:---|:---|:---|:---|:---|:---|
+| sex | A: 168, B: 132 | Male: 90 (53.6%); Female: 78 (46.4%) | Male: 78 (59.1%); Female: 54 (40.9%) | NA | Chi-squared | 0.339 | 0.06 | Cramer’s V |
+| age | A: 168, B: 132 | Median (IQR): 43.00 (21.25) | Median (IQR): 46.00 (27.50) | A: 0.002, B: \< 0.001 | Mann-Whitney U | 0.608 | 1.13 | r |
+| weight | A: 168, B: 132 | Median (IQR): 68.85 (21.92) | Median (IQR): 70.40 (17.02) | A: 0.002, B: 0.006 | Mann-Whitney U | 0.786 | 1.11 | r |
+| biomarker | A: 168, B: 132 | Median (IQR): 48.84 (11.61) | Median (IQR): 45.04 (15.00) | A: 0.798, B: 0.031 | Mann-Whitney U | 0.008 | 0.95 | r |
+| response | A: 168, B: 132 | Complete: 38 (22.6%); Partial: 35 (20.8%); None: 95 (56.5%) | Complete: 47 (35.6%); Partial: 28 (21.2%); None: 57 (43.2%) | NA | Chi-squared | 0.030 | 0.15 | Cramer’s V |
