@@ -59,27 +59,27 @@ library(biostats)
 
 ## Usage
 
-The biostats toolbox includes the following 25 exported functions.
+The biostats toolbox includes the following exported functions.
 
 - [**Summary Statistics and Exploratory Data Analysis (EDA)**](#summary-and-exploratory-data-analysis-eda)
-  - [clinical_data()](#clinical_data) ✔
-  - [summary_table()](#summary_table) ✔
-  - [normality()](#normality) ✔
-  - [missing_values()](#missing_values) ✔
+  - [clinical_data()](#clinical_data) ✔️
+  - [summary_table()](#summary_table) 
+  - [normality()](#normality) 
+  - [missing_values()](#missing_values) 
 - [**Sample Size and Power Calculation**](#sample-size-and-power-calculation)
   - [sample_size()](#sample_size)
   - [sample_size_table()](#sample_size_table)
   - [stat_power()](#stat_power)
 - [**Statistical Tests**](#statistical-tests)
-  - [odds()](#odds) ✔
-  - [anova_test()](#anova_test) ✔
+  - [odds()](#odds) 
+  - [anova_test()](#anova_test) 
   - [hypothesis_test()](#hypothesis_test)
 - [**Data Cleaning and Transformation**](#data-cleaning-and-transformation)
-  - [outliers()](#outliers) ✔
+  - [outliers()](#outliers) 
   - [from_baseline()](#from_baseline)
   - [auc()](#auc)
   - [impute()](#impute)
-  - [pivot_data()](#pivot_data) ✔
+  - [pivot_data()](#pivot_data) 
 - [**Data Visualization**](#data-visualization)
   - [plot_bar()](#plot_bar)
   - [plot_hist()](#plot_hist)
@@ -106,10 +106,9 @@ Creates a dataset of simulated clinical trial data with subject demographics, mu
 |-----------|-------------|---------|
 | `n` | Number of subjects (1-999) | 100 |
 | `visits` | Number of visits including baseline | 3 |
-| `arms` | Vector of treatment arms | `c('Placebo', 'Treatment')` |
+| `arms` | Character vector of treatment arms | `c('Placebo', 'Treatment')` |
 | `dropout_rate` | Proportion of subjects who dropout (0-1) | 0 |
-| `na_rate` | Proportion of values missing at random (0-1) | 0 |
-| `seed` | Random seed for reproducibility | `NULL` |
+| `na_rate` | Proportion of missing data at random (0-1) | 0 |
 
 ##### Examples
 
@@ -122,8 +121,8 @@ head(clinical_df)
 tail(clinical_df)
 ```
 ```{r}
-# Multiple treatment arms
-clinical_df <- clinical_data(arms = c('A', 'B', 'C'))
+# Multiple treatment arms with missing data
+clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), na_rate = 0.05)
 
 head(clinical_df)
 
@@ -131,8 +130,7 @@ tail(clinical_df)
 ```
 ```{r}
 # 20% of subjects drop out and 5% of values missing at random
-clinical_df <- clinical_data(dropout_rate = 0.2, na_rate = 0.05)
-
+clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), dropout_rate = 0.10)
 head(clinical_df)
 
 tail(clinical_df)
