@@ -35,7 +35,7 @@ and data analysts.*
 ``` r
 install.packages("remotes") 
 library(remotes)
-remotes::install_github("sebasquirarte/biostats",
+remotes::install_github('sebasquirarte/biostats',
                         auth_token = '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',
                         upgrade = FALSE)
 library(biostats)
@@ -241,3 +241,64 @@ clinical_summary <- summary_table(clinical_df,
 | weight | A: 168, B: 132 | Median (IQR): 68.85 (21.92) | Median (IQR): 70.40 (17.02) | A: 0.002, B: 0.006 | Mann-Whitney U | 0.786 | 1.11 | r |
 | biomarker | A: 168, B: 132 | Median (IQR): 48.84 (11.61) | Median (IQR): 45.04 (15.00) | A: 0.798, B: 0.031 | Mann-Whitney U | 0.008 | 0.95 | r |
 | response | A: 168, B: 132 | Complete: 38 (22.6%); Partial: 35 (20.8%); None: 95 (56.5%) | Complete: 47 (35.6%); Partial: 28 (21.2%); None: 57 (43.2%) | NA | Chi-squared | 0.030 | 0.15 | Cramer’s V |
+
+#### **normality()**
+
+##### Description
+
+Tests normality with statistical tests and visual assessment using QQ
+plot and histogram.
+
+##### Parameters
+
+| Parameter | Description | Default |
+|----|----|----|
+| `x` | A numeric vector or the name of a variable in a data frame | `Required` |
+| `data` | Optional data frame containing the variable | `NULL` |
+| `outliers` | Logical; whether to print all outlier row numbers | `FALSE` |
+| `color` | Character; color for points and histogram bars | `"#7fcdbb"` |
+
+##### Examples
+
+``` r
+# Normal data
+normality('biomarker',
+          data = clinical_df)
+#> 
+#> Normality Test for 'biomarker' 
+#> 
+#> n = 300 
+#> mean (SD) = 47.85 (9.5) 
+#> median (IQR) = 46.92 (13.1) 
+#> 
+#> Shapiro-Wilk: W = 0.995, p = 0.397 
+#> Skewness: 0.18 
+#> Kurtosis: -0.12 
+#> 
+#> Data is  normally distributed.
+```
+
+<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
+
+``` r
+# Skewed data (show rows of outliers)
+normality('weight',
+          data = clinical_df,
+          outliers = TRUE)
+#> 
+#> Normality Test for 'weight' 
+#> 
+#> n = 300 
+#> mean (SD) = 70.99 (14.6) 
+#> median (IQR) = 70.00 (20.8) 
+#> 
+#> Shapiro-Wilk: W = 0.977, p = < 0.001 
+#> Skewness: 0.34 
+#> Kurtosis: 0.13 
+#> 
+#> Data is  not normally distributed. 
+#> 
+#> OUTLIERS (row indices): 22, 23, 24, 25, 26, 51, 139, 46, 47, 121
+```
+
+<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
