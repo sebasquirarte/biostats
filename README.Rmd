@@ -49,7 +49,7 @@ options(repos = c(CRAN = "https://cran.rstudio.com/"))
 ```{r installation, warning=FALSE, message=FALSE, results='hide'}
 install.packages("remotes") 
 library(remotes)
-remotes::install_github("sebasquirarte/biostats",
+remotes::install_github('sebasquirarte/biostats',
                         auth_token = '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',
                         upgrade = FALSE)
 library(biostats)
@@ -190,4 +190,34 @@ clinical_summary <- summary_table(clinical_df,
 
 ```{r, echo=FALSE, results='asis'}
 knitr::kable(clinical_summary, format = "markdown")
+```
+
+#### **normality()**
+
+##### Description
+
+Tests normality with statistical tests and visual assessment using QQ plot and histogram.
+
+##### Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `x` | A numeric vector or the name of a variable in a data frame | `Required` |
+| `data` | Optional data frame containing the variable | `NULL` |
+| `outliers` | Logical; whether to print all outlier row numbers | `FALSE` |
+| `color` | Character; color for points and histogram bars | `"#7fcdbb"` |
+
+##### Examples
+
+```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
+# Normal data
+normality('biomarker',
+          data = clinical_df)
+```
+
+```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
+# Skewed data (show rows of outliers)
+normality('weight',
+          data = clinical_df,
+          outliers = TRUE)
 ```
