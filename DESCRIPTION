@@ -1,10 +1,32 @@
 Package: biostats
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Title: Tools for Biostatistics and Clinical Data Analysis
+Version: 1.0.0
+Authors@R: c(
+    person("Sebastian", "Quirarte-Justo", 
+           email = "sebastian.quirarte@sophia.com.mx", 
+           role = c("aut", "cre"),
+           comment = c(ORCID = "0009-0004-2730-4343")),
+    person("Angela Carolina", "Montaño-Ruíz", 
+           email = "angela.montano@sophia.com.mx", 
+           role = "aut"),
+    person("José María", "Torres-Arellano", 
+           email = "jose.torres@sophia.com.mx", 
+           role = "aut"),
+    person("Laboratorios Sophia S.A. de C.V.", 
+           role = c("cph", "fnd")))
+Description: Provides comprehensive tools for biostatistics and clinical data 
+    analysis including summary statistics, exploratory data analysis (EDA), 
+    sample size calculation, statistical tests, data cleaning, transformation, 
+    and visualization. Developed by the biostatistics team at Laboratorios 
+    Sophia S.A. de C.V.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Imports: 
+    ggplot2,
+    gridExtra,
+    rlang

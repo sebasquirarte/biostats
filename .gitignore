@@ -1,6 +1,20 @@
-.Rproj.user
+# R specific
+.Rproj.user/
 .Rhistory
-.Rdata
-.httr-oauth
+.RData
+.Ruserdata
+*.Rproj
+
+# Package specific
+/inst/doc/
+/doc/
+/Meta/
+
+# System files
 .DS_Store
-.quarto
+Thumbs.db
+
+# Temporary files
+*~
+*.tmp
+*.temp
