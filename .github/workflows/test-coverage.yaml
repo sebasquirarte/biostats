@@ -1,25 +1,19 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+name: test-coverage.yaml
+
 on:
   push:
     branches: [main, master]
   pull_request:
-<<<<<<< HEAD
-
-name: test-coverage.yaml
 
 permissions: read-all
 
-=======
-name: test-coverage.yaml
-permissions: read-all
->>>>>>> 7d24aa13d47506ecd685299cd9b143411f150d08
 jobs:
   test-coverage:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-<<<<<<< HEAD
 
     steps:
       - uses: actions/checkout@v4
@@ -28,21 +22,11 @@ jobs:
         with:
           use-public-rspm: true
 
-=======
-    steps:
-      - uses: actions/checkout@v4
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          use-public-rspm: true
->>>>>>> 7d24aa13d47506ecd685299cd9b143411f150d08
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::covr, any::xml2
           needs: coverage
-<<<<<<< HEAD
 
-=======
->>>>>>> 7d24aa13d47506ecd685299cd9b143411f150d08
       - name: Test coverage
         run: |
           cov <- covr::package_coverage(
@@ -53,10 +37,7 @@ jobs:
           print(cov)
           covr::to_cobertura(cov)
         shell: Rscript {0}
-<<<<<<< HEAD
 
-=======
->>>>>>> 7d24aa13d47506ecd685299cd9b143411f150d08
       - uses: codecov/codecov-action@v5
         with:
           # Fail if error if not on PR, or if on PR and token is given
@@ -65,20 +46,14 @@ jobs:
           plugins: noop
           disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
-<<<<<<< HEAD
 
-=======
->>>>>>> 7d24aa13d47506ecd685299cd9b143411f150d08
       - name: Show testthat output
         if: always()
         run: |
           ## --------------------------------------------------------------------
           find '${{ runner.temp }}/package' -name 'testthat.Rout*' -exec cat '{}' \; || true
         shell: bash
-<<<<<<< HEAD
 
-=======
->>>>>>> 7d24aa13d47506ecd685299cd9b143411f150d08
       - name: Upload test results
         if: failure()
         uses: actions/upload-artifact@v4
