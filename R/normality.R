@@ -197,7 +197,11 @@ normality <- function(x,
   cat(sprintf("Shapiro-Wilk: W = %.3f, p = %s \n", sw_test$statistic, p_display))
   cat(sprintf("Skewness: %.2f \n", skewness))
   cat(sprintf("Kurtosis: %.2f \n\n", kurtosis))
+<<<<<<< HEAD
   cat("Data is", if (normal) "normally distributed." else "not normally distributed.", "\n")
+=======
+  cat("Data is ", if (normal) "normally distributed." else "not normally distributed.", "\n")
+>>>>>>> 7d24aa13d47506ecd685299cd9b143411f150d08
 
   # Display outliers information
   if (length(outlier_indices) > 0) {

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # R specific
 .Rproj.user/
 .Rhistory
@@ -18,3 +19,11 @@ Thumbs.db
 *~
 *.tmp
 *.temp
+=======
+.Rproj.user
+.Rhistory
+.Rdata
+.httr-oauth
+.DS_Store
+.quarto
+>>>>>>> 7d24aa13d47506ecd685299cd9b143411f150d08
