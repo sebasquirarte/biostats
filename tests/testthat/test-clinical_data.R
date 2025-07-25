@@ -45,6 +45,7 @@ test_that("clinical_data handles dropout and missing data", {
   result_dropout <- clinical_data(dropout_rate = 0.2, visits = 4)
   expect_true(any(is.na(result_dropout$biomarker)))
   expect_true(any(is.na(result_dropout$response)))
+  expect_true(any(is.na(result_dropout$weight)))
 
   # Test missing data functionality
   result_missing <- clinical_data(na_rate = 0.1)

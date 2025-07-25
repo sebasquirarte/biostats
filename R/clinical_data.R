@@ -81,7 +81,7 @@ clinical_data <- function(n = 100, visits = 3, arms = c("Placebo", "Treatment"),
     for (subj in dropout_subjects) {
       dropout_visit <- sample(2:visits, 1)
       subject_rows <- trial_data$subject_id == subj & trial_data$visit >= dropout_visit
-      trial_data[subject_rows, c("biomarker", "response")] <- NA
+      trial_data[subject_rows, c("weight", "biomarker", "response")] <- NA
     }
   }
 
