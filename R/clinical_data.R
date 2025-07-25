@@ -39,6 +39,9 @@ clinical_data <- function(n = 100, visits = 3, arms = c("Placebo", "Treatment"),
   if (!is.numeric(dropout_rate) || length(dropout_rate) != 1 || dropout_rate < 0 || dropout_rate > 1) {
     stop("dropout_rate must be between 0 and 1.", call. = FALSE)
   }
+  if (dropout_rate > 0 && !(visits > 1)) {
+    stop("Must have more than 1 visit when implementing dropout_rate.", call. = FALSE)
+  }
   if (!is.numeric(na_rate) || length(na_rate) != 1 || na_rate < 0 || na_rate > 1) {
     stop("na_rate must be between 0 and 1.", call. = FALSE)
   }

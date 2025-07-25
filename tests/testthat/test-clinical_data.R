@@ -68,6 +68,7 @@ test_that("clinical_data validates inputs correctly", {
   expect_error(clinical_data(dropout_rate = -0.1), "dropout_rate must be between 0 and 1")
   expect_error(clinical_data(dropout_rate = 1.1), "dropout_rate must be between 0 and 1")
   expect_error(clinical_data(na_rate = 1.5), "na_rate must be between 0 and 1")
+  expect_error(clinical_data(visits = 1, dropout_rate = 0.1), "Must have more than 1 visit when implementing dropout_rate.")
 })
 
 test_that("clinical_data maintains data integrity and shows treatment effects", {
@@ -103,8 +104,4 @@ test_that("clinical_data works with edge cases", {
 
   # Maximum n
   expect_silent(clinical_data(n = 999, visits = 1))
-
-  # High dropout with single visit (should have no effect)
-  result_single_visit <- clinical_data(visits = 1, dropout_rate = 0.9)
-  expect_true(all(!is.na(result_single_visit$biomarker)))
 })
