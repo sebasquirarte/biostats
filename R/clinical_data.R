@@ -8,23 +8,23 @@
 #' @param visits Integer. Number of visits including baseline. Default is 3.
 #' @param arms Character vector. Treatment arm names. Default is c("Placebo", "Treatment").
 #' @param dropout_rate Numeric. Proportion of subjects who dropout (0-1). Default is 0.
-#' @param na_rate Numeric. Proportion of values missing at random (0-1). Default is 0.
+#' @param na_rate Numeric. Overall proportion (0-1) of missing values to be
+#'   introduced across the variables `weight`, `biomarker`, and `response`.
+#'   Distributed using fixed proportions (biomarker = 15%, weight = 25%, response = 60%).
+#'   Default is 0 (no missing data).
 #'
 #' @return A data.frame with columns: subject_id, visit, sex, treatment, age,
 #'   weight, biomarker, and response. Data is in long format.
-#'
 #' @examples
 #' # Basic dataset
 #' clinical_df <- clinical_data()
 #' # Multiple treatment arms with dropout rate and missing data
 #' clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), na_rate = 0.05, dropout_rate = 0.10)
-#'
 #' @export
-clinical_data <- function(n = 100,
-                          visits = 3,
-                          arms = c("Placebo", "Treatment"),
-                          dropout_rate = 0,
-                          na_rate = 0) {
+#' @importFrom stats rnorm runif
+
+clinical_data <- function(n = 100, visits = 3, arms = c("Placebo", "Treatment"),
+                          dropout_rate = 0, na_rate = 0) {
 
   # Input validation
   if (!is.numeric(n) || length(n) != 1 || n != round(n) || n < 1 || n > 999) {
@@ -43,34 +43,38 @@ clinical_data <- function(n = 100,
     stop("na_rate must be between 0 and 1.", call. = FALSE)
   }
 
-  # Asign treatment arm
+  # Treatment assignment and arm positions
   treatment <- sample(arms, n, replace = TRUE)
   arm_positions <- match(treatment, arms)
 
-  # Create clinical trial data
+  # Create clinical trial data with factors created inline
   trial_data <- data.frame(
     subject_id = rep(sprintf("%03d", seq_len(n)), each = visits),
     visit = rep(seq_len(visits), times = n),
-    sex = rep(sample(c("Male", "Female"), n, replace = TRUE), each = visits),
-    treatment = rep(treatment, each = visits),
+    sex = factor(rep(sample(c("Male", "Female"), n, replace = TRUE), each = visits),
+                 levels = c("Male", "Female")),
+    treatment = factor(rep(treatment, each = visits), levels = arms),
     age = rep(pmin(85, pmax(18, round(stats::rnorm(n, 45, 15)))), each = visits),
-    weight = rep(pmin(120, pmax(45, round(stats::rnorm(n, 70, 15), 1))), each = visits),
-    biomarker = round(stats::rnorm(n * visits,
-                                   rep(50 + (arm_positions - 1) * (-3), each = visits), 10), 2),
+    weight = pmin(120, pmax(45, round(rep(stats::rnorm(n, 70, 15), each = visits) +
+                                        rnorm(n * visits, 0, 2), 1))),
+    biomarker = round(stats::rnorm(n * visits, rep(50 + (arm_positions - 1) * (-3),
+                                                   each = visits), 10), 2),
     stringsAsFactors = FALSE
   )
 
-  # Generate response (with simple treatment effect)
+  # Generate response using case_when style logic
   complete_prob <- pmin(0.8, 0.2 + (rep(arm_positions, each = visits) - 1) * 0.15)
-  trial_data$response <- ifelse(
-    stats::runif(nrow(trial_data)) < complete_prob, "Complete",
-    ifelse(stats::runif(nrow(trial_data)) < 0.3, "Partial", "None")
+  rand_vals <- stats::runif(nrow(trial_data))
+  trial_data$response <- factor(
+    ifelse(rand_vals < complete_prob, "Complete",
+           ifelse(rand_vals < complete_prob + 0.3 * (1 - complete_prob), "Partial", "None")),
+    levels = c("Complete", "Partial", "None")
   )
 
   # Apply dropout
   if (dropout_rate > 0 && visits > 1) {
-    unique_subjects <- unique(trial_data$subject_id)
-    dropout_subjects <- sample(unique_subjects, round(length(unique_subjects) * dropout_rate))
+    dropout_subjects <- sample(unique(trial_data$subject_id),
+                               round(n * dropout_rate))
     for (subj in dropout_subjects) {
       dropout_visit <- sample(2:visits, 1)
       subject_rows <- trial_data$subject_id == subj & trial_data$visit >= dropout_visit
@@ -80,19 +84,26 @@ clinical_data <- function(n = 100,
 
   # Apply missing data
   if (na_rate > 0) {
-    for (var in c("biomarker", "response")) {
-      available_indices <- which(!is.na(trial_data[[var]]))
-      n_to_miss <- round(length(available_indices) * na_rate)
-      if (n_to_miss > 0) {
-        trial_data[sample(available_indices, n_to_miss), var] <- NA
+    valid_cols <- c("weight", "biomarker", "response")
+    total_missing_cells <- round(nrow(trial_data) * length(valid_cols) * na_rate)
+
+    # Realistic clinical missing data proportions
+    proportions <- c(biomarker = 0.15, weight = 0.25, response = 0.60)
+    missing_counts <- round(total_missing_cells * proportions)
+    missing_counts["response"] <- missing_counts["response"] +
+      (total_missing_cells - sum(missing_counts))  # Adjust for rounding
+
+    # Apply missing data
+    for (var in valid_cols) {
+      if (missing_counts[var] > 0) {
+        available_indices <- which(!is.na(trial_data[[var]]))
+        if (length(available_indices) >= missing_counts[var]) {
+          miss_indices <- sample(available_indices, missing_counts[var])
+          trial_data[miss_indices, var] <- NA
+        }
       }
     }
   }
-
-  # Convert to factors
-  trial_data$sex <- factor(trial_data$sex, levels = c("Male", "Female"))
-  trial_data$treatment <- factor(trial_data$treatment, levels = arms)
-  trial_data$response <- factor(trial_data$response, levels = c("Complete", "Partial", "None"))
 
   return(trial_data)
 }

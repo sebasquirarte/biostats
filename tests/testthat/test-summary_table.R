@@ -129,21 +129,20 @@ test_that("summary_table produces consistent results", {
   expect_identical(result1, result2)
 })
 
-test_that("normality handles different variable types from clinical data", {
+test_that("summary_table integration with normality checks", {
   set.seed(123)
   clinical_df <- clinical_data(n = 60, visits = 3)
 
-  # Test with continuous variable (should work)
-  result_age <- suppressMessages(normality("age", data = clinical_df))
-  expect_type(result_age, "list")
+  result <- summary_table(clinical_df, exclude = c("subject_id", "visit"))
 
-  # Test with discrete variable (should work but likely non-normal)
-  result_visit <- suppressMessages(normality("visit", data = clinical_df))
-  expect_type(result_visit, "list")
+  # Should have normality information for numeric variables
+  age_row <- result[result$variable == "age", ]
+  expect_true(nrow(age_row) == 1)
+  expect_true("normality" %in% names(result))
 
-  # Both should have valid results (even if Shapiro test fails)
-  expect_type(result_age$shapiro, "list")
-  expect_type(result_visit$shapiro, "list")
+  # Should handle both numeric and categorical variables
+  expect_true("age" %in% result$variable)      # numeric
+  expect_true("treatment" %in% result$variable) # categorical
 })
 
 test_that("summary_table excludes variables correctly", {

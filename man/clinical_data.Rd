@@ -21,7 +21,10 @@ clinical_data(
 
 \item{dropout_rate}{Numeric. Proportion of subjects who dropout (0-1). Default is 0.}
 
-\item{na_rate}{Numeric. Proportion of values missing at random (0-1). Default is 0.}
+\item{na_rate}{Numeric. Overall proportion (0-1) of missing values to be
+introduced across the variables \code{weight}, \code{biomarker}, and \code{response}.
+Distributed using fixed proportions (biomarker = 15\%, weight = 25\%, response = 60\%).
+Default is 0 (no missing data).}
 }
 \value{
 A data.frame with columns: subject_id, visit, sex, treatment, age,
@@ -37,5 +40,4 @@ categorical variables, as well as optional missing data and dropout rates.
 clinical_df <- clinical_data()
 # Multiple treatment arms with dropout rate and missing data
 clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), na_rate = 0.05, dropout_rate = 0.10)
-
 }
