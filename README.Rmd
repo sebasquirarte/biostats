@@ -62,8 +62,8 @@ The biostats toolbox includes the following exported functions.
 - [**Summary Statistics and Exploratory Data Analysis (EDA)**](#summary-and-exploratory-data-analysis-eda)
   - [clinical_data()](#clinical_data) ✔️
   - [summary_table()](#summary_table) ✔️
-  - [normality()](#normality) 
-  - [missing_values()](#missing_values) 
+  - [normality()](#normality) ✔️
+  - [missing_values()](#missing_values) ✔️ 
 - [**Sample Size and Power Calculation**](#sample-size-and-power-calculation)
   - [sample_size()](#sample_size)
   - [sample_size_table()](#sample_size_table)
@@ -210,14 +210,37 @@ Tests normality with statistical tests and visual assessment using QQ plot and h
 ##### Examples
 
 ```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
-# Normal data
-normality('biomarker',
-          data = clinical_df)
+clinical_df <- clinical_data()
+
+# Normal distribution
+normality("biomarker", data = clinical_df)
+
+# Non-normal distribution with outliers displayed
+normality("weight", data = clinical_df, ouliers = TRUE)
 ```
 
+#### **missing_values()**
+
+##### Description
+
+Analyzes missing values in a dataframe, providing counts and percentages per
+column with visualizations.
+
+##### Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `df` | A dataframe to analyze for missing values | `Required` |
+| `color` | Character; color for missing values | `"#7fcdbb"` |
+| `max_heatmap_rows` | Logical; if TRUE, shows all variables including those without missing values | `FALSE` |
+
+##### Examples
+
 ```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
-# Skewed data (show rows of outliers)
-normality('weight',
-          data = clinical_df,
-          outliers = TRUE)
+clinical_df <- clinical_data(na_rate = 0.05)
+
+# Missing value analysis of only variables with missing values
+missing_values(clinical_df)
+# Show all variables including those without missing values
+missing_values(clinical_df, all = TRUE)
 ```

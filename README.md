@@ -49,8 +49,8 @@ The biostats toolbox includes the following exported functions.
   (EDA)**](#summary-and-exploratory-data-analysis-eda)
   - [clinical_data()](#clinical_data) ✔️
   - [summary_table()](#summary_table) ✔️
-  - [normality()](#normality)
-  - [missing_values()](#missing_values)
+  - [normality()](#normality) ✔️
+  - [missing_values()](#missing_values) ✔️
 - [**Sample Size and Power
   Calculation**](#sample-size-and-power-calculation)
   - [sample_size()](#sample_size)
@@ -108,21 +108,21 @@ clinical_df <- clinical_data()
 
 head(clinical_df)
 #>   subject_id visit    sex treatment age weight biomarker response
-#> 1        001     1 Female Treatment  40   70.4     28.45     None
-#> 2        001     2 Female Treatment  40   70.4     36.81     None
-#> 3        001     3 Female Treatment  40   70.4     36.55     None
-#> 4        002     1   Male   Placebo  65   64.6     43.49  Partial
-#> 5        002     2   Male   Placebo  65   64.6     53.83 Complete
-#> 6        002     3   Male   Placebo  65   64.6     60.32     None
+#> 1        001     1 Female Treatment  40   66.7     66.34     None
+#> 2        001     2 Female Treatment  40   68.4     46.87  Partial
+#> 3        001     3 Female Treatment  40   68.3     34.48 Complete
+#> 4        002     1   Male   Placebo  65   63.3     57.75     None
+#> 5        002     2   Male   Placebo  65   65.4     58.04     None
+#> 6        002     3   Male   Placebo  65   66.7     35.01  Partial
 
 tail(clinical_df)
 #>     subject_id visit  sex treatment age weight biomarker response
-#> 295        099     1 Male Treatment  29   82.2     53.22     None
-#> 296        099     2 Male Treatment  29   82.2     24.96     None
-#> 297        099     3 Male Treatment  29   82.2     44.27 Complete
-#> 298        100     1 Male Treatment  54   50.2     37.78     None
-#> 299        100     2 Male Treatment  54   50.2     43.94     None
-#> 300        100     3 Male Treatment  54   50.2     72.37 Complete
+#> 295        099     1 Male Treatment  29   83.5     55.12  Partial
+#> 296        099     2 Male Treatment  29   77.8     46.65     None
+#> 297        099     3 Male Treatment  29   81.7     38.13     None
+#> 298        100     1 Male Treatment  54   48.4     51.69  Partial
+#> 299        100     2 Male Treatment  54   49.6     64.01     None
+#> 300        100     3 Male Treatment  54   55.3     63.71 Complete
 ```
 
 ``` r
@@ -131,29 +131,29 @@ clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), na_rate = 0.05, drop
 
 head(clinical_df, 10)
 #>    subject_id visit    sex treatment age weight biomarker response
-#> 1         001     1 Female   Placebo  36   75.8     46.79  Partial
-#> 2         001     2 Female   Placebo  36   75.8     54.09  Partial
-#> 3         001     3 Female   Placebo  36   75.8     65.65     None
-#> 4         002     1   Male         A  25   73.1     45.67     None
-#> 5         002     2   Male         A  25   73.1     80.03 Complete
-#> 6         002     3   Male         A  25   73.1     45.34     None
-#> 7         003     1   Male         B  35   99.2     68.62 Complete
-#> 8         003     2   Male         B  35   99.2        NA     <NA>
-#> 9         003     3   Male         B  35   99.2        NA     <NA>
-#> 10        004     1 Female         B  53   60.1     46.44 Complete
+#> 1         001     1 Female         A  49   70.9     36.71     None
+#> 2         001     2 Female         A  49   73.2     53.68 Complete
+#> 3         001     3 Female         A  49   75.6     74.11 Complete
+#> 4         002     1   Male         A  57   55.1     38.79     None
+#> 5         002     2   Male         A  57   54.3     57.20     None
+#> 6         002     3   Male         A  57   57.5     42.78     None
+#> 7         003     1   Male         A  48   65.0     51.48     None
+#> 8         003     2   Male         A  48   70.5     61.62  Partial
+#> 9         003     3   Male         A  48   66.5     43.96  Partial
+#> 10        004     1   Male         A  36   96.7     46.47     None
 
 tail(clinical_df, 10)
 #>     subject_id visit    sex treatment age weight biomarker response
-#> 291        097     3   Male   Placebo  47   74.7     48.46     None
-#> 292        098     1 Female         B  50   76.0     54.35     None
-#> 293        098     2 Female         B  50   76.0     71.05     None
-#> 294        098     3 Female         B  50   76.0     41.29  Partial
-#> 295        099     1 Female   Placebo  53   83.1     51.99     None
-#> 296        099     2 Female   Placebo  53   83.1     82.51 Complete
-#> 297        099     3 Female   Placebo  53   83.1     53.03  Partial
-#> 298        100     1   Male         A  27   62.5        NA Complete
-#> 299        100     2   Male         A  27   62.5     53.75  Partial
-#> 300        100     3   Male         A  27   62.5     53.18     <NA>
+#> 291        097     3   Male   Placebo  32   80.8     25.36  Partial
+#> 292        098     1 Female         A  54   73.6     58.78     <NA>
+#> 293        098     2 Female         A  54   72.9     35.88  Partial
+#> 294        098     3 Female         A  54   72.4     48.28     None
+#> 295        099     1 Female         A  34   75.1     47.36     None
+#> 296        099     2 Female         A  34   72.7     69.89     None
+#> 297        099     3 Female         A  34   75.3     23.68     <NA>
+#> 298        100     1   Male         A  34   58.4     49.71  Partial
+#> 299        100     2   Male         A  34   55.0     54.50     None
+#> 300        100     3   Male         A  34   60.0     42.96     None
 ```
 
 #### **summary_table()**
@@ -188,12 +188,12 @@ clinical_summary <- summary_table(clinical_df,
 
 | variable | n | summary | normality |
 |:---|---:|:---|:---|
-| sex | 300 | Male: 168 (56.0%); Female: 132 (44.0%) | NA |
-| treatment | 300 | Placebo: 168 (56.0%); Treatment: 132 (44.0%) | NA |
-| age | 300 | Median (IQR): 45.00 (24.00) | \< 0.001 |
-| weight | 300 | Median (IQR): 70.00 (20.80) | \< 0.001 |
-| biomarker | 300 | Mean (SD): 47.85 (9.52) | 0.397 |
-| response | 300 | Complete: 85 (28.3%); Partial: 63 (21.0%); None: 152 (50.7%) | NA |
+| sex | 300 | Male: 138 (46.0%); Female: 162 (54.0%) | NA |
+| treatment | 300 | Placebo: 153 (51.0%); Treatment: 147 (49.0%) | NA |
+| age | 300 | Median (IQR): 47.00 (22.50) | \< 0.001 |
+| weight | 300 | Median (IQR): 70.00 (21.67) | \< 0.001 |
+| biomarker | 300 | Mean (SD): 47.75 (10.54) | 0.102 |
+| response | 300 | Complete: 84 (28.0%); Partial: 69 (23.0%); None: 147 (49.0%) | NA |
 
 ``` r
 # Grouped summary for each tratment group
@@ -204,11 +204,11 @@ clinical_summary <- summary_table(clinical_df,
 
 | variable | n | Placebo (Group A) | Treatment (Group B) | normality | test | p_value |
 |:---|:---|:---|:---|:---|:---|:---|
-| sex | A: 168, B: 132 | Male: 90 (53.6%); Female: 78 (46.4%) | Male: 78 (59.1%); Female: 54 (40.9%) | NA | Chi-squared | 0.339 |
-| age | A: 168, B: 132 | Median (IQR): 43.00 (21.25) | Median (IQR): 46.00 (27.50) | A: 0.002, B: \< 0.001 | Mann-Whitney U | 0.608 |
-| weight | A: 168, B: 132 | Median (IQR): 68.85 (21.92) | Median (IQR): 70.40 (17.02) | A: 0.002, B: 0.006 | Mann-Whitney U | 0.786 |
-| biomarker | A: 168, B: 132 | Median (IQR): 48.84 (11.61) | Median (IQR): 45.04 (15.00) | A: 0.798, B: 0.031 | Mann-Whitney U | 0.008 |
-| response | A: 168, B: 132 | Complete: 38 (22.6%); Partial: 35 (20.8%); None: 95 (56.5%) | Complete: 47 (35.6%); Partial: 28 (21.2%); None: 57 (43.2%) | NA | Chi-squared | 0.030 |
+| sex | A: 153, B: 147 | Male: 66 (43.1%); Female: 87 (56.9%) | Male: 72 (49.0%); Female: 75 (51.0%) | NA | Chi-squared | 0.310 |
+| age | A: 153, B: 147 | Median (IQR): 47.00 (24.00) | Median (IQR): 50.00 (22.00) | A: 0.001, B: 0.002 | Mann-Whitney U | 0.392 |
+| weight | A: 153, B: 147 | Median (IQR): 70.00 (18.00) | Median (IQR): 70.00 (24.85) | A: 0.002, B: 0.006 | Mann-Whitney U | 0.835 |
+| biomarker | A: 153, B: 147 | Mean (SD): 49.03 (9.96) | Mean (SD): 46.42 (10.99) | A: 0.114, B: 0.101 | Welch t-test | 0.032 |
+| response | A: 153, B: 147 | Complete: 27 (17.6%); Partial: 42 (27.5%); None: 84 (54.9%) | Complete: 57 (38.8%); Partial: 27 (18.4%); None: 63 (42.9%) | NA | Chi-squared | \< 0.001 |
 
 ``` r
 # Grouped summary for each tratment group with all stats
@@ -220,11 +220,11 @@ clinical_summary <- summary_table(clinical_df,
 
 | variable | n | Placebo (Group A) | Treatment (Group B) | normality | test | p_value |
 |:---|:---|:---|:---|:---|:---|:---|
-| sex | A: 168, B: 132 | Male: 90 (53.6%); Female: 78 (46.4%) | Male: 78 (59.1%); Female: 54 (40.9%) | NA | Chi-squared | 0.339 |
-| age | A: 168, B: 132 | Mean (SD): 44.93 (16.2); Median (IQR): 43.00 (35.0,56.2); Range: 18.00,85.00 | Mean (SD): 45.09 (16.2); Median (IQR): 46.00 (28.8,56.2); Range: 18.00,79.00 | A: 0.002, B: \< 0.001 | Mann-Whitney U | 0.608 |
-| weight | A: 168, B: 132 | Mean (SD): 71.08 (15.7); Median (IQR): 68.85 (60.2,82.1); Range: 45.00,116.20 | Mean (SD): 70.89 (13.2); Median (IQR): 70.40 (63.9,80.9); Range: 45.00,108.60 | A: 0.002, B: 0.006 | Mann-Whitney U | 0.786 |
-| biomarker | A: 168, B: 132 | Mean (SD): 48.99 (9.0); Median (IQR): 48.84 (43.1,54.7); Range: 24.74,72.57 | Mean (SD): 46.41 (10.0); Median (IQR): 45.04 (38.5,53.5); Range: 24.96,78.20 | A: 0.798, B: 0.031 | Mann-Whitney U | 0.008 |
-| response | A: 168, B: 132 | Complete: 38 (22.6%); Partial: 35 (20.8%); None: 95 (56.5%) | Complete: 47 (35.6%); Partial: 28 (21.2%); None: 57 (43.2%) | NA | Chi-squared | 0.030 |
+| sex | A: 153, B: 147 | Male: 66 (43.1%); Female: 87 (56.9%) | Male: 72 (49.0%); Female: 75 (51.0%) | NA | Chi-squared | 0.310 |
+| age | A: 153, B: 147 | Mean (SD): 45.27 (15.5); Median (IQR): 47.00 (34.0,58.0); Range: 18.00,79.00 | Mean (SD): 46.73 (15.8); Median (IQR): 50.00 (37.0,59.0); Range: 18.00,85.00 | A: 0.001, B: 0.002 | Mann-Whitney U | 0.392 |
+| weight | A: 153, B: 147 | Mean (SD): 69.40 (15.3); Median (IQR): 70.00 (60.2,78.2); Range: 45.00,114.00 | Mean (SD): 69.72 (15.2); Median (IQR): 70.00 (57.5,82.3); Range: 45.00,105.50 | A: 0.002, B: 0.006 | Mann-Whitney U | 0.835 |
+| biomarker | A: 153, B: 147 | Mean (SD): 49.03 (10.0); Median (IQR): 48.57 (42.9,54.9); Range: 22.42,77.47 | Mean (SD): 46.42 (11.0); Median (IQR): 45.54 (39.3,55.5); Range: 14.93,76.75 | A: 0.114, B: 0.101 | Welch t-test | 0.032 |
+| response | A: 153, B: 147 | Complete: 27 (17.6%); Partial: 42 (27.5%); None: 84 (54.9%) | Complete: 57 (38.8%); Partial: 27 (18.4%); None: 63 (42.9%) | NA | Chi-squared | \< 0.001 |
 
 ``` r
 # Grouped summary for each tratment group with effect size
@@ -236,11 +236,11 @@ clinical_summary <- summary_table(clinical_df,
 
 | variable | n | Placebo (Group A) | Treatment (Group B) | normality | test | p_value | effect_size | effect_param |
 |:---|:---|:---|:---|:---|:---|:---|:---|:---|
-| sex | A: 168, B: 132 | Male: 90 (53.6%); Female: 78 (46.4%) | Male: 78 (59.1%); Female: 54 (40.9%) | NA | Chi-squared | 0.339 | 0.06 | Cramer’s V |
-| age | A: 168, B: 132 | Median (IQR): 43.00 (21.25) | Median (IQR): 46.00 (27.50) | A: 0.002, B: \< 0.001 | Mann-Whitney U | 0.608 | 1.13 | r |
-| weight | A: 168, B: 132 | Median (IQR): 68.85 (21.92) | Median (IQR): 70.40 (17.02) | A: 0.002, B: 0.006 | Mann-Whitney U | 0.786 | 1.11 | r |
-| biomarker | A: 168, B: 132 | Median (IQR): 48.84 (11.61) | Median (IQR): 45.04 (15.00) | A: 0.798, B: 0.031 | Mann-Whitney U | 0.008 | 0.95 | r |
-| response | A: 168, B: 132 | Complete: 38 (22.6%); Partial: 35 (20.8%); None: 95 (56.5%) | Complete: 47 (35.6%); Partial: 28 (21.2%); None: 57 (43.2%) | NA | Chi-squared | 0.030 | 0.15 | Cramer’s V |
+| sex | A: 153, B: 147 | Male: 66 (43.1%); Female: 87 (56.9%) | Male: 72 (49.0%); Female: 75 (51.0%) | NA | Chi-squared | 0.310 | 0.06 | Cramer’s V |
+| age | A: 153, B: 147 | Median (IQR): 47.00 (24.00) | Median (IQR): 50.00 (22.00) | A: 0.001, B: 0.002 | Mann-Whitney U | 0.392 | 0.96 | r |
+| weight | A: 153, B: 147 | Median (IQR): 70.00 (18.00) | Median (IQR): 70.00 (24.85) | A: 0.002, B: 0.006 | Mann-Whitney U | 0.835 | 0.92 | r |
+| biomarker | A: 153, B: 147 | Mean (SD): 49.03 (9.96) | Mean (SD): 46.42 (10.99) | A: 0.114, B: 0.101 | Welch t-test | 0.032 | 0.25 | Cohen’s d |
+| response | A: 153, B: 147 | Complete: 27 (17.6%); Partial: 42 (27.5%); None: 84 (54.9%) | Complete: 57 (38.8%); Partial: 27 (18.4%); None: 63 (42.9%) | NA | Chi-squared | \< 0.001 | 0.24 | Cramer’s V |
 
 #### **normality()**
 
@@ -261,44 +261,130 @@ plot and histogram.
 ##### Examples
 
 ``` r
-# Normal data
-normality('biomarker',
-          data = clinical_df)
+clinical_df <- clinical_data()
+
+# Normal distribution
+normality("biomarker", data = clinical_df)
 #> 
 #> Normality Test for 'biomarker' 
 #> 
 #> n = 300 
-#> mean (SD) = 47.85 (9.5) 
-#> median (IQR) = 46.92 (13.1) 
+#> mean (SD) = 48.42 (9.7) 
+#> median (IQR) = 47.74 (12.2) 
 #> 
-#> Shapiro-Wilk: W = 0.995, p = 0.397 
-#> Skewness: 0.18 
-#> Kurtosis: -0.12 
+#> Shapiro-Wilk: W = 0.993, p = 0.170 
+#> Skewness: 0.25 
+#> Kurtosis: -0.04 
 #> 
-#> Data is  normally distributed.
+#> Data is normally distributed. 
+#> (Use outliers = TRUE to see outliers [2]).
 ```
 
 <img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
 
 ``` r
-# Skewed data (show rows of outliers)
-normality('weight',
-          data = clinical_df,
-          outliers = TRUE)
+
+# Non-normal distribution
+normality("weight", data = clinical_df)
 #> 
 #> Normality Test for 'weight' 
 #> 
 #> n = 300 
-#> mean (SD) = 70.99 (14.6) 
-#> median (IQR) = 70.00 (20.8) 
+#> mean (SD) = 70.43 (15.6) 
+#> median (IQR) = 70.00 (25.4) 
 #> 
-#> Shapiro-Wilk: W = 0.977, p = < 0.001 
-#> Skewness: 0.34 
-#> Kurtosis: 0.13 
+#> Shapiro-Wilk: W = 0.972, p = < 0.001 
+#> Skewness: 0.29 
+#> Kurtosis: -0.67 
 #> 
-#> Data is  not normally distributed. 
+#> Data is not normally distributed. 
+#> (Use outliers = TRUE to see outliers [58]).
+```
+
+<img src="man/figures/README-unnamed-chunk-13-2.png" width="100%" />
+
+``` r
+
+# With outliers displayed
+normality("weight", data = clinical_df, outliers = TRUE)
 #> 
-#> OUTLIERS (row indices): 22, 23, 24, 25, 26, 51, 139, 46, 47, 121
+#> Normality Test for 'weight' 
+#> 
+#> n = 300 
+#> mean (SD) = 70.43 (15.6) 
+#> median (IQR) = 70.00 (25.4) 
+#> 
+#> Shapiro-Wilk: W = 0.972, p = < 0.001 
+#> Skewness: 0.29 
+#> Kurtosis: -0.67 
+#> 
+#> Data is not normally distributed. 
+#> 
+#> OUTLIERS (row indices): 28, 29, 30, 37, 38, 39, 121, 122, 101, 172, 32, 107, 213, 194, 193, 33, 85, 86, 61, 51, 276, 49, 274, 177, 175, 50, 197, 133, 174, 108, 113, 87, 102, 176, 112, 158, 259, 200, 31, 198, 114, 201, 170, 205, 260, 279, 199, 277, 278, 156, 115, 157, 159, 25, 206, 169, 117, 230
+```
+
+<img src="man/figures/README-unnamed-chunk-13-3.png" width="100%" />
+
+#### **missing_values()**
+
+##### Description
+
+Analyzes missing values in a dataframe, providing counts and percentages
+per column with visualizations.
+
+##### Parameters
+
+| Parameter | Description | Default |
+|----|----|----|
+| `df` | A dataframe to analyze for missing values | `Required` |
+| `color` | Character; color for missing values | `"#7fcdbb"` |
+| `max_heatmap_rows` | Logical; if TRUE, shows all variables including those without missing values | `FALSE` |
+
+##### Examples
+
+``` r
+clinical_df <- clinical_data(na_rate = 0.05)
+
+# Missing value analysis of only variables with missing values
+missing_values(clinical_df)
+#> 
+#> Missing Value Analysis
+#> 
+#> n: 300, variables: 8
+#> Complete cases: 257 / 300 (85.7%)
+#> Missing cells: 45 / 2400 (1.9%)
+#> 
+#> Variables with missing values: 3 of 8 (37.5%)
+#> 
+#>           n_missing pct_missing
+#> response         27        9.00
+#> weight           11        3.67
+#> biomarker         7        2.33
 ```
 
 <img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
+
+``` r
+# Show all variables including those without missing values
+missing_values(clinical_df, all = TRUE)
+#> 
+#> Missing Value Analysis
+#> 
+#> n: 300, variables: 8
+#> Complete cases: 257 / 300 (85.7%)
+#> Missing cells: 45 / 2400 (1.9%)
+#> 
+#> Variables with missing values: 3 of 8 (37.5%)
+#> 
+#>            n_missing pct_missing
+#> response          27        9.00
+#> weight            11        3.67
+#> biomarker          7        2.33
+#> subject_id         0        0.00
+#> visit              0        0.00
+#> sex                0        0.00
+#> treatment          0        0.00
+#> age                0        0.00
+```
+
+<img src="man/figures/README-unnamed-chunk-14-2.png" width="100%" />
