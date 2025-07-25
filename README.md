@@ -54,7 +54,6 @@ The biostats toolbox includes the following exported functions.
 - [**Sample Size and Power
   Calculation**](#sample-size-and-power-calculation)
   - [sample_size()](#sample_size)
-  - [sample_size_table()](#sample_size_table)
   - [stat_power()](#stat_power)
 - [**Statistical Tests**](#statistical-tests)
   - [odds()](#odds)
