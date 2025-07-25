@@ -88,7 +88,7 @@ missing_values <- function(df, color = "#7fcdbb", all = FALSE) {
     ggplot2::theme(axis.text.y = ggplot2::element_text(hjust = 1), axis.text.x = ggplot2::element_blank())
 
   # Heatmap plot
-  heatmap_plot <- if (nrow(df) * nrow(display_vars) <= 50000) {
+  heatmap_plot <- if (nrow(df) * nrow(display_vars) <= 200000) {
     heat_df <- df[, as.character(display_vars$variable), drop = FALSE]
     heat_data <- data.frame(
       row_id = rep(1:nrow(heat_df), ncol(heat_df)),
