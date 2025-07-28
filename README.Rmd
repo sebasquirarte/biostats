@@ -215,7 +215,7 @@ clinical_df <- clinical_data()
 normality("biomarker", data = clinical_df)
 
 # Non-normal distribution with outliers displayed
-normality("weight", data = clinical_df, ouliers = TRUE)
+normality("weight", data = clinical_df, outliers = TRUE)
 ```
 
 #### **missing_values()**

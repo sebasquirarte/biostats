@@ -151,7 +151,7 @@ tail(clinical_df, 10)
 #> 296        099     2 Female         A  34   72.7     69.89     None
 #> 297        099     3 Female         A  34   75.3     23.68     <NA>
 #> 298        100     1   Male         A  34   58.4     49.71  Partial
-#> 299        100     2   Male         A  34   55.0     54.50     None
+#> 299        100     2   Male         A  34     NA     54.50     None
 #> 300        100     3   Male         A  34   60.0     42.96     None
 ```
 
@@ -283,28 +283,7 @@ normality("biomarker", data = clinical_df)
 
 ``` r
 
-# Non-normal distribution
-normality("weight", data = clinical_df)
-#> 
-#> Normality Test for 'weight' 
-#> 
-#> n = 300 
-#> mean (SD) = 70.43 (15.6) 
-#> median (IQR) = 70.00 (25.4) 
-#> 
-#> Shapiro-Wilk: W = 0.972, p = < 0.001 
-#> Skewness: 0.29 
-#> Kurtosis: -0.67 
-#> 
-#> Data is not normally distributed. 
-#> (Use outliers = TRUE to see outliers [58]).
-```
-
-<img src="man/figures/README-unnamed-chunk-13-2.png" width="100%" />
-
-``` r
-
-# With outliers displayed
+# Non-normal distribution with outliers displayed
 normality("weight", data = clinical_df, outliers = TRUE)
 #> 
 #> Normality Test for 'weight' 
@@ -322,7 +301,7 @@ normality("weight", data = clinical_df, outliers = TRUE)
 #> OUTLIERS (row indices): 28, 29, 30, 37, 38, 39, 121, 122, 101, 172, 32, 107, 213, 194, 193, 33, 85, 86, 61, 51, 276, 49, 274, 177, 175, 50, 197, 133, 174, 108, 113, 87, 102, 176, 112, 158, 259, 200, 31, 198, 114, 201, 170, 205, 260, 279, 199, 277, 278, 156, 115, 157, 159, 25, 206, 169, 117, 230
 ```
 
-<img src="man/figures/README-unnamed-chunk-13-3.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-13-2.png" width="100%" />
 
 #### **missing_values()**
 
