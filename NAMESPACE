@@ -3,6 +3,7 @@
 export(clinical_data)
 export(missing_values)
 export(normality)
+export(sample_size)
 export(summary_table)
 importFrom(ggplot2,aes)
 importFrom(ggplot2,after_stat)
