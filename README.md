@@ -27,8 +27,8 @@ in R.
 - Data cleaning, transformation, and visualization
 
 *Developed by the biostatistics team at [Laboratorios Sophia S.A. de
-C.V.](https://sophialab.com/) for biostatisticians, clinical researchers
-and data analysts.*
+C.V.](https://sophialab.com/en/) for biostatisticians, clinical
+researchers and data analysts.*
 
 ## Installation
 
@@ -53,7 +53,7 @@ The biostats toolbox includes the following exported functions.
   - [missing_values()](#missing_values) ✔️
 - [**Sample Size and Power
   Calculation**](#sample-size-and-power-calculation)
-  - [sample_size()](#sample_size)
+  - [sample_size()](#sample_size) ✔️
   - [stat_power()](#stat_power)
 - [**Statistical Tests**](#statistical-tests)
   - [odds()](#odds)
@@ -366,3 +366,130 @@ missing_values(clinical_df, all = TRUE)
 ```
 
 <img src="man/figures/README-unnamed-chunk-14-2.png" width="100%" />
+
+### Sample Size and Power Calculation
+
+#### **sample_size()**
+
+##### Description
+
+Calculates the sample size needed in a clinical trial based on study
+design and statistical parameters.
+
+##### Parameters
+
+| Parameter | Description | Default |
+|----|----|----|
+| `sample` | Whether one or two samples need to be calculated (`"one-sample"` or `"two-sample"`). | `Required` |
+| `design` | Study design for two-sample tests. Options: `"parallel"` or `"crossover"`. | `NULL` |
+| `outcome` | Type of outcome variable: `"mean"` or `"proportion"`. | `Required` |
+| `type` | Type of hypothesis test: `"equality"`, `"equivalence"`, `"non-inferiority"`, or `"superiority"`. | `Required` |
+| `alpha` | Type I error rate (significance level). | `0.05` |
+| `beta` | Type II error rate (1 - power). | `0.20` |
+| `x1` | Value of the mean or proportion for group 1 (e.g., treatment). | `Required` |
+| `x2` | Value of the mean or proportion for group 2 (e.g., control or reference). | `Required` |
+| `SD` | Standard deviation (required for mean outcomes and crossover designs with proportions). | `NULL` |
+| `delta` | Margin of clinical interest. Required for non-equality tests. | `NULL` |
+| `k` | Allocation ratio (n₁/n₂) for two-sample tests. | `1` |
+
+##### Examples
+
+``` r
+# One-sample equivalence test for means
+sample_size(sample = 'one-sample',
+            outcome = 'mean',
+            type = 'equivalence', 
+            x1 = 0,
+            x2 = 0,
+            SD = 0.1,
+            delta = 0.05,
+            alpha = 0.05,
+            beta = 0.20)
+#> 
+#> Sample Size Calculation Summary
+#> 
+#> Test type: equivalence 
+#> Design: one-sample 
+#> Outcome: mean 
+#> Alpha (α): 0.05
+#> Beta (β): 0.20
+#> Power: 80%
+#> 
+#> Parameters:
+#> x1: 0.00
+#> x2: 0.00
+#> Difference (x1 - x2): 0.00
+#> Standard Deviation (σ): 0.10
+#> Delta (δ): 0.05
+#> 
+#> Required Sample Size:
+#> n = 35
+#> Total = 35
+
+# Two-sample parallel non-inferiority test for means
+sample_size(sample = 'two-sample',
+            design = 'parallel',
+            outcome = 'mean',
+            type = 'non-inferiority',
+            x1 = 5.0,
+            x2 = 5.0,
+            SD = 0.1,
+            delta = -0.05,
+            k = 1)
+#> 
+#> Sample Size Calculation Summary
+#> 
+#> Test type: non-inferiority 
+#> Design: parallel , two-sample 
+#> Outcome: mean 
+#> Alpha (α): 0.05
+#> Beta (β): 0.20
+#> Power: 80%
+#> 
+#> Parameters:
+#> x1: 5.00
+#> x2: 5.00
+#> Difference (x1 - x2): 0.00
+#> Standard Deviation (σ): 0.10
+#> Allocation Ratio (k): 1.00
+#> Delta (δ): -0.05
+#> 
+#> Required Sample Size:
+#> n1 = 50
+#> n2 = 50
+#> Total = 100
+
+# Two-sample crossover non-inferiority test for means
+sample_size(sample = 'two-sample', 
+            design = "crossover",
+            outcome = 'mean',
+            type = 'non-inferiority', 
+            x1 = -0.10, 
+            x2 = 0,
+            SD = 0.20,
+            delta = -0.20,
+            alpha = 0.05, 
+            beta = 0.20)
+#> 
+#> Sample Size Calculation Summary
+#> 
+#> Test type: non-inferiority 
+#> Design: crossover , two-sample 
+#> Outcome: mean 
+#> Alpha (α): 0.05
+#> Beta (β): 0.20
+#> Power: 80%
+#> 
+#> Parameters:
+#> x1: -0.10
+#> x2: 0.00
+#> Difference (x1 - x2): -0.10
+#> Standard Deviation (σ): 0.20
+#> Allocation Ratio (k): 1.00
+#> Delta (δ): -0.20
+#> 
+#> Required Sample Size:
+#> n1 = 13
+#> n2 = 13
+#> Total = 26
+```
