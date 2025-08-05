@@ -15,6 +15,7 @@ sample_size(
   x2 = NULL,
   SD = NULL,
   delta = NULL,
+  dropout_rate = 0,
   k = 1
 )
 }
@@ -46,6 +47,8 @@ designs with proportion outcomes. Default is NULL.}
 Must be negative for non-inferiority and positive for superiority/equivalence.
 Default is NULL.}
 
+\item{dropout_rate}{Numeric. Study discontinuation rate expected in the study. Default is 0.}
+
 \item{k}{Numeric. Allocation ratio (n1/n2) for two-sample tests. Default is 1.}
 }
 \value{
@@ -63,6 +66,7 @@ Invisibly returns a list containing:
 \item{x2}{Numeric. Value of the mean or proportion for group 2 (control group or reference value).}
 \item{SD}{Numeric. Standard deviation.}
 \item{delta}{Numeric. Margin of clinical interest.}
+\item{dropout_rate}{Numeric. Study discontinuation rate expected in the study.}
 \item{k}{Numeric. Allocation ratio (n1/n2) for two-sample tests.}
 \item{z_alpha}{Numeric. Z-score corresponding to the significance level alpha.}
 \item{z_beta}{Numeric. Z-score corresponding to the Type II error rate beta.}
@@ -83,16 +87,17 @@ sample_size(sample = 'one-sample',
             delta = 0.05,
             alpha = 0.05,
             beta = 0.20)
-# Two-sample parallel non-inferiority test for means
+# Two-sample parallel non-inferiority test for proportions w/ 10\% dropout rate
 sample_size(sample = 'two-sample',
-            design = 'parallel',
-            outcome = 'mean',
+            design = "parallel",
+            outcome = 'proportion',
             type = 'non-inferiority',
-            x1 = 5.0,
-            x2 = 5.0,
-            SD = 0.1,
-            delta = -0.05,
-            k = 1)
+            x1 = 0.85,
+            x2 = 0.65,
+            alpha = 0.05,
+            beta = 0.20,
+            delta = -0.1,
+            dropout_rate = 0.1)
 # Two-sample crossover non-inferiority test for means
 sample_size(sample = 'two-sample',
             design = "crossover",
