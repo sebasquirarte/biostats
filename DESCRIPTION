@@ -29,4 +29,5 @@ Config/testthat/edition: 3
 Imports: 
     ggplot2,
     gridExtra,
-    rlang
+    rlang,
+    stats
