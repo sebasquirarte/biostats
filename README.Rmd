@@ -66,6 +66,7 @@ The biostats toolbox includes the following exported functions.
   - [missing_values()](#missing_values) ✔️ 
 - [**Sample Size and Power Calculation**](#sample-size-and-power-calculation)
   - [sample_size()](#sample_size) ✔️
+  - [sample_size_range()](#sample_size_range) ✔️
   - [stat_power()](#stat_power)
 - [**Statistical Tests**](#statistical-tests)
   - [odds()](#odds) 
@@ -282,7 +283,8 @@ sample_size(sample = 'one-sample',
             delta = 0.05,
             alpha = 0.05,
             beta = 0.20)
-
+```
+```{r}
 # Two-sample parallel non-inferiority test for means
 sample_size(sample = 'two-sample',
             design = 'parallel',
@@ -293,7 +295,8 @@ sample_size(sample = 'two-sample',
             SD = 0.1,
             delta = -0.05,
             k = 1)
-
+```
+```{r}
 # Two-sample crossover non-inferiority test for means
 sample_size(sample = 'two-sample', 
             design = "crossover",
@@ -308,3 +311,70 @@ sample_size(sample = 'two-sample',
 
 ```
 
+#### **sample_size_range()**
+
+##### Description
+
+Calculates required sample sizes for specified power levels (70%, 80%, 90%) across a range of treatment effect values (`x1`), while keeping the control group value (`x2`) fixed. Internally calls `sample_size()` and generates a plot to visualize how total sample size changes with varying `x1`.
+
+##### Parameters
+
+| Parameter   | Description | Default |
+|-------------|-------------|---------|
+| `x1_range`  | Numeric vector of length 2. Range of values to evaluate for the treatment group mean or proportion (`x1`). | `Required` |
+| `x2`        | Fixed reference value for the control group. | `Required` |
+| `step`      | Step size to increment across the `x1_range`. | `0.1` |
+| `...`       | Additional arguments passed to `sample_size()`, such as `sample`, `design`, `outcome`, `type`, `SD`, `alpha`, etc. | `—` |
+
+
+##### Examples
+
+```{r}
+# One-sample equivalence test for means
+result <- sample_size_range(x1_range = c(-0.01, 0.01),
+                            x2 = 0,
+                            step = 0.005,
+                            sample = "one-sample",
+                            outcome = "mean",
+                            type = "equivalence",
+                            SD = 0.1,
+                            delta = 0.05,
+                            alpha = 0.05)
+```
+```{r, echo=FALSE, results='asis'}
+knitr::kable(result, format = "markdown")
+```
+
+```{r}
+# Two-sample parallel non-inferiority test for proportions w/ 10% dropout rate
+result <- sample_size_range(x1_range = c(0.65, 0.75),
+                            x2 = 0.65,
+                            step = 0.02,
+                            sample = "two-sample",
+                            design = "parallel",
+                            outcome = "proportion",
+                            type = "non-inferiority",
+                            delta = -0.1,
+                            alpha = 0.05,
+                            dropout_rate = 0.1)
+```
+```{r, echo=FALSE, results='asis'}
+knitr::kable(result, format = "markdown")
+```
+
+```{r}
+# Two-sample crossover non-inferiority test for means
+result <- sample_size_range(x1_range = c(-0.15, -0.10),
+                            x2 = 0,
+                            step = 0.01,
+                            sample = "two-sample",
+                            design = "crossover",
+                            outcome = "mean",
+                            type = "non-inferiority",
+                            SD = 0.20,
+                            delta = -0.20,
+                            alpha = 0.05)
+```
+```{r, echo=FALSE, results='asis'}
+knitr::kable(result, format = "markdown")
+```

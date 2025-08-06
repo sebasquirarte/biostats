@@ -54,6 +54,7 @@ The biostats toolbox includes the following exported functions.
 - [**Sample Size and Power
   Calculation**](#sample-size-and-power-calculation)
   - [sample_size()](#sample_size) ✔️
+  - [sample_size_range()](#sample_size_range) ✔️
   - [stat_power()](#stat_power)
 - [**Statistical Tests**](#statistical-tests)
   - [odds()](#odds)
@@ -409,23 +410,25 @@ sample_size(sample = 'one-sample',
 #> Sample Size Calculation Summary
 #> 
 #> Test type: equivalence 
-#> Design: one-sample 
+#> Design: one-sample
 #> Outcome: mean 
 #> Alpha (α): 0.05
 #> Beta (β): 0.20
 #> Power: 80%
 #> 
 #> Parameters:
-#> x1: 0.00
-#> x2: 0.00
+#> x1 (treatment): 0.00
+#> x2 (control/reference): 0.00
 #> Difference (x1 - x2): 0.00
 #> Standard Deviation (σ): 0.10
 #> Delta (δ): 0.05
 #> 
-#> Required Sample Size:
+#> Required Sample Size
 #> n = 35
 #> Total = 35
+```
 
+``` r
 # Two-sample parallel non-inferiority test for means
 sample_size(sample = 'two-sample',
             design = 'parallel',
@@ -440,25 +443,27 @@ sample_size(sample = 'two-sample',
 #> Sample Size Calculation Summary
 #> 
 #> Test type: non-inferiority 
-#> Design: parallel , two-sample 
+#> Design: parallel, two-sample
 #> Outcome: mean 
 #> Alpha (α): 0.05
 #> Beta (β): 0.20
 #> Power: 80%
 #> 
 #> Parameters:
-#> x1: 5.00
-#> x2: 5.00
+#> x1 (treatment): 5.00
+#> x2 (control/reference): 5.00
 #> Difference (x1 - x2): 0.00
 #> Standard Deviation (σ): 0.10
 #> Allocation Ratio (k): 1.00
 #> Delta (δ): -0.05
 #> 
-#> Required Sample Size:
+#> Required Sample Size
 #> n1 = 50
 #> n2 = 50
 #> Total = 100
+```
 
+``` r
 # Two-sample crossover non-inferiority test for means
 sample_size(sample = 'two-sample', 
             design = "crossover",
@@ -474,22 +479,177 @@ sample_size(sample = 'two-sample',
 #> Sample Size Calculation Summary
 #> 
 #> Test type: non-inferiority 
-#> Design: crossover , two-sample 
+#> Design: crossover, two-sample
 #> Outcome: mean 
 #> Alpha (α): 0.05
 #> Beta (β): 0.20
 #> Power: 80%
 #> 
 #> Parameters:
-#> x1: -0.10
-#> x2: 0.00
+#> x1 (treatment): -0.10
+#> x2 (control/reference): 0.00
 #> Difference (x1 - x2): -0.10
 #> Standard Deviation (σ): 0.20
 #> Allocation Ratio (k): 1.00
 #> Delta (δ): -0.20
 #> 
-#> Required Sample Size:
+#> Required Sample Size
 #> n1 = 13
 #> n2 = 13
 #> Total = 26
 ```
+
+#### **sample_size_range()**
+
+##### Description
+
+Calculates required sample sizes for specified power levels (70%, 80%,
+90%) across a range of treatment effect values (`x1`), while keeping the
+control group value (`x2`) fixed. Internally calls `sample_size()` and
+generates a plot to visualize how total sample size changes with varying
+`x1`.
+
+##### Parameters
+
+| Parameter | Description | Default |
+|----|----|----|
+| `x1_range` | Numeric vector of length 2. Range of values to evaluate for the treatment group mean or proportion (`x1`). | `Required` |
+| `x2` | Fixed reference value for the control group. | `Required` |
+| `step` | Step size to increment across the `x1_range`. | `0.1` |
+| `...` | Additional arguments passed to `sample_size()`, such as `sample`, `design`, `outcome`, `type`, `SD`, `alpha`, etc. | `—` |
+
+##### Examples
+
+``` r
+# One-sample equivalence test for means
+result <- sample_size_range(x1_range = c(-0.01, 0.01),
+                            x2 = 0,
+                            step = 0.005,
+                            sample = "one-sample",
+                            outcome = "mean",
+                            type = "equivalence",
+                            SD = 0.1,
+                            delta = 0.05,
+                            alpha = 0.05)
+#> 
+#> Sample Size Range
+#> 
+#> x1: -0.01 to 0.01
+#> x2: 0.00
+#> 
+#> 70% Power: total n = 29 to 45
+#> 80% Power: total n = 35 to 54
+#> 90% Power: total n = 44 to 68
+```
+
+<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
+
+| power |     x1 |  x2 | x1 - x2 |  n1 |  n2 | total |
+|------:|-------:|----:|--------:|----:|----:|------:|
+|    70 | -0.010 |   0 |  -0.010 |  45 |  45 |    45 |
+|    70 | -0.005 |   0 |  -0.005 |  36 |  36 |    36 |
+|    70 |  0.000 |   0 |   0.000 |  29 |  29 |    29 |
+|    70 |  0.005 |   0 |   0.005 |  36 |  36 |    36 |
+|    70 |  0.010 |   0 |   0.010 |  45 |  45 |    45 |
+|    80 | -0.010 |   0 |  -0.010 |  54 |  54 |    54 |
+|    80 | -0.005 |   0 |  -0.005 |  43 |  43 |    43 |
+|    80 |  0.000 |   0 |   0.000 |  35 |  35 |    35 |
+|    80 |  0.005 |   0 |   0.005 |  43 |  43 |    43 |
+|    80 |  0.010 |   0 |   0.010 |  54 |  54 |    54 |
+|    90 | -0.010 |   0 |  -0.010 |  68 |  68 |    68 |
+|    90 | -0.005 |   0 |  -0.005 |  54 |  54 |    54 |
+|    90 |  0.000 |   0 |   0.000 |  44 |  44 |    44 |
+|    90 |  0.005 |   0 |   0.005 |  54 |  54 |    54 |
+|    90 |  0.010 |   0 |   0.010 |  68 |  68 |    68 |
+
+``` r
+# Two-sample parallel non-inferiority test for proportions w/ 10% dropout rate
+result <- sample_size_range(x1_range = c(0.65, 0.75),
+                            x2 = 0.65,
+                            step = 0.02,
+                            sample = "two-sample",
+                            design = "parallel",
+                            outcome = "proportion",
+                            type = "non-inferiority",
+                            delta = -0.1,
+                            alpha = 0.05,
+                            dropout_rate = 0.1)
+#> 
+#> Sample Size Range
+#> 
+#> x1: 0.65 to 0.75
+#> x2: 0.65
+#> 
+#> 70% Power: total n = 98 to 430
+#> 80% Power: total n = 130 to 564
+#> 90% Power: total n = 178 to 780
+```
+
+<img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
+
+| power |   x1 |   x2 | x1 - x2 |  n1 |  n2 | total |
+|------:|-----:|-----:|--------:|----:|----:|------:|
+|    70 | 0.65 | 0.65 |    0.00 | 215 | 215 |   430 |
+|    70 | 0.67 | 0.65 |    0.02 | 147 | 147 |   294 |
+|    70 | 0.69 | 0.65 |    0.04 | 106 | 106 |   212 |
+|    70 | 0.71 | 0.65 |    0.06 |  80 |  80 |   160 |
+|    70 | 0.73 | 0.65 |    0.08 |  62 |  62 |   124 |
+|    70 | 0.75 | 0.65 |    0.10 |  49 |  49 |    98 |
+|    80 | 0.65 | 0.65 |    0.00 | 282 | 282 |   564 |
+|    80 | 0.67 | 0.65 |    0.02 | 193 | 193 |   386 |
+|    80 | 0.69 | 0.65 |    0.04 | 140 | 140 |   280 |
+|    80 | 0.71 | 0.65 |    0.06 | 105 | 105 |   210 |
+|    80 | 0.73 | 0.65 |    0.08 |  82 |  82 |   164 |
+|    80 | 0.75 | 0.65 |    0.10 |  65 |  65 |   130 |
+|    90 | 0.65 | 0.65 |    0.00 | 390 | 390 |   780 |
+|    90 | 0.67 | 0.65 |    0.02 | 267 | 267 |   534 |
+|    90 | 0.69 | 0.65 |    0.04 | 193 | 193 |   386 |
+|    90 | 0.71 | 0.65 |    0.06 | 145 | 145 |   290 |
+|    90 | 0.73 | 0.65 |    0.08 | 113 | 113 |   226 |
+|    90 | 0.75 | 0.65 |    0.10 |  89 |  89 |   178 |
+
+``` r
+# Two-sample crossover non-inferiority test for means
+result <- sample_size_range(x1_range = c(-0.15, -0.10),
+                            x2 = 0,
+                            step = 0.01,
+                            sample = "two-sample",
+                            design = "crossover",
+                            outcome = "mean",
+                            type = "non-inferiority",
+                            SD = 0.20,
+                            delta = -0.20,
+                            alpha = 0.05)
+#> 
+#> Sample Size Range
+#> 
+#> x1: -0.15 to -0.10
+#> x2: 0.00
+#> 
+#> 70% Power: total n = 20 to 76
+#> 80% Power: total n = 26 to 100
+#> 90% Power: total n = 36 to 138
+```
+
+<img src="man/figures/README-unnamed-chunk-22-1.png" width="100%" />
+
+| power |    x1 |  x2 | x1 - x2 |  n1 |  n2 | total |
+|------:|------:|----:|--------:|----:|----:|------:|
+|    70 | -0.15 |   0 |   -0.15 |  38 |  38 |    76 |
+|    70 | -0.14 |   0 |   -0.14 |  27 |  27 |    54 |
+|    70 | -0.13 |   0 |   -0.13 |  20 |  20 |    40 |
+|    70 | -0.12 |   0 |   -0.12 |  15 |  15 |    30 |
+|    70 | -0.11 |   0 |   -0.11 |  12 |  12 |    24 |
+|    70 | -0.10 |   0 |   -0.10 |  10 |  10 |    20 |
+|    80 | -0.15 |   0 |   -0.15 |  50 |  50 |   100 |
+|    80 | -0.14 |   0 |   -0.14 |  35 |  35 |    70 |
+|    80 | -0.13 |   0 |   -0.13 |  26 |  26 |    52 |
+|    80 | -0.12 |   0 |   -0.12 |  20 |  20 |    40 |
+|    80 | -0.11 |   0 |   -0.11 |  16 |  16 |    32 |
+|    80 | -0.10 |   0 |   -0.10 |  13 |  13 |    26 |
+|    90 | -0.15 |   0 |   -0.15 |  69 |  69 |   138 |
+|    90 | -0.14 |   0 |   -0.14 |  48 |  48 |    96 |
+|    90 | -0.13 |   0 |   -0.13 |  35 |  35 |    70 |
+|    90 | -0.12 |   0 |   -0.12 |  27 |  27 |    54 |
+|    90 | -0.11 |   0 |   -0.11 |  22 |  22 |    44 |
+|    90 | -0.10 |   0 |   -0.10 |  18 |  18 |    36 |
