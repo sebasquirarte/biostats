@@ -55,24 +55,18 @@ The biostats toolbox includes the following exported functions.
   Calculation**](#sample-size-and-power-calculation)
   - [sample_size()](#sample_size) ✔️
   - [sample_size_range()](#sample_size_range) ✔️
-  - [stat_power()](#stat_power)
 - [**Statistical Tests**](#statistical-tests)
-  - [odds()](#odds)
   - [anova_test()](#anova_test)
-  - [hypothesis_test()](#hypothesis_test)
+  - [odds()](#odds)
 - [**Data Cleaning and
   Transformation**](#data-cleaning-and-transformation)
-  - [outliers()](#outliers)
-  - [from_baseline()](#from_baseline)
+  - [outliers()](#outliers) ✔️
   - [auc()](#auc)
 - [**Data Visualization**](#data-visualization)
   - [plot_bar()](#plot_bar)
   - [plot_hist()](#plot_hist)
   - [plot_box()](#plot_box)
   - [plot_line()](#plot_line)
-  - [plot_waterfall()](#plot_waterfall)
-  - [plot_spider()](#plot_spider)
-  - [plot_butterfly()](#plot_butterfly)
   - [plot_corrrelation()](#plot_correlation)
 
 ### Summary and Exploratory Data Analysis (EDA)
@@ -603,8 +597,6 @@ result <- sample_size_range(x1_range = c(0.65, 0.75),
 |    90 | 0.71 | 0.65 |    0.06 | 145 | 145 |   290 |
 |    90 | 0.73 | 0.65 |    0.08 | 113 | 113 |   226 |
 |    90 | 0.75 | 0.65 |    0.10 |  89 |  89 |   178 |
-
-# Two-sample crossover non-inferiority test for means
 
 ### Data Cleaning and Transformation
 
