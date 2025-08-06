@@ -604,48 +604,42 @@ result <- sample_size_range(x1_range = c(0.65, 0.75),
 |    90 | 0.73 | 0.65 |    0.08 | 113 | 113 |   226 |
 |    90 | 0.75 | 0.65 |    0.10 |  89 |  89 |   178 |
 
-``` r
 # Two-sample crossover non-inferiority test for means
-result <- sample_size_range(x1_range = c(-0.15, -0.10),
-                            x2 = 0,
-                            step = 0.01,
-                            sample = "two-sample",
-                            design = "crossover",
-                            outcome = "mean",
-                            type = "non-inferiority",
-                            SD = 0.20,
-                            delta = -0.20,
-                            alpha = 0.05)
+
+### Data Cleaning and Transformation
+
+#### **outliers()**
+
+##### Description
+
+Identifies outliers using Tukey’s interquartile range (IQR) method and
+provides comprehensive visual assessment through scatter plots and
+boxplots.
+
+##### Parameters
+
+| Parameter | Description | Default |
+|----|----|----|
+| x | Numeric vector or character string naming a column in `data`. | `Required` |
+| data | Optional dataframe containing the variable specified in `x`. | `NULL` |
+| threshold | Numeric value multiplying the IQR to define outlier boundaries. | `1.5` |
+| color | Character string specifying plot color. | `"#7fcdbb"` |
+
+##### Examples
+
+``` r
+clinical_df <- clinical_data(n = 300)
+outliers(clinical_df$biomarker)
 #> 
-#> Sample Size Range
+#> Outlier Detection for 'clinical_df$biomarker'
 #> 
-#> x1: -0.15 to -0.10
-#> x2: 0.00
+#> n: 900
+#> Missing: 0 (0.0%)
+#> Method: Tukey's IQR x 1.5
+#> Bounds: [20.35, 75.80]
+#> Outliers detected: 5 (0.6%)
 #> 
-#> 70% Power: total n = 20 to 76
-#> 80% Power: total n = 26 to 100
-#> 90% Power: total n = 36 to 138
+#> Outlier indices: 293, 311, 602, 625, 892
 ```
 
 <img src="man/figures/README-unnamed-chunk-22-1.png" width="100%" />
-
-| power |    x1 |  x2 | x1 - x2 |  n1 |  n2 | total |
-|------:|------:|----:|--------:|----:|----:|------:|
-|    70 | -0.15 |   0 |   -0.15 |  38 |  38 |    76 |
-|    70 | -0.14 |   0 |   -0.14 |  27 |  27 |    54 |
-|    70 | -0.13 |   0 |   -0.13 |  20 |  20 |    40 |
-|    70 | -0.12 |   0 |   -0.12 |  15 |  15 |    30 |
-|    70 | -0.11 |   0 |   -0.11 |  12 |  12 |    24 |
-|    70 | -0.10 |   0 |   -0.10 |  10 |  10 |    20 |
-|    80 | -0.15 |   0 |   -0.15 |  50 |  50 |   100 |
-|    80 | -0.14 |   0 |   -0.14 |  35 |  35 |    70 |
-|    80 | -0.13 |   0 |   -0.13 |  26 |  26 |    52 |
-|    80 | -0.12 |   0 |   -0.12 |  20 |  20 |    40 |
-|    80 | -0.11 |   0 |   -0.11 |  16 |  16 |    32 |
-|    80 | -0.10 |   0 |   -0.10 |  13 |  13 |    26 |
-|    90 | -0.15 |   0 |   -0.15 |  69 |  69 |   138 |
-|    90 | -0.14 |   0 |   -0.14 |  48 |  48 |    96 |
-|    90 | -0.13 |   0 |   -0.13 |  35 |  35 |    70 |
-|    90 | -0.12 |   0 |   -0.12 |  27 |  27 |    54 |
-|    90 | -0.11 |   0 |   -0.11 |  22 |  22 |    44 |
-|    90 | -0.10 |   0 |   -0.10 |  18 |  18 |    36 |

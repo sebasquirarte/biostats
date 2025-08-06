@@ -15,8 +15,7 @@ Default is NULL.}
 \item{threshold}{Numeric. Value multiplying the IQR to define outlier boundaries.
 Default is 1.5 (Tukey's standard).}
 
-\item{color}{Character string specifying the color for non-outlier points and
-boxplot fill. Default is "#7fcdbb".}
+\item{color}{Character string specifying plot color. Default is "#7fcdbb".}
 }
 \value{
 Invisibly returns a list with components:
@@ -38,13 +37,7 @@ falling below Q1 - threshold × IQR or above Q3 + threshold × IQR.
 Missing values are automatically excluded from analysis.
 }
 \examples{
-# Using a numeric vector
-set.seed(123)
-values <- c(rnorm(100), c(-5, 5, 10))
-result <- outliers(values)
-
-# Using a data frame column
-df <- data.frame(biomarker = values, group = rep(c("A", "B"), length.out = 103))
-outliers("biomarker", data = df, threshold = 2.0)
+clinical_df <- clinical_data(n = 300)
+outliers(clinical_df$biomarker)
 
 }

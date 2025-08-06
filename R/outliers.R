@@ -8,8 +8,7 @@
 #'   Default is NULL.
 #' @param threshold Numeric. Value multiplying the IQR to define outlier boundaries.
 #'   Default is 1.5 (Tukey's standard).
-#' @param color Character string specifying the color for non-outlier points and
-#'   boxplot fill. Default is "#7fcdbb".
+#' @param color Character string specifying plot color. Default is "#7fcdbb".
 #'
 #' @return Invisibly returns a list with components:
 #'   \describe{
@@ -26,14 +25,8 @@
 #' Missing values are automatically excluded from analysis.
 #'
 #' @examples
-#' # Using a numeric vector
-#' set.seed(123)
-#' values <- c(rnorm(100), c(-5, 5, 10))
-#' result <- outliers(values)
-#'
-#' # Using a data frame column
-#' df <- data.frame(biomarker = values, group = rep(c("A", "B"), length.out = 103))
-#' outliers("biomarker", data = df, threshold = 2.0)
+#' clinical_df <- clinical_data(n = 300)
+#' outliers(clinical_df$biomarker)
 #'
 #' @importFrom stats quantile
 #' @importFrom ggplot2 ggplot aes geom_point geom_text scale_color_manual
@@ -100,8 +93,11 @@ outliers <- function(x,
     ggplot2::scale_color_manual(values = c("FALSE" = color, "TRUE" = "red"), guide = "none") +
     ggplot2::labs(
       title = "Outlier Detection",
-      subtitle = sprintf("%d (%.1f%%) outlier%s found",
-                         n_out, 100 * n_out / length(clean_values), ifelse(n_out == 1, "", "s")),
+      subtitle = sprintf("%d/%d (%.1f%%) outlier%s found",
+                         n_out,
+                         length(clean_values),
+                         100 * n_out / length(clean_values),
+                         ifelse(n_out == 1, "", "s")),
       x = "Index", y = var_name
     ) +
     ggplot2::theme_minimal()

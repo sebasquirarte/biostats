@@ -45,17 +45,6 @@
 #'                             delta = -0.1,
 #'                             alpha = 0.05,
 #'                             dropout_rate = 0.1)
-#' # Two-sample crossover non-inferiority test for means
-#' result <- sample_size_range(x1_range = c(-0.15, -0.10),
-#'                             x2 = 0,
-#'                             step = 0.01,
-#'                             sample = "two-sample",
-#'                             design = "crossover",
-#'                             outcome = "mean",
-#'                             type = "non-inferiority",
-#'                             SD = 0.20,
-#'                             delta = -0.20,
-#'                             alpha = 0.05)
 #'
 #' @seealso \code{\link{sample_size}}
 #'
