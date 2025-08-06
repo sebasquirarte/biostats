@@ -65,8 +65,6 @@ The biostats toolbox includes the following exported functions.
   - [outliers()](#outliers)
   - [from_baseline()](#from_baseline)
   - [auc()](#auc)
-  - [impute()](#impute)
-  - [pivot_data()](#pivot_data)
 - [**Data Visualization**](#data-visualization)
   - [plot_bar()](#plot_bar)
   - [plot_hist()](#plot_hist)
@@ -74,9 +72,7 @@ The biostats toolbox includes the following exported functions.
   - [plot_line()](#plot_line)
   - [plot_waterfall()](#plot_waterfall)
   - [plot_spider()](#plot_spider)
-  - [plot_sankey()](#plot_sankey)
   - [plot_butterfly()](#plot_butterfly)
-  - [plot_auc()](#plot_auc)
   - [plot_corrrelation()](#plot_correlation)
 
 ### Summary and Exploratory Data Analysis (EDA)
