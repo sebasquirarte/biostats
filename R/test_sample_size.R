@@ -53,7 +53,7 @@ testthat::test_that("two-sample parallel non-inferiority test for proportions wi
                                        alpha = 0.05,
                                        beta = 0.20,
                                        delta = -0.1,
-                                       dropout_rate = 0.1)
+                                       dropout_rate = 0.1))
 
 
   # Check calculated results
@@ -86,19 +86,19 @@ testthat::test_that("input validation - missing required parameters", {
   # Missing x1
   expect_error(
     sample_size(sample = 'one-sample', outcome = 'mean', type = 'equality', x2 = 1),
-    "Both x1 and x2 must be specified"
+    "Both x1 and x2 must be specified."
   )
 
   # Missing x2
   expect_error(
     sample_size(sample = 'one-sample', outcome = 'mean', type = 'equality', x1 = 1),
-    "Both x1 and x2 must be specified"
+    "Both x1 and x2 must be specified."
   )
 
   # Missing design for two-sample
   expect_error(
     sample_size(sample = 'two-sample', outcome = 'mean', type = 'equality', x1 = 1, x2 = 2),
-    "design must be specified for two-sample tests"
+    "design must be specified for two-sample tests."
   )
 })
 
@@ -106,15 +106,15 @@ testthat::test_that("input validation - SD requirements", {
   # SD missing when required (one-sample mean)
   expect_error(
     sample_size(sample = 'one-sample', outcome = 'mean', type = 'equality', x1 = 1, x2 = 2),
-    "SD must be specified for this test configuration"
+    "SD must be specified for this test configuration."
   )
 
   # SD provided when not needed (parallel proportion)
-  expect_error(
+  expect_warning(capture.output(
     sample_size(sample = 'two-sample', design = 'parallel', outcome = 'proportion',
                 type = 'equality', x1 = 0.5, x2 = 0.6, SD = 0.1),
-    "SD is not needed for this test configuration"
-  )
+    "SD is not needed for this test configuration."
+  ))
 })
 
 testthat::test_that("input validation - delta requirements and signs", {
@@ -122,36 +122,38 @@ testthat::test_that("input validation - delta requirements and signs", {
   expect_error(
     sample_size(sample = 'one-sample', outcome = 'mean', type = 'equivalence',
                 x1 = 1, x2 = 2, SD = 0.5),
-    "delta must be provided for equivalence tests"
+    "delta must be provided for equivalence tests."
   )
 
   # Delta provided when not needed (equality)
-  expect_error(
+  expect_warning(capture.output(
     sample_size(sample = 'one-sample', outcome = 'mean', type = 'equality',
                 x1 = 1, x2 = 2, SD = 0.5, delta = 0.1),
-    "delta is not needed for this test configuration"
-  )
+    "delta is not needed for equality tests."
+  ))
+
 
   # Wrong sign for non-inferiority (must be negative)
   expect_error(
     sample_size(sample = 'one-sample', outcome = 'mean', type = 'non-inferiority',
                 x1 = 1, x2 = 2, SD = 0.5, delta = 0.1),
-    "delta must be negative for non-inferiority tests"
+    "delta must be negative for non-inferiority tests."
   )
 
   # Wrong sign for superiority (must be positive)
   expect_error(
     sample_size(sample = 'one-sample', outcome = 'mean', type = 'superiority',
                 x1 = 1, x2 = 2, SD = 0.5, delta = -0.1),
-    "delta must be positive for superiority tests"
+    "delta must be positive for superiority tests."
   )
 
   # Wrong sign for equivalence (must be positive)
   expect_error(
     sample_size(sample = 'one-sample', outcome = 'mean', type = 'equivalence',
                 x1 = 1, x2 = 2, SD = 0.5, delta = -0.1),
-    "delta must be positive for equivalence tests"
+    "delta must be positive for equivalence tests."
   )
+
 })
 
 testthat::test_that("input validation - dropout rate", {
@@ -163,15 +165,15 @@ testthat::test_that("input validation - dropout rate", {
 
   expect_error(
     sample_size(sample = 'one-sample', outcome = 'mean', type = 'equality',
-                x1 = 1, x2 = 2, SD = 0.5, alpha = 0.05, beta = 0.20, dropout_rate = 0)
+                x1 = 1, x2 = 2, SD = 0.5, alpha = 0.05, beta = 0.20, dropout_rate = -0.1)
   )
 })
 
 testthat::test_that("numerical outputs are always finite and positive", {
-  result <- sample_size(
+  capture.output(result <- sample_size(
     sample = 'one-sample', outcome = 'mean', type = 'equality',
     x1 = 1, x2 = 2, SD = 0.5, alpha = 0.05, beta = 0.20
-  )
+  ))
 
   # Sample sizes should be positive integers
   expect_gt(result$n2, 0)
@@ -187,3 +189,4 @@ testthat::test_that("numerical outputs are always finite and positive", {
   expect_true(is.finite(result$z_beta))
   expect_true(is.finite(result$zscore))
 })
+

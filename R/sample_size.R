@@ -102,17 +102,17 @@ sample_size <- function(sample = c('one-sample', 'two-sample'),
   if (length(x1) > 1) stop("x1 must be a single value.")
   if (sample == "two-sample") {
     if (is.null(design)) stop("design must be specified for two-sample tests.")
-    design <- match.arg(design, c('parallel', 'crossover'))
+  design <- match.arg(design, c('parallel', 'crossover'))
   }
   if (!(sample == 'two-sample' && design == 'parallel' && outcome == 'proportion') && is.null(SD)) stop("SD must be specified for this test configuration.")
   if ((sample == 'two-sample' && design == 'parallel' && outcome == 'proportion') && !is.null(SD)) warning("SD is not needed for this test configuration.")
   if (type != "equality") {
-    if (is.null(delta)) stop(sprintf("delta must be provided for %s tests", type))
-    if (type == 'non-inferiority' && delta >= 0) stop("delta must be negative for non-inferiority.")
-    if (type %in% c('superiority', 'equivalence') && delta <= 0) stop("delta must be positive.")
+    if (is.null(delta)) stop(sprintf("delta must be provided for %s tests.", type))
+    if (type == 'non-inferiority' && delta >= 0) stop("delta must be negative for non-inferiority tests.")
+    if (type %in% c('superiority', 'equivalence') && delta <= 0) stop(sprintf("delta must be positive for %s tests.", type))
   } else {
     if (!is.null(delta)) {
-      warning("delta is not needed for this test configuration.")
+      warning("delta is not needed for equality tests.")
     }
   }
   if (!is.numeric(beta) || beta <= 0 || beta >= 1) stop("beta must be a positive decimal bigger than 0 and less than 1.")
@@ -148,6 +148,12 @@ sample_size <- function(sample = c('one-sample', 'two-sample'),
   # Calculate sample sizes
   n2 <- ceiling(zscore * variance / margin)
   n1 <- if (sample == 'two-sample' && design == 'parallel') ceiling(k * n2) else n2
+
+  if (dropout_rate != 0) {
+    n2 <- ceiling(n2 + (dropout_rate * n2))
+    n1 <- ceiling(n1 + (dropout_rate * n1))
+  }
+
   total <- if (sample == 'one-sample') n2 else if (design == 'parallel') n2 + n1 else 2 * n2
 
   # Check for infinite and stop early
@@ -183,12 +189,12 @@ sample_size <- function(sample = c('one-sample', 'two-sample'),
   } else {
     cat("\nRequired Sample Size*\n")
     if (sample == 'one-sample') {
-      cat(sprintf("n = %d\n", ceiling(n2 + (dropout_rate * n2))))
+      cat(sprintf("n = %.0f\n", n2))
     } else {
-      cat(sprintf("n1 = %d\n", ceiling(n1 + (dropout_rate * n1))))
-      cat(sprintf("n2 = %d\n", ceiling(n2 + (dropout_rate * n2))))
+      cat(sprintf("n1 = %.0f\n", n1))
+      cat(sprintf("n2 = %.0f\n", n2))
     }
-    cat(sprintf("Total = %d\n\n", (ceiling(n1 * (1 + dropout_rate)) + (ceiling(n2 * (1 + dropout_rate))))))
+    cat(sprintf("Total = %.0f\n\n", total))
     cat(sprintf("*Sample size inflated by %.0f%% to account for potential dropout.\n\n", dropout_rate * 100))
   }
 
