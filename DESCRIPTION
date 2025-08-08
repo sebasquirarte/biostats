@@ -30,4 +30,5 @@ Imports:
     ggplot2,
     gridExtra,
     rlang,
-    stats
+    stats,
+    car
