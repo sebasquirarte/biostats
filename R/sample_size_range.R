@@ -114,7 +114,7 @@ sample_size_range <- function(x1_range = c(0.5, 1.5),
   }
   cat("\n")
 
-  colors <- c("70" = "#c7ebe2", "80" = "#7fcdbb", "90" = "#41a296")
+  colors <- c("70" = "#C5F4C1", "80" = "#79E1BE", "90" = "#33BFBC")
 
   p <- ggplot(results, aes(x = x1, y = total, color = factor(power))) +
     geom_line(size = 1.2) +

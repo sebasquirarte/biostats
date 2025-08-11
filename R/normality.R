@@ -7,7 +7,7 @@
 #' @param x Numeric vector or variable name (if data provided). Missing values removed.
 #' @param data Optional data frame containing the variable.
 #' @param outliers Logical; if TRUE, displays all outlier row indices. Default FALSE.
-#' @param color Color for plots. Default "#B7F1B2".
+#' @param color Color for plots. Default "#79E1BE".
 #'
 #' @details
 #' Combines Shapiro-Wilk test (p > 0.05) with skewness assessment (|skewness| < 1)
@@ -50,7 +50,7 @@
 normality <- function(x,
                       data = NULL,
                       outliers = FALSE,
-                      color = "#B7F1B2") {
+                      color = "#79E1BE") {
 
   # Check required packages
   if (!requireNamespace("ggplot2", quietly = TRUE)) {

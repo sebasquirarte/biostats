@@ -4,7 +4,7 @@
 #' column with visualizations.
 #'
 #' @param df A dataframe to analyze for missing values
-#' @param color Character; color for missing values. Default is "#7fcdbb"
+#' @param color Character; color for missing values. Default is "#79E1BE"
 #' @param all Logical; if TRUE, shows all variables including those without missing values. Default is FALSE.
 #'
 #' @return Invisibly returns a list with missing value statistics and plots.
@@ -23,7 +23,7 @@
 #' @importFrom ggplot2 scale_y_continuous expansion labs theme_minimal element_blank element_text margin
 #' @importFrom gridExtra grid.arrange
 #' @export
-missing_values <- function(df, color = "#7fcdbb", all = FALSE) {
+missing_values <- function(df, color = "#79E1BE", all = FALSE) {
 
   # Input validation
   if (!is.data.frame(df) || nrow(df) == 0 || ncol(df) == 0)

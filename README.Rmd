@@ -202,7 +202,7 @@ Tests normality with statistical tests and visual assessment using QQ plot and h
 ```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
 clinical_df <- clinical_data()
 
-# Normal distribution
+# Normal distributionpaletteer_c("grDevices::TealGrn", 30)
 normality("biomarker", data = clinical_df)
 
 # Non-normal distribution with outliers displayed

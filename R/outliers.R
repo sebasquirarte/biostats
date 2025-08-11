@@ -8,7 +8,7 @@
 #'   Default is NULL.
 #' @param threshold Numeric. Value multiplying the IQR to define outlier boundaries.
 #'   Default is 1.5 (Tukey's standard).
-#' @param color Character string specifying plot color. Default is "#7fcdbb".
+#' @param color Character string specifying plot color. Default is "#79E1BE".
 #'
 #' @return Invisibly returns a list with components:
 #'   \describe{
@@ -38,7 +38,7 @@
 outliers <- function(x,
                      data = NULL,
                      threshold = 1.5,
-                     color = "#7fcdbb") {
+                     color = "#79E1BE") {
 
   # Check required packages
   pkgs <- c("ggplot2", "gridExtra")
