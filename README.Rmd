@@ -31,10 +31,10 @@ set.seed(100)
 _**biostats**_ is a toolbox for biostatistics and clinical data analysis in R.
 
 #### Key features
-- Summary statistics
+- Descriptive statistics
 - Exploratory data analysis (EDA)
 - Sample size and power calculation
-- Statistical tests
+- Statistical tests and inference
 - Data cleaning, transformation, and visualization
 
 *Developed by the biostatistics team at [Laboratorios Sophia S.A. de C.V.](https://sophialab.com/en/) for biostatisticians, clinical researchers and data analysts.*
@@ -57,30 +57,29 @@ library(biostats)
 
 ## Usage
 
-The biostats toolbox includes the following exported functions.
+The biostats toolbox includes the following functions:
 
-- [**Summary Statistics and Exploratory Data Analysis (EDA)**](#summary-and-exploratory-data-analysis-eda)
+- [**Descriptive Statistics and Exploratory Data Analysis (EDA)**](#descriptive-statistics-and-exploratory-data-analysis-eda)
   - [clinical_data()](#clinical_data) ✔️
   - [summary_table()](#summary_table) ✔️
   - [normality()](#normality) ✔️
   - [missing_values()](#missing_values) ✔️ 
+  - [outliers()](#outliers) ✔️ 
 - [**Sample Size and Power Calculation**](#sample-size-and-power-calculation)
   - [sample_size()](#sample_size) ✔️
   - [sample_size_range()](#sample_size_range) ✔️
-- [**Statistical Tests**](#statistical-tests)
-  - [anova_test()](#anova_test) 
+- [**Statistical Analysis and Inference**](#statistical-analysis-and-inference)
+  - [omnibus()](#anova_test) 
   - [odds()](#odds) 
-- [**Data Cleaning and Transformation**](#data-cleaning-and-transformation)
-  - [outliers()](#outliers) ✔️ 
-  - [auc()](#auc)
+  - [auc_response()](#auc)
 - [**Data Visualization**](#data-visualization)
-  - [plot_bar()](#plot_bar)
+  - [plot_bar()](#plot_bar) ✔️
+  - [plot_line()](#plot_line)
   - [plot_hist()](#plot_hist)
   - [plot_box()](#plot_box)
-  - [plot_line()](#plot_line)
-  - [plot_corrrelation()](#plot_correlation)
+  - [plot_correlation()](#plot_correlation)
 
-### Summary and Exploratory Data Analysis (EDA)
+### Descriptive Statistics and Exploratory Data Analysis (EDA)
 
 #### **clinical_data()**
 
@@ -235,6 +234,29 @@ missing_values(clinical_df)
 missing_values(clinical_df, all = TRUE)
 ```
 
+#### **outliers()**
+
+##### Description
+
+Identifies outliers using Tukey's interquartile range (IQR) method and provides 
+comprehensive visual assessment through scatter plots and boxplots.
+
+##### Parameters
+
+| Parameter | Description | Default     |
+|-----------|-------------|-------------|
+| x         | Numeric vector or character string naming a column in `data`. | `Required` |
+| data      | Optional dataframe containing the variable specified in `x`. | `NULL` |
+| threshold | Numeric value multiplying the IQR to define outlier boundaries. | `1.5` |
+| color     | Character string specifying plot color. | `"#7fcdbb"` |
+
+##### Examples
+
+```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
+clinical_df <- clinical_data(n = 300)
+outliers(clinical_df$biomarker)
+``` 
+
 ### Sample Size and Power Calculation
 
 #### **sample_size()**
@@ -352,27 +374,167 @@ result <- sample_size_range(x1_range = c(0.65, 0.75),
 knitr::kable(result, format = "markdown")
 ```
 
-### Data Cleaning and Transformation
+### Statistical Analysis and Inference
 
-#### **outliers()**
+#### **omnibus()**
 
 ##### Description
 
-Identifies outliers using Tukey's interquartile range (IQR) method and provides 
-comprehensive visual assessment through scatter plots and boxplots.
+-
 
 ##### Parameters
 
-| Parameter | Description | Default     |
-|-----------|-------------|-------------|
-| x         | Numeric vector or character string naming a column in `data`. | `Required` |
-| data      | Optional dataframe containing the variable specified in `x`. | `NULL` |
-| threshold | Numeric value multiplying the IQR to define outlier boundaries. | `1.5` |
-| color     | Character string specifying plot color. | `"#7fcdbb"` |
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| - | - | - |
+
+##### Examples
+
+```{r}
+NULL
+```
+
+#### **odds()**
+
+##### Description
+
+-
+
+##### Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| - | - | - |
+
+##### Examples
+
+```{r}
+NULL
+```
+
+#### **auc_response()**
+
+##### Description
+
+-
+
+##### Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| - | - | - |
+
+##### Examples
+
+```{r}
+NULL
+```
+
+### Data Visualization
+
+#### **plot_bar()**
+
+##### Description
+
+Generates publication-ready bar plots with minimal code using ggplot2.
+
+##### Parameters
+
+|Parameter|Description|Default|
+|---|---|---|
+|`data`|A data frame containing the variables to plot|`Required` |
+|`x`|Character string specifying the x-axis variable|`Required` |
+|`y`|Optional character string specifying the y-axis variable. If provided, values from this column will be used for bar heights. If `NULL`, counts will be calculated automatically|`NULL`|
+|`group`|Optional character string specifying the grouping variable for fill color|`NULL`|
+|`facet`|Optional character string specifying the faceting variable|`NULL`|
+|`position`|Character string specifying the bar position; one of `"dodge"` (default), `"stack"`, or `"fill"` (for percentage stacking)|`"dodge"`|
+|`stat`|Optional character string for statistical aggregation; one of `"mean"` or `"median"`|`NULL`|
+|`colors`|Character vector of colors for bars or groups. If `NULL`, uses TealGrn color palette|`NULL`|
+|`title`|Optional character string for the plot title|`NULL`|
+|`xlab`|Optional character string for the x-axis label|`NULL`|
+|`ylab`|Optional character string for the y-axis label|`NULL`|
+|`legend_title`|Optional character string for the legend title|`NULL`|
+|`flip`|Logical; whether to flip the coordinates (horizontal bars)|`NULL`|
+|`text_size`|Numeric value specifying the base text size|`12`|
 
 ##### Examples
 
 ```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
-clinical_df <- clinical_data(n = 300)
-outliers(clinical_df$biomarker)
+# Simulated clinical data
+clinical_df <- clinical_data(visit = 4)
+
+# Grouped barplot of categorical variable by treatment
+plot_bar(clinical_df, x = "response", group = "visit", facet = "treatment")
+```
+
+#### **plot_line()**
+
+##### Description
+
+-
+
+##### Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| - | - | - |
+
+##### Examples
+
+```{r}
+NULL
+```
+
+#### **plot_hist()**
+
+##### Description
+
+-
+
+##### Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| - | - | - |
+
+##### Examples
+
+```{r}
+NULL
+```
+
+#### **plot_box()**
+
+##### Description
+
+-
+
+##### Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| - | - | - |
+
+##### Examples
+
+```{r}
+NULL
+```
+
+#### **plot_correlation()**
+
+##### Description
+
+-
+
+##### Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| - | - | - |
+
+##### Examples
+
+```{r}
+NULL
 ```

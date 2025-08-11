@@ -20,10 +20,10 @@ in R.
 
 #### Key features
 
-- Summary statistics
+- Descriptive statistics
 - Exploratory data analysis (EDA)
 - Sample size and power calculation
-- Statistical tests
+- Statistical tests and inference
 - Data cleaning, transformation, and visualization
 
 *Developed by the biostatistics team at [Laboratorios Sophia S.A. de
@@ -43,33 +43,32 @@ library(biostats)
 
 ## Usage
 
-The biostats toolbox includes the following exported functions.
+The biostats toolbox includes the following functions:
 
-- [**Summary Statistics and Exploratory Data Analysis
-  (EDA)**](#summary-and-exploratory-data-analysis-eda)
+- [**Descriptive Statistics and Exploratory Data Analysis
+  (EDA)**](#descriptive-statistics-and-exploratory-data-analysis-eda)
   - [clinical_data()](#clinical_data) ✔️
   - [summary_table()](#summary_table) ✔️
   - [normality()](#normality) ✔️
   - [missing_values()](#missing_values) ✔️
+  - [outliers()](#outliers) ✔️
 - [**Sample Size and Power
   Calculation**](#sample-size-and-power-calculation)
   - [sample_size()](#sample_size) ✔️
   - [sample_size_range()](#sample_size_range) ✔️
-- [**Statistical Tests**](#statistical-tests)
-  - [anova_test()](#anova_test)
+- [**Statistical Analysis and
+  Inference**](#statistical-analysis-and-inference)
+  - [omnibus()](#anova_test)
   - [odds()](#odds)
-- [**Data Cleaning and
-  Transformation**](#data-cleaning-and-transformation)
-  - [outliers()](#outliers) ✔️
-  - [auc()](#auc)
+  - [auc_response()](#auc)
 - [**Data Visualization**](#data-visualization)
-  - [plot_bar()](#plot_bar)
+  - [plot_bar()](#plot_bar) ✔️
+  - [plot_line()](#plot_line)
   - [plot_hist()](#plot_hist)
   - [plot_box()](#plot_box)
-  - [plot_line()](#plot_line)
-  - [plot_corrrelation()](#plot_correlation)
+  - [plot_correlation()](#plot_correlation)
 
-### Summary and Exploratory Data Analysis (EDA)
+### Descriptive Statistics and Exploratory Data Analysis (EDA)
 
 #### **clinical_data()**
 
@@ -358,6 +357,42 @@ missing_values(clinical_df, all = TRUE)
 
 <img src="man/figures/README-unnamed-chunk-14-2.png" width="100%" />
 
+#### **outliers()**
+
+##### Description
+
+Identifies outliers using Tukey’s interquartile range (IQR) method and
+provides comprehensive visual assessment through scatter plots and
+boxplots.
+
+##### Parameters
+
+| Parameter | Description | Default |
+|----|----|----|
+| x | Numeric vector or character string naming a column in `data`. | `Required` |
+| data | Optional dataframe containing the variable specified in `x`. | `NULL` |
+| threshold | Numeric value multiplying the IQR to define outlier boundaries. | `1.5` |
+| color | Character string specifying plot color. | `"#7fcdbb"` |
+
+##### Examples
+
+``` r
+clinical_df <- clinical_data(n = 300)
+outliers(clinical_df$biomarker)
+#> 
+#> Outlier Detection for 'clinical_df$biomarker'
+#> 
+#> n: 900
+#> Missing: 0 (0.0%)
+#> Method: Tukey's IQR x 1.5
+#> Bounds: [20.35, 75.80]
+#> Outliers detected: 5 (0.6%)
+#> 
+#> Outlier indices: 293, 311, 602, 625, 892
+```
+
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+
 ### Sample Size and Power Calculation
 
 #### **sample_size()**
@@ -532,7 +567,7 @@ result <- sample_size_range(x1_range = c(-0.01, 0.01),
 #> 90% Power: total n = 44 to 68
 ```
 
-<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
 
 | power |     x1 |  x2 | x1 - x2 |  n1 |  n2 | total |
 |------:|-------:|----:|--------:|----:|----:|------:|
@@ -575,7 +610,7 @@ result <- sample_size_range(x1_range = c(0.65, 0.75),
 #> 90% Power: total n = 196 to 858
 ```
 
-<img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-21-1.png" width="100%" />
 
 | power |   x1 |   x2 | x1 - x2 |  n1 |  n2 | total |
 |------:|-----:|-----:|--------:|----:|----:|------:|
@@ -598,40 +633,176 @@ result <- sample_size_range(x1_range = c(0.65, 0.75),
 |    90 | 0.73 | 0.65 |    0.08 | 125 | 125 |   250 |
 |    90 | 0.75 | 0.65 |    0.10 |  98 |  98 |   196 |
 
-### Data Cleaning and Transformation
+### Statistical Analysis and Inference
 
-#### **outliers()**
+#### **omnibus()**
 
 ##### Description
 
-Identifies outliers using Tukey’s interquartile range (IQR) method and
-provides comprehensive visual assessment through scatter plots and
-boxplots.
+- 
+
+##### Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| \-        | \-          | \-      |
+
+##### Examples
+
+``` r
+NULL
+#> NULL
+```
+
+#### **odds()**
+
+##### Description
+
+- 
+
+##### Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| \-        | \-          | \-      |
+
+##### Examples
+
+``` r
+NULL
+#> NULL
+```
+
+#### **auc_response()**
+
+##### Description
+
+- 
+
+##### Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| \-        | \-          | \-      |
+
+##### Examples
+
+``` r
+NULL
+#> NULL
+```
+
+### Data Visualization
+
+#### **plot_bar()**
+
+##### Description
+
+Generates publication-ready bar plots with minimal code using ggplot2.
 
 ##### Parameters
 
 | Parameter | Description | Default |
 |----|----|----|
-| x | Numeric vector or character string naming a column in `data`. | `Required` |
-| data | Optional dataframe containing the variable specified in `x`. | `NULL` |
-| threshold | Numeric value multiplying the IQR to define outlier boundaries. | `1.5` |
-| color | Character string specifying plot color. | `"#7fcdbb"` |
+| `data` | A data frame containing the variables to plot | `Required` |
+| `x` | Character string specifying the x-axis variable | `Required` |
+| `y` | Optional character string specifying the y-axis variable. If provided, values from this column will be used for bar heights. If `NULL`, counts will be calculated automatically | `NULL` |
+| `group` | Optional character string specifying the grouping variable for fill color | `NULL` |
+| `facet` | Optional character string specifying the faceting variable | `NULL` |
+| `position` | Character string specifying the bar position; one of `"dodge"` (default), `"stack"`, or `"fill"` (for percentage stacking) | `"dodge"` |
+| `stat` | Optional character string for statistical aggregation; one of `"mean"` or `"median"` | `NULL` |
+| `colors` | Character vector of colors for bars or groups. If `NULL`, uses TealGrn color palette | `NULL` |
+| `title` | Optional character string for the plot title | `NULL` |
+| `xlab` | Optional character string for the x-axis label | `NULL` |
+| `ylab` | Optional character string for the y-axis label | `NULL` |
+| `legend_title` | Optional character string for the legend title | `NULL` |
+| `flip` | Logical; whether to flip the coordinates (horizontal bars) | `NULL` |
+| `text_size` | Numeric value specifying the base text size | `12` |
 
 ##### Examples
 
 ``` r
-clinical_df <- clinical_data(n = 300)
-outliers(clinical_df$biomarker)
-#> 
-#> Outlier Detection for 'clinical_df$biomarker'
-#> 
-#> n: 900
-#> Missing: 0 (0.0%)
-#> Method: Tukey's IQR x 1.5
-#> Bounds: [20.35, 75.80]
-#> Outliers detected: 5 (0.6%)
-#> 
-#> Outlier indices: 293, 311, 602, 625, 892
+# Simulated clinical data
+clinical_df <- clinical_data(visit = 4)
+
+# Grouped barplot of categorical variable by treatment
+plot_bar(clinical_df, x = "response", group = "visit", facet = "treatment")
 ```
 
-<img src="man/figures/README-unnamed-chunk-22-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-26-1.png" width="100%" />
+
+#### **plot_line()**
+
+##### Description
+
+- 
+
+##### Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| \-        | \-          | \-      |
+
+##### Examples
+
+``` r
+NULL
+#> NULL
+```
+
+#### **plot_hist()**
+
+##### Description
+
+- 
+
+##### Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| \-        | \-          | \-      |
+
+##### Examples
+
+``` r
+NULL
+#> NULL
+```
+
+#### **plot_box()**
+
+##### Description
+
+- 
+
+##### Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| \-        | \-          | \-      |
+
+##### Examples
+
+``` r
+NULL
+#> NULL
+```
+
+#### **plot_correlation()**
+
+##### Description
+
+- 
+
+##### Parameters
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| \-        | \-          | \-      |
+
+##### Examples
+
+``` r
+NULL
+#> NULL
+```
