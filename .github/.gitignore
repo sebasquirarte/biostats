@@ -1,1 +1,42 @@
-*.html
+# R session/history
+.Rhistory
+.RData
+.Ruserdata
+
+# RStudio project/session
+.Rproj.user/
+*.Rproj
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Compiled code
+*.o
+*.so
+*.dll
+
+# Build/check outputs
+.Rcheck/
+*.tar.gz
+
+# Temp/log/config files
+*.tmp
+*.log
+*.ini
+
+# knitr / Rmd intermediates
+*_cache/
+cache/
+*.utf8.md
+*.knit.md
+
+# Vignette outputs
+vignettes/*.html
+vignettes/*.pdf
+
+# Tests
+tests/testthat/Rplots.pdf
+
+# Environment
+.env
