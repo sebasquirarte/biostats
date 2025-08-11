@@ -20,6 +20,7 @@
 #' @param legend_title Optional character string for the legend title
 #' @param flip Logical; whether to flip the coordinates (horizontal bars)
 #' @param text_size Numeric value specifying the base text size (default: 12)
+#' @param show_values Logical; whether to display value labels above bars (default: FALSE)
 #'
 #' @return A ggplot2 object that can be further customized
 #'
@@ -27,8 +28,8 @@
 #' # Simulated clinical data
 #' clinical_df <- clinical_data(visit = 4)
 #'
-#' # Grouped barplot of categorical variable by treatment
-#' plot_bar(clinical_df, x = "response", group = "visit", facet = "treatment")
+#' # Grouped barplot of categorical variable by treatment with value labels
+#' plot_bar(clinical_df, x = "response", group = "visit", facet = "treatment", show_values = TRUE)
 #'
 #' @import ggplot2
 #' @export
@@ -45,7 +46,8 @@ plot_bar <- function(data,
                      ylab = NULL,
                      legend_title = NULL,
                      flip = FALSE,
-                     text_size = 12) {
+                     text_size = 12,
+                     show_values = FALSE) {
 
   # Input validation
   if (!is.data.frame(data)) stop("data must be a data frame", call. = FALSE)
@@ -101,10 +103,26 @@ plot_bar <- function(data,
     p <- ggplot(data, aes(x = .data[[x]]))
     if (is.null(group)) {
       p <- p + geom_bar(fill = colors[1], color = "black", alpha = 0.8)
+      if (show_values) {
+        p <- p + geom_text(stat = "count", aes(label = after_stat(count)),
+                           vjust = -0.5, size = text_size / 3)
+      }
     } else {
       p <- p +
         geom_bar(aes(fill = .data[[group]]), position = position, color = "black", alpha = 0.8) +
         scale_fill_manual(values = colors)
+      if (show_values) {
+        if (position == "fill") {
+          p <- p + geom_text(aes(label = after_stat(paste0(round(100 * count/sum(count), 1), "%")),
+                                 group = .data[[group]]),
+                             stat = "count", position = position_fill(vjust = 0.5),
+                             size = text_size / 3)
+        } else {
+          p <- p + geom_text(aes(label = after_stat(count), group = .data[[group]]),
+                             stat = "count", position = position_dodge(width = 0.9),
+                             vjust = -0.5, size = text_size / 3)
+        }
+      }
     }
     if (is.null(ylab)) ylab <- if (position == "fill") "Percentage" else "Count"
   } else {
@@ -114,13 +132,32 @@ plot_bar <- function(data,
       p <- ggplot(data, base_aes) +
         geom_col(aes(fill = .data[[group]]), position = position, color = "black", alpha = 0.8) +
         scale_fill_manual(values = colors)
+      if (show_values) {
+        if (position == "stack") {
+          p <- p + geom_text(aes(label = round(.data[[y]], 1), group = .data[[group]]),
+                             position = position_stack(vjust = 0.5), size = text_size / 3)
+        } else if (position == "fill") {
+          p <- p + geom_text(aes(label = paste0(round(100 * .data[[y]]/sum(.data[[y]]), 1), "%"),
+                                 group = .data[[group]]),
+                             position = position_fill(vjust = 0.5), size = text_size / 3)
+        } else {
+          p <- p + geom_text(aes(label = round(.data[[y]], 1), group = .data[[group]]),
+                             position = position_dodge(width = 0.9), vjust = -0.5, size = text_size / 3)
+        }
+      }
     } else if (!is.null(facet)) {
       p <- ggplot(data, base_aes) +
         geom_col(aes(fill = .data[[x]]), color = "black", alpha = 0.8) +
         scale_fill_manual(values = colors)
+      if (show_values) {
+        p <- p + geom_text(aes(label = round(.data[[y]], 1)), vjust = -0.5, size = text_size / 3)
+      }
     } else {
       p <- ggplot(data, base_aes) +
         geom_col(fill = colors[1], color = "black", alpha = 0.8)
+      if (show_values) {
+        p <- p + geom_text(aes(label = round(.data[[y]], 1)), vjust = -0.5, size = text_size / 3)
+      }
     }
     if (is.null(ylab)) ylab <- y
   }
