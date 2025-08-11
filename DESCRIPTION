@@ -31,4 +31,6 @@ Imports:
     gridExtra,
     rlang,
     stats,
-    car
+    car,
+    emmeans,
+    tools

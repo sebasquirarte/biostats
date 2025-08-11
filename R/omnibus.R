@@ -20,6 +20,7 @@
 #' @importFrom car leveneTest
 #' @importFrom stats aov bartlett.test friedman.test kruskal.test lm mauchly.test shapiro.test as.formula na.action
 #' @importFrom stats TukeyHSD pairwise.t.test pairwise.wilcox.test
+#' @importFrom emmeans emmeans pairs
 
 omnibus <- function(dependent_var = NULL,
                           independent_var = NULL,
