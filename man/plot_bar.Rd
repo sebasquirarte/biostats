@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_bar.R
 \name{plot_bar}
 \alias{plot_bar}
-\title{Create Simple, Professional Bar Plots}
+\title{Create Simple Professional Bar Plots}
 \usage{
 plot_bar(
   data,
@@ -19,7 +19,7 @@ plot_bar(
   legend_title = NULL,
   flip = FALSE,
   text_size = 12,
-  show_text = FALSE
+  values = FALSE
 )
 }
 \arguments{
@@ -55,7 +55,7 @@ TealGrn color palette}
 
 \item{text_size}{Numeric value specifying the base text size (default: 12)}
 
-\item{show_text}{Logical; whether to display value labels above bars (default: FALSE)}
+\item{values}{Logical; whether to display value labels above bars (default: FALSE)}
 }
 \value{
 A ggplot2 object that can be further customized
@@ -65,9 +65,16 @@ Generates publication-ready bar plots with minimal code using ggplot2.
 }
 \examples{
 # Simulated clinical data
-clinical_df <- clinical_data(visit = 4)
+clinical_df <- clinical_data()
+
+# Counts by treatment
+plot_bar(clinical_df, x = "treatment", values = TRUE)
+
+# Percentage response by treatment
+plot_bar(clinical_df, x = "treatment", group = "response",
+        position = "fill", values = TRUE)
 
 # Grouped barplot of categorical variable by treatment with value labels
-plot_bar(clinical_df, x = "response", group = "visit", facet = "treatment", show_text = TRUE)
+plot_bar(clinical_df, x = "response", group = "visit", facet = "treatment", values = TRUE)
 
 }
