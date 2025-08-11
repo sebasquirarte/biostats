@@ -723,32 +723,72 @@ Generates publication-ready bar plots with minimal code using ggplot2.
 
 ``` r
 # Simulated clinical data
-clinical_df <- clinical_data(visit = 4)
+clinical_df <- clinical_data()
 
-# Grouped barplot of categorical variable by treatment
-plot_bar(clinical_df, x = "response", group = "visit", facet = "treatment")
+# Counts by treatment
+plot_bar(clinical_df, x = "treatment", values = TRUE)
 ```
 
 <img src="man/figures/README-unnamed-chunk-26-1.png" width="100%" />
+
+``` r
+
+# Percentage response by treatment
+plot_bar(clinical_df, x = "treatment", group = "response",
+         position = "fill", values = TRUE)
+```
+
+<img src="man/figures/README-unnamed-chunk-26-2.png" width="100%" />
+
+``` r
+
+# Grouped barplot of categorical variable by treatment with value labels
+plot_bar(clinical_df, x = "response", group = "visit", 
+         facet = "treatment", values = TRUE)
+```
+
+<img src="man/figures/README-unnamed-chunk-26-3.png" width="100%" />
 
 #### **plot_line()**
 
 ##### Description
 
-- 
+Generates publication-ready line plots with minimal code using ggplot2.
 
 ##### Parameters
 
 | Parameter | Description | Default |
-|-----------|-------------|---------|
-| \-        | \-          | \-      |
+|----|----|----|
+| `data` | A data frame containing the variables to plot | – |
+| `x` | Character string specifying the x-axis variable (typically time or ordered) | – |
+| `y` | Character string specifying the y-axis variable (measurement or outcome) | – |
+| `group` | Optional character string specifying the grouping variable for multiple lines | `NULL` |
+| `facet` | Optional character string specifying the faceting variable | `NULL` |
+| `stat` | Optional character string for statistical aggregation; one of `"mean"` or `"median"` | `NULL` |
+| `error` | Optional character string for error bars; one of `"se"` (standard error, default), `"sd"`, `"ci"`, or `"none"` | `"se"` |
+| `error_width` | Numeric; width of the error bar caps | `0.2` |
+| `colors` | Character vector of colors for lines. If `NULL`, uses TealGrn color palette | `NULL` |
+| `title` | Optional character string for the plot title | `NULL` |
+| `xlab` | Optional character string for the x-axis label | `NULL` |
+| `ylab` | Optional character string for the y-axis label | `NULL` |
+| `legend_title` | Optional character string for the legend title | `NULL` |
+| `points` | Logical; whether to add points to the lines | `TRUE` |
+| `line_size` | Numeric; thickness of the lines | `1` |
+| `point_size` | Numeric; size of the points if shown | `3` |
+| `text_size` | Numeric value specifying the base text size | `12` |
 
 ##### Examples
 
 ``` r
-NULL
-#> NULL
+# Simulated clinical data
+clinical_df <- clinical_data()
+
+# Line plot with mean and standard error by treatment
+plot_line(clinical_df, x = "visit", y = "biomarker",
+          group = "treatment", stat = "mean", error = "se")
 ```
+
+<img src="man/figures/README-unnamed-chunk-27-1.png" width="100%" />
 
 #### **plot_hist()**
 
