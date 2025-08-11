@@ -4,12 +4,12 @@
 \alias{missing_values}
 \title{Analyze and Visualize Missing Values in a Dataframe}
 \usage{
-missing_values(df, color = "#7fcdbb", all = FALSE)
+missing_values(df, color = "#79E1BE", all = FALSE)
 }
 \arguments{
 \item{df}{A dataframe to analyze for missing values}
 
-\item{color}{Character; color for missing values. Default is "#7fcdbb"}
+\item{color}{Character; color for missing values. Default is "#79E1BE"}
 
 \item{all}{Logical; if TRUE, shows all variables including those without missing values. Default is FALSE.}
 }

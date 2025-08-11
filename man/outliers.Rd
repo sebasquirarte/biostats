@@ -4,7 +4,7 @@
 \alias{outliers}
 \title{Detect and Visualize Outliers Using Tukey's Method}
 \usage{
-outliers(x, data = NULL, threshold = 1.5, color = "#7fcdbb")
+outliers(x, data = NULL, threshold = 1.5, color = "#79E1BE")
 }
 \arguments{
 \item{x}{Numeric vector or character string naming a column in \code{data}.}
@@ -15,7 +15,7 @@ Default is NULL.}
 \item{threshold}{Numeric. Value multiplying the IQR to define outlier boundaries.
 Default is 1.5 (Tukey's standard).}
 
-\item{color}{Character string specifying plot color. Default is "#7fcdbb".}
+\item{color}{Character string specifying plot color. Default is "#79E1BE".}
 }
 \value{
 Invisibly returns a list with components:

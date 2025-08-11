@@ -4,7 +4,7 @@
 \alias{normality}
 \title{Statistical and Visual Normality Assessment}
 \usage{
-normality(x, data = NULL, outliers = FALSE, color = "#7fcdbb")
+normality(x, data = NULL, outliers = FALSE, color = "#79E1BE")
 }
 \arguments{
 \item{x}{Numeric vector or variable name (if data provided). Missing values removed.}
@@ -13,7 +13,7 @@ normality(x, data = NULL, outliers = FALSE, color = "#7fcdbb")
 
 \item{outliers}{Logical; if TRUE, displays all outlier row indices. Default FALSE.}
 
-\item{color}{Color for plots. Default "#7fcdbb".}
+\item{color}{Color for plots. Default "#79E1BE".}
 }
 \value{
 Prints results to console and invisibly returns a list with:
