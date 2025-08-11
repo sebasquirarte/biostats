@@ -19,7 +19,7 @@ plot_bar(
   legend_title = NULL,
   flip = FALSE,
   text_size = 12,
-  show_values = FALSE
+  show_text = FALSE
 )
 }
 \arguments{
@@ -55,7 +55,7 @@ TealGrn color palette}
 
 \item{text_size}{Numeric value specifying the base text size (default: 12)}
 
-\item{show_values}{Logical; whether to display value labels above bars (default: FALSE)}
+\item{show_text}{Logical; whether to display value labels above bars (default: FALSE)}
 }
 \value{
 A ggplot2 object that can be further customized
@@ -68,6 +68,6 @@ Generates publication-ready bar plots with minimal code using ggplot2.
 clinical_df <- clinical_data(visit = 4)
 
 # Grouped barplot of categorical variable by treatment with value labels
-plot_bar(clinical_df, x = "response", group = "visit", facet = "treatment", show_values = TRUE)
+plot_bar(clinical_df, x = "response", group = "visit", facet = "treatment", show_text = TRUE)
 
 }

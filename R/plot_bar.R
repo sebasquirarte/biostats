@@ -20,7 +20,7 @@
 #' @param legend_title Optional character string for the legend title
 #' @param flip Logical; whether to flip the coordinates (horizontal bars)
 #' @param text_size Numeric value specifying the base text size (default: 12)
-#' @param show_values Logical; whether to display value labels above bars (default: FALSE)
+#' @param show_text Logical; whether to display value labels above bars (default: FALSE)
 #'
 #' @return A ggplot2 object that can be further customized
 #'
@@ -29,7 +29,7 @@
 #' clinical_df <- clinical_data(visit = 4)
 #'
 #' # Grouped barplot of categorical variable by treatment with value labels
-#' plot_bar(clinical_df, x = "response", group = "visit", facet = "treatment", show_values = TRUE)
+#' plot_bar(clinical_df, x = "response", group = "visit", facet = "treatment", show_text = TRUE)
 #'
 #' @import ggplot2
 #' @export
@@ -47,7 +47,7 @@ plot_bar <- function(data,
                      legend_title = NULL,
                      flip = FALSE,
                      text_size = 12,
-                     show_values = FALSE) {
+                     show_text = FALSE) {
 
   # Input validation
   if (!is.data.frame(data)) stop("data must be a data frame", call. = FALSE)
@@ -63,6 +63,11 @@ plot_bar <- function(data,
   if (!is.null(stat)) {
     stat <- match.arg(stat, c("mean", "median"))
     if (is.null(y)) stop("y variable must be specified when using stat parameter", call. = FALSE)
+  }
+
+  # Remove NA values from grouping variable to prevent grey bars
+  if (!is.null(group)) {
+    data <- data[!is.na(data[[group]]), ]
   }
 
   # Convert variables to factors as needed
@@ -103,7 +108,7 @@ plot_bar <- function(data,
     p <- ggplot(data, aes(x = .data[[x]]))
     if (is.null(group)) {
       p <- p + geom_bar(fill = colors[1], color = "black", alpha = 0.8)
-      if (show_values) {
+      if (show_text) {
         p <- p + geom_text(stat = "count", aes(label = after_stat(count)),
                            vjust = -0.5, size = text_size / 3)
       }
@@ -111,11 +116,15 @@ plot_bar <- function(data,
       p <- p +
         geom_bar(aes(fill = .data[[group]]), position = position, color = "black", alpha = 0.8) +
         scale_fill_manual(values = colors)
-      if (show_values) {
+      if (show_text) {
         if (position == "fill") {
-          p <- p + geom_text(aes(label = after_stat(paste0(round(100 * count/sum(count), 1), "%")),
+          p <- p + geom_text(aes(label = after_stat(paste0(round(100 * prop, 1), "%")),
                                  group = .data[[group]]),
                              stat = "count", position = position_fill(vjust = 0.5),
+                             size = text_size / 3)
+        } else if (position == "stack") {
+          p <- p + geom_text(aes(label = after_stat(count), group = .data[[group]]),
+                             stat = "count", position = position_stack(vjust = 0.5),
                              size = text_size / 3)
         } else {
           p <- p + geom_text(aes(label = after_stat(count), group = .data[[group]]),
@@ -132,7 +141,7 @@ plot_bar <- function(data,
       p <- ggplot(data, base_aes) +
         geom_col(aes(fill = .data[[group]]), position = position, color = "black", alpha = 0.8) +
         scale_fill_manual(values = colors)
-      if (show_values) {
+      if (show_text) {
         if (position == "stack") {
           p <- p + geom_text(aes(label = round(.data[[y]], 1), group = .data[[group]]),
                              position = position_stack(vjust = 0.5), size = text_size / 3)
@@ -149,13 +158,13 @@ plot_bar <- function(data,
       p <- ggplot(data, base_aes) +
         geom_col(aes(fill = .data[[x]]), color = "black", alpha = 0.8) +
         scale_fill_manual(values = colors)
-      if (show_values) {
+      if (show_text) {
         p <- p + geom_text(aes(label = round(.data[[y]], 1)), vjust = -0.5, size = text_size / 3)
       }
     } else {
       p <- ggplot(data, base_aes) +
         geom_col(fill = colors[1], color = "black", alpha = 0.8)
-      if (show_values) {
+      if (show_text) {
         p <- p + geom_text(aes(label = round(.data[[y]], 1)), vjust = -0.5, size = text_size / 3)
       }
     }
@@ -194,4 +203,3 @@ plot_bar <- function(data,
 
   return(p)
 }
-#
