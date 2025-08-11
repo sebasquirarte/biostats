@@ -30,7 +30,5 @@ Imports:
     ggplot2,
     gridExtra,
     rlang,
-    stats,
     car,
-    emmeans,
-    tools
+    emmeans

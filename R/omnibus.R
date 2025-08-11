@@ -4,23 +4,43 @@
 #' Repeated measures ANOVA, Kruskal Wallis test and Friedman test are included
 #' in this term.
 #'
-#' @param dependent_var Character string. Name of the column that contains the data of the dependent variable.
-#' @param independent_var Character string. Name of the column that contains the data of the independent variable.
-#' @param data Character string. Name of the dataframe where the independent, dependent and paired variables are found.
-#' @param paired_var Character string. Name of the column that contains the data of the paired variable. If paired,
-#'                   the dataframe must have each group organized in these two options: (A, B, C, A, B, C, A, B, C) or (A, A, A, B, B, B, C, C, C)
-#' @param alpha Numeric. Type I error rate (significance level). Default is 0.05.
-#' @param method Character string. Method wanted to conduct a multiplicity correction.
-#' @param na.action What to do when NAs are found in data.
+#' @param dependent_var Character string. Name of the column containing the dependent variable data.
+#' @param independent_var Character string. Name of the column containing the independent grouping variable.
+#'                       Must have at least three unique groups.
+#' @param data Data frame containing the variables.
+#' @param paired_var Character string or NULL. Name of the column with the paired (within-subject) variable.
+#'                   If provided, a repeated measures design is assumed.
+#'                   The data should be organized by this variable in one of two common orders:
+#'                   (A, B, C, A, B, C, ...) or (A, A, A, B, B, B, C, C, C).
+#'                   If NULL, independent groups design is assumed.
+#' @param alpha Numeric. Significance level for hypothesis tests. Default is 0.05.
+#' @param method Character string. P-value adjustment method for multiple comparisons in post-hoc tests.
+#'               One of "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", or "none".
+#' @param na.action Character string. Action to take if NAs are present. One of "na.omit", "na.exclude", "na.pass", or "na.fail".
+#'
+#' @return A list containing:
+#' \item{formula}{The modelled formula used for the test.}
+#' \item{summary}{Summary object of the model or test.}
+#' \item{statistic}{Test statistic value (F or chi-squared).}
+#' \item{p_value}{P-value observed in the omnibus test.}
+#' \item{n_groups}{Number of groups in the independent variable.}
+#' \item{significant}{Logical indicating whether the test was significant at the alpha level.}
+#' \item{alpha}{Significance level used.}
+#' \item{model}{The fitted model or test object.}
+#' \item{data}{Input data frame.}
+#' \item{post_hoc}{List of post-hoc test results if omnibus test was significant, otherwise NULL.}
+#' \item{name}{Name of the test performed (e.g., "One-way ANOVA", "Kruskal-Wallis test", etc.).}
 #'
 #' @examples
 #' # Examples go here
+#'
 #' @export
 #'
 #' @importFrom car leveneTest
 #' @importFrom stats aov bartlett.test friedman.test kruskal.test lm mauchly.test shapiro.test as.formula na.action
 #' @importFrom stats TukeyHSD pairwise.t.test pairwise.wilcox.test
-#' @importFrom emmeans emmeans pairs
+#' @importFrom emmeans emmeans
+#' @importFrom graphics pairs
 
 omnibus <- function(dependent_var = NULL,
                           independent_var = NULL,
