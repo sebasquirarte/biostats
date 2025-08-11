@@ -194,3 +194,4 @@ plot_bar <- function(data,
 
   return(p)
 }
+#
