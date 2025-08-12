@@ -458,7 +458,7 @@ Generates publication-ready bar plots with minimal code using ggplot2.
 
 ##### Examples
 
-```{r, fig.show="hold", fig.width=7, fig.height=5, dpi=300, out.width="50%"}
+```{r, fig.width=7, fig.height=5, dpi=300, out.width="75%", fig.align="center"}
 # Simulated clinical data
 clinical_df <- clinical_data()
 

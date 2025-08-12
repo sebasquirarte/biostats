@@ -730,6 +730,11 @@ plot_bar(clinical_df,
          position = "fill", 
          title = "Proportion of response by treatment", 
          values = TRUE)
+```
+
+<img src="man/figures/README-unnamed-chunk-26-1.png" width="75%" style="display: block; margin: auto;" />
+
+``` r
 
 # Grouped barplot of categorical variable by treatment with value labels
 plot_bar(clinical_df, 
@@ -740,7 +745,7 @@ plot_bar(clinical_df,
          values = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-26-1.png" width="50%" /><img src="man/figures/README-unnamed-chunk-26-2.png" width="50%" />
+<img src="man/figures/README-unnamed-chunk-26-2.png" width="75%" style="display: block; margin: auto;" />
 
 #### **plot_line()**
 
