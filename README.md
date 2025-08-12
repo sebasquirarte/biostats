@@ -565,7 +565,7 @@ result <- sample_size_range(x1_range = c(-0.01, 0.01),
 #> 90% Power: total n = 44 to 68
 ```
 
-<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-19-1.png" width="75%" />
 
 | power |     x1 |  x2 | x1 - x2 |  n1 |  n2 | total |
 |------:|-------:|----:|--------:|----:|----:|------:|
@@ -608,7 +608,7 @@ result <- sample_size_range(x1_range = c(0.65, 0.75),
 #> 90% Power: total n = 196 to 858
 ```
 
-<img src="man/figures/README-unnamed-chunk-21-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-21-1.png" width="75%" />
 
 | power |   x1 |   x2 | x1 - x2 |  n1 |  n2 | total |
 |------:|-----:|-----:|--------:|----:|----:|------:|
@@ -732,7 +732,7 @@ plot_bar(clinical_df,
          values = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-26-1.png" width="75%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-26-1.png" width="75%" />
 
 ``` r
 
@@ -745,7 +745,7 @@ plot_bar(clinical_df,
          values = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-26-2.png" width="75%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-26-2.png" width="75%" />
 
 #### **plot_line()**
 

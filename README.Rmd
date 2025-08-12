@@ -340,7 +340,7 @@ Calculates required sample sizes for specified power levels (70%, 80%, 90%) acro
 
 ##### Examples
 
-```{r}
+```{r, fig.width=7, fig.height=5, dpi=300, out.width="75%"}
 # One-sample equivalence test for means
 result <- sample_size_range(x1_range = c(-0.01, 0.01),
                             x2 = 0,
@@ -356,7 +356,7 @@ result <- sample_size_range(x1_range = c(-0.01, 0.01),
 knitr::kable(result, format = "markdown")
 ```
 
-```{r}
+```{r, fig.width=7, fig.height=5, dpi=300, out.width="75%"}
 # Two-sample parallel non-inferiority test for proportions w/ 10% dropout rate
 result <- sample_size_range(x1_range = c(0.65, 0.75),
                             x2 = 0.65,
@@ -458,7 +458,7 @@ Generates publication-ready bar plots with minimal code using ggplot2.
 
 ##### Examples
 
-```{r, fig.width=7, fig.height=5, dpi=300, out.width="75%", fig.align="center"}
+```{r, fig.width=7, fig.height=5, dpi=300, out.width="75%"}
 # Simulated clinical data
 clinical_df <- clinical_data()
 
