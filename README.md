@@ -9,14 +9,12 @@
 [![Tests](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/biostats)](https://cran.r-project.org/package=biostats)
-[![Codecov test
-coverage](https://codecov.io/gh/sebasquirarte/biostats/graph/badge.svg?token=ba2a281e-60be-4036-a40c-a3afaadee1ed)](https://app.codecov.io/gh/sebasquirarte/biostats)
 <!-- badges: end -->
 
 ## Overview
 
-***biostats*** is a toolbox for biostatistics and clinical data analysis
-in R.
+***biostats*** is an R package that functions as a toolbox for
+biostatistics and clinical data analysis.
 
 #### Key features
 
@@ -43,26 +41,26 @@ library(biostats)
 
 ## Usage
 
-The biostats toolbox includes the following functions:
+The biostats package includes the following functions:
 
 - [**Descriptive Statistics and Exploratory Data Analysis
   (EDA)**](#descriptive-statistics-and-exploratory-data-analysis-eda)
-  - [clinical_data()](#clinical_data) ✔️
-  - [summary_table()](#summary_table) ✔️
-  - [normality()](#normality) ✔️
-  - [missing_values()](#missing_values) ✔️
-  - [outliers()](#outliers) ✔️
+  - [clinical_data()](#clinical_data)
+  - [summary_table()](#summary_table)
+  - [normality()](#normality)
+  - [missing_values()](#missing_values)
+  - [outliers()](#outliers)
 - [**Sample Size and Power
   Calculation**](#sample-size-and-power-calculation)
-  - [sample_size()](#sample_size) ✔️
-  - [sample_size_range()](#sample_size_range) ✔️
+  - [sample_size()](#sample_size)
+  - [sample_size_range()](#sample_size_range)
 - [**Statistical Analysis and
   Inference**](#statistical-analysis-and-inference)
   - [omnibus()](#anova_test)
   - [odds()](#odds)
   - [auc_response()](#auc)
 - [**Data Visualization**](#data-visualization)
-  - [plot_bar()](#plot_bar) ✔️
+  - [plot_bar()](#plot_bar)
   - [plot_line()](#plot_line)
   - [plot_hist()](#plot_hist)
   - [plot_box()](#plot_box)
@@ -725,29 +723,24 @@ Generates publication-ready bar plots with minimal code using ggplot2.
 # Simulated clinical data
 clinical_df <- clinical_data()
 
-# Counts by treatment
-plot_bar(clinical_df, x = "treatment", values = TRUE)
-```
-
-<img src="man/figures/README-unnamed-chunk-26-1.png" width="100%" />
-
-``` r
-
-# Percentage response by treatment
-plot_bar(clinical_df, x = "treatment", group = "response",
-         position = "fill", values = TRUE)
-```
-
-<img src="man/figures/README-unnamed-chunk-26-2.png" width="100%" />
-
-``` r
+# Proportion of response by treatment
+plot_bar(clinical_df, 
+         x = "treatment", 
+         group = "response",
+         position = "fill", 
+         title = "Proportion of response by treatment", 
+         values = TRUE)
 
 # Grouped barplot of categorical variable by treatment with value labels
-plot_bar(clinical_df, x = "response", group = "visit", 
-         facet = "treatment", values = TRUE)
+plot_bar(clinical_df, 
+         x = "response", 
+         group = "visit", 
+         facet = "treatment", 
+         title = "Response by visit and treatment",
+         values = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-26-3.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-26-1.png" width="50%" /><img src="man/figures/README-unnamed-chunk-26-2.png" width="50%" />
 
 #### **plot_line()**
 
@@ -781,11 +774,15 @@ Generates publication-ready line plots with minimal code using ggplot2.
 
 ``` r
 # Simulated clinical data
-clinical_df <- clinical_data()
+clinical_df <- clinical_data(arms = c("A","B","C"), visits = 10)
 
 # Line plot with mean and standard error by treatment
-plot_line(clinical_df, x = "visit", y = "biomarker",
-          group = "treatment", stat = "mean", error = "se")
+plot_line(clinical_df, 
+          x = "visit", 
+          y = "biomarker",
+          group = "treatment", 
+          stat = "mean", 
+          error = "se")
 ```
 
 <img src="man/figures/README-unnamed-chunk-27-1.png" width="100%" />

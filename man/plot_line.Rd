@@ -21,7 +21,9 @@ plot_line(
   points = TRUE,
   line_size = 1,
   point_size = 3,
-  text_size = 12
+  text_size = 12,
+  y_limits = NULL,
+  x_limits = NULL
 )
 }
 \arguments{
@@ -59,6 +61,10 @@ plot_line(
 \item{point_size}{Numeric; size of the points if shown (default: 3)}
 
 \item{text_size}{Numeric value specifying the base text size (default: 12)}
+
+\item{y_limits}{Numeric vector of length 2 specifying y-axis limits (e.g., c(0, 100))}
+
+\item{x_limits}{Numeric vector of length 2 specifying x-axis limits (e.g., c(1, 10))}
 }
 \value{
 A ggplot2 object that can be further customized
@@ -73,5 +79,9 @@ clinical_df <- clinical_data(visit = 4)
 # Line plot with mean and standard error by treatment
 plot_line(clinical_df, x = "visit", y = "biomarker",
           group = "treatment", stat = "mean", error = "se")
+
+# Line plot with custom axis limits
+plot_line(clinical_df, x = "visit", y = "biomarker",
+          group = "treatment", y_limits = c(0, 50), x_limits = c(1, 4))
 
 }

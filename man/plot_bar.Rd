@@ -67,10 +67,6 @@ Generates publication-ready bar plots with minimal code using ggplot2.
 # Simulated clinical data
 clinical_df <- clinical_data()
 
-# Counts by treatment
-plot_bar(clinical_df, x = "treatment", values = TRUE)
-
-# Percentage response by treatment
 plot_bar(clinical_df, x = "treatment", group = "response",
         position = "fill", values = TRUE)
 

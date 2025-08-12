@@ -28,10 +28,7 @@
 #' # Simulated clinical data
 #' clinical_df <- clinical_data()
 #'
-#' # Counts by treatment
-#' plot_bar(clinical_df, x = "treatment", values = TRUE)
-#'
-#'# Percentage response by treatment
+# Proportion of response by treatment
 #'plot_bar(clinical_df, x = "treatment", group = "response",
 #'         position = "fill", values = TRUE)
 #'

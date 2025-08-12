@@ -20,6 +20,8 @@
 #' @param line_size Numeric; thickness of the lines (default: 1)
 #' @param point_size Numeric; size of the points if shown (default: 3)
 #' @param text_size Numeric value specifying the base text size (default: 12)
+#' @param y_limits Numeric vector of length 2 specifying y-axis limits (e.g., c(0, 100))
+#' @param x_limits Numeric vector of length 2 specifying x-axis limits (e.g., c(1, 10))
 #'
 #' @return A ggplot2 object that can be further customized
 #'
@@ -30,6 +32,10 @@
 #' # Line plot with mean and standard error by treatment
 #' plot_line(clinical_df, x = "visit", y = "biomarker",
 #'           group = "treatment", stat = "mean", error = "se")
+#'
+#' # Line plot with custom axis limits
+#' plot_line(clinical_df, x = "visit", y = "biomarker",
+#'           group = "treatment", y_limits = c(0, 50), x_limits = c(1, 4))
 #'
 #' @import ggplot2
 #' @export
@@ -49,7 +55,9 @@ plot_line <- function(data,
                       points = TRUE,
                       line_size = 1,
                       point_size = 3,
-                      text_size = 12) {
+                      text_size = 12,
+                      y_limits = NULL,
+                      x_limits = NULL) {
 
   # Input validation
   if (!is.data.frame(data)) stop("data must be a data frame", call. = FALSE)
@@ -62,6 +70,14 @@ plot_line <- function(data,
 
   error <- match.arg(error, c("none", "se", "sd", "ci"))
   if (!is.null(stat)) stat <- match.arg(stat, c("mean", "median"))
+
+  # Validate axis limits
+  if (!is.null(y_limits) && (!is.numeric(y_limits) || length(y_limits) != 2)) {
+    stop("y_limits must be a numeric vector of length 2", call. = FALSE)
+  }
+  if (!is.null(x_limits) && (!is.numeric(x_limits) || length(x_limits) != 2)) {
+    stop("x_limits must be a numeric vector of length 2", call. = FALSE)
+  }
 
   # Clean data and convert to factors
   for (var in c(group, facet)[!sapply(c(group, facet), is.null)]) {
@@ -170,8 +186,23 @@ plot_line <- function(data,
           panel.grid.minor = element_blank(),
           axis.ticks = element_line(color = "black"),
           legend.position = if (is.null(group)) "none" else "right",
-          strip.text = element_text(face = "bold")) +
-    scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
+          strip.text = element_text(face = "bold"))
+
+  # Apply axis limits and scales
+  if (is.null(y_limits)) {
+    p <- p + scale_y_continuous(expand = expansion(mult = c(0.05, 0.1)))
+  } else {
+    p <- p + scale_y_continuous(limits = y_limits, expand = expansion(mult = c(0.05, 0.1)))
+  }
+
+  if (!is.null(x_limits)) {
+    # Apply x_limits only if x is numeric (not converted to factor)
+    if (is.numeric(data[[x]]) || !is.factor(data[[x]])) {
+      p <- p + scale_x_continuous(limits = x_limits)
+    } else {
+      warning("x_limits ignored: x variable was converted to factor. Use numeric x values for x_limits.", call. = FALSE)
+    }
+  }
 
   return(p)
 }
