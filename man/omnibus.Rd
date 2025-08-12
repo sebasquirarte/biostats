@@ -2,45 +2,42 @@
 % Please edit documentation in R/omnibus.R
 \name{omnibus}
 \alias{omnibus}
-\title{Tests for comparing three or more groups (omnibus)}
+\title{Omnibus Tests for Comparing Three or More Groups}
 \usage{
 omnibus(
-  dependent_var = NULL,
-  independent_var = NULL,
+  y = NULL,
+  x = NULL,
   data = NULL,
   paired_var = NULL,
   alpha = 0.05,
   method = c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"),
-  na.action = c("na.omit", "na.exclude", "na.pass", "na.fail")
+  na.action = c("na.omit", "na.exclude")
 )
 }
 \arguments{
-\item{dependent_var}{Character string. Name of the column containing the dependent variable data.}
+\item{y}{Character string. Dependent variable (outcome).}
 
-\item{independent_var}{Character string. Name of the column containing the independent grouping variable.
-Must have at least three unique groups.}
+\item{x}{Character string. Independent variable (within-subject variable). Must have at least three unique levels.}
 
-\item{data}{Data frame containing the variables.}
+\item{data}{Dataframe containing the variables.}
 
-\item{paired_var}{Character string or NULL. Name of the column with the paired (within-subject) variable.
-If provided, a repeated measures design is assumed.
-The data should be organized by this variable in one of two common orders:
-(A, B, C, A, B, C, ...) or (A, A, A, B, B, B, C, C, C).
-If NULL, independent groups design is assumed.}
+\item{paired_var}{Character string or NULL. (source of repeated measurements).
+If provided, a repeated measures design is assumed. Data should be in long format with
+one row per observation. If NULL, independent groups design is assumed.}
 
 \item{alpha}{Numeric. Significance level for hypothesis tests. Default is 0.05.}
 
-\item{method}{Character string. P-value adjustment method for multiple comparisons in post-hoc tests.
+\item{method}{Character string. p-value adjustment method for multiple comparisons in case of performing post-hoc pairwise (t or Wilcoxon) tests.
 One of "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", or "none".}
 
-\item{na.action}{Character string. Action to take if NAs are present. One of "na.omit", "na.exclude", "na.pass", or "na.fail".}
+\item{na.action}{Character string. Action to take if NAs are present. Either "na.omit" or "na.exclude".}
 }
 \value{
 A list containing:
 \item{formula}{The modelled formula used for the test.}
 \item{summary}{Summary object of the model or test.}
 \item{statistic}{Test statistic value (F or chi-squared).}
-\item{p_value}{P-value observed in the omnibus test.}
+\item{p_value}{p-value observed in the omnibus test.}
 \item{n_groups}{Number of groups in the independent variable.}
 \item{significant}{Logical indicating whether the test was significant at the alpha level.}
 \item{alpha}{Significance level used.}
@@ -50,9 +47,13 @@ A list containing:
 \item{name}{Name of the test performed (e.g., "One-way ANOVA", "Kruskal-Wallis test", etc.).}
 }
 \description{
-Omnibus tests evaluate overall effects in the given data. One-way ANOVA,
-Repeated measures ANOVA, Kruskal Wallis test and Friedman test are included
-in this term.
+Performs omnibus tests to evaluate overall differences between three or more groups.
+Automatically selects the appropriate statistical test based on data characteristics
+and assumption testing. Supports both independent groups and repeated measures designs.
+Tests include one-way ANOVA, repeated measures ANOVA, Kruskal-Wallis test, and
+Friedman test. Performs comprehensive assumption checking (normality, homogeneity
+of variance, sphericity) and post-hoc testing when significant results
+are detected.
 }
 \examples{
 # Examples go here
