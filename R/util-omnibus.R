@@ -11,14 +11,12 @@
   leveneResults <- leveneTest(formula, data = data)
   
   if (normality_key == "significant") {
-    var_res <- leveneResults$`Pr(>F)`[1]
+    variance_key <- if (leveneResults$`Pr(>F)`[1] < alpha) "significant" else "non_significant"
     var.test <- "Levene"
   } else {
-    var_res <- bartlett_results$p.value
+    variance_key <- if (bartlett_results$p.value < alpha) "significant" else "non_significant"
     var.test <- "Bartlett"
   }
-  
-  variance_key <- if (var_res < alpha) "significant" else "non_significant"
   
   # Sphericity assessment
   sphericity_key <- NULL
@@ -67,64 +65,54 @@
                       .format_p(comparisons[i, "p adj"]),
                       sig_flag))
         }
-      }
-    
-    if (name == "Repeated measures ANOVA") {
-        # Pairwise comparison w/ emmeans
-        options(contrasts = c("contr.sum", "contr.poly"))
-        fit.emmeans <- emmeans(model, as.formula(paste("~", x)))
-        post_hoc <- as.data.frame(pairs(fit.emmeans, adjust = "tukey"))
-        cat("Pairwise comparison (\u03b1 = %.3f) (Method: Tukey):\n", alpha)
-        cat(sprintf("%-20s %10s\n", "Contrast", "p-value"))
-        group_names <- post_hoc[, "contrast"]
-        p_values <- post_hoc[, "p.value"]
-
-        # Print results
-        for (i in seq_along(group_names)) {
-          p_val <- p_values[i]
-          sig_flag <- ifelse(!is.na(p_val) && p_val < alpha, "*", "")
-          cat(sprintf("%-20s %9s%s\n", group_names[i], .format_p(p_val), sig_flag))
+      } else {
+        if (name == "Repeated measures ANOVA") {
+            # Pairwise comparison w/ emmeans
+            post_hoc <- suppressWarnings(pairwise.t.test(data[[y]], 
+                                                            data[[x]], 
+                                                            paired = FALSE, 
+                                                            p.adjust.method = method))
         }
-      }
-
-      if (name %in% c("Kruskal-Wallis", "Friedman")) {
-        paired <- if (name == "Friedman") TRUE else FALSE
-        # Pairwise Wilcoxon tests with specified adjustment (paired and unpaired is possible)
-        post_hoc <- suppressWarnings(pairwise.wilcox.test(data[[y]], 
-                                                           data[[x]], 
-                                                           paired = paired, 
-                                                           p.adjust.method = method))
+    
+        if (name %in% c("Kruskal-Wallis", "Friedman")) {
+           paired <- if (name == "Friedman") TRUE else FALSE
+           # Pairwise Wilcoxon tests with specified adjustment (paired and unpaired is possible)
+           post_hoc <- suppressWarnings(pairwise.wilcox.test(data[[y]], 
+                                                             data[[x]], 
+                                                             paired = paired, 
+                                                             p.adjust.method = method))
+        }
+              
+        if (name == "Friedman") {
+          cat(sprintf("Paired pairwise Wilcoxon-tests (\u03b1 = %.3f) (Method: %s):\n", alpha, method))
+        } else {
+          cat(sprintf("Pairwise Wilcoxon-tests (\u03b1 = %.3f) (Method: %s):\n", alpha, method))
+        }
           
-          if (paired == TRUE) {
-            cat(sprintf("Paired pairwise Wilcoxon-tests (\u03b1 = %.3f) (Method: %s):\n", alpha, method))
-          } else {
-            cat(sprintf("Pairwise Wilcoxon-tests (\u03b1 = %.3f) (Method: %s):\n", alpha, method))
-          }
-      
         p_matrix <- post_hoc$p.value
         group_names <- rownames(p_matrix)
         col_names <- colnames(p_matrix)
         cat(sprintf("%-12s", ""))
         for (col in col_names) cat(sprintf("%12s", col))
-        cat("\n")
-        for (i in 1:nrow(p_matrix)) {
-          cat(sprintf("%-12s", group_names[i]))
-          for (j in 1:ncol(p_matrix)) {
-            if (is.na(p_matrix[i, j])) {
-              cat(sprintf("%12s", "-"))
-            } else {
-              p_val <- p_matrix[i, j]
-              sig_flag <- ifelse(p_val < alpha, "*", "")
-              cat(sprintf("%11s%s", .format_p(p_val), sig_flag))
-            }
-          }
           cat("\n")
+        for (i in 1:nrow(p_matrix)) {
+            cat(sprintf("%-12s", group_names[i]))
+        for (j in 1:ncol(p_matrix)) {
+          if (is.na(p_matrix[i, j])) {
+            cat(sprintf("%12s", "-"))
+          } else {
+            p_val <- p_matrix[i, j]
+            sig_flag <- ifelse(p_val < alpha, "*", "")
+            cat(sprintf("%11s%s", .format_p(p_val), sig_flag))
+          }
         }
+    cat("\n")
       }
+    }
   # Return results to main function
-  return(post_hoc)
-  }, # Try catch error
+return(post_hoc)
+}, # Try catch error
     error = function(e) {
       warning("Post-hoc test failed: ", e$message)
-  })
+})
 }

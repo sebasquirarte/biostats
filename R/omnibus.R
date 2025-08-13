@@ -96,7 +96,7 @@ omnibus <- function(y = NULL,
       name <- "Kruskal-Wallis"
     }
   } else {
-    if (normality_key == "non_significant" && variance_key == "non_significant" && (sphericity_key == "non_significant" || sphericity_key == NULL)) { 
+    if (normality_key == "non_significant" && variance_key == "non_significant" && sphericity_key == "non_significant") { 
       formula <- as.formula(paste(y, "~", x, "+ Error(", paired_var, ")")) # Repeated measures ANOVA
       model <- aov(formula, data = data, na.action = na.action)
       summary <- summary(model)
@@ -177,3 +177,4 @@ omnibus <- function(y = NULL,
                  post_hoc = post_hoc,
                  name = name))
 }
+
