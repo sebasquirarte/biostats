@@ -97,7 +97,7 @@ omnibus <- function(y = NULL,
     }
   } else {
     if (normality_key == "non_significant" && variance_key == "non_significant" && sphericity_key == "non_significant") { 
-      formula <- as.formula(paste(y, "~", x, "+ Error(", paired_var, ")")) # Repeated measures ANOVA
+      formula <- as.formula(paste(y, "~", x, "+ Error(", paired_var, "/", x, ")")) # Repeated measures ANOVA
       model <- aov(formula, data = data, na.action = na.action)
       summary <- summary(model)
       name <- "Repeated measures ANOVA"

@@ -22,8 +22,7 @@
   sphericity_key <- NULL
   if (!is.null(paired_var)) {
     order_eval <- data[[x]][1:num_levels]
-    byrow_setting <- if (length(unique(order_eval)) == num_levels) TRUE else FALSE
-    matrix <- matrix(data[[y]], ncol = num_levels, byrow = byrow_setting)
+    matrix <- matrix(data[[y]], ncol = num_levels, byrow = TRUE)
     mauchlyResults <- mauchly.test(lm(matrix ~ 1), X = ~ 1)
     
     sphericity_key <- if (mauchlyResults$p.value < alpha) "significant" else "non_significant"
