@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_line.R
 \name{plot_line}
 \alias{plot_line}
-\title{Create Simple, Professional Line Plots}
+\title{Create Simple Professional Line Plots}
 \usage{
 plot_line(
   data,

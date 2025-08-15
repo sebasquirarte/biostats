@@ -1,4 +1,4 @@
-#' Create Simple, Professional Line Plots
+#' Create Simple Professional Line Plots
 #'
 #' Generates publication-ready line plots with minimal code using ggplot2.
 #'
