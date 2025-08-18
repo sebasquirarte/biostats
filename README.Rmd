@@ -139,19 +139,28 @@ clinical_df <- clinical_data()
 # General summary without considering treatment groups
 clinical_summary <- summary_table(clinical_df,
                                   exclude = c('subject_id', 'visit'))
-
-clinical_summary
+```
+```{r message=FALSE, echo=FALSE}
+# Save as PNG image for GitHub
+gt::gtsave(clinical_summary, "man/figures/summary_table_example_1.png",
+           zoom = 1)
 ```
 
+![](man/figures/summary_table_example_1.png)
 
 ```{r}
 # Grouped summary for each tratment group
 clinical_summary <- summary_table(clinical_df,
                                   group_var = 'treatment',
                                   exclude = c('subject_id', 'visit'))
-
-clinical_summary
 ```
+```{r message=FALSE, echo=FALSE}
+# Save as PNG image for GitHub
+gt::gtsave(clinical_summary, "man/figures/summary_table_example_2.png",
+           zoom = 1)
+```
+
+![](man/figures/summary_table_example_2.png)
     
 ```{r}
 # Grouped summary for each tratment group with all stats
@@ -159,18 +168,27 @@ clinical_summary <- summary_table(clinical_df,
                                   group_var = 'treatment',
                                   all_stats = TRUE,
                                   exclude = c('subject_id', 'visit'))
-
-clinical_summary
 ```
-    
+```{r message=FALSE, echo=FALSE}
+# Save as PNG image for GitHub
+gt::gtsave(clinical_summary, "man/figures/summary_table_example_3.png")
+```
+
+![](man/figures/summary_table_example_3.png)
+
 ```{r}
 # Grouped summary for each tratment group with effect size
 clinical_summary <- summary_table(clinical_df,
                                   group_var = 'treatment',
                                   effect_size = TRUE,
                                   exclude = c('subject_id', 'visit'))
-clinical_summary
 ```
+```{r message=FALSE, echo=FALSE}
+# Save as PNG image for GitHub
+gt::gtsave(clinical_summary, "man/figures/summary_table_example_4.png")
+```
+
+![](man/figures/summary_table_example_4.png)
 
 #### **normality()**
 
