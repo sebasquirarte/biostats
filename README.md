@@ -877,17 +877,29 @@ plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment", y_limit
 
 <img src="man/figures/README-unnamed-chunk-29-2.png" width="100%" />
 
-#### **plot_correlation()**
+#### **plot_corr()**
 
 ##### Description
 
-- 
+Generates publication-ready correlation matrix heatmaps with minimal
+code using ggplot2.
 
 ##### Parameters
 
 | Parameter | Description | Default |
-|-----------|-------------|---------|
-| \-        | \-          | \-      |
+|----|----|----|
+| `data` | A data frame containing the variables to analyze | Required |
+| `vars` | Optional character vector specifying which variables to include. If NULL, all numeric variables will be used | `NULL` |
+| `method` | Character string specifying correlation method; one of “pearson”, “spearman”, or “kendall” | `"pearson"` |
+| `type` | Character string specifying matrix type; one of “full”, “upper”, or “lower” | `"full"` |
+| `diag` | Logical; whether to show diagonal (always 1.0) | `TRUE` |
+| `colors` | Character vector of 3 colors for negative, neutral, and positive correlations. If NULL, uses a TealGrn-based palette | `NULL` |
+| `title` | Optional character string for the plot title | `NULL` |
+| `text_size` | Numeric value specifying the base text size | `12` |
+| `show_values` | Logical; whether to display correlation values in cells | `TRUE` |
+| `value_size` | Numeric; size of correlation value text | `3` |
+| `show_significance` | Logical; whether to mark significant correlations | `FALSE` |
+| `sig_level` | Numeric; significance level for marking | `0.05` |
 
 ##### Examples
 

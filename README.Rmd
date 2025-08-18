@@ -142,8 +142,7 @@ clinical_summary <- summary_table(clinical_df,
 ```
 ```{r message=FALSE, echo=FALSE}
 # Save as PNG image for GitHub
-gt::gtsave(clinical_summary, "man/figures/summary_table_example_1.png",
-           zoom = 1)
+gt::gtsave(clinical_summary, "man/figures/summary_table_example_1.png", zoom = 1)
 ```
 
 ![](man/figures/summary_table_example_1.png)
@@ -573,7 +572,7 @@ Generates publication-ready histogram plots with minimal code using ggplot2.
 
 ##### Examples
 
-```{r}
+```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
 # Sample clinical data
 clinical_df <- clinical_data()
 
@@ -611,7 +610,7 @@ Generates publication-ready boxplots with optional jittered points and mean over
 
 ##### Examples
 
-```{r}
+```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
 # Simulated clinical data
 clinical_df <- clinical_data(visit = 10)
 
@@ -622,17 +621,28 @@ plot_box(clinical_df, x = "sex", y = "age", group = "treatment", y_limits = c(0,
 plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment", y_limits = c(0,80))
 ```
 
-#### **plot_correlation()**
+#### **plot_corr()**
 
 ##### Description
 
--
+Generates publication-ready correlation matrix heatmaps with minimal code using ggplot2.
 
 ##### Parameters
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| - | - | - |
+| `data` | A data frame containing the variables to analyze | Required |
+| `vars` | Optional character vector specifying which variables to include. If NULL, all numeric variables will be used | `NULL` |
+| `method` | Character string specifying correlation method; one of "pearson", "spearman", or "kendall" | `"pearson"` |
+| `type` | Character string specifying matrix type; one of "full", "upper", or "lower" | `"full"` |
+| `diag` | Logical; whether to show diagonal (always 1.0) | `TRUE` |
+| `colors` | Character vector of 3 colors for negative, neutral, and positive correlations. If NULL, uses a TealGrn-based palette | `NULL` |
+| `title` | Optional character string for the plot title | `NULL` |
+| `text_size` | Numeric value specifying the base text size | `12` |
+| `show_values` | Logical; whether to display correlation values in cells | `TRUE` |
+| `value_size` | Numeric; size of correlation value text | `3` |
+| `show_significance` | Logical; whether to mark significant correlations | `FALSE` |
+| `sig_level` | Numeric; significance level for marking | `0.05` |
 
 ##### Examples
 
