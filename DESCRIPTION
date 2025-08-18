@@ -31,4 +31,5 @@ Imports:
     gridExtra,
     rlang,
     car,
-    emmeans
+    emmeans,
+    gt

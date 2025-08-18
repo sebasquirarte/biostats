@@ -187,15 +187,33 @@ clinical_summary <- summary_table(clinical_df,
 clinical_summary <- summary_table(clinical_df,
                                   group_var = 'treatment',
                                   exclude = c('subject_id', 'visit'))
-```
 
-| variable | n | Placebo (Group A) | Treatment (Group B) | normality | test | p_value |
-|:---|:---|:---|:---|:---|:---|:---|
-| sex | A: 153, B: 147 | Male: 66 (43.1%); Female: 87 (56.9%) | Male: 72 (49.0%); Female: 75 (51.0%) | NA | Chi-squared | 0.310 |
-| age | A: 153, B: 147 | Median (IQR): 47.00 (24.00) | Median (IQR): 50.00 (22.00) | A: 0.001, B: 0.002 | Mann-Whitney U | 0.392 |
-| weight | A: 153, B: 147 | Median (IQR): 70.00 (18.00) | Median (IQR): 70.00 (24.85) | A: 0.002, B: 0.006 | Mann-Whitney U | 0.835 |
-| biomarker | A: 153, B: 147 | Mean (SD): 49.03 (9.96) | Mean (SD): 46.42 (10.99) | A: 0.114, B: 0.101 | Welch t-test | 0.032 |
-| response | A: 153, B: 147 | Complete: 27 (17.6%); Partial: 42 (27.5%); None: 84 (54.9%) | Complete: 57 (38.8%); Partial: 27 (18.4%); None: 63 (42.9%) | NA | Chi-squared | \< 0.001 |
+clinical_summary
+#>    variable              n
+#> 1       sex A: 153, B: 147
+#> 2       age A: 153, B: 147
+#> 3    weight A: 153, B: 147
+#> 4 biomarker A: 153, B: 147
+#> 5  response A: 153, B: 147
+#>                                             Placebo (Group A)
+#> 1                        Male: 66 (43.1%); Female: 87 (56.9%)
+#> 2                                 Median (IQR): 47.00 (24.00)
+#> 3                                 Median (IQR): 70.00 (18.00)
+#> 4                                     Mean (SD): 49.03 (9.96)
+#> 5 Complete: 27 (17.6%); Partial: 42 (27.5%); None: 84 (54.9%)
+#>                                           Treatment (Group B)
+#> 1                        Male: 72 (49.0%); Female: 75 (51.0%)
+#> 2                                 Median (IQR): 50.00 (22.00)
+#> 3                                 Median (IQR): 70.00 (24.85)
+#> 4                                    Mean (SD): 46.42 (10.99)
+#> 5 Complete: 57 (38.8%); Partial: 27 (18.4%); None: 63 (42.9%)
+#>            normality           test p_value
+#> 1               <NA>    Chi-squared   0.310
+#> 2 A: 0.001, B: 0.002 Mann-Whitney U   0.392
+#> 3 A: 0.002, B: 0.006 Mann-Whitney U   0.835
+#> 4 A: 0.114, B: 0.101   Welch t-test   0.032
+#> 5               <NA>    Chi-squared < 0.001
+```
 
 ``` r
 # Grouped summary for each tratment group with all stats
@@ -203,15 +221,33 @@ clinical_summary <- summary_table(clinical_df,
                                   group_var = 'treatment',
                                   all_stats = TRUE,
                                   exclude = c('subject_id', 'visit'))
-```
 
-| variable | n | Placebo (Group A) | Treatment (Group B) | normality | test | p_value |
-|:---|:---|:---|:---|:---|:---|:---|
-| sex | A: 153, B: 147 | Male: 66 (43.1%); Female: 87 (56.9%) | Male: 72 (49.0%); Female: 75 (51.0%) | NA | Chi-squared | 0.310 |
-| age | A: 153, B: 147 | Mean (SD): 45.27 (15.5); Median (IQR): 47.00 (34.0,58.0); Range: 18.00,79.00 | Mean (SD): 46.73 (15.8); Median (IQR): 50.00 (37.0,59.0); Range: 18.00,85.00 | A: 0.001, B: 0.002 | Mann-Whitney U | 0.392 |
-| weight | A: 153, B: 147 | Mean (SD): 69.40 (15.3); Median (IQR): 70.00 (60.2,78.2); Range: 45.00,114.00 | Mean (SD): 69.72 (15.2); Median (IQR): 70.00 (57.5,82.3); Range: 45.00,105.50 | A: 0.002, B: 0.006 | Mann-Whitney U | 0.835 |
-| biomarker | A: 153, B: 147 | Mean (SD): 49.03 (10.0); Median (IQR): 48.57 (42.9,54.9); Range: 22.42,77.47 | Mean (SD): 46.42 (11.0); Median (IQR): 45.54 (39.3,55.5); Range: 14.93,76.75 | A: 0.114, B: 0.101 | Welch t-test | 0.032 |
-| response | A: 153, B: 147 | Complete: 27 (17.6%); Partial: 42 (27.5%); None: 84 (54.9%) | Complete: 57 (38.8%); Partial: 27 (18.4%); None: 63 (42.9%) | NA | Chi-squared | \< 0.001 |
+clinical_summary
+#>    variable              n
+#> 1       sex A: 153, B: 147
+#> 2       age A: 153, B: 147
+#> 3    weight A: 153, B: 147
+#> 4 biomarker A: 153, B: 147
+#> 5  response A: 153, B: 147
+#>                                                               Placebo (Group A)
+#> 1                                          Male: 66 (43.1%); Female: 87 (56.9%)
+#> 2  Mean (SD): 45.27 (15.5); Median (IQR): 47.00 (34.0,58.0); Range: 18.00,79.00
+#> 3 Mean (SD): 69.40 (15.3); Median (IQR): 70.00 (60.2,78.2); Range: 45.00,114.00
+#> 4  Mean (SD): 49.03 (10.0); Median (IQR): 48.57 (42.9,54.9); Range: 22.42,77.47
+#> 5                   Complete: 27 (17.6%); Partial: 42 (27.5%); None: 84 (54.9%)
+#>                                                             Treatment (Group B)
+#> 1                                          Male: 72 (49.0%); Female: 75 (51.0%)
+#> 2  Mean (SD): 46.73 (15.8); Median (IQR): 50.00 (37.0,59.0); Range: 18.00,85.00
+#> 3 Mean (SD): 69.72 (15.2); Median (IQR): 70.00 (57.5,82.3); Range: 45.00,105.50
+#> 4  Mean (SD): 46.42 (11.0); Median (IQR): 45.54 (39.3,55.5); Range: 14.93,76.75
+#> 5                   Complete: 57 (38.8%); Partial: 27 (18.4%); None: 63 (42.9%)
+#>            normality           test p_value
+#> 1               <NA>    Chi-squared   0.310
+#> 2 A: 0.001, B: 0.002 Mann-Whitney U   0.392
+#> 3 A: 0.002, B: 0.006 Mann-Whitney U   0.835
+#> 4 A: 0.114, B: 0.101   Welch t-test   0.032
+#> 5               <NA>    Chi-squared < 0.001
+```
 
 ``` r
 # Grouped summary for each tratment group with effect size
@@ -219,15 +255,32 @@ clinical_summary <- summary_table(clinical_df,
                                   group_var = 'treatment',
                                   effect_size = TRUE,
                                   exclude = c('subject_id', 'visit'))
+clinical_summary
+#>    variable              n
+#> 1       sex A: 153, B: 147
+#> 2       age A: 153, B: 147
+#> 3    weight A: 153, B: 147
+#> 4 biomarker A: 153, B: 147
+#> 5  response A: 153, B: 147
+#>                                             Placebo (Group A)
+#> 1                        Male: 66 (43.1%); Female: 87 (56.9%)
+#> 2                                 Median (IQR): 47.00 (24.00)
+#> 3                                 Median (IQR): 70.00 (18.00)
+#> 4                                     Mean (SD): 49.03 (9.96)
+#> 5 Complete: 27 (17.6%); Partial: 42 (27.5%); None: 84 (54.9%)
+#>                                           Treatment (Group B)
+#> 1                        Male: 72 (49.0%); Female: 75 (51.0%)
+#> 2                                 Median (IQR): 50.00 (22.00)
+#> 3                                 Median (IQR): 70.00 (24.85)
+#> 4                                    Mean (SD): 46.42 (10.99)
+#> 5 Complete: 57 (38.8%); Partial: 27 (18.4%); None: 63 (42.9%)
+#>            normality           test p_value effect_size effect_param
+#> 1               <NA>    Chi-squared   0.310        0.06   Cramer's V
+#> 2 A: 0.001, B: 0.002 Mann-Whitney U   0.392        0.96            r
+#> 3 A: 0.002, B: 0.006 Mann-Whitney U   0.835        0.92            r
+#> 4 A: 0.114, B: 0.101   Welch t-test   0.032        0.25    Cohen's d
+#> 5               <NA>    Chi-squared < 0.001        0.24   Cramer's V
 ```
-
-| variable | n | Placebo (Group A) | Treatment (Group B) | normality | test | p_value | effect_size | effect_param |
-|:---|:---|:---|:---|:---|:---|:---|:---|:---|
-| sex | A: 153, B: 147 | Male: 66 (43.1%); Female: 87 (56.9%) | Male: 72 (49.0%); Female: 75 (51.0%) | NA | Chi-squared | 0.310 | 0.06 | Cramer’s V |
-| age | A: 153, B: 147 | Median (IQR): 47.00 (24.00) | Median (IQR): 50.00 (22.00) | A: 0.001, B: 0.002 | Mann-Whitney U | 0.392 | 0.96 | r |
-| weight | A: 153, B: 147 | Median (IQR): 70.00 (18.00) | Median (IQR): 70.00 (24.85) | A: 0.002, B: 0.006 | Mann-Whitney U | 0.835 | 0.92 | r |
-| biomarker | A: 153, B: 147 | Mean (SD): 49.03 (9.96) | Mean (SD): 46.42 (10.99) | A: 0.114, B: 0.101 | Welch t-test | 0.032 | 0.25 | Cohen’s d |
-| response | A: 153, B: 147 | Complete: 27 (17.6%); Partial: 42 (27.5%); None: 84 (54.9%) | Complete: 57 (38.8%); Partial: 27 (18.4%); None: 63 (42.9%) | NA | Chi-squared | \< 0.001 | 0.24 | Cramer’s V |
 
 #### **normality()**
 
@@ -267,7 +320,7 @@ normality("biomarker", data = clinical_df)
 #> (Use outliers = TRUE to see outliers [2]).
 ```
 
-<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
 
 ``` r
 
@@ -289,7 +342,7 @@ normality("weight", data = clinical_df, outliers = TRUE)
 #> OUTLIERS (row indices): 28, 29, 30, 37, 38, 39, 121, 122, 101, 172, 32, 107, 213, 194, 193, 33, 85, 86, 61, 51, 276, 49, 274, 177, 175, 50, 197, 133, 174, 108, 113, 87, 102, 176, 112, 158, 259, 200, 31, 198, 114, 201, 170, 205, 260, 279, 199, 277, 278, 156, 115, 157, 159, 25, 206, 169, 117, 230
 ```
 
-<img src="man/figures/README-unnamed-chunk-13-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-2.png" width="100%" />
 
 #### **missing_values()**
 
@@ -328,7 +381,7 @@ missing_values(clinical_df)
 #> biomarker         7        2.33
 ```
 
-<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
 
 ``` r
 # Show all variables including those without missing values
@@ -353,7 +406,7 @@ missing_values(clinical_df, all = TRUE)
 #> age                0        0.00
 ```
 
-<img src="man/figures/README-unnamed-chunk-14-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-2.png" width="100%" />
 
 #### **outliers()**
 
@@ -389,7 +442,7 @@ outliers(clinical_df$biomarker)
 #> Outlier indices: 293, 311, 602, 625, 892
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
 
 ### Sample Size and Power Calculation
 
@@ -565,7 +618,7 @@ result <- sample_size_range(x1_range = c(-0.01, 0.01),
 #> 90% Power: total n = 44 to 68
 ```
 
-<img src="man/figures/README-unnamed-chunk-19-1.png" width="75%" />
+<img src="man/figures/README-unnamed-chunk-16-1.png" width="75%" />
 
 | power |     x1 |  x2 | x1 - x2 |  n1 |  n2 | total |
 |------:|-------:|----:|--------:|----:|----:|------:|
@@ -608,7 +661,7 @@ result <- sample_size_range(x1_range = c(0.65, 0.75),
 #> 90% Power: total n = 196 to 858
 ```
 
-<img src="man/figures/README-unnamed-chunk-21-1.png" width="75%" />
+<img src="man/figures/README-unnamed-chunk-18-1.png" width="75%" />
 
 | power |   x1 |   x2 | x1 - x2 |  n1 |  n2 | total |
 |------:|-----:|-----:|--------:|----:|----:|------:|
@@ -732,7 +785,7 @@ plot_bar(clinical_df,
          values = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-26-1.png" width="75%" />
+<img src="man/figures/README-unnamed-chunk-23-1.png" width="75%" />
 
 ``` r
 
@@ -745,7 +798,7 @@ plot_bar(clinical_df,
          values = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-26-2.png" width="75%" />
+<img src="man/figures/README-unnamed-chunk-23-2.png" width="75%" />
 
 #### **plot_line()**
 
@@ -790,26 +843,57 @@ plot_line(clinical_df,
           error = "se")
 ```
 
-<img src="man/figures/README-unnamed-chunk-27-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-24-1.png" width="100%" />
 
 #### **plot_hist()**
 
 ##### Description
 
-- 
+Generates publication-ready histogram plots with minimal code using
+ggplot2.
 
 ##### Parameters
 
+## Parameters
+
 | Parameter | Description | Default |
-|-----------|-------------|---------|
-| \-        | \-          | \-      |
+|----|----|----|
+| `data` | A data frame containing the variables to plot | \- |
+| `x` | Character string specifying the variable for the histogram | \- |
+| `group` | Optional character string specifying the grouping variable for multiple histograms | \- |
+| `facet` | Optional character string specifying the faceting variable | \- |
+| `bins` | Numeric; number of bins for the histogram | 30 |
+| `binwidth` | Numeric; width of the bins (overrides bins if specified) | \- |
+| `alpha` | Numeric; transparency level for the bars | 0.7 |
+| `colors` | Character vector of colors for bars. If NULL, uses TealGrn color palette | NULL |
+| `title` | Optional character string for the plot title | \- |
+| `xlab` | Optional character string for the x-axis label | \- |
+| `ylab` | Optional character string for the y-axis label | \- |
+| `legend_title` | Optional character string for the legend title | \- |
+| `text_size` | Numeric value specifying the base text size | 12 |
+| `y_limits` | Numeric vector of length 2 specifying y-axis limits (e.g., c(0, 100)) | \- |
+| `x_limits` | Numeric vector of length 2 specifying x-axis limits (e.g., c(0, 50)) | \- |
+| `stat` | Optional character string; adds a dashed line for “mean” or “median” | NULL |
 
 ##### Examples
 
 ``` r
-NULL
-#> NULL
+# Sample clinical data
+clinical_df <- clinical_data()
+
+# Mirror histogram for 2 groups with mean lines
+plot_hist(clinical_df, x = "biomarker", group = "treatment", stat = "mean")
 ```
+
+<img src="man/figures/README-unnamed-chunk-25-1.png" width="100%" />
+
+``` r
+
+# Faceted histogram
+plot_hist(clinical_df, x = "biomarker", facet = "treatment")
+```
+
+<img src="man/figures/README-unnamed-chunk-25-2.png" width="100%" />
 
 #### **plot_box()**
 

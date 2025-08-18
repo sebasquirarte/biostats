@@ -139,21 +139,18 @@ clinical_df <- clinical_data()
 # General summary without considering treatment groups
 clinical_summary <- summary_table(clinical_df,
                                   exclude = c('subject_id', 'visit'))
+
+clinical_summary
 ```
 
-```{r, echo=FALSE, results='asis'}
-knitr::kable(clinical_summary, format = "markdown")
-```
-    
+
 ```{r}
 # Grouped summary for each tratment group
 clinical_summary <- summary_table(clinical_df,
                                   group_var = 'treatment',
                                   exclude = c('subject_id', 'visit'))
-```
 
-```{r, echo=FALSE, results='asis'}
-knitr::kable(clinical_summary, format = "markdown")
+clinical_summary
 ```
     
 ```{r}
@@ -162,10 +159,8 @@ clinical_summary <- summary_table(clinical_df,
                                   group_var = 'treatment',
                                   all_stats = TRUE,
                                   exclude = c('subject_id', 'visit'))
-```
 
-```{r, echo=FALSE, results='asis'}
-knitr::kable(clinical_summary, format = "markdown")
+clinical_summary
 ```
     
 ```{r}
@@ -174,10 +169,7 @@ clinical_summary <- summary_table(clinical_df,
                                   group_var = 'treatment',
                                   effect_size = TRUE,
                                   exclude = c('subject_id', 'visit'))
-```
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(clinical_summary, format = "markdown")
+clinical_summary
 ```
 
 #### **normality()**
@@ -526,18 +518,42 @@ plot_line(clinical_df,
 
 ##### Description
 
--
+Generates publication-ready histogram plots with minimal code using ggplot2.
 
 ##### Parameters
 
+## Parameters
+
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| - | - | - |
+| `data` | A data frame containing the variables to plot | - |
+| `x` | Character string specifying the variable for the histogram | - |
+| `group` | Optional character string specifying the grouping variable for multiple histograms | - |
+| `facet` | Optional character string specifying the faceting variable | - |
+| `bins` | Numeric; number of bins for the histogram | 30 |
+| `binwidth` | Numeric; width of the bins (overrides bins if specified) | - |
+| `alpha` | Numeric; transparency level for the bars | 0.7 |
+| `colors` | Character vector of colors for bars. If NULL, uses TealGrn color palette | NULL |
+| `title` | Optional character string for the plot title | - |
+| `xlab` | Optional character string for the x-axis label | - |
+| `ylab` | Optional character string for the y-axis label | - |
+| `legend_title` | Optional character string for the legend title | - |
+| `text_size` | Numeric value specifying the base text size | 12 |
+| `y_limits` | Numeric vector of length 2 specifying y-axis limits (e.g., c(0, 100)) | - |
+| `x_limits` | Numeric vector of length 2 specifying x-axis limits (e.g., c(0, 50)) | - |
+| `stat` | Optional character string; adds a dashed line for "mean" or "median" | NULL |
 
 ##### Examples
 
 ```{r}
-NULL
+# Sample clinical data
+clinical_df <- clinical_data()
+
+# Mirror histogram for 2 groups with mean lines
+plot_hist(clinical_df, x = "biomarker", group = "treatment", stat = "mean")
+
+# Faceted histogram
+plot_hist(clinical_df, x = "biomarker", facet = "treatment")
 ```
 
 #### **plot_box()**

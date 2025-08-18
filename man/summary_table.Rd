@@ -24,7 +24,7 @@ summary_table(
 \item{exclude}{Character vector; variable names to exclude from the summary. Default is NULL.}
 }
 \value{
-A data frame with one row per variable containing summary statistics and test results.
+A gt table object with formatted summary statistics.
 }
 \description{
 Generates summary tables for biostatistics and clinical data analysis with
@@ -37,18 +37,18 @@ and inferential tests for single-group summaries or two-group comparisons.
 clinical_df <- clinical_data()
 
 clinical_summary <- summary_table(clinical_df,
-                                 exclude = c('subject_id', 'visit'))
+                                  exclude = c('subject_id', 'visit'))
 
 # Grouped summary for each treatment group
 clinical_summary <- summary_table(clinical_df,
-                                 group_var = 'treatment',
-                                 exclude = c('subject_id', 'visit'))
+                                  group_var = 'treatment',
+                                  exclude = c('subject_id', 'visit'))
 
-# Grouped summary for each tratment group with all stats and effect size
-clinical_summary <- summary_table(clinical_df,
-                                 group_var = 'treatment',
-                                 all_stats = TRUE,
-                                 effect_size = TRUE,
-                                 exclude = c('subject_id', 'visit'))
+# Grouped summary with all stats and effect size
+clinical_summary_gt <- summary_table(clinical_df,
+                                     group_var = 'treatment',
+                                     all_stats = TRUE,
+                                     effect_size = TRUE,
+                                     exclude = c('subject_id', 'visit'))
 
 }

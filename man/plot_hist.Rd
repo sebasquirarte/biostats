@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_hist.R
 \name{plot_hist}
 \alias{plot_hist}
-\title{Create Simple, Professional Histogram Plots}
+\title{Create Simple Professional Histogram Plots}
 \usage{
 plot_hist(
   data,
@@ -63,7 +63,7 @@ A ggplot2 object that can be further customized
 Generates publication-ready histogram plots with minimal code using ggplot2.
 }
 \examples{
-# Create sample clinical data
+# Sample clinical data
 clinical_df <- clinical_data()
 
 # Simple histogram

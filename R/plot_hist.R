@@ -1,4 +1,4 @@
-#' Create Simple, Professional Histogram Plots
+#' Create Simple Professional Histogram Plots
 #'
 #' Generates publication-ready histogram plots with minimal code using ggplot2.
 #'
@@ -22,7 +22,7 @@
 #' @return A ggplot2 object that can be further customized
 #'
 #' @examples
-#' # Create sample clinical data
+#' # Sample clinical data
 #' clinical_df <- clinical_data()
 #'
 #' # Simple histogram

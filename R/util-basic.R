@@ -13,3 +13,4 @@
 .format_p <- function(p) {
   if (is.na(p)) "NA" else if (p < 0.001) "< 0.001" else sprintf("%.3f", p)
 }
+
