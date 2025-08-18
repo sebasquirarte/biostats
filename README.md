@@ -58,13 +58,13 @@ The biostats package includes the following functions:
   Inference**](#statistical-analysis-and-inference)
   - [omnibus()](#anova_test)
   - [odds()](#odds)
-  - [auc_response()](#auc)
+  - [auc_response()](#auc_response)
 - [**Data Visualization**](#data-visualization)
   - [plot_bar()](#plot_bar)
   - [plot_line()](#plot_line)
   - [plot_hist()](#plot_hist)
   - [plot_box()](#plot_box)
-  - [plot_correlation()](#plot_correlation)
+  - [plot_corr()](#plot_corr)
 
 ### Descriptive Statistics and Exploratory Data Analysis (EDA)
 
@@ -904,6 +904,13 @@ code using ggplot2.
 ##### Examples
 
 ``` r
-NULL
-#> NULL
+# Create clinical data with additional correlated variables
+clinical_df <- clinical_data(n = 100, visits = 8, na_rate = 0.03, dropout_rate = 0.05)
+clinical_df$height <- 150 + 0.3 * clinical_df$age + rnorm(nrow(clinical_df), 0, 8)
+clinical_df$systolic_bp <- 100 + 0.8 * clinical_df$age + rnorm(nrow(clinical_df), 0, 10)
+
+# Correlation matrix with statistical significance
+plot_corr(clinical_df, type = "upper", show_significance = TRUE)
 ```
+
+<img src="man/figures/README-unnamed-chunk-30-1.png" width="100%" />
