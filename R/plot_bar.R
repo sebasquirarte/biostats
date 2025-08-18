@@ -108,14 +108,14 @@ plot_bar <- function(data,
   if (is.null(y)) {
     # Count-based plots
     if (single_color) {
-      p <- p + geom_bar(fill = colors[1], color = "black", alpha = 0.8)
+      p <- p + geom_bar(fill = colors[1], color = NA, alpha = 0.8)
       if (values) {
         p <- p + geom_text(stat = "count", aes(label = after_stat(.data[["count"]])),
                            vjust = -0.5, size = text_size / 3)
       }
     } else {
       p <- p +
-        geom_bar(aes(fill = .data[[group]]), position = position, color = "black", alpha = 0.8) +
+        geom_bar(aes(fill = .data[[group]]), position = position, color = NA, alpha = 0.8) +
         scale_fill_manual(values = colors)
       if (values) {
         text_aes <- switch(position,
@@ -140,7 +140,7 @@ plot_bar <- function(data,
 
     if (!is.null(group)) {
       p <- p +
-        geom_col(aes(fill = .data[[group]]), position = position, color = "black", alpha = 0.8) +
+        geom_col(aes(fill = .data[[group]]), position = position, color = NA, alpha = 0.8) +
         scale_fill_manual(values = colors)
       if (values) {
         if (position == "fill") {
@@ -159,7 +159,7 @@ plot_bar <- function(data,
       # Single bar or faceted
       fill_aes <- if (!is.null(facet)) aes(fill = .data[[x]]) else NULL
       p <- p + geom_col(fill_aes, fill = if (is.null(facet)) colors[1] else NULL,
-                        color = "black", alpha = 0.8)
+                        color = NA, alpha = 0.8)
       if (!is.null(facet)) p <- p + scale_fill_manual(values = colors)
       if (values) {
         p <- p + geom_text(aes(label = round(.data[[y]], 1)), vjust = -0.5, size = text_size / 3)
@@ -190,7 +190,7 @@ plot_bar <- function(data,
     theme_minimal(base_size = text_size) +
     theme(plot.title = element_text(hjust = 0.5, face = "bold"),
           panel.grid.minor = element_blank(),
-          axis.ticks = element_line(color = "black"),
+          axis.ticks = element_line(color = NA),
           legend.position = if (single_color) "none" else "right",
           strip.text = element_text(face = "bold"))
 

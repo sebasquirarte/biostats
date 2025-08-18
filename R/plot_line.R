@@ -33,9 +33,9 @@
 #' plot_line(clinical_df, x = "visit", y = "biomarker",
 #'           group = "treatment", stat = "mean", error = "se")
 #'
-#' # Line plot with custom axis limits
-#' plot_line(clinical_df, x = "visit", y = "biomarker",
-#'           group = "treatment", y_limits = c(0, 50), x_limits = c(1, 4))
+#' # Faceted line plots with median and 95% CI
+#' plot_line(clinical_df, x = "visit", y = "biomarker", group = "treatment", 
+#'           stat = "median", error = "ci", points = FALSE, facet = "sex")
 #'
 #' @import ggplot2
 #' @export

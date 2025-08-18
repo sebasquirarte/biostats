@@ -766,6 +766,21 @@ plot_line(clinical_df,
 
 <img src="man/figures/README-unnamed-chunk-27-1.png" width="100%" />
 
+``` r
+
+# Faceted line plots with median and 95% CI
+plot_line(clinical_df, 
+          x = "visit", 
+          y = "biomarker", 
+          group = "treatment", 
+          facet = "sex",
+          stat = "median", 
+          error = "ci", 
+          points = FALSE)
+```
+
+<img src="man/figures/README-unnamed-chunk-27-2.png" width="100%" />
+
 #### **plot_hist()**
 
 ##### Description
