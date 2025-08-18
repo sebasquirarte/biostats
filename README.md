@@ -835,20 +835,47 @@ plot_hist(clinical_df, x = "biomarker", facet = "treatment")
 
 ##### Description
 
-- 
+Generates publication-ready boxplots with optional jittered points and
+mean overlay.
 
 ##### Parameters
 
 | Parameter | Description | Default |
-|-----------|-------------|---------|
-| \-        | \-          | \-      |
+|----|----|----|
+| `data` | A data frame containing the variables to plot | — |
+| `x` | Character string specifying the x-axis variable (categorical or numeric with few unique values) | — |
+| `y` | Character string specifying the y-axis variable (numeric) | — |
+| `group` | Optional character string specifying grouping variable for fill/color | `NULL` |
+| `facet` | Optional character string specifying faceting variable | `NULL` |
+| `colors` | Character vector of colors. If `NULL`, uses TealGrn palette | `NULL` |
+| `title` | Optional plot title | `NULL` |
+| `xlab` | Optional x-axis label | `NULL` |
+| `ylab` | Optional y-axis label | `NULL` |
+| `legend_title` | Optional legend title | `NULL` |
+| `points` | Logical; add jittered points | `FALSE` |
+| `point_size` | Numeric; size of points | — |
+| `text_size` | Numeric; base text size | — |
+| `y_limits` | Numeric vector of length 2 for y-axis limits | `NULL` |
 
 ##### Examples
 
 ``` r
-NULL
-#> NULL
+# Simulated clinical data
+clinical_df <- clinical_data(visit = 10)
+
+# Barplot of age by sex and treatment
+plot_box(clinical_df, x = "sex", y = "age", group = "treatment", y_limits = c(0,80))
 ```
+
+<img src="man/figures/README-unnamed-chunk-29-1.png" width="100%" />
+
+``` r
+
+# Barplot of bimarker by study visit and treatment
+plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment", y_limits = c(0,80))
+```
+
+<img src="man/figures/README-unnamed-chunk-29-2.png" width="100%" />
 
 #### **plot_correlation()**
 
