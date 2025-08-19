@@ -70,7 +70,6 @@ The biostats package includes the following functions:
 - [**Statistical Analysis and Inference**](#statistical-analysis-and-inference)
   - [omnibus()](#anova_test) 
   - [odds()](#odds) 
-  - [auc_response()](#auc_response)
 - [**Data Visualization**](#data-visualization)
   - [plot_bar()](#plot_bar)
   - [plot_line()](#plot_line)
@@ -420,24 +419,6 @@ NULL
 NULL
 ```
 
-#### **auc_response()**
-
-##### Description
-
--
-
-##### Parameters
-
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| - | - | - |
-
-##### Examples
-
-```{r}
-NULL
-```
-
 ### Data Visualization
 
 #### **plot_bar()**
@@ -647,6 +628,7 @@ Generates publication-ready correlation matrix heatmaps with minimal code using 
 ##### Examples
 
 ```{r, fig.width=10, fig.height=8, dpi=300, out.width="100%"}
+# Sample data
 cars_df <- mtcars
 
 # Correlation matrix with statistical significance

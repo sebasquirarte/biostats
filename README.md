@@ -58,7 +58,6 @@ The biostats package includes the following functions:
   Inference**](#statistical-analysis-and-inference)
   - [omnibus()](#anova_test)
   - [odds()](#odds)
-  - [auc_response()](#auc_response)
 - [**Data Visualization**](#data-visualization)
   - [plot_bar()](#plot_bar)
   - [plot_line()](#plot_line)
@@ -645,25 +644,6 @@ NULL
 #> NULL
 ```
 
-#### **auc_response()**
-
-##### Description
-
-- 
-
-##### Parameters
-
-| Parameter | Description | Default |
-|-----------|-------------|---------|
-| \-        | \-          | \-      |
-
-##### Examples
-
-``` r
-NULL
-#> NULL
-```
-
 ### Data Visualization
 
 #### **plot_bar()**
@@ -706,7 +686,7 @@ plot_bar(clinical_df,
          values = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-26-1.png" width="75%" />
+<img src="man/figures/README-unnamed-chunk-25-1.png" width="75%" />
 
 ``` r
 
@@ -719,7 +699,7 @@ plot_bar(clinical_df,
          values = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-26-2.png" width="75%" />
+<img src="man/figures/README-unnamed-chunk-25-2.png" width="75%" />
 
 #### **plot_line()**
 
@@ -764,7 +744,7 @@ plot_line(clinical_df,
           error = "se")
 ```
 
-<img src="man/figures/README-unnamed-chunk-27-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-26-1.png" width="100%" />
 
 ``` r
 
@@ -779,7 +759,7 @@ plot_line(clinical_df,
           points = FALSE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-27-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-26-2.png" width="100%" />
 
 #### **plot_hist()**
 
@@ -821,7 +801,7 @@ clinical_df <- clinical_data()
 plot_hist(clinical_df, x = "biomarker", group = "treatment", stat = "mean")
 ```
 
-<img src="man/figures/README-unnamed-chunk-28-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-27-1.png" width="100%" />
 
 ``` r
 
@@ -829,7 +809,7 @@ plot_hist(clinical_df, x = "biomarker", group = "treatment", stat = "mean")
 plot_hist(clinical_df, x = "biomarker", facet = "treatment")
 ```
 
-<img src="man/figures/README-unnamed-chunk-28-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-27-2.png" width="100%" />
 
 #### **plot_box()**
 
@@ -867,7 +847,7 @@ clinical_df <- clinical_data(visit = 10)
 plot_box(clinical_df, x = "sex", y = "age", group = "treatment", y_limits = c(0,80))
 ```
 
-<img src="man/figures/README-unnamed-chunk-29-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-28-1.png" width="100%" />
 
 ``` r
 
@@ -875,7 +855,7 @@ plot_box(clinical_df, x = "sex", y = "age", group = "treatment", y_limits = c(0,
 plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment", y_limits = c(0,80))
 ```
 
-<img src="man/figures/README-unnamed-chunk-29-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-28-2.png" width="100%" />
 
 #### **plot_corr()**
 
@@ -904,10 +884,11 @@ code using ggplot2.
 ##### Examples
 
 ``` r
+# Sample data
 cars_df <- mtcars
 
 # Correlation matrix with statistical significance
 plot_corr(cars_df, type = "upper", show_significance = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-30-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-29-1.png" width="100%" />
