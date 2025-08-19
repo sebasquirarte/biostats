@@ -102,7 +102,7 @@ plot_corr <- function(data,
   }
   
   # Set colors
-  if (is.null(colors)) colors <- c("#489CAC", "#FFFFFF", "#79E1BE")
+  if (is.null(colors)) colors <- c("#489CAC", "#FFFFFF", "#CEF3CE")
   if (length(colors) != 3) stop("colors must be a vector of 3 colors (negative, neutral, positive)", call. = FALSE)
   
   # Create plot
