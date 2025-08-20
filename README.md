@@ -5,8 +5,6 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check.yaml](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yaml)
-[![Tests](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/biostats)](https://cran.r-project.org/package=biostats)
 <!-- badges: end -->
@@ -83,8 +81,8 @@ rates.
 | `n` | Number of subjects (1-999) | 100 |
 | `visits` | Number of visits including baseline | 3 |
 | `arms` | Character vector of treatment arms | `c('Placebo', 'Treatment')` |
-| `dropout_rate` | Proportion of subjects who dropout (0-1) | 0 |
-| `na_rate` | Proportion of missing data at random (0-1) | 0 |
+| `dropout` | Proportion of subjects who dropout (0-1) | 0 |
+| `missing` | Proportion of missing data at random (0-1) | 0 |
 
 ##### Examples
 
@@ -113,7 +111,7 @@ tail(clinical_df)
 
 ``` r
 # Multiple treatment arms with dropout rate and missing data
-clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), na_rate = 0.05, dropout_rate = 0.10)
+clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), missing = 0.05, dropout = 0.10)
 
 head(clinical_df, 10)
 #>    subject_id visit    sex treatment age weight biomarker response
@@ -131,14 +129,14 @@ head(clinical_df, 10)
 tail(clinical_df, 10)
 #>     subject_id visit    sex treatment age weight biomarker response
 #> 291        097     3   Male   Placebo  32   80.8     25.36  Partial
-#> 292        098     1 Female         A  54   73.6     58.78     <NA>
+#> 292        098     1 Female         A  54   73.6     58.78 Complete
 #> 293        098     2 Female         A  54   72.9     35.88  Partial
 #> 294        098     3 Female         A  54   72.4     48.28     None
 #> 295        099     1 Female         A  34   75.1     47.36     None
 #> 296        099     2 Female         A  34   72.7     69.89     None
-#> 297        099     3 Female         A  34   75.3     23.68     <NA>
+#> 297        099     3 Female         A  34   75.3     23.68     None
 #> 298        100     1   Male         A  34   58.4     49.71  Partial
-#> 299        100     2   Male         A  34     NA     54.50     None
+#> 299        100     2   Male         A  34   55.0     54.50     None
 #> 300        100     3   Male         A  34   60.0     42.96     None
 ```
 
@@ -230,12 +228,12 @@ normality("biomarker", data = clinical_df)
 #> Normality Test for 'biomarker' 
 #> 
 #> n = 300 
-#> mean (SD) = 48.27 (10.0) 
-#> median (IQR) = 48.39 (13.5) 
+#> mean (SD) = 48.20 (10.0) 
+#> median (IQR) = 48.30 (12.4) 
 #> 
-#> Shapiro-Wilk: W = 0.996, p = 0.734 
-#> Skewness: -0.01 
-#> Kurtosis: -0.34 
+#> Shapiro-Wilk: W = 0.997, p = 0.755 
+#> Skewness: 0.04 
+#> Kurtosis: -0.27 
 #> 
 #> Data is normally distributed.
 ```
@@ -250,16 +248,16 @@ normality("weight", data = clinical_df, outliers = TRUE)
 #> Normality Test for 'weight' 
 #> 
 #> n = 300 
-#> mean (SD) = 68.52 (15.8) 
-#> median (IQR) = 68.20 (21.4) 
+#> mean (SD) = 68.33 (15.5) 
+#> median (IQR) = 67.95 (21.2) 
 #> 
-#> Shapiro-Wilk: W = 0.964, p = < 0.001 
-#> Skewness: 0.45 
-#> Kurtosis: -0.16 
+#> Shapiro-Wilk: W = 0.966, p = < 0.001 
+#> Skewness: 0.43 
+#> Kurtosis: -0.14 
 #> 
 #> Data is not normally distributed. 
 #> 
-#> OUTLIERS (row indices): 34, 35, 36, 40, 41, 42, 82, 83, 84, 94, 95, 96, 203, 255, 59, 256, 139, 75, 159, 67, 296, 287, 219, 53, 68, 130, 132
+#> OUTLIERS (row indices): 7, 8, 11, 43, 44, 45, 49, 50, 51, 91, 92, 93, 145, 176, 248, 255, 122, 23, 213, 214, 211, 196, 249, 141, 139
 ```
 
 <img src="man/figures/README-unnamed-chunk-13-2.png" width="100%" />
@@ -282,7 +280,7 @@ per column with visualizations.
 ##### Examples
 
 ``` r
-clinical_df <- clinical_data(na_rate = 0.05)
+clinical_df <- clinical_data(missing = 0.05)
 
 # Missing value analysis of only variables with missing values
 missing_values(clinical_df)
@@ -356,10 +354,10 @@ outliers(clinical_df$biomarker)
 #> n: 900
 #> Missing: 0 (0.0%)
 #> Method: Tukey's IQR x 1.5
-#> Bounds: [20.55, 76.06]
-#> Outliers detected: 7 (0.8%)
+#> Bounds: [21.39, 75.61]
+#> Outliers detected: 8 (0.9%)
 #> 
-#> Outlier indices: 273, 564, 587, 686, 707, 854, 874
+#> Outlier indices: 15, 82, 109, 136, 177, 607, 709, 810
 ```
 
 <img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
@@ -569,7 +567,7 @@ result <- sample_size_range(x1_range = c(0.65, 0.75),
                             type = "non-inferiority",
                             delta = -0.1,
                             alpha = 0.05,
-                            dropout_rate = 0.1)
+                            dropout = 0.1)
 #> 
 #> Sample Size Range
 #> 
@@ -845,6 +843,10 @@ clinical_df <- clinical_data(visit = 10)
 
 # Barplot of age by sex and treatment
 plot_box(clinical_df, x = "sex", y = "age", group = "treatment", y_limits = c(0,80))
+#> Warning: Removed 10 rows containing non-finite outside the scale range
+#> (`stat_boxplot()`).
+#> Warning: Removed 10 rows containing non-finite outside the scale range
+#> (`stat_summary()`).
 ```
 
 <img src="man/figures/README-unnamed-chunk-28-1.png" width="100%" />
@@ -853,6 +855,10 @@ plot_box(clinical_df, x = "sex", y = "age", group = "treatment", y_limits = c(0,
 
 # Barplot of bimarker by study visit and treatment
 plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment", y_limits = c(0,80))
+#> Warning: Removed 1 row containing non-finite outside the scale range
+#> (`stat_boxplot()`).
+#> Warning: Removed 1 row containing non-finite outside the scale range
+#> (`stat_summary()`).
 ```
 
 <img src="man/figures/README-unnamed-chunk-28-2.png" width="100%" />

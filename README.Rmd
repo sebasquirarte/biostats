@@ -20,8 +20,6 @@ set.seed(100)
 # biostats <a href="https://github.com/sebasquirarte/biostats/blob/main/man/figures/logo.png"><img src="man/figures/logo.png" align="right" height="138" alt="biostats_logo" /></a>
 
 <!-- badges: start -->
-[![R-CMD-check.yaml](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yaml)
-[![Tests](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yaml)
 [![CRAN status](https://www.r-pkg.org/badges/version/biostats)](https://cran.r-project.org/package=biostats)
 <!-- badges: end -->
 
@@ -92,8 +90,8 @@ Creates a dataset of simulated clinical trial data with subject demographics, mu
 | `n` | Number of subjects (1-999) | 100 |
 | `visits` | Number of visits including baseline | 3 |
 | `arms` | Character vector of treatment arms | `c('Placebo', 'Treatment')` |
-| `dropout_rate` | Proportion of subjects who dropout (0-1) | 0 |
-| `na_rate` | Proportion of missing data at random (0-1) | 0 |
+| `dropout` | Proportion of subjects who dropout (0-1) | 0 |
+| `missing` | Proportion of missing data at random (0-1) | 0 |
 
 ##### Examples
 
@@ -107,7 +105,7 @@ tail(clinical_df)
 ```
 ```{r}
 # Multiple treatment arms with dropout rate and missing data
-clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), na_rate = 0.05, dropout_rate = 0.10)
+clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), missing = 0.05, dropout = 0.10)
 
 head(clinical_df, 10)
 
@@ -233,7 +231,7 @@ column with visualizations.
 ##### Examples
 
 ```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
-clinical_df <- clinical_data(na_rate = 0.05)
+clinical_df <- clinical_data(missing = 0.05)
 
 # Missing value analysis of only variables with missing values
 missing_values(clinical_df)
@@ -375,7 +373,7 @@ result <- sample_size_range(x1_range = c(0.65, 0.75),
                             type = "non-inferiority",
                             delta = -0.1,
                             alpha = 0.05,
-                            dropout_rate = 0.1)
+                            dropout = 0.1)
 ```
 ```{r, echo=FALSE, results='asis'}
 knitr::kable(result, format = "markdown")
