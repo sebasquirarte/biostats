@@ -56,7 +56,7 @@ Generates publication-ready correlation matrix heatmaps with minimal code using 
 }
 \examples{
 # Create clinical data with additional correlated variables
-clinical_df <- clinical_data(n = 100, visits = 8, na_rate = 0.03, dropout_rate = 0.05)
+clinical_df <- clinical_data(n = 100, visits = 8, missing = 0.03, dropout = 0.05)
 clinical_df$height <- 150 + 0.3 * clinical_df$age + rnorm(nrow(clinical_df), 0, 8)
 clinical_df$systolic_bp <- 100 + 0.8 * clinical_df$age + rnorm(nrow(clinical_df), 0, 10)
 

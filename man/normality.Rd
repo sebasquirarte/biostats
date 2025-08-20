@@ -46,9 +46,6 @@ clinical_df <- clinical_data()
 # Normal distribution (age)
 normality("age", data = clinical_df)
 
-# Non-normal distribution (visit)
-normality("visit", data = clinical_df)
-
 # With outliers displayed
 normality("biomarker", data = clinical_df, outliers = TRUE)
 

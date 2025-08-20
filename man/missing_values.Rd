@@ -23,7 +23,7 @@ column with visualizations.
 }
 \examples{
 # Clinical dataset with missing values
-clinical_df <- clinical_data(na_rate = 0.05)
+clinical_df <- clinical_data(missing = 0.05)
 # Missing value analysis of only variables with missing values
 missing_values(clinical_df)
 # Show all variables including those without missing values

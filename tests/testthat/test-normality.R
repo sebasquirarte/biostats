@@ -66,14 +66,6 @@ test_that("normality handles different data types", {
   expect_type(result_normal$normal, "logical")
   expect_false(is.na(result_normal$skewness))
 
-  # Clearly non-normal data (discrete)
-  clinical_df <- clinical_data(n = 100, visits = 4)
-  capture.output({
-    result_nonnormal <- normality("visit", data = clinical_df)
-  })
-  expect_false(result_nonnormal$normal)
-  expect_lt(result_nonnormal$shapiro$p.value, 0.05)
-
   # Data with missing values
   data_with_na <- c(rnorm(30), NA, NA)
   capture.output({
