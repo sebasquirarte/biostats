@@ -138,20 +138,22 @@ Generates summary tables for biostatistics and clinical data analysis with autom
 
 ```{r eval=FALSE}
 # Overall summary without considering treatment groups
-clinical_summary <- summary_table(clinical_df,
-                                  exclude = c('subject_id', 'visit'))
+summary_table(clinical_df,
+              exclude = c('subject_id', 'visit'))
 ```
 ```{r echo=FALSE, message=FALSE}
-summary_table(clinical_df,exclude = c('subject_id', 'visit'))
+clinical_summary <- summary_table(clinical_df,exclude = c('subject_id', 'visit'))
+#Save as PNG image for GitHub
+gt::gtsave(clinical_summary, "man/figures/summary_table_example_1.png", zoom = 3)
 ```
 
-<img src="man/figures/summary_table_example_1.png" height = "300">
+<img src="man/figures/summary_table_example_1.png" height = "250">
 
 ```{r eval=FALSE}
 # Grouped summary by treatmet group
-clinical_summary <- summary_table(clinical_df,
-                                  group_var = 'treatment',
-                                  exclude = c('subject_id', 'visit'))
+summary_table(clinical_df,
+              group_var = 'treatment',
+              exclude = c('subject_id', 'visit'))
 ```
 ```{r message=FALSE, echo=FALSE}
 # Store results to create PNG image
