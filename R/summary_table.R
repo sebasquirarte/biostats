@@ -18,20 +18,20 @@
 #'
 #' @examples
 #' # Overall summary without considering treatment groups
-#' clinical_summary <- summary_table(clinical_df,
-#'                                   exclude = c('subject_id', 'visit'))
+#' summary_table(clinical_df,
+#'               exclude = c('subject_id', 'visit'))
 #' 
 #' # Grouped summary by treatmet group
-#' clinical_summary <- summary_table(clinical_df,
-#'                                   group_var = 'treatment',
-#'                                   exclude = c('subject_id', 'visit'))
+#' summary_table(clinical_df,
+#'               group_var = 'treatment',
+#'               exclude = c('subject_id', 'visit'))
 #' 
 #' # Grouped summary by treatmet group with all stats and effect size
-#' clinical_summary <- summary_table(clinical_df,
-#'                                   group_var = 'treatment',
-#'                                   all_stats = TRUE,
-#'                                   effect_size = TRUE,
-#'                                   exclude = c('subject_id', 'visit'))
+#' summary_table(clinical_df,
+#'               group_var = 'treatment',
+#'               all_stats = TRUE,
+#'               effect_size = TRUE,
+#'               exclude = c('subject_id', 'visit'))
 #'
 #' @export
 summary_table <- function(data,

@@ -13,42 +13,40 @@ summary_table(
 )
 }
 \arguments{
-\item{data}{A data frame containing the variables to be summarized.}
+\item{data}{Dataframe containing the variables to be summarized.}
 
-\item{group_var}{Character; name of the grouping variable for two-group comparisons. Default is NULL.}
+\item{group_var}{character. name of the grouping variable for two-group comparisons. Default is NULL.}
 
-\item{all_stats}{Logical; if TRUE, provides detailed statistical summary. Default is FALSE.}
+\item{all_stats}{logical. If TRUE, provides detailed statistical summary. Default is FALSE.}
 
-\item{effect_size}{Logical; if TRUE, includes effect size estimates. Default is FALSE.}
+\item{effect_size}{logical. If TRUE, includes effect size estimates. Default is FALSE.}
 
-\item{exclude}{Character vector; variable names to exclude from the summary. Default is NULL.}
+\item{exclude}{character vector. Variable names to exclude from the summary. Default is NULL.}
 }
 \value{
 A gt table object with formatted summary statistics.
 }
 \description{
-Generates summary tables for biostatistics and clinical data analysis with
-automatic normality, statistical test, and effect size calculations. Handles both
+Generates a summary table for biostatistics and clinical data analysis with
+automatic normality, effet size, and statistical test calculations. Handles both
 numeric and categorical variables, performing appropriate descriptive statistics
 and inferential tests for single-group summaries or two-group comparisons.
 }
 \examples{
-# General summary without considering treatment groups
-clinical_df <- clinical_data()
+# Overall summary without considering treatment groups
+summary_table(clinical_df,
+              exclude = c('subject_id', 'visit'))
 
-clinical_summary <- summary_table(clinical_df,
-                                  exclude = c('subject_id', 'visit'))
+# Grouped summary by treatmet group
+summary_table(clinical_df,
+              group_var = 'treatment',
+              exclude = c('subject_id', 'visit'))
 
-# Grouped summary for each treatment group
-clinical_summary <- summary_table(clinical_df,
-                                  group_var = 'treatment',
-                                  exclude = c('subject_id', 'visit'))
-
-# Grouped summary with all stats and effect size
-clinical_summary_gt <- summary_table(clinical_df,
-                                     group_var = 'treatment',
-                                     all_stats = TRUE,
-                                     effect_size = TRUE,
-                                     exclude = c('subject_id', 'visit'))
+# Grouped summary by treatmet group with all stats and effect size
+summary_table(clinical_df,
+              group_var = 'treatment',
+              all_stats = TRUE,
+              effect_size = TRUE,
+              exclude = c('subject_id', 'visit'))
 
 }

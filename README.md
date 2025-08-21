@@ -188,7 +188,448 @@ clinical_summary <- summary_table(clinical_df,
                                   exclude = c('subject_id', 'visit'))
 ```
 
-<img src="man/figures/summary_table_example_1.png" height="300">
+<div id="eeymzaslvu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#eeymzaslvu table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+&#10;#eeymzaslvu thead, #eeymzaslvu tbody, #eeymzaslvu tfoot, #eeymzaslvu tr, #eeymzaslvu td, #eeymzaslvu th {
+  border-style: none;
+}
+&#10;#eeymzaslvu p {
+  margin: 0;
+  padding: 0;
+}
+&#10;#eeymzaslvu .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+&#10;#eeymzaslvu .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+&#10;#eeymzaslvu .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+&#10;#eeymzaslvu .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+&#10;#eeymzaslvu .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+&#10;#eeymzaslvu .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+&#10;#eeymzaslvu .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+&#10;#eeymzaslvu .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+&#10;#eeymzaslvu .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+&#10;#eeymzaslvu .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+&#10;#eeymzaslvu .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+&#10;#eeymzaslvu .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+&#10;#eeymzaslvu .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+&#10;#eeymzaslvu .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+&#10;#eeymzaslvu .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+&#10;#eeymzaslvu .gt_from_md > :first-child {
+  margin-top: 0;
+}
+&#10;#eeymzaslvu .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+&#10;#eeymzaslvu .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+&#10;#eeymzaslvu .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+&#10;#eeymzaslvu .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+&#10;#eeymzaslvu .gt_row_group_first td {
+  border-top-width: 2px;
+}
+&#10;#eeymzaslvu .gt_row_group_first th {
+  border-top-width: 2px;
+}
+&#10;#eeymzaslvu .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+&#10;#eeymzaslvu .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+&#10;#eeymzaslvu .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+&#10;#eeymzaslvu .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+&#10;#eeymzaslvu .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+&#10;#eeymzaslvu .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+&#10;#eeymzaslvu .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+&#10;#eeymzaslvu .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+&#10;#eeymzaslvu .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+&#10;#eeymzaslvu .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+&#10;#eeymzaslvu .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+&#10;#eeymzaslvu .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+&#10;#eeymzaslvu .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+&#10;#eeymzaslvu .gt_left {
+  text-align: left;
+}
+&#10;#eeymzaslvu .gt_center {
+  text-align: center;
+}
+&#10;#eeymzaslvu .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+&#10;#eeymzaslvu .gt_font_normal {
+  font-weight: normal;
+}
+&#10;#eeymzaslvu .gt_font_bold {
+  font-weight: bold;
+}
+&#10;#eeymzaslvu .gt_font_italic {
+  font-style: italic;
+}
+&#10;#eeymzaslvu .gt_super {
+  font-size: 65%;
+}
+&#10;#eeymzaslvu .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+&#10;#eeymzaslvu .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+&#10;#eeymzaslvu .gt_indent_1 {
+  text-indent: 5px;
+}
+&#10;#eeymzaslvu .gt_indent_2 {
+  text-indent: 10px;
+}
+&#10;#eeymzaslvu .gt_indent_3 {
+  text-indent: 15px;
+}
+&#10;#eeymzaslvu .gt_indent_4 {
+  text-indent: 20px;
+}
+&#10;#eeymzaslvu .gt_indent_5 {
+  text-indent: 25px;
+}
+&#10;#eeymzaslvu .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+&#10;#eeymzaslvu div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="gt_table" style="table-layout:fixed;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <colgroup>
+    <col/>
+    <col/>
+    <col/>
+    <col style="width:80px;"/>
+  </colgroup>
+  <thead>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="variable">variable</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="n">n</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="summary">summary</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="normality">normality</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="variable" class="gt_row gt_center">sex</td>
+<td headers="n" class="gt_row gt_center">300</td>
+<td headers="summary" class="gt_row gt_center">Male: 138 (46.0%); Female: 162 (54.0%)</td>
+<td headers="normality" class="gt_row gt_center">NA</td></tr>
+    <tr><td headers="variable" class="gt_row gt_center">treatment</td>
+<td headers="n" class="gt_row gt_center">300</td>
+<td headers="summary" class="gt_row gt_center">Placebo: 171 (57.0%); Treatment: 129 (43.0%)</td>
+<td headers="normality" class="gt_row gt_center">NA</td></tr>
+    <tr><td headers="variable" class="gt_row gt_center">age</td>
+<td headers="n" class="gt_row gt_center">300</td>
+<td headers="summary" class="gt_row gt_center">Median (IQR): 41.50 (19.50)</td>
+<td headers="normality" class="gt_row gt_center">&lt;0.001</td></tr>
+    <tr><td headers="variable" class="gt_row gt_center">weight</td>
+<td headers="n" class="gt_row gt_center">300</td>
+<td headers="summary" class="gt_row gt_center">Median (IQR): 70.10 (20.60)</td>
+<td headers="normality" class="gt_row gt_center">&lt;0.001</td></tr>
+    <tr><td headers="variable" class="gt_row gt_center">biomarker</td>
+<td headers="n" class="gt_row gt_center">300</td>
+<td headers="summary" class="gt_row gt_center">Mean (SD): 48.88 (10.66)</td>
+<td headers="normality" class="gt_row gt_center">0.369</td></tr>
+    <tr><td headers="variable" class="gt_row gt_center">response</td>
+<td headers="n" class="gt_row gt_center">300</td>
+<td headers="summary" class="gt_row gt_center">Complete: 85 (28.3%); Partial: 59 (19.7%); None: 156 (52.0%)</td>
+<td headers="normality" class="gt_row gt_center">NA</td></tr>
+  </tbody>
+  &#10;  
+</table>
+</div>
+
+<img src="man/figures/summary_table_example_1.png" height = "300">
 
 ``` r
 # Grouped summary by treatmet group
@@ -197,18 +638,18 @@ clinical_summary <- summary_table(clinical_df,
                                   exclude = c('subject_id', 'visit'))
 ```
 
-<img src="man/figures/summary_table_example_2.png" height="300">
+<img src="man/figures/summary_table_example_2.png">
 
 ``` r
 # Grouped summary by treatmet group with all stats and effect size
-clinical_summary <- summary_table(clinical_df,
-                                  group_var = 'treatment',
-                                  all_stats = TRUE,
-                                  effect_size = TRUE,
-                                  exclude = c('subject_id', 'visit'))
+summary_table(clinical_df,
+              group_var = 'treatment',
+              all_stats = TRUE,
+              effect_size = TRUE,
+              exclude = c('subject_id', 'visit'))
 ```
 
-<img src="man/figures/summary_table_example_3.png" height="300">
+<img src="man/figures/summary_table_example_3.png">
 
 #### **normality()**
 
@@ -237,12 +678,12 @@ normality("biomarker", data = clinical_df)
 #> Normality Test for 'biomarker' 
 #> 
 #> n = 300 
-#> mean (SD) = 47.84 (9.8) 
-#> median (IQR) = 47.61 (12.9) 
+#> mean (SD) = 47.82 (9.7) 
+#> median (IQR) = 47.86 (13.3) 
 #> 
-#> Shapiro-Wilk: W = 0.996, p = 0.641 
-#> Skewness: 0.04 
-#> Kurtosis: 0.03 
+#> Shapiro-Wilk: W = 0.998, p = 0.980 
+#> Skewness: -0.08 
+#> Kurtosis: 0.04 
 #> 
 #> Data is normally distributed.
 ```
@@ -257,16 +698,16 @@ normality("weight", data = clinical_df, outliers = TRUE)
 #> Normality Test for 'weight' 
 #> 
 #> n = 300 
-#> mean (SD) = 71.54 (14.6) 
-#> median (IQR) = 72.30 (22.8) 
+#> mean (SD) = 71.46 (14.6) 
+#> median (IQR) = 71.35 (22.0) 
 #> 
-#> Shapiro-Wilk: W = 0.973, p = < 0.001 
-#> Skewness: -0.09 
-#> Kurtosis: -0.94 
+#> Shapiro-Wilk: W = 0.977, p = < 0.001 
+#> Skewness: 0.01 
+#> Kurtosis: -0.92 
 #> 
 #> Data is not normally distributed. 
 #> 
-#> OUTLIERS (row indices): 92, 93, 95, 96, 74, 209, 274, 141, 210, 49, 227, 139, 129, 262, 226, 51, 50, 140, 229, 263, 35, 115, 230, 54, 52, 53, 75, 228, 231, 264, 34, 87, 86, 82, 246, 174, 130, 149, 159, 265
+#> OUTLIERS (row indices): 100, 101, 191, 192, 269, 10, 62, 80, 214, 60, 174, 40
 ```
 
 <img src="man/figures/README-unnamed-chunk-11-2.png" width="100%" />
@@ -297,7 +738,7 @@ missing_values(clinical_df)
 #> Missing Value Analysis
 #> 
 #> n: 300, variables: 8
-#> Complete cases: 257 / 300 (85.7%)
+#> Complete cases: 256 / 300 (85.3%)
 #> Missing cells: 45 / 2400 (1.9%)
 #> 
 #> Variables with missing values: 3 of 8 (37.5%)
@@ -317,7 +758,7 @@ missing_values(clinical_df, all = TRUE)
 #> Missing Value Analysis
 #> 
 #> n: 300, variables: 8
-#> Complete cases: 257 / 300 (85.7%)
+#> Complete cases: 256 / 300 (85.3%)
 #> Missing cells: 45 / 2400 (1.9%)
 #> 
 #> Variables with missing values: 3 of 8 (37.5%)
@@ -363,10 +804,10 @@ outliers(clinical_df$biomarker)
 #> n: 900
 #> Missing: 0 (0.0%)
 #> Method: Tukey's IQR x 1.5
-#> Bounds: [22.17, 75.72]
-#> Outliers detected: 8 (0.9%)
+#> Bounds: [20.67, 75.62]
+#> Outliers detected: 7 (0.8%)
 #> 
-#> Outlier indices: 15, 103, 185, 350, 464, 775, 818, 877
+#> Outlier indices: 110, 181, 422, 473, 530, 671, 700
 ```
 
 <img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
