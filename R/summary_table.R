@@ -1,15 +1,15 @@
 #' Summary Table with Optional Group Comparisons
 #'
-#' Generates summary tables for biostatistics and clinical data analysis with
-#' automatic normality, statistical test, and effect size calculations. Handles both
+#' Generates a summary table for biostatistics and clinical data analysis with
+#' automatic normality, effet size, and statistical test calculations. Handles both
 #' numeric and categorical variables, performing appropriate descriptive statistics
 #' and inferential tests for single-group summaries or two-group comparisons.
 #'
-#' @param data A data frame containing the variables to be summarized.
-#' @param group_var Character; name of the grouping variable for two-group comparisons. Default is NULL.
-#' @param all_stats Logical; if TRUE, provides detailed statistical summary. Default is FALSE.
-#' @param effect_size Logical; if TRUE, includes effect size estimates. Default is FALSE.
-#' @param exclude Character vector; variable names to exclude from the summary. Default is NULL.
+#' @param data Dataframe containing the variables to be summarized.
+#' @param group_var character. name of the grouping variable for two-group comparisons. Default is NULL.
+#' @param all_stats logical. If TRUE, provides detailed statistical summary. Default is FALSE.
+#' @param effect_size logical. If TRUE, includes effect size estimates. Default is FALSE.
+#' @param exclude character vector. Variable names to exclude from the summary. Default is NULL.
 #'
 #' @return A gt table object with formatted summary statistics.
 #'
@@ -93,5 +93,7 @@ summary_table <- function(data,
   }
   
   # Create and return basic gt table
-  return(gt::gt(result_df))
+  return(gt::gt(result_df) |> 
+           gt::opt_align_table_header(align = "center") |>
+           gt::cols_align(align = "center"))
 }
