@@ -17,23 +17,21 @@
 #' @importFrom gt gt opt_row_striping
 #'
 #' @examples
-#' # General summary without considering treatment groups
-#' clinical_df <- clinical_data()
-#' 
+#' # Overall summary without considering treatment groups
 #' clinical_summary <- summary_table(clinical_df,
 #'                                   exclude = c('subject_id', 'visit'))
 #' 
-#' # Grouped summary for each treatment group
+#' # Grouped summary by treatmet group
 #' clinical_summary <- summary_table(clinical_df,
 #'                                   group_var = 'treatment',
 #'                                   exclude = c('subject_id', 'visit'))
 #' 
-#' # Grouped summary with all stats and effect size
-#' clinical_summary_gt <- summary_table(clinical_df,
-#'                                      group_var = 'treatment',
-#'                                      all_stats = TRUE,
-#'                                      effect_size = TRUE,
-#'                                      exclude = c('subject_id', 'visit'))
+#' # Grouped summary by treatmet group with all stats and effect size
+#' clinical_summary <- summary_table(clinical_df,
+#'                                   group_var = 'treatment',
+#'                                   all_stats = TRUE,
+#'                                   effect_size = TRUE,
+#'                                   exclude = c('subject_id', 'visit'))
 #'
 #' @export
 summary_table <- function(data,
@@ -95,5 +93,6 @@ summary_table <- function(data,
   # Create and return basic gt table
   return(gt::gt(result_df) |> 
            gt::opt_align_table_header(align = "center") |>
-           gt::cols_align(align = "center"))
+           gt::cols_align(align = "center") |>
+           gt::cols_width(normality ~ px(80)))
 }

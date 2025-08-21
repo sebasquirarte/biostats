@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 ```
 ```{r setup, include=FALSE}
 # Set global seed for reproducibility
-set.seed(100)
+set.seed(123)
 ```
 
 # biostats <a href="https://github.com/sebasquirarte/biostats/blob/main/man/figures/logo.png"><img src="man/figures/logo.png" align="right" height="138" alt="biostats_logo" /></a>
@@ -25,16 +25,17 @@ set.seed(100)
 
 ## Overview
 
-_**biostats**_ is an R package that functions as a toolbox for biostatistics and clinical data analysis.
+_**biostats**_ is an R package that functions as a toolbox to streamline biostatistics and clinical data analysis workflows. 
 
 #### Key features
-- Descriptive statistics
-- Exploratory data analysis (EDA)
+- Descriptive statistics and exploratory data analysis
 - Sample size and power calculation
-- Statistical tests and inference
-- Data cleaning, transformation, and visualization
+- Statistical analysis and inference
+- Data visualization
 
-*Developed by the biostatistics team at [Laboratorios Sophia S.A. de C.V.](https://sophialab.com/en/) for biostatisticians, clinical researchers and data analysts.*
+Designed primarily for comparative clinical studies as well as trial planning and analysis, this package serves both as an analytical toolkit for professional biostatisticians and clinical data analysts and as an educational resource for researchers transitioning to R-based biostatistics, including professionals from other domains, clinical research professionals, and medical practitioners involved in the development of clinical trials. 
+
+*Developed by the biostatistics team at [Laboratorios Sophia S.A. de C.V.](https://sophialab.com/en/).*
 
 ## Installation
 
@@ -54,7 +55,7 @@ library(biostats)
 
 ## Usage
 
-The biostats package includes the following functions:
+This package comprises 14 functions across four analytical domains and features an interactive Shiny application for clinical trial sample size calculation supporting superiority, non-inferiority, equivalence, and equality designs with customizable parameters for effect sizes, power, and clinical significance thresholds, following methodologies established by Chow et al. (2017). 
 
 - [**Descriptive Statistics and Exploratory Data Analysis (EDA)**](#descriptive-statistics-and-exploratory-data-analysis-eda)
   - [clinical_data()](#clinical_data)
@@ -65,6 +66,7 @@ The biostats package includes the following functions:
 - [**Sample Size and Power Calculation**](#sample-size-and-power-calculation)
   - [sample_size()](#sample_size)
   - [sample_size_range()](#sample_size_range)
+  - [sample_size_calc()](#sample_size_calc) - Shiny App ✨
 - [**Statistical Analysis and Inference**](#statistical-analysis-and-inference)
   - [omnibus()](#anova_test) 
   - [odds()](#odds) 
@@ -96,20 +98,24 @@ Creates a dataset of simulated clinical trial data with subject demographics, mu
 ##### Examples
 
 ```{r}
-# Basic dataset
+# Simulate basic clinical data
 clinical_df <- clinical_data()
 
-head(clinical_df)
-
-tail(clinical_df)
-```
-```{r}
-# Multiple treatment arms with dropout rate and missing data
-clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), missing = 0.05, dropout = 0.10)
+str(clinical_df)
 
 head(clinical_df, 10)
+```
+```{r}
+# Simulate more complex clinical data
+clinical_df_full <- clinical_data(n = 300,
+                                  visits = 5,
+                                  arms = c('A', 'B', 'C'), 
+                                  dropout = 0.10,
+                                  missing = 0.05)
 
-tail(clinical_df, 10)
+str(clinical_df_full)
+
+head(clinical_df_full, 10)
 ```
 
 #### **summary_table()**
@@ -131,60 +137,44 @@ Generates summary tables for biostatistics and clinical data analysis with autom
 ##### Examples
 
 ```{r}
-clinical_df <- clinical_data()
-
-# General summary without considering treatment groups
+# Overall summary without considering treatment groups
 clinical_summary <- summary_table(clinical_df,
                                   exclude = c('subject_id', 'visit'))
 ```
 ```{r message=FALSE, echo=FALSE}
 # Save as PNG image for GitHub
-gt::gtsave(clinical_summary, "man/figures/summary_table_example_1.png", zoom = 1)
+gt::gtsave(clinical_summary, "man/figures/summary_table_example_1.png", zoom = 3, vwidth = 1200)
 ```
 
-![](man/figures/summary_table_example_1.png)
+<img src="man/figures/summary_table_example_1.png" height="300">
 
 ```{r}
-# Grouped summary for each tratment group
+# Grouped summary by treatmet group
 clinical_summary <- summary_table(clinical_df,
                                   group_var = 'treatment',
                                   exclude = c('subject_id', 'visit'))
 ```
 ```{r message=FALSE, echo=FALSE}
 # Save as PNG image for GitHub
-gt::gtsave(clinical_summary, "man/figures/summary_table_example_2.png",
-           zoom = 1)
+gt::gtsave(clinical_summary, "man/figures/summary_table_example_2.png", zoom = 3, vwidth = 1200)
 ```
 
-![](man/figures/summary_table_example_2.png)
+<img src="man/figures/summary_table_example_2.png" height="300">
     
 ```{r}
-# Grouped summary for each tratment group with all stats
+# Grouped summary by treatmet group with all stats and effect size
 clinical_summary <- summary_table(clinical_df,
                                   group_var = 'treatment',
                                   all_stats = TRUE,
-                                  exclude = c('subject_id', 'visit'))
-```
-```{r message=FALSE, echo=FALSE}
-# Save as PNG image for GitHub
-gt::gtsave(clinical_summary, "man/figures/summary_table_example_3.png")
-```
-
-![](man/figures/summary_table_example_3.png)
-
-```{r}
-# Grouped summary for each tratment group with effect size
-clinical_summary <- summary_table(clinical_df,
-                                  group_var = 'treatment',
                                   effect_size = TRUE,
                                   exclude = c('subject_id', 'visit'))
 ```
 ```{r message=FALSE, echo=FALSE}
 # Save as PNG image for GitHub
-gt::gtsave(clinical_summary, "man/figures/summary_table_example_4.png")
+gt::gtsave(clinical_summary, "man/figures/summary_table_example_3.png", zoom = 3, vwidth = 1200)
 ```
 
-![](man/figures/summary_table_example_4.png)
+<img src="man/figures/summary_table_example_3.png" height="300">
 
 #### **normality()**
 

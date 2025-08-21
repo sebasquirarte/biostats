@@ -111,7 +111,7 @@
     # Create base data frame
     df <- data.frame(
       variable = var,
-      n = paste0("A: ", length(groups[[1]]), ", B: ", length(groups[[2]])),
+      n = paste0("A:", length(groups[[1]]), ", B:", length(groups[[2]])),
       NAs = paste0("A: ", sum(is.na(groups[[1]])), ", B: ", sum(is.na(groups[[2]]))),
       A = .create_summary(groups[[1]][!is.na(groups[[1]])], all_stats, force_median),
       B = .create_summary(groups[[2]][!is.na(groups[[2]])], all_stats, force_median),
@@ -197,7 +197,7 @@
   
   # Check normality
   norm_p <- sapply(groups, .check_normality)
-  norm_str <- paste0("A: ", .format_p(norm_p[1]), ", B: ", .format_p(norm_p[2]))
+  norm_str <- paste0("A:", .format_p(norm_p[1]), ", B:", .format_p(norm_p[2]))
   is_normal <- all(!is.na(norm_p) & norm_p > 0.05)
   
   # Perform test
@@ -206,7 +206,7 @@
   }, error = function(e) list(p.value = NA, statistic = NA))
   
   list(
-    test_used = if (is_normal) "Welch t-test" else "Mann-Whitney U",
+    test_used = if (is_normal) "Welch's t-test" else "Mann-Whitney U",
     test_p = test_result$p.value,
     norm_str = norm_str,
     is_normal = is_normal,

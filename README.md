@@ -11,20 +11,26 @@ status](https://www.r-pkg.org/badges/version/biostats)](https://cran.r-project.o
 
 ## Overview
 
-***biostats*** is an R package that functions as a toolbox for
-biostatistics and clinical data analysis.
+***biostats*** is an R package that functions as a toolbox to streamline
+biostatistics and clinical data analysis workflows.
 
 #### Key features
 
-- Descriptive statistics
-- Exploratory data analysis (EDA)
+- Descriptive statistics and exploratory data analysis
 - Sample size and power calculation
-- Statistical tests and inference
-- Data cleaning, transformation, and visualization
+- Statistical analysis and inference
+- Data visualization
+
+Designed primarily for comparative clinical studies as well as trial
+planning and analysis, this package serves both as an analytical toolkit
+for professional biostatisticians and clinical data analysts and as an
+educational resource for researchers transitioning to R-based
+biostatistics, including professionals from other domains, clinical
+research professionals, and medical practitioners involved in the
+development of clinical trials.
 
 *Developed by the biostatistics team at [Laboratorios Sophia S.A. de
-C.V.](https://sophialab.com/en/) for biostatisticians, clinical
-researchers and data analysts.*
+C.V.](https://sophialab.com/en/).*
 
 ## Installation
 
@@ -39,7 +45,12 @@ library(biostats)
 
 ## Usage
 
-The biostats package includes the following functions:
+This package comprises 14 functions across four analytical domains and
+features an interactive Shiny application for clinical trial sample size
+calculation supporting superiority, non-inferiority, equivalence, and
+equality designs with customizable parameters for effect sizes, power,
+and clinical significance thresholds, following methodologies
+established by Chow et al. (2017).
 
 - [**Descriptive Statistics and Exploratory Data Analysis
   (EDA)**](#descriptive-statistics-and-exploratory-data-analysis-eda)
@@ -52,6 +63,7 @@ The biostats package includes the following functions:
   Calculation**](#sample-size-and-power-calculation)
   - [sample_size()](#sample_size)
   - [sample_size_range()](#sample_size_range)
+  - [sample_size_calc()](#sample_size_calc) - Shiny App ✨
 - [**Statistical Analysis and
   Inference**](#statistical-analysis-and-inference)
   - [omnibus()](#anova_test)
@@ -87,57 +99,65 @@ rates.
 ##### Examples
 
 ``` r
-# Basic dataset
+# Simulate basic clinical data
 clinical_df <- clinical_data()
 
-head(clinical_df)
-#>   subject_id visit    sex treatment age weight biomarker response
-#> 1        001     1 Female Treatment  40   66.7     66.34     None
-#> 2        001     2 Female Treatment  40   68.4     46.87  Partial
-#> 3        001     3 Female Treatment  40   68.3     34.48 Complete
-#> 4        002     1   Male   Placebo  65   63.3     57.75     None
-#> 5        002     2   Male   Placebo  65   65.4     58.04     None
-#> 6        002     3   Male   Placebo  65   66.7     35.01  Partial
-
-tail(clinical_df)
-#>     subject_id visit  sex treatment age weight biomarker response
-#> 295        099     1 Male Treatment  29   83.5     55.12  Partial
-#> 296        099     2 Male Treatment  29   77.8     46.65     None
-#> 297        099     3 Male Treatment  29   81.7     38.13     None
-#> 298        100     1 Male Treatment  54   48.4     51.69  Partial
-#> 299        100     2 Male Treatment  54   49.6     64.01     None
-#> 300        100     3 Male Treatment  54   55.3     63.71 Complete
-```
-
-``` r
-# Multiple treatment arms with dropout rate and missing data
-clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), missing = 0.05, dropout = 0.10)
+str(clinical_df)
+#> 'data.frame':    300 obs. of  8 variables:
+#>  $ subject_id: chr  "001" "001" "001" "002" ...
+#>  $ visit     : Factor w/ 3 levels "1","2","3": 1 2 3 1 2 3 1 2 3 1 ...
+#>  $ sex       : Factor w/ 2 levels "Male","Female": 1 1 1 2 2 2 2 2 2 1 ...
+#>  $ treatment : Factor w/ 2 levels "Placebo","Treatment": 1 1 1 1 1 1 1 1 1 2 ...
+#>  $ age       : num  34 34 34 49 49 49 41 41 41 40 ...
+#>  $ weight    : num  101.6 101.5 101.1 87.6 88.8 ...
+#>  $ biomarker : num  60.7 49.7 49.7 34.8 57.9 ...
+#>  $ response  : Factor w/ 3 levels "Complete","Partial",..: 1 3 2 3 3 1 3 3 3 2 ...
 
 head(clinical_df, 10)
 #>    subject_id visit    sex treatment age weight biomarker response
-#> 1         001     1 Female         A  49   70.9     36.71     None
-#> 2         001     2 Female         A  49   73.2     53.68 Complete
-#> 3         001     3 Female         A  49   75.6     74.11 Complete
-#> 4         002     1   Male         A  57   55.1     38.79     None
-#> 5         002     2   Male         A  57   54.3     57.20     None
-#> 6         002     3   Male         A  57   57.5     42.78     None
-#> 7         003     1   Male         A  48   65.0     51.48     None
-#> 8         003     2   Male         A  48   70.5     61.62  Partial
-#> 9         003     3   Male         A  48   66.5     43.96  Partial
-#> 10        004     1   Male         A  36   96.7     46.47     None
+#> 1         001     1   Male   Placebo  34  101.6     60.74 Complete
+#> 2         001     2   Male   Placebo  34  101.5     49.73     None
+#> 3         001     3   Male   Placebo  34  101.1     49.67  Partial
+#> 4         002     1 Female   Placebo  49   87.6     34.84     None
+#> 5         002     2 Female   Placebo  49   88.8     57.90     None
+#> 6         002     3 Female   Placebo  49   90.3     47.89 Complete
+#> 7         003     1 Female   Placebo  41   62.0     43.43     None
+#> 8         003     2 Female   Placebo  41   66.4     35.88     None
+#> 9         003     3 Female   Placebo  41   68.5     47.00     None
+#> 10        004     1   Male Treatment  40   82.2     38.51  Partial
+```
 
-tail(clinical_df, 10)
-#>     subject_id visit    sex treatment age weight biomarker response
-#> 291        097     3   Male   Placebo  32   80.8     25.36  Partial
-#> 292        098     1 Female         A  54   73.6     58.78 Complete
-#> 293        098     2 Female         A  54   72.9     35.88  Partial
-#> 294        098     3 Female         A  54   72.4     48.28     None
-#> 295        099     1 Female         A  34   75.1     47.36     None
-#> 296        099     2 Female         A  34   72.7     69.89     None
-#> 297        099     3 Female         A  34   75.3     23.68     None
-#> 298        100     1   Male         A  34   58.4     49.71  Partial
-#> 299        100     2   Male         A  34   55.0     54.50     None
-#> 300        100     3   Male         A  34   60.0     42.96     None
+``` r
+# Simulate more complex clinical data
+clinical_df_full <- clinical_data(n = 300,
+                                  visits = 5,
+                                  arms = c('A', 'B', 'C'), 
+                                  dropout = 0.10,
+                                  missing = 0.05)
+
+str(clinical_df_full)
+#> 'data.frame':    1500 obs. of  8 variables:
+#>  $ subject_id: chr  "001" "001" "001" "001" ...
+#>  $ visit     : Factor w/ 5 levels "1","2","3","4",..: 1 2 3 4 5 1 2 3 4 5 ...
+#>  $ sex       : Factor w/ 2 levels "Male","Female": 2 2 2 2 2 1 1 1 1 1 ...
+#>  $ treatment : Factor w/ 3 levels "A","B","C": 2 2 2 2 2 2 2 2 2 2 ...
+#>  $ age       : num  28 28 28 28 28 79 79 79 79 79 ...
+#>  $ weight    : num  77.8 75.8 74.1 76 74.5 63 62.2 62.5 NA 62.2 ...
+#>  $ biomarker : num  43.2 70.5 62.5 54.5 28.6 ...
+#>  $ response  : Factor w/ 3 levels "Complete","Partial",..: 2 1 2 2 NA NA NA 3 3 3 ...
+
+head(clinical_df_full, 10)
+#>    subject_id visit    sex treatment age weight biomarker response
+#> 1         001     1 Female         B  28   77.8     43.20  Partial
+#> 2         001     2 Female         B  28   75.8     70.50 Complete
+#> 3         001     3 Female         B  28   74.1     62.47  Partial
+#> 4         001     4 Female         B  28   76.0     54.46  Partial
+#> 5         001     5 Female         B  28   74.5     28.56     <NA>
+#> 6         002     1   Male         B  79   63.0     64.38     <NA>
+#> 7         002     2   Male         B  79   62.2     51.50     <NA>
+#> 8         002     3   Male         B  79   62.5     47.14     None
+#> 9         002     4   Male         B  79     NA     45.79     None
+#> 10        002     5   Male         B  79   62.2     48.58     None
 ```
 
 #### **summary_table()**
@@ -163,43 +183,32 @@ or two-group comparisons.
 ##### Examples
 
 ``` r
-clinical_df <- clinical_data()
-
-# General summary without considering treatment groups
+# Overall summary without considering treatment groups
 clinical_summary <- summary_table(clinical_df,
                                   exclude = c('subject_id', 'visit'))
 ```
 
-![](man/figures/summary_table_example_1.png)
+<img src="man/figures/summary_table_example_1.png" height="300">
 
 ``` r
-# Grouped summary for each tratment group
+# Grouped summary by treatmet group
 clinical_summary <- summary_table(clinical_df,
                                   group_var = 'treatment',
                                   exclude = c('subject_id', 'visit'))
 ```
 
-![](man/figures/summary_table_example_2.png)
+<img src="man/figures/summary_table_example_2.png" height="300">
 
 ``` r
-# Grouped summary for each tratment group with all stats
+# Grouped summary by treatmet group with all stats and effect size
 clinical_summary <- summary_table(clinical_df,
                                   group_var = 'treatment',
                                   all_stats = TRUE,
-                                  exclude = c('subject_id', 'visit'))
-```
-
-![](man/figures/summary_table_example_3.png)
-
-``` r
-# Grouped summary for each tratment group with effect size
-clinical_summary <- summary_table(clinical_df,
-                                  group_var = 'treatment',
                                   effect_size = TRUE,
                                   exclude = c('subject_id', 'visit'))
 ```
 
-![](man/figures/summary_table_example_4.png)
+<img src="man/figures/summary_table_example_3.png" height="300">
 
 #### **normality()**
 
@@ -228,17 +237,17 @@ normality("biomarker", data = clinical_df)
 #> Normality Test for 'biomarker' 
 #> 
 #> n = 300 
-#> mean (SD) = 48.20 (10.0) 
-#> median (IQR) = 48.30 (12.4) 
+#> mean (SD) = 47.84 (9.8) 
+#> median (IQR) = 47.61 (12.9) 
 #> 
-#> Shapiro-Wilk: W = 0.997, p = 0.755 
+#> Shapiro-Wilk: W = 0.996, p = 0.641 
 #> Skewness: 0.04 
-#> Kurtosis: -0.27 
+#> Kurtosis: 0.03 
 #> 
 #> Data is normally distributed.
 ```
 
-<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
 
 ``` r
 
@@ -248,19 +257,19 @@ normality("weight", data = clinical_df, outliers = TRUE)
 #> Normality Test for 'weight' 
 #> 
 #> n = 300 
-#> mean (SD) = 68.33 (15.5) 
-#> median (IQR) = 67.95 (21.2) 
+#> mean (SD) = 71.54 (14.6) 
+#> median (IQR) = 72.30 (22.8) 
 #> 
-#> Shapiro-Wilk: W = 0.966, p = < 0.001 
-#> Skewness: 0.43 
-#> Kurtosis: -0.14 
+#> Shapiro-Wilk: W = 0.973, p = < 0.001 
+#> Skewness: -0.09 
+#> Kurtosis: -0.94 
 #> 
 #> Data is not normally distributed. 
 #> 
-#> OUTLIERS (row indices): 7, 8, 11, 43, 44, 45, 49, 50, 51, 91, 92, 93, 145, 176, 248, 255, 122, 23, 213, 214, 211, 196, 249, 141, 139
+#> OUTLIERS (row indices): 92, 93, 95, 96, 74, 209, 274, 141, 210, 49, 227, 139, 129, 262, 226, 51, 50, 140, 229, 263, 35, 115, 230, 54, 52, 53, 75, 228, 231, 264, 34, 87, 86, 82, 246, 174, 130, 149, 159, 265
 ```
 
-<img src="man/figures/README-unnamed-chunk-13-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-2.png" width="100%" />
 
 #### **missing_values()**
 
@@ -288,7 +297,7 @@ missing_values(clinical_df)
 #> Missing Value Analysis
 #> 
 #> n: 300, variables: 8
-#> Complete cases: 256 / 300 (85.3%)
+#> Complete cases: 257 / 300 (85.7%)
 #> Missing cells: 45 / 2400 (1.9%)
 #> 
 #> Variables with missing values: 3 of 8 (37.5%)
@@ -299,7 +308,7 @@ missing_values(clinical_df)
 #> biomarker         7        2.33
 ```
 
-<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
 
 ``` r
 # Show all variables including those without missing values
@@ -308,7 +317,7 @@ missing_values(clinical_df, all = TRUE)
 #> Missing Value Analysis
 #> 
 #> n: 300, variables: 8
-#> Complete cases: 256 / 300 (85.3%)
+#> Complete cases: 257 / 300 (85.7%)
 #> Missing cells: 45 / 2400 (1.9%)
 #> 
 #> Variables with missing values: 3 of 8 (37.5%)
@@ -324,7 +333,7 @@ missing_values(clinical_df, all = TRUE)
 #> age                0        0.00
 ```
 
-<img src="man/figures/README-unnamed-chunk-14-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-12-2.png" width="100%" />
 
 #### **outliers()**
 
@@ -354,13 +363,13 @@ outliers(clinical_df$biomarker)
 #> n: 900
 #> Missing: 0 (0.0%)
 #> Method: Tukey's IQR x 1.5
-#> Bounds: [21.39, 75.61]
+#> Bounds: [22.17, 75.72]
 #> Outliers detected: 8 (0.9%)
 #> 
-#> Outlier indices: 15, 82, 109, 136, 177, 607, 709, 810
+#> Outlier indices: 15, 103, 185, 350, 464, 775, 818, 877
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
 
 ### Sample Size and Power Calculation
 
@@ -536,7 +545,7 @@ result <- sample_size_range(x1_range = c(-0.01, 0.01),
 #> 90% Power: total n = 44 to 68
 ```
 
-<img src="man/figures/README-unnamed-chunk-19-1.png" width="75%" />
+<img src="man/figures/README-unnamed-chunk-17-1.png" width="75%" />
 
 | power |     x1 |  x2 | x1 - x2 |  n1 |  n2 | total |
 |------:|-------:|----:|--------:|----:|----:|------:|
@@ -579,7 +588,7 @@ result <- sample_size_range(x1_range = c(0.65, 0.75),
 #> 90% Power: total n = 196 to 858
 ```
 
-<img src="man/figures/README-unnamed-chunk-21-1.png" width="75%" />
+<img src="man/figures/README-unnamed-chunk-19-1.png" width="75%" />
 
 | power |   x1 |   x2 | x1 - x2 |  n1 |  n2 | total |
 |------:|-----:|-----:|--------:|----:|----:|------:|
@@ -684,7 +693,7 @@ plot_bar(clinical_df,
          values = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-25-1.png" width="75%" />
+<img src="man/figures/README-unnamed-chunk-23-1.png" width="75%" />
 
 ``` r
 
@@ -697,7 +706,7 @@ plot_bar(clinical_df,
          values = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-25-2.png" width="75%" />
+<img src="man/figures/README-unnamed-chunk-23-2.png" width="75%" />
 
 #### **plot_line()**
 
@@ -742,7 +751,7 @@ plot_line(clinical_df,
           error = "se")
 ```
 
-<img src="man/figures/README-unnamed-chunk-26-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-24-1.png" width="100%" />
 
 ``` r
 
@@ -757,7 +766,7 @@ plot_line(clinical_df,
           points = FALSE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-26-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-24-2.png" width="100%" />
 
 #### **plot_hist()**
 
@@ -799,7 +808,7 @@ clinical_df <- clinical_data()
 plot_hist(clinical_df, x = "biomarker", group = "treatment", stat = "mean")
 ```
 
-<img src="man/figures/README-unnamed-chunk-27-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-25-1.png" width="100%" />
 
 ``` r
 
@@ -807,7 +816,7 @@ plot_hist(clinical_df, x = "biomarker", group = "treatment", stat = "mean")
 plot_hist(clinical_df, x = "biomarker", facet = "treatment")
 ```
 
-<img src="man/figures/README-unnamed-chunk-27-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-25-2.png" width="100%" />
 
 #### **plot_box()**
 
@@ -843,25 +852,21 @@ clinical_df <- clinical_data(visit = 10)
 
 # Barplot of age by sex and treatment
 plot_box(clinical_df, x = "sex", y = "age", group = "treatment", y_limits = c(0,80))
-#> Warning: Removed 10 rows containing non-finite outside the scale range
+#> Warning: Removed 20 rows containing non-finite outside the scale range
 #> (`stat_boxplot()`).
-#> Warning: Removed 10 rows containing non-finite outside the scale range
+#> Warning: Removed 20 rows containing non-finite outside the scale range
 #> (`stat_summary()`).
 ```
 
-<img src="man/figures/README-unnamed-chunk-28-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-26-1.png" width="100%" />
 
 ``` r
 
 # Barplot of bimarker by study visit and treatment
 plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment", y_limits = c(0,80))
-#> Warning: Removed 1 row containing non-finite outside the scale range
-#> (`stat_boxplot()`).
-#> Warning: Removed 1 row containing non-finite outside the scale range
-#> (`stat_summary()`).
 ```
 
-<img src="man/figures/README-unnamed-chunk-28-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-26-2.png" width="100%" />
 
 #### **plot_corr()**
 
@@ -897,4 +902,4 @@ cars_df <- mtcars
 plot_corr(cars_df, type = "upper", show_significance = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-29-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-27-1.png" width="100%" />
