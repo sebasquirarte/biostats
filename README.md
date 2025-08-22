@@ -81,10 +81,10 @@ established by Chow et al. (2017).
 
 ##### Description
 
-Creates a dataset of simulated clinical trial data with subject
-demographics, multiple visits, treatment groups, numerical and
-categorical variables, as well as optional missing data and dropout
-rates.
+Creates a simple simulated clinical trial dataset with subject
+demographics, multiple visits, treatment groups with different effects,
+numerical and categorical variables, as well as optional missing data
+and dropout rates.
 
 ##### Parameters
 
@@ -174,11 +174,12 @@ or two-group comparisons.
 
 | Parameter | Description | Default |
 |----|----|----|
-| `data` | A data frame containing the variables to be summarized | `Required` |
-| `group_var` | Name of the grouping variable for two-group comparisons | `NULL` |
-| `all_stats` | Logical; if TRUE, provides detailed statistical summary | `FALSE` |
-| `effect_size` | Logical; if TRUE, includes effect size estimates | `FALSE` |
-| `exclude` | Character vector; variable names to exclude from the summary | `NULL` |
+| `data` | Dataframe containing the variables to be summarized | `Required` |
+| `group_by` | Name of the grouping variable for two-group comparisons | `NULL` |
+| `normality_test` | Normality test: ‘S-W’ for Shapiro-Wilk or ‘K-S’ for Kolmogorov-Smirnov | ‘S-W’ |
+| `all_stats` | If TRUE, provides detailed statistical summary | `FALSE` |
+| `effect_size` | If TRUE, includes effect size estimates | `FALSE` |
+| `exclude` | Variable names to exclude from the summary | `NULL` |
 
 ##### Examples
 
@@ -193,7 +194,7 @@ summary_table(clinical_df,
 ``` r
 # Grouped summary by treatmet group
 summary_table(clinical_df,
-              group_var = 'treatment',
+              group_by = 'treatment',
               exclude = c('subject_id', 'visit'))
 ```
 
@@ -202,7 +203,7 @@ summary_table(clinical_df,
 ``` r
 # Grouped summary by treatmet group with all stats and effect size
 summary_table(clinical_df,
-              group_var = 'treatment',
+              group_by = 'treatment',
               all_stats = TRUE,
               effect_size = TRUE,
               exclude = c('subject_id', 'visit'))
@@ -221,7 +222,7 @@ plot and histogram.
 
 | Parameter | Description | Default |
 |----|----|----|
-| `x` | A numeric vector or the name of a variable in a data frame | `Required` |
+| `x` | A numeric vector or the name of a variable in a dataframe | `Required` |
 | `data` | Optional data frame containing the variable | `NULL` |
 | `outliers` | Logical; whether to print all outlier row numbers | `FALSE` |
 | `color` | Character; color for points and histogram bars | `"#7fcdbb"` |
