@@ -6,7 +6,8 @@
 \usage{
 summary_table(
   data,
-  group_var = NULL,
+  group_by = NULL,
+  normality_test = "S-W",
   all_stats = FALSE,
   effect_size = FALSE,
   exclude = NULL
@@ -15,38 +16,43 @@ summary_table(
 \arguments{
 \item{data}{Dataframe containing the variables to be summarized.}
 
-\item{group_var}{character. name of the grouping variable for two-group comparisons. Default is NULL.}
+\item{group_by}{character. name of the grouping variable for two-group comparisons. Default: NULL.}
 
-\item{all_stats}{logical. If TRUE, provides detailed statistical summary. Default is FALSE.}
+\item{normality_test}{character. Normality test to use: 'S-W' for Shapiro-Wilk or 'K-S' for Kolmogorov-Smirnov. Default: 'S-W'.}
 
-\item{effect_size}{logical. If TRUE, includes effect size estimates. Default is FALSE.}
+\item{all_stats}{logical. If TRUE, provides detailed statistical summary. Default: FALSE.}
 
-\item{exclude}{character vector. Variable names to exclude from the summary. Default is NULL.}
+\item{effect_size}{logical. If TRUE, includes effect size estimates. Default: FALSE.}
+
+\item{exclude}{character vector. Variable names to exclude from the summary. Default: NULL.}
 }
 \value{
 A gt table object with formatted summary statistics.
 }
 \description{
 Generates a summary table for biostatistics and clinical data analysis with
-automatic normality, effet size, and statistical test calculations. Handles both
+automatic normality, effect size, and statistical test calculations. Handles both
 numeric and categorical variables, performing appropriate descriptive statistics
 and inferential tests for single-group summaries or two-group comparisons.
 }
 \examples{
+# Simulated clinical data
+clinical_df <- clinical_data()
+
 # Overall summary without considering treatment groups
 summary_table(clinical_df,
               exclude = c('subject_id', 'visit'))
 
-# Grouped summary by treatmet group
+# Grouped summary by treatment group
 summary_table(clinical_df,
-              group_var = 'treatment',
+              group_by = 'treatment',
               exclude = c('subject_id', 'visit'))
 
-# Grouped summary by treatmet group with all stats and effect size
+# Grouped summary by treatment group with all stats and effect size
 summary_table(clinical_df,
-              group_var = 'treatment',
+              group_by = 'treatment',
               all_stats = TRUE,
               effect_size = TRUE,
               exclude = c('subject_id', 'visit'))
-
+              
 }

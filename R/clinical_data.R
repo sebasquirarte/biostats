@@ -22,9 +22,9 @@
 #' # Multiple treatment arms with dropout rate and missing data
 #' clinical_df <- clinical_data(arms = c('Placebo', 'A', 'B'), missing = 0.05, dropout = 0.10)
 #' 
-#' @export
 #' @importFrom stats rnorm runif
-#' 
+#' @export
+
 clinical_data <- function(n = 100, 
                           visits = 3, 
                           arms = c("Placebo", "Treatment"), 
