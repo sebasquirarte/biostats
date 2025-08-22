@@ -43,11 +43,11 @@ test_that("Correction parameter validation works", {
 
 test_that("Zero values are handled correctly", {
   # Test when b and c are zero (should give error without correction)
-  expect_error(capture.output(effect_measures(c(15, 0, 0, 95))), 
+  expect_error(capture.output(effect_measures(c(15, 0, 0, 95), correction = FALSE)), 
                "Cannot calculate.*One or more zero values found in data")
   
   # Test when only c is zero (should give error for risk ratio without correction)
-  expect_error(capture.output(effect_measures(c(15, 85, 0, 95))), 
+  expect_error(capture.output(effect_measures(c(15, 85, 0, 95), correction = FALSE)), 
                "Cannot calculate.*One or more zero values found in data")
   
   # Test with correction should work
