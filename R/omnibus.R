@@ -91,12 +91,11 @@ omnibus <- function(data = NULL,
                                       paired_var = paired_var, 
                                       alpha = alpha,
                                       num_levels = num_levels)
+  
   normality_key <- results_assumptions$normality_key
   variance_key <- results_assumptions$variance_key
   sphericity_key <- results_assumptions$sphericity_key
   var.test <- results_assumptions$var.test
-  norm_var <- list(significant = "was not observed in all groups",
-                   non_significant = "was observed in all groups")
   
   if (is.null(paired_var)) {
     if (normality_key == "non_significant" && variance_key == "non_significant") {
@@ -143,17 +142,17 @@ omnibus <- function(data = NULL,
   
   # Print results
   cat(sprintf("\nOmnibus Test: %s\n\n", name))
-  if (!is.null(sphericity_key)) cat(sprintf("Sphericity %s (method: Mauchly).\n", norm_var[[sphericity_key]]))
-  cat(sprintf("Normality %s (method: Shapiro Wilk).\n", norm_var[[normality_key]]))
-  cat(sprintf("Homogeneity of variance %s (method: %s).\n\n", norm_var[[variance_key]], var.test))
-  cat(sprintf("Formula: %s\n", deparse(formula)))
-  cat(sprintf("Alpha (\u03b1): %.2f\n", alpha))
+  .print_assumptions(results_assumptions, alpha)
+  cat("Test Results:\n\n")
+  cat(sprintf("  Formula: %s\n", deparse(formula)))
+  cat(sprintf("  Alpha (α): %.2f\n", alpha))
   if (grepl("ANOVA", name)) {
-    cat(sprintf("F (%d,%d) = %.3f, p = %s\n", df_between, df_within, stat, .format_p(p_value)))
+    cat(sprintf("  F(%d,%d) = %.3f, p = %s\n", df_between, df_within, stat, .format_p(p_value)))
   } else {
-    cat(sprintf("X(%d) = %.3f, p = %s\n", df, stat, .format_p(p_value)))
+    cat(sprintf("  χ²(%d) = %.3f, p = %s\n", df, stat, .format_p(p_value)))
   }
-  cat(sprintf("Result: %s\n\n", ifelse(p_value < alpha, "Significant", "Not significant")))
+  cat(sprintf("  Result: %s\n\n", ifelse(p_value < alpha, "Significant", "Not significant")))
+  
   
   # Perform post-hoc tests if significant
   if (p_value < alpha) {
@@ -174,7 +173,7 @@ omnibus <- function(data = NULL,
   }
   
   obs_levels <- table(data[[x]])
-  if (all(obs_levels == obs_levels[1]) == FALSE) cat("Sample sizes across groups are unequal - unbalanced design\n\n")
+  if (all(obs_levels == obs_levels[1]) == FALSE) cat("\nSample sizes across groups are unequal - unbalanced design\n\n")
   
   invisible(list(formula = formula,
                  summary = summary,

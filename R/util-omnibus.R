@@ -1,117 +1,134 @@
-# Evaluate assumptions
+# Assumption evaluation with detailed output
 .assumptions <- function(formula, y, x, data, paired_var, alpha, num_levels) {
   tryCatch({
-  # Normality assessment using Shapiro-Wilk
-  shapiroResults <- lapply(split(data[[y]], data[[x]]), shapiro.test)
-  
-  normality_key <- if (any(sapply(shapiroResults, function(x) x$p.value < alpha))) "significant" else "non_significant"
-  
-  # Homogeneity of variances assessment
-  bartlett_results <- bartlett.test(formula, data = data)
-  leveneResults <- leveneTest(formula, data = data)
-  
-  if (normality_key == "significant") {
-    variance_key <- if (leveneResults$`Pr(>F)`[1] < alpha) "significant" else "non_significant"
-    var.test <- "Levene"
-  } else {
-    variance_key <- if (bartlett_results$p.value < alpha) "significant" else "non_significant"
-    var.test <- "Bartlett"
-  }
-  
-  # Sphericity assessment
-  sphericity_key <- NULL
-  if (!is.null(paired_var)) {
-    order_eval <- data[[x]][1:num_levels]
-    matrix <- matrix(data[[y]], ncol = num_levels, byrow = TRUE)
-    mauchlyResults <- mauchly.test(lm(matrix ~ 1), X = ~ 1)
+    # Normality assessment using Shapiro-Wilk
+    shapiroResults <- lapply(split(data[[y]], data[[x]]), shapiro.test)
     
-    sphericity_key <- if (mauchlyResults$p.value < alpha) "significant" else "non_significant"
-  } 
-  
-  return(list(
-          normality_key = normality_key,
-          variance_key = variance_key,
-          sphericity_key = sphericity_key,
-          var.test = var.test
-         ))
-  
+    # Calculate effect sizes for normality (W statistic as effect size proxy)
+    normality_effects <- sapply(shapiroResults, function(x) x$statistic)
+    normality_pvals <- sapply(shapiroResults, function(x) x$p.value)
+    
+    normality_key <- if (any(normality_pvals < alpha)) "significant" else "non_significant"
+    
+    # Homogeneity of variances assessment
+    bartlett_results <- bartlett.test(formula, data = data)
+    leveneResults <- leveneTest(formula, data = data)
+    
+    if (normality_key == "significant") {
+      variance_key <- if (leveneResults$`Pr(>F)`[1] < alpha) "significant" else "non_significant"
+      var.test <- "Levene"
+      var_stat <- leveneResults$`F value`[1]
+      var_pval <- leveneResults$`Pr(>F)`[1]
+      var_df1 <- leveneResults$Df[1]
+      var_df2 <- leveneResults$Df[2]
+      # Eta-squared as effect size for Levene's test
+      var_effect <- var_stat * var_df1 / (var_stat * var_df1 + var_df2)
+    } else {
+      variance_key <- if (bartlett_results$p.value < alpha) "significant" else "non_significant"
+      var.test <- "Bartlett"
+      var_stat <- bartlett_results$statistic
+      var_pval <- bartlett_results$p.value
+      var_df <- bartlett_results$parameter
+      # Cramér's V approximation for Bartlett's test
+      n_total <- nrow(data)
+      var_effect <- sqrt(var_stat / (n_total * (num_levels - 1)))
+    }
+    
+    # Sphericity assessment
+    sphericity_key <- NULL
+    sph_stat <- NULL
+    sph_pval <- NULL
+    sph_effect <- NULL
+    sph_df <- NULL
+    
+    if (!is.null(paired_var)) {
+      order_eval <- data[[x]][1:num_levels]
+      matrix <- matrix(data[[y]], ncol = num_levels, byrow = TRUE)
+      mauchlyResults <- mauchly.test(lm(matrix ~ 1), X = ~ 1)
+      
+      sphericity_key <- if (mauchlyResults$p.value < alpha) "significant" else "non_significant"
+      sph_stat <- mauchlyResults$statistic
+      sph_pval <- mauchlyResults$p.value
+      sph_df <- mauchlyResults$parameter
+      # W statistic itself serves as effect size measure for sphericity
+      sph_effect <- sph_stat
+    }
+    
+    return(list(
+      normality_key = normality_key,
+      variance_key = variance_key,
+      sphericity_key = sphericity_key,
+      var.test = var.test,
+      # Detailed assumption results
+      normality_results = list(
+        test = "Shapiro-Wilk",
+        statistics = normality_effects,
+        p_values = normality_pvals,
+        overall_key = normality_key
+      ),
+      variance_results = list(
+        test = var.test,
+        statistic = var_stat,
+        p_value = var_pval,
+        effect_size = var_effect,
+        df = if (var.test == "Levene") c(var_df1, var_df2) else var_df,
+        key = variance_key
+      ),
+      sphericity_results = if (!is.null(paired_var)) list(
+        test = "Mauchly",
+        statistic = sph_stat,
+        p_value = sph_pval,
+        effect_size = sph_effect,
+        df = sph_df,
+        key = sphericity_key
+      ) else NULL
+    ))
+    
   }, # Try catch error
-    error = function(e) {
+  error = function(e) {
     warning("Assumption evaluation failed: ", e$message)
   })
 }
 
-# Run post-hoc tests for omnibus_test
-.post_hoc <- function(name, y, x, paired_var, p_method, alpha, model, data) {
-  tryCatch({
-      if(name == "One-way ANOVA") {
-        post_hoc <- TukeyHSD(model, conf.level = 1 - alpha)
-        # Print Tukey results
-        comparisons <- post_hoc[[1]]
-        cat(sprintf("Tukey Honest Significant Differences (\u03b1 = %.3f):\n", alpha))
-        cat(sprintf("%-20s %8s %8s %8s %8s\n",
-                    "Comparison", "Diff", "Lower", "Upper", "p-adj"))
-        cat(strrep("-", 60), "\n")
-        for (i in 1:nrow(comparisons)) {
-          sig_flag <- ifelse(comparisons[i, "p adj"] < alpha, "*", " ")
-          # Format comparison name with spaces around dash
-          comparison_name <- gsub("-", " - ", rownames(comparisons)[i])
-          cat(sprintf("%-20s %8.3f %8.3f %8.3f %8s%s\n",
-                      comparison_name,
-                      comparisons[i, "diff"],
-                      comparisons[i, "lwr"],
-                      comparisons[i, "upr"],
-                      .format_p(comparisons[i, "p adj"]),
-                      sig_flag))
-        }
-      } else {
-        if (name == "Repeated measures ANOVA") {
-            # Pairwise comparison w/ emmeans
-            post_hoc <- suppressWarnings(pairwise.t.test(data[[y]], 
-                                                            data[[x]], 
-                                                            paired = FALSE, 
-                                                            p.adjust.method = p_method))
-        }
-    
-        if (name %in% c("Kruskal-Wallis", "Friedman")) {
-           paired <- if (name == "Friedman") TRUE else FALSE
-           # Pairwise Wilcoxon tests with specified adjustment (paired and unpaired is possible)
-           post_hoc <- suppressWarnings(pairwise.wilcox.test(data[[y]], 
-                                                             data[[x]], 
-                                                             paired = paired, 
-                                                             p.adjust.method = p_method))
-        }
-              
-        if (name == "Friedman") {
-          cat(sprintf("Paired pairwise Wilcoxon-tests (\u03b1 = %.3f) (p_method: %s):\n", alpha, p_method))
-        } else {
-          cat(sprintf("Pairwise Wilcoxon-tests (\u03b1 = %.3f) (p_method: %s):\n", alpha, p_method))
-        }
-          
-        p_matrix <- post_hoc$p.value
-        group_names <- rownames(p_matrix)
-        col_names <- colnames(p_matrix)
-        cat(sprintf("%-12s", ""))
-        for (col in col_names) cat(sprintf("%12s", col))
-          cat("\n")
-        for (i in 1:nrow(p_matrix)) {
-            cat(sprintf("%-12s", group_names[i]))
-        for (j in 1:ncol(p_matrix)) {
-          if (is.na(p_matrix[i, j])) {
-            cat(sprintf("%12s", "-"))
-          } else {
-            p_val <- p_matrix[i, j]
-            sig_flag <- ifelse(p_val < alpha, "*", "")
-            cat(sprintf("%11s%s", .format_p(p_val), sig_flag))
-          }
-        }
-    cat("\n")
-      }
-    }
-  # Return results to main function
-return(post_hoc)
-}, # Try catch error
-    error = function(e) {
-      warning("Post-hoc test failed: ", e$message)
-})
+# Enhanced assumption output function
+.print_assumptions <- function(results_assumptions, alpha) {
+  cat("Assumption Testing Results:\n\n")
+  
+  # Sphericity (if applicable)
+  if (!is.null(results_assumptions$sphericity_results)) {
+    sph <- results_assumptions$sphericity_results
+    cat(sprintf("  Sphericity (%s Test):\n", sph$test))
+    cat(sprintf("  W = %.4f, df = %d, p = %s\n", 
+                sph$statistic, sph$df, .format_p(sph$p_value)))
+    cat(sprintf("  Effect size (W) = %.4f\n", sph$effect_size))
+    cat(sprintf("  Result: %s\n\n", 
+                ifelse(sph$p_value < alpha, "Sphericity violated", "Sphericity assumed")))
+  }
+  
+  # Normality
+  norm <- results_assumptions$normality_results
+  cat(sprintf("  Normality (%s Test):\n", norm$test))
+  group_names <- names(norm$statistics)
+  for (i in seq_along(group_names)) {
+    cat(sprintf("  %s: W = %.4f, p = %s\n", 
+                group_names[i], norm$statistics[i], .format_p(norm$p_values[i])))
+  }
+  min_p <- min(norm$p_values)
+  cat(sprintf("  Overall result: %s)\n\n", 
+              ifelse(norm$overall_key == "significant", "Non-normal distribution detected", "Normal distribution assumed")))
+  
+  # Homogeneity of variance
+  var <- results_assumptions$variance_results
+  cat(sprintf("  Homogeneity of Variance (%s Test):\n", var$test))
+  if (var$test == "Levene") {
+    cat(sprintf("  F(%d,%d) = %.4f, p = %s\n", 
+                var$df[1], var$df[2], var$statistic, .format_p(var$p_value)))
+    cat(sprintf("  Effect size (η²) = %.4f\n", var$effect_size))
+  } else {
+    cat(sprintf("  χ²(%d) = %.4f, p = %s\n", 
+                var$df, var$statistic, .format_p(var$p_value)))
+    cat(sprintf("  Effect size (Cramér's V) = %.4f\n", var$effect_size))
+  }
+  cat(sprintf("  Result: %s\n\n", 
+              ifelse(var$key == "significant", "Heterogeneous variances", "Homogeneous variances")))
 }
