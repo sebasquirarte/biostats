@@ -177,7 +177,7 @@
                 sph$statistic, sph$df, .format_p(sph$p_value)))
     cat(sprintf("  Effect size (W) = %.4f\n", sph$effect_size))
     cat(sprintf("  Result: %s\n\n", 
-                ifelse(sph$p_value < alpha, "Sphericity violated", "Sphericity assumed")))
+                ifelse(sph$p_value < alpha, "Sphericity violated.", "Sphericity assumed.")))
   }
   
   # Normality
@@ -190,7 +190,7 @@
   }
   min_p <- min(norm$p_values)
   cat(sprintf("  Overall result: %s\n\n", 
-              ifelse(norm$overall_key == "significant", "Non-normal distribution detected", "Normal distribution assumed")))
+              ifelse(norm$overall_key == "significant", "Non-normal distribution detected.", "Normal distribution assumed.")))
   
   # Homogeneity of variance
   var <- results_assumptions$variance_results
@@ -205,5 +205,5 @@
     cat(sprintf("  Effect size (Cramer's V) = %.4f\n", var$effect_size))
   }
   cat(sprintf("  Result: %s\n\n", 
-              ifelse(var$key == "significant", "Heterogeneous variances", "Homogeneous variances")))
+              ifelse(var$key == "significant", "Heterogeneous variances.", "Homogeneous variances.")))
 }

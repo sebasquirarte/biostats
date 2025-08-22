@@ -2,29 +2,31 @@
 % Please edit documentation in R/effect_measures.R
 \name{effect_measures}
 \alias{effect_measures}
-\title{Effect Measures
-Calculates measures of effect: Odds Ratio (OR), Risk Ratio (RR),
-Risk Reduction (RD) and either Number Needed to Treat (NNT) or
-Number Needed to Harm (NNH).}
+\title{Effect Measures}
 \usage{
-effect_measures(data, alpha = 0.05, correction = TRUE)
+effect_measures(
+  exposed_event,
+  exposed_no_event,
+  unexposed_event,
+  unexposed_no_event,
+  alpha = 0.05,
+  correction = TRUE
+)
 }
 \arguments{
-\item{data}{Numeric, data.frame, table, or matrix
-For vectors, values should be provided as c(a, b, c, d) where:
-a = exposed with event, b = exposed without event,
-c = unexposed with event, d = unexposed without event.
-For matrices/tables/data.frames: rows represent exposure status
-(exposed/unexposed), columns represent outcome (event/no event).}
+\item{exposed_event}{numeric. Number of events in the exposed group.}
 
-\item{alpha}{Numeric.
-Value between 0 and 1 specifying the alpha level for confidence intervals (CI).
-Commonly used values are 0.05 (95\% CI), 0.01 (99\% CI), and 0.10 (90\% CI).
-Default is 0.05.}
+\item{exposed_no_event}{numeric. Number of non-events in the exposed group.}
 
-\item{correction}{Logical.
-If TRUE, a continuity correction (0.5) is applied when any cell contains 0.
-Default is FALSE.}
+\item{unexposed_event}{numeric. Number of events in the unexposed group.}
+
+\item{unexposed_no_event}{numeric. Number of non-events in the unexposed group.}
+
+\item{alpha}{numeric. Value between 0 and 1 specifying the alpha level for
+confidence intervals (CI). Default: 0.05.}
+
+\item{correction}{Logical. If TRUE, a continuity correction (0.5) is applied
+when any cell contains 0. Default: TRUE.}
 }
 \value{
 A list containing:
@@ -41,14 +43,13 @@ A list containing:
 }
 }
 \description{
-Effect Measures
-Calculates measures of effect: Odds Ratio (OR), Risk Ratio (RR),
-Risk Reduction (RD) and either Number Needed to Treat (NNT) or
-Number Needed to Harm (NNH).
+Calculates measures of effect: Odds Ratio (OR), Risk Ratio (RR), Risk Reduction (RD)
+and either Number Needed to Treat (NNT) or Number Needed to Harm (NNH).
 }
 \examples{
-\dontrun{
-effect_measures(data = c(15, 85, 5, 95))
-}
+effect_measures(exposed_event = 15, 
+                exposed_no_event = 85,
+                unexposed_event = 5,
+                unexposed_no_event = 95)
 
 }
