@@ -42,7 +42,7 @@
 }
 
 # Run post-hoc tests for omnibus_test
-.post_hoc <- function(name, y, x, paired_var, method, alpha, model, data) {
+.post_hoc <- function(name, y, x, paired_var, p_method, alpha, model, data) {
   tryCatch({
       if(name == "One-way ANOVA") {
         post_hoc <- TukeyHSD(model, conf.level = 1 - alpha)
@@ -70,7 +70,7 @@
             post_hoc <- suppressWarnings(pairwise.t.test(data[[y]], 
                                                             data[[x]], 
                                                             paired = FALSE, 
-                                                            p.adjust.method = method))
+                                                            p.adjust.method = p_method))
         }
     
         if (name %in% c("Kruskal-Wallis", "Friedman")) {
@@ -79,13 +79,13 @@
            post_hoc <- suppressWarnings(pairwise.wilcox.test(data[[y]], 
                                                              data[[x]], 
                                                              paired = paired, 
-                                                             p.adjust.method = method))
+                                                             p.adjust.method = p_method))
         }
               
         if (name == "Friedman") {
-          cat(sprintf("Paired pairwise Wilcoxon-tests (\u03b1 = %.3f) (Method: %s):\n", alpha, method))
+          cat(sprintf("Paired pairwise Wilcoxon-tests (\u03b1 = %.3f) (p_method: %s):\n", alpha, p_method))
         } else {
-          cat(sprintf("Pairwise Wilcoxon-tests (\u03b1 = %.3f) (Method: %s):\n", alpha, method))
+          cat(sprintf("Pairwise Wilcoxon-tests (\u03b1 = %.3f) (p_method: %s):\n", alpha, p_method))
         }
           
         p_matrix <- post_hoc$p.value

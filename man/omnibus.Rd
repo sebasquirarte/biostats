@@ -5,38 +5,41 @@
 \title{Omnibus Tests for Comparing Three or More Groups}
 \usage{
 omnibus(
+  data = NULL,
   y = NULL,
   x = NULL,
-  data = NULL,
   paired_var = NULL,
   alpha = 0.05,
-  method = c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"),
-  na.action = c("na.omit", "na.exclude")
+  p_method = "holm",
+  na.action = "na.omit"
 )
 }
 \arguments{
-\item{y}{Character string. Dependent variable (outcome).}
+\item{data}{Dataframe containing the variables to be analyzed.}
 
-\item{x}{Character string. Independent variable (within-subject variable). Must have at least three unique levels.}
+\item{y}{character string. Dependent variable (outcome).}
 
-\item{data}{Dataframe containing the variables.}
+\item{x}{character string. Independent variable (group or within-subject variable).}
 
-\item{paired_var}{Character string or NULL. (source of repeated measurements).
-If provided, a repeated measures design is assumed. Data should be in long format with
-one row per observation. If NULL, independent groups design is assumed.}
+\item{paired_var}{character string or NULL. Source of repeated measurements. If
+provided, a repeated measures design is assumed. Data should be in long format
+with one row per observation. If NULL, independent groups design is assumed.}
 
-\item{alpha}{Numeric. Significance level for hypothesis tests. Default is 0.05.}
+\item{alpha}{numeric. Significance level for hypothesis tests. Default: 0.05.}
 
-\item{method}{Character string. p-value adjustment method for multiple comparisons in case of performing post-hoc pairwise (t or Wilcoxon) tests.
-One of "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", or "none".}
+\item{p_method}{character string. Method for p-value adjustment in post-hoc multiple
+comparisons to control for Type I error inflation. Options: "holm" (Holm),
+"hochberg" (Hochberg), "hommel" (Hommel), "bonferroni" (Bonferroni), "BH"
+(Benjamini-Hochberg), "BY" (Benjamini-Yekutieli), "none" (no adjustment). Default: "holm".}
 
-\item{na.action}{Character string. Action to take if NAs are present. Either "na.omit" or "na.exclude".}
+\item{na.action}{character string. Action to take if NAs are present ("na.omit"
+or "na.exclude"). Default: "na.omit"}
 }
 \value{
 A list containing:
 \item{formula}{The modelled formula used for the test.}
 \item{summary}{Summary object of the model or test.}
-\item{statistic}{Test statistic value (F or chi-squared).}
+\item{statistic}{Test statistic value (F or Chi-squared).}
 \item{p_value}{p-value observed in the omnibus test.}
 \item{n_groups}{Number of groups in the independent variable.}
 \item{significant}{Logical indicating whether the test was significant at the alpha level.}
@@ -52,10 +55,21 @@ Automatically selects the appropriate statistical test based on data characteris
 and assumption testing. Supports both independent groups and repeated measures designs.
 Tests include one-way ANOVA, repeated measures ANOVA, Kruskal-Wallis test, and
 Friedman test. Performs comprehensive assumption checking (normality, homogeneity
-of variance, sphericity) and post-hoc testing when significant results
-are detected.
+of variance, sphericity) and post-hoc testing when significant results are detected.
 }
 \examples{
-# Examples go here
+# Simulated clinical data with multiple tratment arms and visits
+clinical_df <- clinical_data(n = 300, visits = 6, arms = c("A", "B", "C"))
+
+# Compare numerical variable across treatments
+result <- omnibus(data = clinical_df,
+                  y = "biomarker", 
+                  x = "treatment")
+
+# Compare numerical variable changes across visits 
+result <- omnibus(y = "biomarker", 
+                  x = "visit", 
+                  data = clinical_df, 
+                  paired_var = "subject_id")
 
 }

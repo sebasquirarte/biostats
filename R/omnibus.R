@@ -5,24 +5,26 @@
 #' and assumption testing. Supports both independent groups and repeated measures designs.
 #' Tests include one-way ANOVA, repeated measures ANOVA, Kruskal-Wallis test, and
 #' Friedman test. Performs comprehensive assumption checking (normality, homogeneity
-#' of variance, sphericity) and post-hoc testing when significant results
-#' are detected.
+#' of variance, sphericity) and post-hoc testing when significant results are detected.
 #'
-#' @param y Character string. Dependent variable (outcome).
-#' @param x Character string. Independent variable (within-subject variable). Must have at least three unique levels.
-#' @param data Dataframe containing the variables.
-#' @param paired_var Character string or NULL. (source of repeated measurements).
-#'                   If provided, a repeated measures design is assumed. Data should be in long format with
-#'                   one row per observation. If NULL, independent groups design is assumed.
-#' @param alpha Numeric. Significance level for hypothesis tests. Default is 0.05.
-#' @param method Character string. p-value adjustment method for multiple comparisons in case of performing post-hoc pairwise (t or Wilcoxon) tests. 
-#'               One of "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", or "none".
-#' @param na.action Character string. Action to take if NAs are present. Either "na.omit" or "na.exclude".
+#' @param data Dataframe containing the variables to be analyzed.
+#' @param y character string. Dependent variable (outcome).
+#' @param x character string. Independent variable (group or within-subject variable).
+#' @param paired_var character string or NULL. Source of repeated measurements. If 
+#'   provided, a repeated measures design is assumed. Data should be in long format 
+#'   with one row per observation. If NULL, independent groups design is assumed.
+#' @param alpha numeric. Significance level for hypothesis tests. Default: 0.05.
+#' @param p_method character string. Method for p-value adjustment in post-hoc multiple
+#'   comparisons to control for Type I error inflation. Options: "holm" (Holm), 
+#'   "hochberg" (Hochberg), "hommel" (Hommel), "bonferroni" (Bonferroni), "BH" 
+#'   (Benjamini-Hochberg), "BY" (Benjamini-Yekutieli), "none" (no adjustment). Default: "holm".
+#' @param na.action character string. Action to take if NAs are present ("na.omit" 
+#'   or "na.exclude"). Default: "na.omit"
 #'
 #' @return A list containing:
 #' \item{formula}{The modelled formula used for the test.}
 #' \item{summary}{Summary object of the model or test.}
-#' \item{statistic}{Test statistic value (F or chi-squared).}
+#' \item{statistic}{Test statistic value (F or Chi-squared).}
 #' \item{p_value}{p-value observed in the omnibus test.}
 #' \item{n_groups}{Number of groups in the independent variable.}
 #' \item{significant}{Logical indicating whether the test was significant at the alpha level.}
@@ -33,42 +35,52 @@
 #' \item{name}{Name of the test performed (e.g., "One-way ANOVA", "Kruskal-Wallis test", etc.).}
 #'
 #' @examples
-#' # Examples go here
-#'
-#' @export
+#' # Simulated clinical data with multiple tratment arms and visits
+#' clinical_df <- clinical_data(n = 300, visits = 6, arms = c("A", "B", "C"))
+#' 
+#' # Compare numerical variable across treatments
+#' result <- omnibus(data = clinical_df,
+#'                   y = "biomarker", 
+#'                   x = "treatment")
+#' 
+#' # Compare numerical variable changes across visits 
+#' result <- omnibus(y = "biomarker", 
+#'                   x = "visit", 
+#'                   data = clinical_df, 
+#'                   paired_var = "subject_id")
 #'
 #' @importFrom car leveneTest
 #' @importFrom stats aov bartlett.test friedman.test kruskal.test lm mauchly.test shapiro.test as.formula na.action
 #' @importFrom stats TukeyHSD pairwise.t.test pairwise.wilcox.test
 #' @importFrom emmeans emmeans
 #' @importFrom graphics pairs
+#' @export
 
-omnibus <- function(y = NULL,
+omnibus <- function(data = NULL,
+                    y = NULL,
                     x = NULL,
-                    data = NULL,
                     paired_var = NULL,
                     alpha = 0.05,
-                    method = c("holm", "hochberg", "hommel", "bonferroni",
-                               "BH", "BY", "fdr", "none"),
-                    na.action = c("na.omit", "na.exclude")) {
+                    p_method = "holm",
+                    na.action = "na.omit") {
+  
   # Input validation
-  if (missing(y)) stop("Dependent variable (y) must be specified.")
-  if (missing(x)) stop("Independent variable (x) must be specified.")
-  if (missing(data)) stop("Dataframe must be specified.")
-  if (!(y %in% names(data))) stop("The dependent variable (y) was not found in the dataframe.")
-  if (!(x %in% names(data))) stop("The independent variable (x) was not found in the dataframe.")
+  if (missing(y)) stop("Dependent variable ('y') must be specified.", call. = FALSE)
+  if (missing(x)) stop("Independent variable ('x') must be specified.", call. = FALSE)
+  if (missing(data)) stop("'data' must be specified.", call. = FALSE)
+  if (!(y %in% names(data))) stop("The dependent variable ('y') was not found in the dataframe.", call. = FALSE)
+  if (!(x %in% names(data))) stop("The independent variable ('x') was not found in the dataframe.", call. = FALSE)
   if (!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
   if (!is.numeric(data[[y]])) data[[y]] <- as.numeric(data[[y]])
-  if (alpha <= 0 || alpha >= 1) stop("alpha must be between 0 and 1.")
+  if (alpha <= 0 || alpha >= 1) stop("'alpha' must be between 0 and 1.", call. = FALSE)
   num_levels <- length(levels(data[[x]]))
-  if (num_levels < 3) stop("The independent variable (x) must have at least 3 levels.")
-  if (missing(method)) stop("Method must be specified.")
-  if (!(length(method) == 1)) stop("Only one method can be selected at a time.")
-  if (!(method %in% c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"))) stop("Invalid p-value adjustment method.")
-  if (missing(na.action)) stop("na.action must be specified.")
-  if (!(length(na.action) == 1)) stop("Only one na.action can be selected at a time.")
-  if (!(na.action %in% c("na.omit", "na.exclude"))) stop("Invalid na.action.")
-
+  if (num_levels < 3) stop("The independent variable ('x') must have at least 3 levels.", call. = FALSE)
+  if (!(p_method %in% c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "none"))) {
+    stop("Invalid p-value adjustment method.", call. = FALSE)
+  }
+  if (!(length(na.action) == 1)) stop("Only one 'na.action' can be selected at a time.", call. = FALSE)
+  if (!(na.action %in% c("na.omit", "na.exclude"))) stop("Invalid 'na.action'.", call. = FALSE)
+  
   formula <- as.formula(paste(y, "~", x))
   
   # Assumption evaluation
@@ -102,33 +114,33 @@ omnibus <- function(y = NULL,
       summary <- summary(model)
       name <- "Repeated measures ANOVA"
     } else {
-        formula <- as.formula(paste(deparse(formula[[2]]), "~", deparse(formula[[3]]), "|", paired_var))
-        model <- friedman.test(formula, data = data, na.action = na.action) # Friedman test
-        name <- "Friedman"
+      formula <- as.formula(paste(deparse(formula[[2]]), "~", deparse(formula[[3]]), "|", paired_var))
+      model <- friedman.test(formula, data = data, na.action = na.action) # Friedman test
+      name <- "Friedman"
     }
   }
-
+  
   # Extract key statistics
   if (name == "One-way ANOVA") {
-      stat <- summary[[1]][1, "F value"]
-      p_value <- summary[[1]][1, "Pr(>F)"]
-      df_between <- summary[[1]][1, "Df"]
-      df_within <- summary[[1]][2, "Df"]
+    stat <- summary[[1]][1, "F value"]
+    p_value <- summary[[1]][1, "Pr(>F)"]
+    df_between <- summary[[1]][1, "Df"]
+    df_within <- summary[[1]][2, "Df"]
   }
   
   if (name == "Repeated measures ANOVA") {
-      stat <- summary[[2]][[1]][x, "F value"]
-      p_value <- summary[[2]][[1]][x, "Pr(>F)"]
-      df_between <- summary[[2]][[1]][x, "Df"]
-      df_within <- summary[[2]][[1]]["Residuals", "Df"]
+    stat <- summary[[2]][[1]][x, "F value"]
+    p_value <- summary[[2]][[1]][x, "Pr(>F)"]
+    df_between <- summary[[2]][[1]][x, "Df"]
+    df_within <- summary[[2]][[1]]["Residuals", "Df"]
   }
-    
+  
   if (name %in% c("Friedman", "Kruskal-Wallis")) {
     stat <- unname(model$statistic)
     p_value <- model$p.value
     df <- unname(model$parameter)
   }
-
+  
   # Print results
   cat(sprintf("\nOmnibus Test: %s\n\n", name))
   if (!is.null(sphericity_key)) cat(sprintf("Sphericity %s (method: Mauchly).\n", norm_var[[sphericity_key]]))
@@ -142,7 +154,7 @@ omnibus <- function(y = NULL,
     cat(sprintf("X(%d) = %.3f, p = %s\n", df, stat, .format_p(p_value)))
   }
   cat(sprintf("Result: %s\n\n", ifelse(p_value < alpha, "Significant", "Not significant")))
-
+  
   # Perform post-hoc tests if significant
   if (p_value < alpha) {
     cat("Post-hoc Multiple Comparisons\n\n")
@@ -151,20 +163,19 @@ omnibus <- function(y = NULL,
       y = y,
       x = x,
       paired_var = paired_var,
-      method = method,
+      p_method = p_method,
       alpha = alpha,
       model = model,
       data = data
     )
   } else {
-    cat("Post-hoc tests not performed (results not significant).\n")
+    cat("Post-hoc tests not performed (results not significant).\n\n")
     post_hoc <- NULL
   }
-  cat("\n")
   
   obs_levels <- table(data[[x]])
-  if (all(obs_levels == obs_levels[1]) == FALSE) cat("Sample sizes across groups are unequal - unbalanced design")
-
+  if (all(obs_levels == obs_levels[1]) == FALSE) cat("Sample sizes across groups are unequal - unbalanced design\n\n")
+  
   invisible(list(formula = formula,
                  summary = summary,
                  statistic = stat,
@@ -177,4 +188,3 @@ omnibus <- function(y = NULL,
                  post_hoc = post_hoc,
                  name = name))
 }
-
