@@ -145,13 +145,13 @@ omnibus <- function(data = NULL,
   .print_assumptions(results_assumptions, alpha)
   cat("Test Results:\n\n")
   cat(sprintf("  Formula: %s\n", deparse(formula)))
-  cat(sprintf("  Alpha (α): %.2f\n", alpha))
+  cat(sprintf("  alpha: %.2f\n", alpha))
   if (grepl("ANOVA", name)) {
     cat(sprintf("  F(%d,%d) = %.3f, p = %s\n", df_between, df_within, stat, .format_p(p_value)))
   } else {
-    cat(sprintf("  χ²(%d) = %.3f, p = %s\n", df, stat, .format_p(p_value)))
+    cat(sprintf("  Chi-squared(%d) = %.3f, p = %s\n", df, stat, .format_p(p_value)))
   }
-  cat(sprintf("  Result: %s\n\n", ifelse(p_value < alpha, "Significant", "Not significant")))
+  cat(sprintf("  Result: %s\n\n", ifelse(p_value < alpha, "significant", "not significant")))
   
   
   # Perform post-hoc tests if significant
@@ -173,7 +173,7 @@ omnibus <- function(data = NULL,
   }
   
   obs_levels <- table(data[[x]])
-  if (all(obs_levels == obs_levels[1]) == FALSE) cat("\nSample sizes across groups are unequal - unbalanced design\n\n")
+  if (all(obs_levels == obs_levels[1]) == FALSE) cat("\nSample sizes across groups are unequal - unbalanced design.\n\n")
   
   invisible(list(formula = formula,
                  summary = summary,

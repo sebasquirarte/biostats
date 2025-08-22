@@ -7,7 +7,7 @@ Calculates measures of effect: Odds Ratio (OR), Risk Ratio (RR),
 Risk Reduction (RD) and either Number Needed to Treat (NNT) or
 Number Needed to Harm (NNH).}
 \usage{
-effect_measures(data, alpha = 0.05, correction = FALSE)
+effect_measures(data, alpha = 0.05, correction = TRUE)
 }
 \arguments{
 \item{data}{Numeric, data.frame, table, or matrix
@@ -48,7 +48,7 @@ Number Needed to Harm (NNH).
 }
 \examples{
 \dontrun{
-odds(data = c(15, 85, 5, 95))
+effect_measures(data = c(15, 85, 5, 95))
 }
 
 }

@@ -10,12 +10,10 @@
 #'   c = unexposed with event, d = unexposed without event.
 #'   For matrices/tables/data.frames: rows represent exposure status 
 #'   (exposed/unexposed), columns represent outcome (event/no event).
-#'   
 #' @param alpha Numeric.  
 #'   Value between 0 and 1 specifying the alpha level for confidence intervals (CI). 
 #'   Commonly used values are 0.05 (95% CI), 0.01 (99% CI), and 0.10 (90% CI).
 #'   Default is 0.05.
-#'
 #' @param correction Logical.  
 #'   If TRUE, a continuity correction (0.5) is applied when any cell contains 0.
 #'   Default is FALSE.
@@ -35,11 +33,11 @@
 #'
 #' @examples
 #' \dontrun{
-#' odds(data = c(15, 85, 5, 95))
+#' effect_measures(data = c(15, 85, 5, 95))
 #' }
 #'
 #' @export
-effect_measures <- function(data, alpha = 0.05, correction = FALSE) {
+effect_measures <- function(data, alpha = 0.05, correction = TRUE) {
   
   # Input validation
   if (missing(data)) stop("'data' argument is required")
