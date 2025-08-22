@@ -8,6 +8,9 @@ test_that("Input validation works correctly", {
   # Test non-numeric values
   expect_error(effect_measures("a", 2, 3, 4), "Values must be numeric integers.")
   
+  # Test non-integer values
+  expect_error(effect_measures(1.5, 2, 3, 4), "Values must be numeric integers.")
+  
   # Test missing data argument
   expect_error(effect_measures(), "argument \"exposed_event\" is missing")
 })
@@ -34,14 +37,17 @@ test_that("Correction parameter validation works", {
 test_that("Zero values are handled correctly", {
   # Test when b and c are zero (should give error without correction)
   expect_error(capture.output(effect_measures(15, 0, 0, 95, correction = FALSE)), 
-               "Cannot calculate.*One or more zero values found in data")
+               "Cannot calculate.*odds ratio.*One or more zero values found in data")
   
   # Test when only c is zero (should give error for risk ratio without correction)
   expect_error(capture.output(effect_measures(15, 85, 0, 95, correction = FALSE)), 
-               "Cannot calculate.*One or more zero values found in data")
+               "Cannot calculate.*odds ratio.*risk ratio.*One or more zero values found in data")
   
   # Test with correction should work
   expect_no_error(capture.output(effect_measures(15, 0, 0, 95, correction = TRUE)))
+  
+  # Test edge case: when totals are zero
+  expect_error(effect_measures(0, 0, 5, 95), "Cannot calculate risks when totals are zero.")
 })
 
 test_that("Basic calculations work with individual parameters", {
