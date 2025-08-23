@@ -37,9 +37,10 @@ C.V.](https://sophialab.com/en/).*
 ``` r
 install.packages("remotes") 
 library(remotes)
-remotes::install_github('sebasquirarte/biostats',
-                        auth_token = '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',
-                        upgrade = FALSE)
+remotes::install_github("sebasquirarte/biostats", 
+                        auth_token = "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",
+                        force = TRUE, 
+                        upgrade = "never")
 library(biostats)
 ```
 
@@ -66,8 +67,8 @@ established by Chow et al. (2017).
   - [sample_size_calc()](#sample_size_calc) - Shiny App ✨
 - [**Statistical Analysis and
   Inference**](#statistical-analysis-and-inference)
-  - [omnibus()](#anova_test)
-  - [odds()](#odds)
+  - [omnibus()](#omnibus)
+  - [effect_measures())](#effect_measures)
 - [**Data Visualization**](#data-visualization)
   - [plot_bar()](#plot_bar)
   - [plot_line()](#plot_line)
@@ -618,38 +619,158 @@ result <- sample_size_range(x1_range = c(0.65, 0.75),
 
 ##### Description
 
-- 
+Performs omnibus tests to evaluate overall differences between three or
+more groups. Automatically selects the appropriate statistical test
+based on data characteristics and assumption testing. Supports both
+independent groups and repeated measures designs. Tests include one-way
+ANOVA, repeated measures ANOVA, Kruskal-Wallis test, and Friedman test.
+Performs comprehensive assumption checking (normality, homogeneity of
+variance, sphericity) and post-hoc testing when significant results are
+detected.
 
 ##### Parameters
 
 | Parameter | Description | Default |
-|-----------|-------------|---------|
-| \-        | \-          | \-      |
+|----|----|----|
+| `data` | Dataframe containing the variables to be analyzed. | `Required` |
+| `y` | Character string. Dependent variable (outcome). | `Required` |
+| `x` | Character string. Independent variable (group or within-subject variable). | `Required` |
+| `paired_var` | Character string or NULL. Source of repeated measurements. If provided, a repeated measures design is assumed. Data should be in long format with one row per observation. If NULL, independent groups design is assumed. | `NULL` |
+| `alpha` | Numeric. Significance level for hypothesis tests. | `0.05` |
+| `p_method` | Character string. Method for p-value adjustment in post-hoc multiple comparisons to control for Type I error inflation. | `"holm"` |
+| `na.action` | Character string. Action to take if NAs are present (“na.omit” or “na.exclude”). | `"na.omit"` |
 
 ##### Examples
 
 ``` r
-NULL
-#> NULL
+# Simulated clinical data with multiple tratment arms and visits
+clinical_df <- clinical_data(n = 300, visits = 6, arms = c("A", "B", "C"))
+ 
+# Compare numerical variable across treatments
+result <- omnibus(data = clinical_df,
+                  y = "biomarker", 
+                  x = "treatment")
+#> 
+#> Omnibus Test: One-way ANOVA
+#> 
+#> Assumption Testing Results:
+#> 
+#>   Normality (Shapiro-Wilk Test):
+#>   A: W = 0.9963, p = 0.262
+#>   B: W = 0.9979, p = 0.613
+#>   C: W = 0.9967, p = 0.236
+#>   Overall result: Normal distribution assumed.
+#> 
+#>   Homogeneity of Variance (Bartlett Test):
+#>   Chi-squared(2) = 3.5715, p = 0.168
+#>   Effect size (Cramer's V) = 0.0315
+#>   Result: Homogeneous variances.
+#> 
+#> Test Results:
+#> 
+#>   Formula: biomarker ~ treatment
+#>   alpha: 0.05
+#>   F(2,1797) = 48.977, p = <0.001
+#>   Result: significant
+#> 
+#> Post-hoc Multiple Comparisons
+#> 
+#> Tukey Honest Significant Differences (alpha: 0.050):
+#> Comparison               Diff    Lower    Upper    p-adj
+#> ------------------------------------------------------------ 
+#> B - A                  -2.158   -3.506   -0.809   <0.001*
+#> C - A                  -5.636   -6.996   -4.276   <0.001*
+#> C - B                  -3.478   -4.769   -2.188   <0.001*
+#> 
+#> Sample sizes across groups are unequal - unbalanced design.
 ```
 
-#### **odds()**
+``` r
+# Filter simulated data to just one treatment
+clinical_df_A <- clinical_df[clinical_df$treatment == "A", ]
+
+# Compare numerical variable changes across visits 
+result <- omnibus(y = "biomarker", 
+                  x = "visit", 
+                  data = clinical_df_A, 
+                  paired_var = "subject_id")
+#> 
+#> Omnibus Test: Friedman
+#> 
+#> Assumption Testing Results:
+#> 
+#>   Sphericity (Mauchly Test):
+#>   Effect size (W) = 0.8216
+#>   Result: Sphericity assumed.
+#> 
+#>   Normality (Shapiro-Wilk Test):
+#>   1: W = 0.9711, p = 0.046
+#>   2: W = 0.9882, p = 0.612
+#>   3: W = 0.9865, p = 0.497
+#>   4: W = 0.9898, p = 0.727
+#>   5: W = 0.9774, p = 0.126
+#>   6: W = 0.9798, p = 0.187
+#>   Overall result: Non-normal distribution detected.
+#> 
+#>   Homogeneity of Variance (Levene Test):
+#>   F(5,522) = 0.4063, p = 0.845
+#>   Effect size (eta-squared) = 0.0039
+#>   Result: Homogeneous variances.
+#> 
+#> Test Results:
+#> 
+#>   Formula: biomarker ~ visit | subject_id
+#>   alpha: 0.05
+#>   Chi-squared(5) = 9.357, p = 0.096
+#>   Result: not significant
+#> 
+#> Post-hoc tests not performed (results not significant).
+```
+
+#### **effect_measures()**
 
 ##### Description
 
-- 
+Calculates measures of effect: Odds Ratio (OR), Risk Ratio (RR), Risk
+Reduction (RD) and either Number Needed to Treat (NNT) or Number Needed
+to Harm (NNH).
 
 ##### Parameters
 
 | Parameter | Description | Default |
-|-----------|-------------|---------|
-| \-        | \-          | \-      |
+|----|----|----|
+| `exposed_event` | Numeric. Number of events in the exposed group. | `Required` |
+| `exposed_no_event` | Numeric. Number of non-events in the exposed group. | `Required` |
+| `unexposed_event` | Numeric. Number of events in the unexposed group. | `Required` |
+| `unexposed_no_event` | Numeric. Number of non-events in the unexposed group. | `Required` |
+| `alpha` | Numeric. Value between 0 and 1 specifying the alpha level for confidence intervals (CI). | `0.05` |
+| `correction` | Logical. If TRUE, a continuity correction (0.5) is applied when any cell contains 0. | `TRUE` |
 
 ##### Examples
 
 ``` r
-NULL
-#> NULL
+effect_measures(exposed_event = 15, 
+                exposed_no_event = 85,
+                unexposed_event = 5,
+                unexposed_no_event = 95)
+#> 
+#> Odds/Risk Ratio Analysis
+#> 
+#> Contingency Table:
+#>                 Event No Event      Sum
+#> Exposed            15       85      100
+#> Unexposed           5       95      100
+#> Sum                20      180      200
+#> 
+#> Odds Ratio: 3.353 (95% CI: 1.169 - 9.616)
+#> Risk Ratio: 3.000 (95% CI: 1.133 - 7.941)
+#> 
+#> Risk in exposed: 15.0%
+#> Risk in unexposed: 5.0%
+#> Absolute risk difference: 10.0%
+#> Number needed to harm (NNH): 10.0
+#> 
+#> Note: Correction not applied (no zero values).
 ```
 
 ### Data Visualization
@@ -694,7 +815,7 @@ plot_bar(clinical_df,
          values = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-23-1.png" width="75%" />
+<img src="man/figures/README-unnamed-chunk-24-1.png" width="75%" />
 
 ``` r
 
@@ -707,7 +828,7 @@ plot_bar(clinical_df,
          values = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-23-2.png" width="75%" />
+<img src="man/figures/README-unnamed-chunk-24-2.png" width="75%" />
 
 #### **plot_line()**
 
@@ -752,7 +873,7 @@ plot_line(clinical_df,
           error = "se")
 ```
 
-<img src="man/figures/README-unnamed-chunk-24-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-25-1.png" width="100%" />
 
 ``` r
 
@@ -767,7 +888,7 @@ plot_line(clinical_df,
           points = FALSE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-24-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-25-2.png" width="100%" />
 
 #### **plot_hist()**
 
@@ -809,7 +930,7 @@ clinical_df <- clinical_data()
 plot_hist(clinical_df, x = "biomarker", group = "treatment", stat = "mean")
 ```
 
-<img src="man/figures/README-unnamed-chunk-25-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-26-1.png" width="100%" />
 
 ``` r
 
@@ -817,7 +938,7 @@ plot_hist(clinical_df, x = "biomarker", group = "treatment", stat = "mean")
 plot_hist(clinical_df, x = "biomarker", facet = "treatment")
 ```
 
-<img src="man/figures/README-unnamed-chunk-25-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-26-2.png" width="100%" />
 
 #### **plot_box()**
 
@@ -853,21 +974,25 @@ clinical_df <- clinical_data(visit = 10)
 
 # Barplot of age by sex and treatment
 plot_box(clinical_df, x = "sex", y = "age", group = "treatment", y_limits = c(0,80))
-#> Warning: Removed 20 rows containing non-finite outside the scale range
+#> Warning: Removed 10 rows containing non-finite outside the scale range
 #> (`stat_boxplot()`).
-#> Warning: Removed 20 rows containing non-finite outside the scale range
+#> Warning: Removed 10 rows containing non-finite outside the scale range
 #> (`stat_summary()`).
 ```
 
-<img src="man/figures/README-unnamed-chunk-26-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-27-1.png" width="100%" />
 
 ``` r
 
 # Barplot of bimarker by study visit and treatment
 plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment", y_limits = c(0,80))
+#> Warning: Removed 1 row containing non-finite outside the scale range
+#> (`stat_boxplot()`).
+#> Warning: Removed 1 row containing non-finite outside the scale range
+#> (`stat_summary()`).
 ```
 
-<img src="man/figures/README-unnamed-chunk-26-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-27-2.png" width="100%" />
 
 #### **plot_corr()**
 
@@ -903,4 +1028,4 @@ cars_df <- mtcars
 plot_corr(cars_df, type = "upper", show_significance = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-27-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-28-1.png" width="100%" />
