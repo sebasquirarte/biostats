@@ -4,12 +4,12 @@
 \alias{normality}
 \title{Statistical and Visual Normality Assessment}
 \usage{
-normality(x, data = NULL, outliers = FALSE, color = "#79E1BE")
+normality(data, x, outliers = FALSE, color = "#79E1BE")
 }
 \arguments{
-\item{x}{Numeric vector or variable name (if data provided). Missing values removed.}
+\item{data}{Data frame containing the variable.}
 
-\item{data}{Optional data frame containing the variable.}
+\item{x}{Variable name as character string or unquoted column name. Missing values removed.}
 
 \item{outliers}{Logical; if TRUE, displays all outlier row indices. Default FALSE.}
 
@@ -18,8 +18,11 @@ normality(x, data = NULL, outliers = FALSE, color = "#79E1BE")
 \value{
 Prints results to console and invisibly returns a list with:
 \item{shapiro}{Shapiro-Wilk test results}
+\item{ks}{Kolmogorov-Smirnov test results (NULL if n <= 50)}
 \item{skewness}{Sample skewness}
 \item{kurtosis}{Sample excess kurtosis}
+\item{skewness_z}{Z-score for skewness}
+\item{kurtosis_z}{Z-score for kurtosis}
 \item{normal}{Logical; TRUE if data appears normal}
 \item{outliers}{Row indices of all outliers}
 \item{extreme_outliers}{Row indices of most extreme outliers (labeled in plot)}
@@ -27,26 +30,24 @@ Prints results to console and invisibly returns a list with:
 \item{hist_plot}{ggplot histogram object}
 }
 \description{
-Tests normality using Shapiro-Wilk test with Q-Q plots and histograms.
-Automatically detects outliers and provides comprehensive visual and
-statistical assessment of data normality.
-}
-\details{
-Combines Shapiro-Wilk test (p > 0.05) with skewness assessment (|skewness| < 1)
-for robust normality evaluation. Q-Q plot includes 95\% confidence bands for
-outlier detection.
-}
-\note{
-Requires ggplot2 and gridExtra packages. Minimum 3 observations needed.
-For n > 5000, consider alternative normality tests.
+Tests normality using sample size-appropriate methods: Shapiro-Wilk test (n ≤ 50)
+or Kolmogorov-Smirnov test (n > 50) with Q-Q plots and histograms. Evaluates
+skewness and kurtosis using z-score criteria based on sample size. Automatically
+detects outliers and provides comprehensive visual and statistical assessment.
 }
 \examples{
+# Simulated clinical data
 clinical_df <- clinical_data()
 
-# Normal distribution (age)
-normality("age", data = clinical_df)
+# Normally distributed variable
+normality(clinical_df, "biomarker")
 
-# With outliers displayed
-normality("biomarker", data = clinical_df, outliers = TRUE)
+# Non-normally distributed variable with outliers displayed
+normality(clinical_df, "weight", outliers = TRUE)
 
+}
+\references{
+Mishra P, Pandey CM, Singh U, Gupta A, Sahu C, Keshri A. Descriptive statistics
+and normality tests for statistical data. Ann Card Anaesth. 2019 Jan-Mar;22(1):67-72.
+doi: 10.4103/aca.ACA_157_18. PMID: 30648682; PMCID: PMC6350423.
 }

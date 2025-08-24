@@ -91,11 +91,11 @@ and dropout rates.
 
 | Parameter | Description | Default |
 |----|----|----|
-| `n` | Number of subjects (1-999) | 100 |
-| `visits` | Number of visits including baseline | 3 |
-| `arms` | Character vector of treatment arms | `c('Placebo', 'Treatment')` |
-| `dropout` | Proportion of subjects who dropout (0-1) | 0 |
-| `missing` | Proportion of missing data at random (0-1) | 0 |
+| `n` | Number of subjects (1-999) | `100` |
+| `visits` | Number of visits including baseline | `3` |
+| `arms` | Character vector of treatment arms | `c("Placebo", "Treatment")` |
+| `dropout` | Proportion of subjects who dropout (0-1) | `0` |
+| `missing` | Proportion of missing data at random (0-1) | `0` |
 
 ##### Examples
 
@@ -177,7 +177,7 @@ or two-group comparisons.
 |----|----|----|
 | `data` | Dataframe containing the variables to be summarized | `Required` |
 | `group_by` | Name of the grouping variable for two-group comparisons | `NULL` |
-| `normality_test` | Normality test: ‘S-W’ for Shapiro-Wilk or ‘K-S’ for Kolmogorov-Smirnov | ‘S-W’ |
+| `normality_test` | Normality test: ‘S-W’ for Shapiro-Wilk or ‘K-S’ for Kolmogorov-Smirnov | `"S-W"` |
 | `all_stats` | If TRUE, provides detailed statistical summary | `FALSE` |
 | `effect_size` | If TRUE, includes effect size estimates | `FALSE` |
 | `exclude` | Variable names to exclude from the summary | `NULL` |
@@ -216,8 +216,11 @@ summary_table(clinical_df,
 
 ##### Description
 
-Tests normality with statistical tests and visual assessment using QQ
-plot and histogram.
+Tests normality using sample size-appropriate methods: Shapiro-Wilk test
+(n ≤ 50) or Kolmogorov-Smirnov test (n \> 50) with Q-Q plots and
+histograms. Evaluates skewness and kurtosis using z-score criteria based
+on sample size. Automatically detects outliers and provides
+comprehensive visual and statistical assessment.
 
 ##### Parameters
 
@@ -233,7 +236,7 @@ plot and histogram.
 ``` r
 clinical_df <- clinical_data()
 
-# Normal distributionpaletteer_c("grDevices::TealGrn", 30)
+# Normally distributed variable
 normality("biomarker", data = clinical_df)
 #> 
 #> Normality Test for 'biomarker' 
@@ -253,7 +256,7 @@ normality("biomarker", data = clinical_df)
 
 ``` r
 
-# Non-normal distribution with outliers displayed
+# Non-normally distributed variable with outliers displayed
 normality("weight", data = clinical_df, outliers = TRUE)
 #> 
 #> Normality Test for 'weight' 
@@ -840,9 +843,9 @@ Generates publication-ready line plots with minimal code using ggplot2.
 
 | Parameter | Description | Default |
 |----|----|----|
-| `data` | A data frame containing the variables to plot | – |
-| `x` | Character string specifying the x-axis variable (typically time or ordered) | – |
-| `y` | Character string specifying the y-axis variable (measurement or outcome) | – |
+| `data` | A data frame containing the variables to plot | `Required` |
+| `x` | Character string specifying the x-axis variable (typically time or ordered) | `Required` |
+| `y` | Character string specifying the y-axis variable (measurement or outcome) | `Required` |
 | `group` | Optional character string specifying the grouping variable for multiple lines | `NULL` |
 | `facet` | Optional character string specifying the faceting variable | `NULL` |
 | `stat` | Optional character string for statistical aggregation; one of `"mean"` or `"median"` | `NULL` |
@@ -951,9 +954,9 @@ mean overlay.
 
 | Parameter | Description | Default |
 |----|----|----|
-| `data` | A data frame containing the variables to plot | — |
-| `x` | Character string specifying the x-axis variable (categorical or numeric with few unique values) | — |
-| `y` | Character string specifying the y-axis variable (numeric) | — |
+| `data` | A data frame containing the variables to plot | `Required` |
+| `x` | Character string specifying the x-axis variable (categorical or numeric with few unique values) | `Required` |
+| `y` | Character string specifying the y-axis variable (numeric) | `Required` |
 | `group` | Optional character string specifying grouping variable for fill/color | `NULL` |
 | `facet` | Optional character string specifying faceting variable | `NULL` |
 | `colors` | Character vector of colors. If `NULL`, uses TealGrn palette | `NULL` |
