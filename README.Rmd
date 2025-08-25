@@ -211,7 +211,7 @@ Tests normality using sample size-appropriate methods: Shapiro-Wilk test (n ≤ 
 normality(data = clinical_df, "biomarker")
 
 # Non-normally distributed variable with points outside 95%CI displayed
-normality(data = clinical_df, "weight", outliers = TRUE)
+normality(data = clinical_df, "weight", outside = TRUE)
 ```
 
 #### **missing_values()**

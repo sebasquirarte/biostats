@@ -256,7 +256,7 @@ normality(data = clinical_df, "biomarker")
 ``` r
 
 # Non-normally distributed variable with points outside 95%CI displayed
-normality(data = clinical_df, "weight", outliers = TRUE)
+normality(data = clinical_df, "weight", outside = TRUE)
 #> 
 #> Normality Test for 'weight' 
 #> 
@@ -271,7 +271,7 @@ normality(data = clinical_df, "weight", outliers = TRUE)
 #> 
 #> Data appears not normally distributed. 
 #> 
-#> OUTLIERS (row indices): 202, 241, 242, 238, 78, 210, 295, 234, 230, 209, 261, 96, 97, 177, 287, 29, 257, 269, 168, 260, 254, 187, 270, 259, 161, 149, 229, 247, 268, 31, 231, 115, 150, 189, 253, 35, 117, 98, 255, 278, 38, 69, 170, 277, 39, 171, 6, 299, 46, 165, 192, 263, 291, 128, 164, 198, 197, 27, 92
+#> VALUES OUTSIDE 95%CI (row indices): 202, 241, 242, 238, 78, 210, 295, 234, 230, 209, 261, 96, 97, 177, 287, 29, 257, 269, 168, 260, 254, 187, 270, 259, 161, 149, 229, 247, 268, 31, 231, 115, 150, 189, 253, 35, 117, 98, 255, 278, 38, 69, 170, 277, 39, 171, 6, 299, 46, 165, 192, 263, 291, 128, 164, 198, 197, 27, 92
 ```
 
 <img src="man/figures/README-unnamed-chunk-11-2.png" width="100%" />
