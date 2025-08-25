@@ -1,4 +1,4 @@
-#' Descriptive and Visual Missing Value Assesment
+#' Descriptive and Visual Missing Value Assessment
 #'
 #' Provides descriptive statistics and visualizations of missing values in a dataframe.
 #'
@@ -25,58 +25,58 @@
 #' @importFrom gridExtra grid.arrange
 #' @export
 
-missing_values <- function(df, 
+missing_values <- function(data, 
                            color = "#79E1BE", 
                            all = FALSE) {
-
+  
   # Package requirements and input validation
   required_pkgs <- c("ggplot2", "gridExtra")
   missing_pkgs <- required_pkgs[!sapply(required_pkgs, requireNamespace, quietly = TRUE)]
   if (length(missing_pkgs) > 0) {
     stop("Required packages not installed: ", paste(missing_pkgs, collapse = ", "), ".", call. = FALSE)
   }
-  if (!is.data.frame(df) || nrow(df) == 0 || ncol(df) == 0) stop("''data' must be a non-empty dataframe.", call. = FALSE)
+  if (!is.data.frame(data) || nrow(data) == 0 || ncol(data) == 0) stop("'data' must be a non-empty dataframe.", call. = FALSE)
   if (!is.character(color) || length(color) != 1) stop("'color' must be a single character string.", call. = FALSE)
   if (!is.logical(all) || length(all) != 1) stop("'all' must be a single logical value.", call. = FALSE)
-
+  
   # Calculate statistics
-  n_missing <- colSums(is.na(df))
+  n_missing <- colSums(is.na(data))
   missing_stats <- data.frame(
-    variable = names(df), n_missing = n_missing,
-    pct_missing = round(n_missing / nrow(df) * 100, 2),
+    variable = names(data), n_missing = n_missing,
+    pct_missing = round(n_missing / nrow(data) * 100, 2),
     stringsAsFactors = FALSE
   )[order(-n_missing), ]
-
-  total_missing <- sum(is.na(df))
-  complete_cases <- sum(stats::complete.cases(df))
-  complete_pct <- round(complete_cases / nrow(df) * 100, 1)
-  overall_pct <- round(total_missing / (nrow(df) * ncol(df)) * 100, 1)
-
+  
+  total_missing <- sum(is.na(data))
+  complete_cases <- sum(stats::complete.cases(data))
+  complete_pct <- round(complete_cases / nrow(data) * 100, 1)
+  overall_pct <- round(total_missing / (nrow(data) * ncol(data)) * 100, 1)
+  
   # Determine variables to display
   display_vars <- if (all) missing_stats else missing_stats[missing_stats$n_missing > 0, ]
-
+  
   # Early return if no variables to show
   if (nrow(display_vars) == 0) {
     message("No missing values found in the dataframe.")
     return(invisible(list(missing_stats = missing_stats, total_missing = 0,
-                          complete_cases = nrow(df), complete_pct = 100, overall_pct = 0)))
+                          complete_cases = nrow(data), complete_pct = 100, overall_pct = 0)))
   }
-
+  
   # Create plots
   display_vars$variable <- factor(display_vars$variable, levels = rev(display_vars$variable))
-
+  
   # Bar plot
   bar_data <- data.frame(
     variable = rep(display_vars$variable, each = 2),
     status = factor(rep(c("Present", "Missing"), nrow(display_vars)), levels = c("Present", "Missing")),
     value = c(rbind(100 - display_vars$pct_missing, display_vars$pct_missing))
   )
-
+  
   theme_clean <- ggplot2::theme_minimal() + ggplot2::theme(
     panel.grid = ggplot2::element_blank(), panel.border = ggplot2::element_blank(),
     axis.ticks = ggplot2::element_blank(), plot.margin = ggplot2::margin(5, 5, 5, 5),
     legend.position = "none")
-
+  
   bar_plot <- ggplot2::ggplot(bar_data, ggplot2::aes(x = .data$variable, y = .data$value, fill = .data$status)) +
     ggplot2::geom_bar(stat = "identity", width = 1) +
     ggplot2::geom_text(data = display_vars, ggplot2::aes(x = .data$variable, y = 50,
@@ -87,45 +87,45 @@ missing_values <- function(df,
     ggplot2::coord_flip() + ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0, 0)),
                                                         limits = c(0, 100), labels = NULL) +
     ggplot2::labs(title = "Missing Values by Variable",
-                  subtitle = sprintf("Complete cases: %d / %d (%.1f%%)", complete_cases, nrow(df), complete_pct),
+                  subtitle = sprintf("Complete cases: %d / %d (%.1f%%)", complete_cases, nrow(data), complete_pct),
                   x = "", y = "") + theme_clean +
     ggplot2::theme(axis.text.y = ggplot2::element_text(hjust = 1), axis.text.x = ggplot2::element_blank())
-
+  
   # Heatmap plot
-  heatmap_plot <- if (nrow(df) * nrow(display_vars) <= 200000) {
-    heat_df <- df[, as.character(display_vars$variable), drop = FALSE]
+  heatmap_plot <- if (nrow(data) * nrow(display_vars) <= 200000) {
+    heat_df <- data[, as.character(display_vars$variable), drop = FALSE]
     heat_data <- data.frame(
       row_id = rep(1:nrow(heat_df), ncol(heat_df)),
       variable = factor(rep(colnames(heat_df), each = nrow(heat_df)), levels = levels(display_vars$variable)),
       is_missing = as.vector(is.na(heat_df)))
-
+    
     ggplot2::ggplot(heat_data, ggplot2::aes(y = .data$variable, x = .data$row_id, fill = .data$is_missing)) +
       ggplot2::geom_tile(color = NA) +
       ggplot2::scale_fill_manual(values = c("FALSE" = "grey98", "TRUE" = color),
                                  breaks = "TRUE", labels = "Missing", name = "") +
       ggplot2::labs(title = "Missing Value Patterns",
-                    subtitle = sprintf("Missing values: %d / %d (%.1f%%)", total_missing, nrow(df) * ncol(df), overall_pct),
+                    subtitle = sprintf("Missing values: %d / %d (%.1f%%)", total_missing, nrow(data) * ncol(data), overall_pct),
                     x = "", y = "") + theme_clean +
       ggplot2::theme(axis.text.y = ggplot2::element_text(hjust = 1), axis.text.x = ggplot2::element_blank())
   } else {
     ggplot2::ggplot() + ggplot2::annotate("text", x = 0.5, y = 0.5, label = "Heatmap skipped (too large)") +
       ggplot2::theme_void()
   }
-
+  
   # Print summary and display plots
-  cat(sprintf("\nMissing Value Analysis\n\nn: %d, Variables: %d\n", nrow(df), ncol(df)))
-  cat(sprintf("Complete cases: %d / %d (%.1f%%)\n", complete_cases, nrow(df), complete_pct))
-  cat(sprintf("Missing cells: %d / %d (%.1f%%)\n\n", total_missing, nrow(df) * ncol(df), overall_pct))
+  cat(sprintf("\nMissing Value Analysis\n\nn: %d, Variables: %d\n", nrow(data), ncol(data)))
+  cat(sprintf("Complete cases: %d / %d (%.1f%%)\n", complete_cases, nrow(data), complete_pct))
+  cat(sprintf("Missing cells: %d / %d (%.1f%%)\n\n", total_missing, nrow(data) * ncol(data), overall_pct))
   cat(sprintf("Variables with missing values: %d of %d (%.1f%%)\n\n",
-              sum(missing_stats$n_missing > 0), ncol(df),
-              round(sum(missing_stats$n_missing > 0) / ncol(df) * 100, 1)))
-
+              sum(missing_stats$n_missing > 0), ncol(data),
+              round(sum(missing_stats$n_missing > 0) / ncol(data) * 100, 1)))
+  
   print(if (all) missing_stats[, c("n_missing", "pct_missing")] else
     missing_stats[missing_stats$n_missing > 0, c("n_missing", "pct_missing")])
   cat("\n")
-
+  
   gridExtra::grid.arrange(bar_plot, heatmap_plot, ncol = 2)
-
+  
   invisible(list(missing_stats = missing_stats,
                  total_missing = total_missing,
                  complete_cases = complete_cases,

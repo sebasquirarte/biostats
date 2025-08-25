@@ -2,42 +2,34 @@
 % Please edit documentation in R/outliers.R
 \name{outliers}
 \alias{outliers}
-\title{Detect and Visualize Outliers Using Tukey's Method}
+\title{Descriptive and Visual Outlier Assessment}
 \usage{
-outliers(x, data = NULL, threshold = 1.5, color = "#79E1BE")
+outliers(data, x, threshold = 1.5, color = "#79E1BE")
 }
 \arguments{
-\item{x}{Numeric vector or character string naming a column in \code{data}.}
+\item{data}{Dataframe containing the variables to be analyzed.}
 
-\item{data}{Optional dataframe containing the variable specified in \code{x}.
-Default is NULL.}
+\item{x}{Character string indicating the variable to be analyzed.}
 
-\item{threshold}{Numeric. Value multiplying the IQR to define outlier boundaries.
-Default is 1.5 (Tukey's standard).}
+\item{threshold}{Numeric value multiplying the IQR to define outlier boundaries. Default: 1.5.}
 
-\item{color}{Character string specifying plot color. Default is "#79E1BE".}
+\item{color}{Character string indicating the color for non-outlier data points. Default: "#79E1BE".}
 }
 \value{
-Invisibly returns a list with components:
-\describe{
-\item{outliers}{Integer vector of row indices for detected outliers}
-\item{bounds}{Named numeric vector with \code{lower} and \code{upper} bounds}
-\item{stats}{Named numeric vector with quartiles (\code{q1}, \code{q3}) and \code{iqr}}
-\item{scatter_plot}{ggplot object showing indexed scatter plot with outliers highlighted}
-\item{boxplot}{ggplot object showing boxplot with custom whiskers}
-}
+Prints results to console and invisibly returns a list with outlier statistics and ggplot objects.
 }
 \description{
 Identifies outliers using Tukey's interquartile range (IQR) method and provides
-comprehensive visual assessment through scatter plots and boxplots.
-}
-\details{
-The function uses Tukey's method where outliers are defined as observations
-falling below Q1 - threshold × IQR or above Q3 + threshold × IQR.
-Missing values are automatically excluded from analysis.
+descriptive statistics and visualizations for outlier assessment in numeric data.
 }
 \examples{
-clinical_df <- clinical_data(n = 300)
-outliers(clinical_df$biomarker)
+# Simulated clinical data
+clinical_df <- clinical_data()
+
+# Basic outlier detection
+outliers(clinical_df, "biomarker")
+
+# Using custom threshold
+outliers(clinical_df, "biomarker", threshold = 1.0)
 
 }

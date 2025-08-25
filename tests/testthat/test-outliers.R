@@ -1,4 +1,4 @@
-# Helper function to suppress all output from outliers()
+# Helper function to suppress output
 quiet_outliers <- function(...) {
   suppressMessages(
     capture.output(
@@ -9,131 +9,169 @@ quiet_outliers <- function(...) {
   return(result)
 }
 
-test_that("outliers detects correct outliers with numeric vector", {
-  # Simple case with known outliers
-  x <- c(1, 2, 3, 4, 5, 100, -50)
-  result <- quiet_outliers(x)
-
+# Basic functionality tests
+test_that("outliers returns expected structure", {
+  df <- data.frame(values = c(1:10, 50))
+  result <- quiet_outliers(df, "values")
+  
   expect_type(result, "list")
-  expect_equal(length(result), 5)
-  expect_true(6 %in% result$outliers)  # 100 is outlier
-  expect_true(7 %in% result$outliers)  # -50 is outlier
+  expect_named(result, c("outliers", "bounds", "stats", "scatter_plot", "boxplot"))
+  expect_s3_class(result$scatter_plot, "gg")
+  expect_s3_class(result$boxplot, "gg")
+})
+
+test_that("outliers detects correct outliers", {
+  df <- data.frame(test_var = c(1, 2, 3, 4, 5, 100, -50))
+  result <- quiet_outliers(df, "test_var")
+  
+  expect_true(6 %in% result$outliers)  # 100
+  expect_true(7 %in% result$outliers)  # -50
   expect_equal(length(result$outliers), 2)
 })
 
-test_that("outliers works with data frame input", {
-  df <- data.frame(
-    values = c(1:10, 50),
-    group = letters[1:11]
-  )
-
-  result <- quiet_outliers("values", data = df)
-
-  expect_type(result, "list")
-  expect_true(11 %in% result$outliers)  # 50 should be outlier
-  expect_s3_class(result$scatter_plot, "gg")
-  expect_s3_class(result$boxplot, "gg")
+test_that("threshold parameter affects outlier detection", {
+  df <- data.frame(vals = c(1:10, 15))
+  
+  result_strict <- quiet_outliers(df, "vals", threshold = 1.0)
+  result_loose <- quiet_outliers(df, "vals", threshold = 3.0)
+  
+  expect_true(length(result_strict$outliers) >= length(result_loose$outliers))
 })
 
-test_that("outliers handles missing values correctly", {
-  x <- c(1:5, NA, NA, 100, NA)
-  result <- quiet_outliers(x)
-
-  # Should exclude NAs and still detect outlier
-  expect_true(8 %in% result$outliers)  # Position 8 (100) is outlier
+test_that("handles missing values correctly", {
+  df <- data.frame(x = c(1:5, NA, NA, 100, NA))
+  result <- quiet_outliers(df, "x")
+  
+  expect_true(8 %in% result$outliers)
   expect_equal(length(result$outliers), 1)
 })
 
-test_that("outliers respects threshold parameter", {
-  x <- c(1:10, 15)
-
-  # With default threshold (1.5), 15 might be outlier
-  result_default <- quiet_outliers(x, threshold = 1.5)
-
-  # With higher threshold, 15 should not be outlier
-  result_high <- quiet_outliers(x, threshold = 3.0)
-
-  expect_true(length(result_default$outliers) >= length(result_high$outliers))
+test_that("returns correct statistics", {
+  df <- data.frame(simple = c(1, 2, 3, 4, 5))
+  result <- quiet_outliers(df, "simple")
+  
+  expect_equal(result$stats[["q1"]], 2)
+  expect_equal(result$stats[["q3"]], 4)
+  expect_equal(result$stats[["iqr"]], 2)
+  expect_equal(result$bounds[["lower"]], -1)
+  expect_equal(result$bounds[["upper"]], 7)
 })
 
-test_that("outliers returns correct statistics", {
-  x <- c(1, 2, 3, 4, 5)  # Simple data with known quartiles
-  result <- quiet_outliers(x)
-
-  expect_equal(result$stats["q1"], c(q1 = 2))
-  expect_equal(result$stats["q3"], c(q3 = 4))
-  expect_equal(result$stats["iqr"], c(iqr = 2))
-  expect_equal(result$bounds["lower"], c(lower = 2 - 1.5 * 2))
-  expect_equal(result$bounds["upper"], c(upper = 4 + 1.5 * 2))
+test_that("handles edge cases", {
+  # No outliers
+  df1 <- data.frame(normal = 1:10)
+  result1 <- quiet_outliers(df1, "normal")
+  expect_equal(length(result1$outliers), 0)
+  
+  # Identical values
+  df2 <- data.frame(same = rep(5, 10))
+  result2 <- quiet_outliers(df2, "same")
+  expect_equal(length(result2$outliers), 0)
+  
+  # Minimum observations
+  df3 <- data.frame(min_obs = 1:4)
+  result3 <- quiet_outliers(df3, "min_obs")
+  expect_type(result3, "list")
 })
 
-test_that("outliers handles edge cases", {
-  # No outliers case
-  x <- 1:10
-  result <- quiet_outliers(x)
-  expect_equal(length(result$outliers), 0)
-
-  # All same values (no outliers possible)
-  x_same <- rep(5, 10)
-  result_same <- quiet_outliers(x_same)
-  expect_equal(length(result_same$outliers), 0)
-
-  # Minimum required observations (4)
-  x_min <- 1:4
-  result_min <- quiet_outliers(x_min)
-  expect_type(result_min, "list")
+# Input validation tests
+test_that("validates data input", {
+  expect_error(outliers("not_df", "x"), "'data' must be a dataframe")
+  expect_error(outliers(data.frame(), "x"), "'data' must have at least one row")
+  
+  empty_df <- data.frame(x = numeric(0))
+  expect_error(outliers(empty_df, "x"), "'data' must have at least one row")
 })
 
-test_that("outliers validates inputs correctly", {
-  # Non-numeric input
-  expect_error(outliers("text"), "'x' must be numeric")
-
-  # Invalid threshold
-  expect_error(outliers(1:10, threshold = -1), "'threshold' must be a positive number")
-  expect_error(outliers(1:10, threshold = 0), "'threshold' must be a positive number")
-  expect_error(outliers(1:10, threshold = "high"), "'threshold' must be a positive number")
-
-  # Too few observations
-  expect_error(outliers(c(1, 2, 3)), "Need at least 4 non-missing observations")
-  expect_error(outliers(c(1, NA, NA, NA, NA)), "Need at least 4 non-missing observations")
-
-  # Invalid column name
-  df <- data.frame(a = 1:5)
-  expect_error(outliers("b", data = df), "'x' must be a single valid column name")
+test_that("validates column specification", {
+  df <- data.frame(numeric_col = 1:5, char_col = letters[1:5])
+  
+  expect_error(outliers(df, c("numeric_col", "char_col")), 
+               "'x' must be a single character string")
+  expect_error(outliers(df, "nonexistent"), 
+               "'x' must be a valid column name")
+  expect_error(outliers(df, "char_col"), 
+               "Column 'char_col' must be numeric")
+  expect_error(outliers(df, 123), "'x' must be a character string")
 })
 
-test_that("outliers creates both plots", {
-  x <- c(1:10, 50, -20)
-  result <- quiet_outliers(x)
-
-  expect_s3_class(result$scatter_plot, "gg")
-  expect_s3_class(result$boxplot, "gg")
-
-  # Check plot has expected layers
-  expect_true(length(result$scatter_plot$layers) >= 1)
-  expect_true(length(result$boxplot$layers) >= 1)
+test_that("validates threshold parameter", {
+  df <- data.frame(vals = 1:10)
+  
+  expect_error(outliers(df, "vals", threshold = -1), "'threshold' must be positive")
+  expect_error(outliers(df, "vals", threshold = 0), "'threshold' must be positive")
+  expect_error(outliers(df, "vals", threshold = "high"), "'threshold' must be numeric")
+  expect_error(outliers(df, "vals", threshold = c(1, 2)), 
+               "'threshold' must be a single value")
 })
 
-test_that("outliers returns invisible result", {
-  x <- c(1:10, 100)
+test_that("validates color parameter", {
+  df <- data.frame(vals = 1:10)
+  
+  expect_error(outliers(df, "vals", color = 123), "'color' must be a character string")
+  expect_error(outliers(df, "vals", color = c("red", "blue")), 
+               "'color' must be a single character string")
+})
 
-  # Function should return invisibly (test with capture.output)
-  capture.output(
-    expect_invisible(result <- outliers(x)),
-    file = nullfile()
-  )
+test_that("requires sufficient observations", {
+  df1 <- data.frame(x = c(1, 2, 3))
+  expect_error(outliers(df1, "x"), "Need at least 4 non-missing observations")
+  
+  df2 <- data.frame(x = c(1, NA, NA, NA, NA))
+  expect_error(outliers(df2, "x"), "Need at least 4 non-missing observations")
+})
 
-  # But result should still be accessible
+# Functionality tests
+test_that("custom colors work", {
+  df <- data.frame(vals = c(1:10, 50))
+  result <- quiet_outliers(df, "vals", color = "blue")
+  
   expect_type(result, "list")
   expect_true(11 %in% result$outliers)
 })
 
-test_that("outliers handles extreme outliers", {
-  x <- c(seq(0, 1, 0.1), 1000, -1000)
-  result <- quiet_outliers(x)
-
-  # Both extreme values should be detected
-  expect_true(12 %in% result$outliers)  # 1000
-  expect_true(13 %in% result$outliers)  # -1000
+test_that("handles extreme outliers", {
+  df <- data.frame(extreme = c(seq(0, 1, 0.1), 1000, -1000))
+  result <- quiet_outliers(df, "extreme")
+  
+  expect_true(12 %in% result$outliers)
+  expect_true(13 %in% result$outliers)
   expect_equal(length(result$outliers), 2)
+})
+
+test_that("function returns invisibly", {
+  df <- data.frame(vals = c(1:10, 100))
+  
+  capture.output(
+    expect_invisible(result <- outliers(df, "vals")),
+    file = nullfile()
+  )
+  
+  expect_type(result, "list")
+  expect_true(11 %in% result$outliers)
+})
+
+test_that("plots contain expected elements", {
+  df <- data.frame(data_points = c(1:10, 50, -20))
+  result <- quiet_outliers(df, "data_points")
+  
+  expect_true(length(result$scatter_plot$layers) >= 1)
+  expect_true(length(result$boxplot$layers) >= 2)
+  
+  # Check plot titles exist
+  expect_false(is.null(result$scatter_plot$labels$title))
+  expect_false(is.null(result$boxplot$labels$title))
+})
+
+test_that("works with different numeric types", {
+  df_int <- data.frame(integers = as.integer(c(1:10, 50)))
+  df_dbl <- data.frame(doubles = as.double(c(1:10, 50.5)))
+  
+  result_int <- quiet_outliers(df_int, "integers")
+  result_dbl <- quiet_outliers(df_dbl, "doubles")
+  
+  expect_type(result_int, "list")
+  expect_type(result_dbl, "list")
+  expect_true(11 %in% result_int$outliers)
+  expect_true(11 %in% result_dbl$outliers)
 })

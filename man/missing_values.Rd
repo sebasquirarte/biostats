@@ -2,16 +2,16 @@
 % Please edit documentation in R/missing_values.R
 \name{missing_values}
 \alias{missing_values}
-\title{Descriptive and Visual Missing Value Assesment}
+\title{Descriptive and Visual Missing Value Assessment}
 \usage{
-missing_values(df, color = "#79E1BE", all = FALSE)
+missing_values(data, color = "#79E1BE", all = FALSE)
 }
 \arguments{
+\item{data}{Dataframe containing the variables to be analyzed.}
+
 \item{color}{Character string indicating the color for missing values. Default: "#79E1BE"}
 
 \item{all}{Logical parameter that shows all variables including those without missing values. Default: FALSE.}
-
-\item{data}{Dataframe containing the variables to be analyzed.}
 }
 \value{
 Prints results to console and invisibly returns a list with descriptive statistics and ggplot objects.
