@@ -16,15 +16,15 @@ summary_table(
 \arguments{
 \item{data}{Dataframe containing the variables to be summarized.}
 
-\item{group_by}{character. Name of the grouping variable for two-group comparisons. Default: NULL.}
+\item{group_by}{Character string indicating the name of the grouping variable for two-group comparisons. Default: NULL.}
 
-\item{normality_test}{character. Normality test to use: 'S-W' for Shapiro-Wilk or 'K-S' for Kolmogorov-Smirnov. Default: 'S-W'.}
+\item{normality_test}{Character string indicating the ormality test to use: 'S-W' for Shapiro-Wilk or 'K-S' for Kolmogorov-Smirnov. Default: 'S-W'.}
 
-\item{all_stats}{logical. If TRUE, provides detailed statistical summary. Default: FALSE.}
+\item{all_stats}{Logical parameter that shows all calculated statistics. Default: FALSE.}
 
-\item{effect_size}{logical. If TRUE, includes effect size estimates. Default: FALSE.}
+\item{effect_size}{Logical parameter that includes effect size estimates. Default: FALSE.}
 
-\item{exclude}{character vector. Variable names to exclude from the summary. Default: NULL.}
+\item{exclude}{Character vector of variable names to exclude from the summary. Default: NULL.}
 }
 \value{
 A gt table object with formatted summary statistics.

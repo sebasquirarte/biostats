@@ -11,7 +11,7 @@
 #'
 #' @examples
 #' # Clinical dataset with missing values
-#' clinical_df <- clinical_data(missing = 0.05)
+#' clinical_df <- clinical_data(dropout = 0.1, missing = 0.05)
 #' 
 #' # Missing value analysis of only variables with missing values
 #' missing_values(clinical_df)
@@ -25,17 +25,19 @@
 #' @importFrom gridExtra grid.arrange
 #' @export
 
-missing_values <- function(df, color = "#79E1BE", all = FALSE) {
+missing_values <- function(df, 
+                           color = "#79E1BE", 
+                           all = FALSE) {
 
-  # Input validation
-  if (!is.data.frame(df) || nrow(df) == 0 || ncol(df) == 0)
-    stop("Input must be a non-empty dataframe", call. = FALSE)
-  if (!is.character(color) || length(color) != 1 || !is.logical(all) || length(all) != 1)
-    stop("'color' must be a character string and 'all' must be logical", call. = FALSE)
-  if (!requireNamespace("ggplot2", quietly = TRUE) || !requireNamespace("gridExtra", quietly = TRUE))
-    stop("Please install 'ggplot2' and 'gridExtra' packages")
-  if (ncol(df) > 50)
-    warning("Dataset has many columns (", ncol(df), "). Consider using 'all = FALSE' for better performance.", call. = FALSE)
+  # Package requirements and input validation
+  required_pkgs <- c("ggplot2", "gridExtra")
+  missing_pkgs <- required_pkgs[!sapply(required_pkgs, requireNamespace, quietly = TRUE)]
+  if (length(missing_pkgs) > 0) {
+    stop("Required packages not installed: ", paste(missing_pkgs, collapse = ", "), ".", call. = FALSE)
+  }
+  if (!is.data.frame(df) || nrow(df) == 0 || ncol(df) == 0) stop("''data' must be a non-empty dataframe.", call. = FALSE)
+  if (!is.character(color) || length(color) != 1) stop("'color' must be a single character string.", call. = FALSE)
+  if (!is.logical(all) || length(all) != 1) stop("'all' must be a single logical value.", call. = FALSE)
 
   # Calculate statistics
   n_missing <- colSums(is.na(df))
@@ -111,7 +113,7 @@ missing_values <- function(df, color = "#79E1BE", all = FALSE) {
   }
 
   # Print summary and display plots
-  cat(sprintf("\nMissing Value Analysis\n\nn: %d, variables: %d\n", nrow(df), ncol(df)))
+  cat(sprintf("\nMissing Value Analysis\n\nn: %d, Variables: %d\n", nrow(df), ncol(df)))
   cat(sprintf("Complete cases: %d / %d (%.1f%%)\n", complete_cases, nrow(df), complete_pct))
   cat(sprintf("Missing cells: %d / %d (%.1f%%)\n\n", total_missing, nrow(df) * ncol(df), overall_pct))
   cat(sprintf("Variables with missing values: %d of %d (%.1f%%)\n\n",

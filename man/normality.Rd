@@ -9,11 +9,11 @@ normality(data, x, outside = FALSE, color = "#79E1BE")
 \arguments{
 \item{data}{Dataframe containing the variables to be summarized.}
 
-\item{x}{character Name of the variable to be analyzed.}
+\item{x}{Character string indicating the variable to be analyzed.}
 
-\item{outside}{logical If TRUE, displays all row indices of values outside 95\%CI. Default: FALSE.}
+\item{outside}{Logical parameter that displays all row indices of values outside 95\%CI. Default: FALSE.}
 
-\item{color}{character Color for plots. Default: "#79E1BE".}
+\item{color}{Character string indicatig color for plots. Default: "#79E1BE".}
 }
 \value{
 Prints results to console and invisibly returns a list with normality statistics and ggplot objects.

@@ -2,30 +2,30 @@
 % Please edit documentation in R/missing_values.R
 \name{missing_values}
 \alias{missing_values}
-\title{Analyze and Visualize Missing Values in a Dataframe}
+\title{Descriptive and Visual Missing Value Assesment}
 \usage{
 missing_values(df, color = "#79E1BE", all = FALSE)
 }
 \arguments{
-\item{df}{A dataframe to analyze for missing values}
+\item{color}{Character string indicating the color for missing values. Default: "#79E1BE"}
 
-\item{color}{Character; color for missing values. Default is "#79E1BE"}
+\item{all}{Logical parameter that shows all variables including those without missing values. Default: FALSE.}
 
-\item{all}{Logical; if TRUE, shows all variables including those without missing values. Default is FALSE.}
+\item{data}{Dataframe containing the variables to be analyzed.}
 }
 \value{
-Invisibly returns a list with missing value statistics and plots.
-Also prints results to console and displays plots.
+Prints results to console and invisibly returns a list with descriptive statistics and ggplot objects.
 }
 \description{
-Analyzes missing values in a dataframe, providing counts and percentages per
-column with visualizations.
+Provides descriptive statistics and visualizations of missing values in a dataframe.
 }
 \examples{
 # Clinical dataset with missing values
-clinical_df <- clinical_data(missing = 0.05)
+clinical_df <- clinical_data(dropout = 0.1, missing = 0.05)
+
 # Missing value analysis of only variables with missing values
 missing_values(clinical_df)
+
 # Show all variables including those without missing values
 missing_values(clinical_df, all = TRUE)
 

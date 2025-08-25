@@ -34,7 +34,10 @@
 #' @importFrom gridExtra grid.arrange
 #' @export
 
-normality <- function(data, x, outside = FALSE, color = "#79E1BE") {
+normality <- function(data, 
+                      x, 
+                      outside = FALSE, 
+                      color = "#79E1BE") {
   
   # Package requirements and input validation
   required_pkgs <- c("ggplot2", "gridExtra")
