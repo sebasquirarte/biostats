@@ -34,73 +34,73 @@ test_that("Input validation works correctly", { # Verified
   
   # Test missing required parameters
   expect_error(
-    omnibus(x = "group", data = normal_equal_var_data, p_method = "holm", na.action = "na.omit"),
-    "Dependent variable \\('y'\\) must be specified."
+    omnibus(x = "group", data = normal_equal_var_data),
+    "Dependent variable ('y') must be specified.", fixed = TRUE
   )
   
   expect_error(
-    omnibus(y = "score", data = normal_equal_var_data, p_method = "holm", na.action = "na.omit"),
-    "Independent variable \\('x'\\) must be specified."
+    omnibus(y = "score", data = normal_equal_var_data),
+    "Independent variable ('x') must be specified.", fixed = TRUE
   )
   
   expect_error(
-    omnibus(y = "score", x = "group", p_method = "holm", na.action = "na.omit"),
-    "'data' must be specified."
+    omnibus(y = "score", x = "group"),
+    "'data' must be specified.", fixed = TRUE
   )
   
   # Test non-existent variables
   expect_error(
-    omnibus(y = "nonexistent", x = "group", data = normal_equal_var_data, p_method = "holm", na.action = "na.omit"),
-    "The dependent variable \\('y'\\) was not found in the dataframe."
+    omnibus(y = "nonexistent", x = "group", data = normal_equal_var_data),
+    "The dependent variable ('y') was not found in the dataframe.", fixed = TRUE
   )
   
   expect_error(
-    omnibus(y = "score", x = "nonexistent", data = normal_equal_var_data, p_method = "holm", na.action = "na.omit"),
-    "The independent variable \\('x'\\) was not found in the dataframe."
+    omnibus(y = "score", x = "nonexistent", data = normal_equal_var_data),
+    "The independent variable ('x') was not found in the dataframe.", fixed = TRUE
   )
-  
+
   # Test alpha validation
   expect_error(
-    omnibus(y = "score", x = "group", data = normal_equal_var_data, alpha = 0, p_method = "holm", na.action = "na.omit"),
-    "'alpha' must be between 0 and 1."
+    omnibus(y = "score", x = "group", data = normal_equal_var_data, alpha = 0),
+    "'alpha' must be between 0 and 1.", fixed = TRUE
   )
   
   expect_error(
-    omnibus(y = "score", x = "group", data = normal_equal_var_data, alpha = 1, p_method = "holm", na.action = "na.omit"),
-    "'alpha' must be between 0 and 1."
+    omnibus(y = "score", x = "group", data = normal_equal_var_data, alpha = 1),
+    "'alpha' must be between 0 and 1.", fixed = TRUE
   )
   
   expect_error(
-    omnibus(y = "score", x = "group", data = normal_equal_var_data, alpha = -0.1, p_method = "holm", na.action = "na.omit"),
-    "'alpha' must be between 0 and 1."
+    omnibus(y = "score", x = "group", data = normal_equal_var_data, alpha = -0.1),
+    "'alpha' must be between 0 and 1.", fixed = TRUE
   )
   
   expect_error(
-    omnibus(y = "score", x = "group", data = normal_equal_var_data, alpha = 1.1, p_method = "holm", na.action = "na.omit"),
-    "'alpha' must be between 0 and 1."
+    omnibus(y = "score", x = "group", data = normal_equal_var_data, alpha = 1.1),
+    "'alpha' must be between 0 and 1.", fixed = TRUE
   )
   
   # Test insufficient groups
   expect_error(
-    omnibus(y = "score", x = "group", data = two_groups_data, p_method = "holm", na.action = "na.omit"),
-    "The independent variable \\('x'\\) must have at least 3 levels."
+    omnibus(y = "score", x = "group", data = two_groups_data),
+    "The independent variable ('x') must have at least 3 levels.", fixed = TRUE
   )
   
   # Test p_method validation
   expect_error(
-    omnibus(y = "score", x = "group", data = normal_equal_var_data, p_method = "invalid_method", na.action = "na.omit"),
-    "Invalid p-value adjustment method."
+    omnibus(y = "score", x = "group", data = normal_equal_var_data, p_method = "invalid_method"),
+    "Invalid p-value adjustment method.", fixed = TRUE
   )
   
   # Test na.action validation
   expect_error(
-    omnibus(y = "score", x = "group", data = normal_equal_var_data, p_method = "holm", na.action = c("na.omit", "na.exclude")),
-    "Only one 'na.action' can be selected at a time."
+    omnibus(y = "score", x = "group", data = normal_equal_var_data,  na.action = c("na.omit", "na.exclude")),
+    "Only one 'na.action' can be selected at a time.", fixed = TRUE
   )
   
   expect_error(
-    omnibus(y = "score", x = "group", data = normal_equal_var_data, p_method = "holm", na.action = "invalid_action"),
-    "Invalid 'na.action'."
+    omnibus(y = "score", x = "group", data = normal_equal_var_data,  na.action = "invalid_action"),
+    "Invalid 'na.action'.", fixed = TRUE
   )
 })
 
@@ -110,9 +110,7 @@ test_that("Function runs successfully with valid inputs", { # Verified
   expect_no_error(capture.output(result1 <- omnibus(
     y = "score",
     x = "group",
-    data = normal_equal_var_data,
-    p_method = "holm",
-    na.action = "na.omit"
+    data = normal_equal_var_data
   )))
   
   # Test with non-normal data (should trigger Kruskal-Wallis)
@@ -120,8 +118,7 @@ test_that("Function runs successfully with valid inputs", { # Verified
     y = "score",
     x = "group",
     data = non_normal_data,
-    p_method = "bonferroni",
-    na.action = "na.omit"
+    p_method = "bonferroni"
   ))
   
   expect_equal(result2$name, "Kruskal-Wallis")
@@ -131,9 +128,8 @@ test_that("Function runs successfully with valid inputs", { # Verified
     y = "score",
     x = "group",
     data = paired_data,
-    paired_var = "subject",
-    p_method = "BH",
-    na.action = "na.omit"
+    paired_by = "subject",
+    p_method = "BH"
   )))
 })
 
@@ -142,9 +138,7 @@ test_that("Return object structure is correct", { # Verified
   capture.output(result <- omnibus(
     y = "score",
     x = "group",
-    data = normal_equal_var_data,
-    p_method = "holm",
-    na.action = "na.omit"
+    data = normal_equal_var_data
   ))
   
   # Test that result is a list
@@ -186,35 +180,9 @@ test_that("Different p_methods work correctly", { # Verified
       y = "score",
       x = "group",
       data = normal_equal_var_data,
-      p_method = p_method,
-      na.action = "na.omit"))))
+      p_method = p_method
+      ))))
   }
-})
-
-test_that("Different na.action options work correctly", { # Verified
-  
-  na_actions <- c("na.omit", "na.exclude")
-  
-  for (na_action in na_actions) {
-    expect_no_error(capture.output(
-      result <- omnibus(
-        y = "score",
-        x = "group",
-        data = data_with_na,
-        p_method = "holm",
-        na.action = na_action
-      )))
-  }
-  
-  # Test na.fail should error with NA data
-  expect_error(capture.output(
-    result <- omnibus(
-      y = "score",
-      x = "group",
-      data = data_with_na,
-      p_method = "holm",
-      na.action = "na.fail"
-    )))
 })
 
 test_that("Factor conversion works correctly", { # Verified
@@ -227,9 +195,7 @@ test_that("Factor conversion works correctly", { # Verified
     result <- omnibus(
       y = "score",
       x = "group",
-      data = char_data,
-      p_method = "holm",
-      na.action = "na.omit"
+      data = char_data
     )))
   
   expect_s3_class(result$data$group, "factor")
@@ -242,18 +208,14 @@ test_that("Alpha parameter affects significance determination", { # Verified
     y = "score",
     x = "group",
     data = normal_equal_var_data,
-    alpha = 0.001,  # Very strict
-    p_method = "holm",
-    na.action = "na.omit"
+    alpha = 0.001
   ))
   
   capture.output(result_lenient <- omnibus(
     y = "score",
     x = "group",
     data = normal_equal_var_data,
-    alpha = 0.5,   # Very lenient
-    p_method = "holm",
-    na.action = "na.omit"
+    alpha = 0.5
   ))
   
   expect_equal(result_strict$alpha, 0.001)
@@ -273,9 +235,7 @@ test_that("Post-hoc tests are performed when significant", { # Verified
   capture.output(result <- omnibus(
     y = "score",
     x = "group",
-    data = significant_data,
-    p_method = "holm",
-    na.action = "na.omit"
+    data = significant_data
   ))
   
   if (result$significant) {
@@ -292,9 +252,7 @@ test_that("Console output is generated", {
     result <- omnibus(
       y = "score",
       x = "group",
-      data = normal_equal_var_data,
-      p_method = "holm",
-      na.action = "na.omit"
+      data = normal_equal_var_data
     )
   }, "Formula:")
   
@@ -302,9 +260,7 @@ test_that("Console output is generated", {
     result <- omnibus(
       y = "score",
       x = "group",
-      data = normal_equal_var_data,
-      p_method = "holm",
-      na.action = "na.omit"
+      data = normal_equal_var_data
     )
   }, "alpha:")
   
@@ -312,9 +268,7 @@ test_that("Console output is generated", {
     result <- omnibus(
       y = "score",
       x = "group",
-      data = normal_equal_var_data,
-      p_method = "holm",
-      na.action = "na.omit"
+      data = normal_equal_var_data
     )
   }, "Result:")
 })
@@ -331,9 +285,7 @@ test_that("Edge cases are handled correctly", { # Verified
     result <- omnibus(
       y = "score",
       x = "group",
-      data = min_groups_data,
-      p_method = "holm",
-      na.action = "na.omit"
+      data = min_groups_data
     )
   })
   
@@ -349,11 +301,33 @@ test_that("Edge cases are handled correctly", { # Verified
     result <- omnibus(
       y = "score",
       x = "group",
-      data = many_groups_data,
-      p_method = "holm",
-      na.action = "na.omit"
+      data = many_groups_data
     )
   })
   
   expect_equal(result$n_groups, 10)
+})
+
+test_that("Different na.action options work correctly", { # Verified
+  
+  na_actions <- c("na.omit", "na.exclude")
+  
+  for (na_action in na_actions) {
+    expect_no_error(capture.output(
+      result <- omnibus(
+        y = "score",
+        x = "group",
+        data = data_with_na,
+        na.action = na_action
+      )))
+  }
+  
+  # Test na.fail should error with NA data
+  expect_error(capture.output(
+    result <- omnibus(
+      y = "score",
+      x = "group",
+      data = data_with_na,
+      na.action = "na.fail"
+    )))
 })

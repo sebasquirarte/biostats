@@ -1,3 +1,18 @@
+# Data organization
+.data_organization <- function(data, y, x, paired_by) {
+  
+  # Arrange according to paired/unpaired study
+  if (is.null(paired_by)) {
+    # Independent groups: sort by 'x'
+    data <- data[order(data[[x]]), , drop = FALSE]
+  } else {
+    # Repeated measures: sort by 'paired_by', then by 'x'
+    data <- data[order(data[[paired_by]], data[[x]]), , drop = FALSE]
+  }
+  rownames(data) <- NULL
+  return(data)
+}
+
 # Assumption evaluation with detailed output
 .assumptions <- function(formula, y, x, data, paired_by, alpha, num_levels) {
   tryCatch({

@@ -70,8 +70,18 @@ omnibus <- function(data = NULL,
   if (missing(data)) stop("'data' must be specified.", call. = FALSE)
   if (!(y %in% names(data))) stop("The dependent variable ('y') was not found in the dataframe.", call. = FALSE)
   if (!(x %in% names(data))) stop("The independent variable ('x') was not found in the dataframe.", call. = FALSE)
-  if (!is.factor(data[[x]])) data[[x]] <- as.factor(data[[x]])
-  if (!is.numeric(data[[y]])) data[[y]] <- as.numeric(data[[y]])
+  if (!is.null(paired_by) && !(paired_by %in% names(data))) {
+    stop("'paired_by' variable not found in data", call. = FALSE)
+  }
+  data[[y]] <- as.numeric(data[[y]])
+  data[[x]] <- as.factor(data[[x]])
+  if (!is.null(paired_by)) data[[paired_by]] <- as.factor(data[[paired_by]])
+  
+  data <- .data_organization(data = data,
+                             y = y,
+                             x = x,
+                             paired_by = paired_by)
+  
   if (alpha <= 0 || alpha >= 1) stop("'alpha' must be between 0 and 1.", call. = FALSE)
   num_levels <- length(levels(data[[x]]))
   if (num_levels < 3) stop("The independent variable ('x') must have at least 3 levels.", call. = FALSE)
@@ -172,9 +182,9 @@ omnibus <- function(data = NULL,
     post_hoc <- NULL
   }
   
-  total.SD <- by(data[[y]], data[[x]], sd)
-  total.mean <- by(data[[y]], data[[x]], mean)
-  coef_ssvar <- (sum(total.SD))/(sum(total.mean)) # From Blanca, M. et al (2018), "Effect of variance ratio on ANOVA robustness: Might 1.5 be the limit?"
+  total.SD <- by(data[[y]], data[[x]], function(v) sd(v, na.rm = TRUE))
+  total.mean <- by(data[[y]], data[[x]], function(v) mean(v, na.rm = TRUE))
+  coef_ssvar <- sum(total.SD) / sum(total.mean) # From Blanca, M. et al (2018), "Effect of variance ratio on ANOVA robustness: Might 1.5 be the limit?"
   
   if (coef_ssvar > 0 && coef_ssvar <= 0.16) {
     unbalance <- "well balanced (low variability)"
@@ -185,7 +195,7 @@ omnibus <- function(data = NULL,
   }
   
   cat(sprintf(
-    "\nThe study groups show a %s distribution of sample sizes (Δn = %.3f).\n\n",
+    "\nThe study groups show a %s distribution of sample sizes (\u0394n = %.3f).\n\n",
     unbalance, coef_ssvar
   ))
   

@@ -44,10 +44,10 @@ test_that("Zero values are handled correctly", {
                "Cannot calculate.*odds ratio.*risk ratio.*One or more zero values found in data")
   
   # Test with correction should work
-  expect_no_error(capture.output(effect_measures(15, 0, 0, 95, correction = TRUE)))
+  expect_no_error(capture.output(effect_measures(15, 0, 0, 95)))
   
   # Test edge case: when totals are zero
-  expect_error(effect_measures(0, 0, 5, 95), "Cannot calculate risks when totals are zero.")
+  expect_error(effect_measures(0, 0, 5, 95, correction = FALSE), "Cannot calculate risks when totals are zero.")
 })
 
 test_that("Basic calculations work with individual parameters", {
@@ -103,7 +103,7 @@ test_that("Different alpha levels work", {
 
 test_that("Continuity correction works correctly", {
   # Test with zero values and correction
-  capture.output(result_corrected <- effect_measures(15, 0, 5, 95, correction = TRUE))
+  capture.output(result_corrected <- effect_measures(15, 0, 5, 95))
   
   # With correction: a=15.5, b=0.5, c=5.5, d=95.5
   expected_or <- (15.5 * 95.5) / (0.5 * 5.5)
@@ -111,7 +111,7 @@ test_that("Continuity correction works correctly", {
   
   # Test that correction doesn't affect results when no zeros present
   capture.output(result_no_correction <- effect_measures(15, 85, 5, 95, correction = FALSE))
-  capture.output(result_with_correction <- effect_measures(15, 85, 5, 95, correction = TRUE))
+  capture.output(result_with_correction <- effect_measures(15, 85, 5, 95))
   
   expect_equal(result_no_correction$odds_ratio, result_with_correction$odds_ratio)
 })
