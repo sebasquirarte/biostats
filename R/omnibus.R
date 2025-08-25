@@ -10,7 +10,7 @@
 #' @param data Dataframe containing the variables to be analyzed.
 #' @param y character string. Dependent variable (outcome).
 #' @param x character string. Independent variable (group or within-subject variable).
-#' @param paired_var character string or NULL. Source of repeated measurements. If 
+#' @param paired_by character string or NULL. Source of repeated measurements. If 
 #'   provided, a repeated measures design is assumed. Data should be in long format 
 #'   with one row per observation. If NULL, independent groups design is assumed.
 #' @param alpha numeric. Significance level for hypothesis tests. Default: 0.05.
@@ -47,7 +47,7 @@
 #' result <- omnibus(y = "biomarker", 
 #'                   x = "visit", 
 #'                   data = clinical_df, 
-#'                   paired_var = "subject_id")
+#'                   paired_by = "subject_id")
 #'
 #' @importFrom car leveneTest
 #' @importFrom stats aov bartlett.test friedman.test kruskal.test lm mauchly.test shapiro.test as.formula na.action
@@ -59,7 +59,7 @@
 omnibus <- function(data = NULL,
                     y = NULL,
                     x = NULL,
-                    paired_var = NULL,
+                    paired_by = NULL,
                     alpha = 0.05,
                     p_method = "holm",
                     na.action = "na.omit") {
@@ -88,7 +88,7 @@ omnibus <- function(data = NULL,
                                       y = y, 
                                       x = x, 
                                       data = data,
-                                      paired_var = paired_var, 
+                                      paired_by = paired_by, 
                                       alpha = alpha,
                                       num_levels = num_levels)
   
@@ -97,7 +97,7 @@ omnibus <- function(data = NULL,
   sphericity_key <- results_assumptions$sphericity_key
   var.test <- results_assumptions$var.test
   
-  if (is.null(paired_var)) {
+  if (is.null(paired_by)) {
     if (normality_key == "non_significant" && variance_key == "non_significant") {
       model <- aov(formula, data = data, na.action = na.action) # One-way ANOVA
       summary <- summary(model)
@@ -108,12 +108,12 @@ omnibus <- function(data = NULL,
     }
   } else {
     if (normality_key == "non_significant" && variance_key == "non_significant" && sphericity_key == "non_significant") { 
-      formula <- as.formula(paste(y, "~", x, "+ Error(", paired_var, "/", x, ")")) # Repeated measures ANOVA
+      formula <- as.formula(paste(y, "~", x, "+ Error(", paired_by, "/", x, ")")) # Repeated measures ANOVA
       model <- aov(formula, data = data, na.action = na.action)
       summary <- summary(model)
       name <- "Repeated measures ANOVA"
     } else {
-      formula <- as.formula(paste(deparse(formula[[2]]), "~", deparse(formula[[3]]), "|", paired_var))
+      formula <- as.formula(paste(deparse(formula[[2]]), "~", deparse(formula[[3]]), "|", paired_by))
       model <- friedman.test(formula, data = data, na.action = na.action) # Friedman test
       name <- "Friedman"
     }
@@ -161,7 +161,7 @@ omnibus <- function(data = NULL,
       name = name,
       y = y,
       x = x,
-      paired_var = paired_var,
+      paired_by = paired_by,
       p_method = p_method,
       alpha = alpha,
       model = model,
@@ -172,8 +172,22 @@ omnibus <- function(data = NULL,
     post_hoc <- NULL
   }
   
-  obs_levels <- table(data[[x]])
-  if (all(obs_levels == obs_levels[1]) == FALSE) cat("\nSample sizes across groups are unequal - unbalanced design.\n\n")
+  total.SD <- by(data[[y]], data[[x]], sd)
+  total.mean <- by(data[[y]], data[[x]], mean)
+  coef_ssvar <- (sum(total.SD))/(sum(total.mean)) # From Blanca, M. et al (2018), "Effect of variance ratio on ANOVA robustness: Might 1.5 be the limit?"
+  
+  if (coef_ssvar > 0 && coef_ssvar <= 0.16) {
+    unbalance <- "well balanced (low variability)"
+  } else if (coef_ssvar > 0.16 && coef_ssvar <= 0.33) {
+    unbalance <- "moderately unbalanced"
+  } else {
+    unbalance <- "highly unbalanced"
+  }
+  
+  cat(sprintf(
+    "\nThe study groups show a %s distribution of sample sizes (Δn = %.3f).\n\n",
+    unbalance, coef_ssvar
+  ))
   
   invisible(list(formula = formula,
                  summary = summary,

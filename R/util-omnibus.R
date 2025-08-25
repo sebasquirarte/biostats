@@ -1,5 +1,5 @@
 # Assumption evaluation with detailed output
-.assumptions <- function(formula, y, x, data, paired_var, alpha, num_levels) {
+.assumptions <- function(formula, y, x, data, paired_by, alpha, num_levels) {
   tryCatch({
     # Normality assessment using Shapiro-Wilk
     shapiroResults <- lapply(split(data[[y]], data[[x]]), shapiro.test)
@@ -41,7 +41,7 @@
     sph_effect <- NULL
     sph_df <- NULL
     
-    if (!is.null(paired_var)) {
+    if (!is.null(paired_by)) {
       order_eval <- data[[x]][1:num_levels]
       matrix <- matrix(data[[y]], ncol = num_levels, byrow = TRUE)
       mauchlyResults <- mauchly.test(lm(matrix ~ 1), X = ~ 1)
@@ -74,7 +74,7 @@
         df = if (var.test == "Levene") c(var_df1, var_df2) else var_df,
         key = variance_key
       ),
-      sphericity_results = if (!is.null(paired_var)) list(
+      sphericity_results = if (!is.null(paired_by)) list(
         test = "Mauchly",
         statistic = sph_stat,
         p_value = sph_pval,
@@ -91,7 +91,7 @@
 }
 
 # Run post-hoc tests for omnibus_test
-.post_hoc <- function(name, y, x, paired_var, p_method, alpha, model, data) {
+.post_hoc <- function(name, y, x, paired_by, p_method, alpha, model, data) {
   tryCatch({
     if(name == "One-way ANOVA") {
       post_hoc <- TukeyHSD(model, conf.level = 1 - alpha)
