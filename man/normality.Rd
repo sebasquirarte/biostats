@@ -7,13 +7,13 @@
 normality(data, x, outliers = FALSE, color = "#79E1BE")
 }
 \arguments{
-\item{data}{Data frame containing the variable.}
+\item{data}{Dataframe containing the variables to be summarized.}
 
-\item{x}{Variable name as character string or unquoted column name. Missing values removed.}
+\item{x}{character Name of the variable to analyze.}
 
-\item{outliers}{Logical; if TRUE, displays all outlier row indices. Default FALSE.}
+\item{outliers}{logical If TRUE, displays all outlier row indices. Default: FALSE.}
 
-\item{color}{Color for plots. Default "#79E1BE".}
+\item{color}{character Color for plots. Default: "#79E1BE".}
 }
 \value{
 Prints results to console and invisibly returns a list with:
@@ -21,8 +21,8 @@ Prints results to console and invisibly returns a list with:
 \item{ks}{Kolmogorov-Smirnov test results (NULL if n <= 50)}
 \item{skewness}{Sample skewness}
 \item{kurtosis}{Sample excess kurtosis}
-\item{skewness_z}{Z-score for skewness}
-\item{kurtosis_z}{Z-score for kurtosis}
+\item{skewness_z}{z-score for skewness}
+\item{kurtosis_z}{z-score for kurtosis}
 \item{normal}{Logical; TRUE if data appears normal}
 \item{outliers}{Row indices of all outliers}
 \item{extreme_outliers}{Row indices of most extreme outliers (labeled in plot)}

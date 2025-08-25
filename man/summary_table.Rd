@@ -16,7 +16,7 @@ summary_table(
 \arguments{
 \item{data}{Dataframe containing the variables to be summarized.}
 
-\item{group_by}{character. name of the grouping variable for two-group comparisons. Default: NULL.}
+\item{group_by}{character. Name of the grouping variable for two-group comparisons. Default: NULL.}
 
 \item{normality_test}{character. Normality test to use: 'S-W' for Shapiro-Wilk or 'K-S' for Kolmogorov-Smirnov. Default: 'S-W'.}
 

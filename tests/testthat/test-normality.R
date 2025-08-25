@@ -72,19 +72,22 @@ test_that("normality input validation works", {
   # Test non-data.frame input
   expect_error(normality(c(1,2,3), "test"), "'data' must be a data frame")
   
+  # Test non-character x parameter
+  expect_error(normality(clinical_df, 1), "'x' must be a character string")
+  
   # Test invalid variable name
   expect_error(normality(clinical_df, "nonexistent"),
-               "Variable not found in data")
+               "Variable 'nonexistent' not found in data")
   
-  # Test insufficient data
-  insufficient_df <- data.frame(small = c(1, 2))
+  # Test insufficient data (updated to reflect n >= 5 requirement)
+  insufficient_df <- data.frame(small = c(1, 2, 3, 4))
   expect_error(normality(insufficient_df, "small"),
-               "Need at least 3 observations")
+               "Need at least 5 observations")
   
   # Test all missing values
-  na_df <- data.frame(missing = c(NA, NA, NA, NA))
+  na_df <- data.frame(missing = c(NA, NA, NA, NA, NA))
   expect_error(normality(na_df, "missing"),
-               "Need at least 3 observations")
+               "Need at least 5 observations")
 })
 
 test_that("normality handles different sample sizes appropriately", {
@@ -115,7 +118,7 @@ test_that("normality handles different sample sizes appropriately", {
 test_that("normality handles constant data", {
   constant_df <- data.frame(constant = rep(5, 20))
   
-  # Should handle constant data without crashing
+  # Should handle constant data without crashing and show warning
   suppressWarnings({
     capture.output({
       result <- normality(constant_df, "constant")
