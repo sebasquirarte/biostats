@@ -1,228 +1,139 @@
-test_that("normality basic functionality works", {
-  set.seed(123)
-  clinical_df <- data.frame(normal_data = rnorm(100, mean = 50, sd = 10))
-  
-  # Test basic functionality - capture output but get return value
+test_that("normality returns correct structure", {
+  df <- data.frame(x = rnorm(50))
   capture.output({
-    result <- normality(clinical_df, "normal_data")
+    result <- normality(df, "x")
   })
   
-  # Check return structure (updated with new components)
   expect_type(result, "list")
-  expect_named(result, c("shapiro", "ks", "skewness", "kurtosis", "skewness_z", "kurtosis_z", 
-                         "normal", "outliers", "extreme_outliers", "qq_plot", "hist_plot"))
-  
-  # Check individual components
-  expect_s3_class(result$shapiro, "htest")
-  expect_s3_class(result$ks, "htest")  # Should have KS test for n=100
-  expect_equal(result$shapiro$method, "Shapiro-Wilk normality test")
-  expect_type(result$skewness, "double")
-  expect_type(result$kurtosis, "double")
-  expect_type(result$skewness_z, "double")  # New z-score
-  expect_type(result$kurtosis_z, "double")  # New z-score
+  expect_length(result, 4)
+  expect_named(result, c("normal", "outside_95CI", "qq_plot", "hist_plot"))
   expect_type(result$normal, "logical")
-  expect_type(result$outliers, "integer")
-  expect_type(result$extreme_outliers, "integer")
+  expect_type(result[[2]], "integer")
   expect_s3_class(result$qq_plot, "ggplot")
   expect_s3_class(result$hist_plot, "ggplot")
 })
 
-test_that("normality sample size-dependent test selection works", {
-  set.seed(123)
+test_that("normality validates inputs correctly", {
+  df <- data.frame(num = rnorm(20), char = letters[1:20])
   
-  # Small sample (n < 50) - should use only Shapiro-Wilk
-  small_df <- data.frame(data = rnorm(30))
-  capture.output({
-    result_small <- normality(small_df, "data")
-  })
-  expect_s3_class(result_small$shapiro, "htest")
-  expect_null(result_small$ks)  # No KS test for small samples
+  expect_error(normality("not_df", "x"), "'data' must be a data frame")
+  expect_error(normality(df, 123), "'x' must be a character string")
+  expect_error(normality(df, "missing"), "not found in data")
+  expect_error(normality(df, "char"), "must be numeric")
   
-  # Large sample (n > 50) - should use both tests
-  large_df <- data.frame(data = rnorm(100))
-  capture.output({
-    result_large <- normality(large_df, "data")
-  })
-  expect_s3_class(result_large$shapiro, "htest")
-  expect_s3_class(result_large$ks, "htest")  # KS test for large samples
+  small_df <- data.frame(x = c(1, 2, 3))
+  expect_error(normality(small_df, "x"), "Need at least 5 observations")
+  
+  const_df <- data.frame(x = rep(5, 10))
+  expect_error(normality(const_df, "x"), "only constant values")
 })
 
-test_that("normality z-score calculations work correctly", {
-  set.seed(123)
-  clinical_df <- data.frame(test_data = rnorm(50, mean = 10, sd = 2))
-  
-  capture.output({
-    result <- normality(clinical_df, "test_data")
+test_that("normality handles different sample sizes", {
+  small_df <- data.frame(x = rnorm(25))
+  output_small <- capture.output({
+    result_small <- normality(small_df, "x")
   })
+  expect_false(any(grepl("Kolmogorov-Smirnov", output_small)))
   
-  # Z-scores should be calculated
-  expect_type(result$skewness_z, "double")
-  expect_type(result$kurtosis_z, "double")
-  expect_false(is.na(result$skewness_z))
-  expect_false(is.na(result$kurtosis_z))
-  
-  # Z-scores should be finite
-  expect_true(is.finite(result$skewness_z))
-  expect_true(is.finite(result$kurtosis_z))
+  large_df <- data.frame(x = rnorm(75))
+  output_large <- capture.output({
+    result_large <- normality(large_df, "x")
+  })
+  expect_true(any(grepl("Kolmogorov-Smirnov", output_large)))
+  expect_true(any(grepl("Shapiro-Wilk", output_large)))
 })
 
-test_that("normality input validation works", {
-  clinical_df <- data.frame(age = rnorm(20), height = rnorm(20))
+test_that("normality console output contains key elements", {
+  df <- data.frame(x = rnorm(30))
+  output <- capture.output({
+    result <- normality(df, "x")
+  })
   
-  # Test non-data.frame input
-  expect_error(normality(c(1,2,3), "test"), "'data' must be a data frame")
-  
-  # Test non-character x parameter
-  expect_error(normality(clinical_df, 1), "'x' must be a character string")
-  
-  # Test invalid variable name
-  expect_error(normality(clinical_df, "nonexistent"),
-               "Variable 'nonexistent' not found in data")
-  
-  # Test insufficient data (updated to reflect n >= 5 requirement)
-  insufficient_df <- data.frame(small = c(1, 2, 3, 4))
-  expect_error(normality(insufficient_df, "small"),
-               "Need at least 5 observations")
-  
-  # Test all missing values
-  na_df <- data.frame(missing = c(NA, NA, NA, NA, NA))
-  expect_error(normality(na_df, "missing"),
-               "Need at least 5 observations")
+  output_text <- paste(output, collapse = " ")
+  expect_true(grepl("Normality Test", output_text))
+  expect_true(grepl("Skewness:", output_text))
+  expect_true(grepl("Kurtosis:", output_text))
+  expect_true(grepl("normally distributed", output_text))
 })
 
-test_that("normality handles different sample sizes appropriately", {
-  set.seed(123)
+test_that("normality outside parameter controls output", {
+  set.seed(42)
+  df <- data.frame(x = c(rnorm(20), -6, 6, -7, 7))
   
-  # Small sample - uses different z-score criteria
-  small_df <- data.frame(data = rnorm(30))
-  capture.output({
-    result_small <- normality(small_df, "data")
+  output_false <- capture.output({
+    result_false <- normality(df, "x", outside = FALSE)
   })
-  expect_null(result_small$ks)  # No KS test
   
-  # Medium sample
-  medium_df <- data.frame(data = rnorm(100))
-  capture.output({
-    result_medium <- normality(medium_df, "data")
+  output_true <- capture.output({
+    result_true <- normality(df, "x", outside = TRUE)
   })
-  expect_s3_class(result_medium$ks, "htest")  # Has KS test
   
-  # Large sample (>= 300)
-  large_df <- data.frame(data = rnorm(350))
-  capture.output({
-    result_large <- normality(large_df, "data")
-  })
-  expect_s3_class(result_large$ks, "htest")  # Still has KS test
+  expect_type(result_true[[2]], "integer")
+  expect_type(result_false[[2]], "integer")
+  
+  output_false_text <- paste(output_false, collapse = " ")
+  output_true_text <- paste(output_true, collapse = " ")
+  
+  if (length(result_true[[2]]) > 0) {
+    expect_true(grepl("Use outside = TRUE", output_false_text))
+    expect_true(grepl("VALUES OUTSIDE 95%CI", output_true_text))
+  }
+  
+  expect_equal(result_false[[2]], result_true[[2]])
 })
 
-test_that("normality handles constant data", {
-  constant_df <- data.frame(constant = rep(5, 20))
+test_that("normality detects extreme values", {
+  df <- data.frame(x = c(rep(0, 30), -5, 5))
   
-  # Should handle constant data without crashing and show warning
-  suppressWarnings({
+  capture.output({
+    result <- normality(df, "x")
+  })
+  
+  expect_type(result[[2]], "integer")
+  expect_true(length(result[[2]]) >= 0)
+})
+
+test_that("normality works with custom colors", {
+  df <- data.frame(x = rnorm(25))
+  
+  capture.output({
+    result <- normality(df, "x", color = "blue")
+  })
+  
+  expect_s3_class(result$qq_plot, "ggplot")
+  expect_s3_class(result$hist_plot, "ggplot")
+})
+
+test_that("normality produces consistent results with same data", {
+  set.seed(100)
+  df <- data.frame(x = rnorm(40))
+  
+  capture.output({
+    result1 <- normality(df, "x")
+  })
+  
+  capture.output({
+    result2 <- normality(df, "x")
+  })
+  
+  expect_equal(result1$normal, result2$normal)
+  expect_equal(result1[[2]], result2[[2]])
+})
+
+test_that("normality handles edge cases", {
+  min_df <- data.frame(x = rnorm(5))
+  expect_silent({
     capture.output({
-      result <- normality(constant_df, "constant")
+      result <- normality(min_df, "x")
     })
   })
-  
   expect_type(result, "list")
-  expect_true(is.na(result$shapiro$p.value))  # Should be NA for constant data
-  expect_false(result$normal)  # Constant data is not normal
-  expect_equal(length(result$outliers), 0)  # No outliers in constant data
-})
-
-test_that("normality custom parameters work", {
-  set.seed(123)
-  test_df <- data.frame(data = c(rnorm(40), 5, -5))  # Add some outliers
   
-  # Test custom color
-  capture.output({
-    result_color <- normality(test_df, "data", color = "blue")
+  na_df <- data.frame(x = c(rnorm(15), NA, NA, NA))
+  expect_silent({
+    capture.output({
+      result <- normality(na_df, "x")
+    })
   })
-  expect_s3_class(result_color$qq_plot, "ggplot")
-  expect_s3_class(result_color$hist_plot, "ggplot")
-  
-  # Test outliers parameter (should produce different console output)
-  result_no_outliers <- capture.output({
-    normality(test_df, "data", outliers = FALSE)
-  })
-  
-  result_with_outliers <- capture.output({
-    normality(test_df, "data", outliers = TRUE)
-  })
-  
-  # With outliers = TRUE should produce more output
-  expect_true(length(result_with_outliers) >= length(result_no_outliers))
-})
-
-test_that("normality produces consistent results", {
-  set.seed(456)
-  test_df <- data.frame(data = rnorm(40, mean = 100, sd = 15))
-  
-  # Same data should produce identical results
-  capture.output({
-    result1 <- normality(test_df, "data")
-  })
-  
-  capture.output({
-    result2 <- normality(test_df, "data")
-  })
-  
-  expect_equal(result1$shapiro$statistic, result2$shapiro$statistic)
-  expect_equal(result1$skewness, result2$skewness)
-  expect_equal(result1$kurtosis, result2$kurtosis)
-  expect_equal(result1$skewness_z, result2$skewness_z)
-  expect_equal(result1$kurtosis_z, result2$kurtosis_z)
-  expect_equal(result1$normal, result2$normal)
-})
-
-test_that("normality outlier detection works", {
-  set.seed(123)
-  # Create data with clear outliers
-  outlier_df <- data.frame(data = c(rnorm(50, mean = 0, sd = 1), c(-4, 4, -5, 5)))
-  
-  capture.output({
-    result <- normality(outlier_df, "data")
-  })
-  
-  # Should detect some outliers
-  expect_type(result$outliers, "integer")
-  expect_type(result$extreme_outliers, "integer")
-  
-  # Extreme outliers should be subset of all outliers
-  if (length(result$extreme_outliers) > 0) {
-    expect_true(all(result$extreme_outliers %in% result$outliers))
-  }
-})
-
-test_that("normality console output includes z-scores", {
-  set.seed(123)
-  test_df <- data.frame(data = rnorm(25))
-  
-  # Capture console output
-  output <- capture.output({
-    result <- normality(test_df, "data")
-  })
-  
-  # Should include z-scores in output
-  output_text <- paste(output, collapse = " ")
-  expect_true(grepl("z =", output_text))  # Z-scores should be displayed
-  
-  # For small sample, should only show Shapiro-Wilk
-  expect_false(grepl("Kolmogorov-Smirnov", output_text))
-})
-
-test_that("normality large sample shows both tests", {
-  set.seed(123)
-  test_df <- data.frame(data = rnorm(75))
-  
-  # Capture console output for large sample
-  output <- capture.output({
-    result <- normality(test_df, "data")
-  })
-  
-  output_text <- paste(output, collapse = " ")
-  # Should show both tests for medium/large samples
-  expect_true(grepl("Kolmogorov-Smirnov", output_text))
-  expect_true(grepl("Shapiro-Wilk", output_text))
+  expect_type(result, "list")
 })

@@ -4,30 +4,19 @@
 \alias{normality}
 \title{Statistical and Visual Normality Assessment}
 \usage{
-normality(data, x, outliers = FALSE, color = "#79E1BE")
+normality(data, x, outside = FALSE, color = "#79E1BE")
 }
 \arguments{
 \item{data}{Dataframe containing the variables to be summarized.}
 
-\item{x}{character Name of the variable to analyze.}
+\item{x}{character Name of the variable to be analyzed.}
 
-\item{outliers}{logical If TRUE, displays all outlier row indices. Default: FALSE.}
+\item{outside}{logical If TRUE, displays all row indices of values outside 95\%CI. Default: FALSE.}
 
 \item{color}{character Color for plots. Default: "#79E1BE".}
 }
 \value{
-Prints results to console and invisibly returns a list with:
-\item{shapiro}{Shapiro-Wilk test results}
-\item{ks}{Kolmogorov-Smirnov test results (NULL if n <= 50)}
-\item{skewness}{Sample skewness}
-\item{kurtosis}{Sample excess kurtosis}
-\item{skewness_z}{z-score for skewness}
-\item{kurtosis_z}{z-score for kurtosis}
-\item{normal}{Logical; TRUE if data appears normal}
-\item{outliers}{Row indices of all outliers}
-\item{extreme_outliers}{Row indices of most extreme outliers (labeled in plot)}
-\item{qq_plot}{ggplot Q-Q plot object}
-\item{hist_plot}{ggplot histogram object}
+Prints results to console and invisibly returns a list with normality statistics and ggplot objects.
 }
 \description{
 Tests normality using sample size-appropriate methods: Shapiro-Wilk test (n ≤ 50)
@@ -42,8 +31,8 @@ clinical_df <- clinical_data()
 # Normally distributed variable
 normality(clinical_df, "biomarker")
 
-# Non-normally distributed variable with outliers displayed
-normality(clinical_df, "weight", outliers = TRUE)
+# Non-normally distributed variable with points outside 95\%CI displayed
+normality(clinical_df, "weight", outside = TRUE)
 
 }
 \references{

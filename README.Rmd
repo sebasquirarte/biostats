@@ -199,21 +199,19 @@ Tests normality using sample size-appropriate methods: Shapiro-Wilk test (n ≤ 
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `x` | A numeric vector or the name of a variable in a dataframe | `Required` |
-| `data` | Optional data frame containing the variable | `NULL` |
-| `outliers` | Logical; whether to print all outlier row numbers | `FALSE` |
-| `color` | Character; color for points and histogram bars | `"#7fcdbb"` |
+| `data` | Dataframe containing the variables to be summarized | `Required` |
+| `x` | Name of the variable to analyzed | `NULL` |
+| `outliers` | If TRUE, displays all outlier row indices | `FALSE` |
+| `color` | Color for plots | `"#7fcdbb"` |
 
 ##### Examples
 
 ```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
-clinical_df <- clinical_data()
-
 # Normally distributed variable
-normality("biomarker", data = clinical_df)
+normality(data = clinical_df, "biomarker")
 
-# Non-normally distributed variable with outliers displayed
-normality("weight", data = clinical_df, outliers = TRUE)
+# Non-normally distributed variable with points outside 95%CI displayed
+normality(data = clinical_df, "weight", outliers = TRUE)
 ```
 
 #### **missing_values()**
@@ -422,7 +420,7 @@ clinical_df_A <- clinical_df[clinical_df$treatment == "A", ]
 result <- omnibus(y = "biomarker", 
                   x = "visit", 
                   data = clinical_df_A, 
-                  paired_var = "subject_id")
+                  paired_by = "subject_id")
 ```
 
 #### **effect_measures()**

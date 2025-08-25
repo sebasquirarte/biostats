@@ -8,7 +8,7 @@ omnibus(
   data = NULL,
   y = NULL,
   x = NULL,
-  paired_var = NULL,
+  paired_by = NULL,
   alpha = 0.05,
   p_method = "holm",
   na.action = "na.omit"
@@ -21,7 +21,7 @@ omnibus(
 
 \item{x}{character string. Independent variable (group or within-subject variable).}
 
-\item{paired_var}{character string or NULL. Source of repeated measurements. If
+\item{paired_by}{character string or NULL. Source of repeated measurements. If
 provided, a repeated measures design is assumed. Data should be in long format
 with one row per observation. If NULL, independent groups design is assumed.}
 
@@ -70,6 +70,6 @@ result <- omnibus(data = clinical_df,
 result <- omnibus(y = "biomarker", 
                   x = "visit", 
                   data = clinical_df, 
-                  paired_var = "subject_id")
+                  paired_by = "subject_id")
 
 }

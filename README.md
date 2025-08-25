@@ -224,54 +224,54 @@ comprehensive visual and statistical assessment.
 
 ##### Parameters
 
-| Parameter | Description | Default |
-|----|----|----|
-| `x` | A numeric vector or the name of a variable in a dataframe | `Required` |
-| `data` | Optional data frame containing the variable | `NULL` |
-| `outliers` | Logical; whether to print all outlier row numbers | `FALSE` |
-| `color` | Character; color for points and histogram bars | `"#7fcdbb"` |
+| Parameter  | Description                                         | Default     |
+|------------|-----------------------------------------------------|-------------|
+| `data`     | Dataframe containing the variables to be summarized | `Required`  |
+| `x`        | Name of the variable to analyzed                    | `NULL`      |
+| `outliers` | If TRUE, displays all outlier row indices           | `FALSE`     |
+| `color`    | Color for plots                                     | `"#7fcdbb"` |
 
 ##### Examples
 
 ``` r
-clinical_df <- clinical_data()
-
 # Normally distributed variable
-normality("biomarker", data = clinical_df)
+normality(data = clinical_df, "biomarker")
 #> 
 #> Normality Test for 'biomarker' 
 #> 
 #> n = 300 
-#> mean (SD) = 47.84 (9.8) 
-#> median (IQR) = 47.61 (12.9) 
+#> mean (SD) = 48.88 (10.7) 
+#> median (IQR) = 49.20 (14.6) 
 #> 
-#> Shapiro-Wilk: W = 0.996, p = 0.641 
-#> Skewness: 0.04 
-#> Kurtosis: 0.03 
+#> Kolmogorov-Smirnov: D = 0.042, p = 0.663 
+#> Shapiro-Wilk: W = 0.995, p = 0.369 
+#> Skewness: -0.10 (z = -0.68) 
+#> Kurtosis: -0.24 (z = -0.86) 
 #> 
-#> Data is normally distributed.
+#> Data appears normally distributed.
 ```
 
 <img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
 
 ``` r
 
-# Non-normally distributed variable with outliers displayed
-normality("weight", data = clinical_df, outliers = TRUE)
+# Non-normally distributed variable with points outside 95%CI displayed
+normality(data = clinical_df, "weight", outliers = TRUE)
 #> 
 #> Normality Test for 'weight' 
 #> 
 #> n = 300 
-#> mean (SD) = 71.54 (14.6) 
-#> median (IQR) = 72.30 (22.8) 
+#> mean (SD) = 71.84 (14.2) 
+#> median (IQR) = 70.10 (20.6) 
 #> 
-#> Shapiro-Wilk: W = 0.973, p = < 0.001 
-#> Skewness: -0.09 
-#> Kurtosis: -0.94 
+#> Kolmogorov-Smirnov: D = 0.086, p = 0.023 
+#> Shapiro-Wilk: W = 0.976, p = < 0.001 
+#> Skewness: 0.30 (z = 2.16) 
+#> Kurtosis: -0.61 (z = -2.17) 
 #> 
-#> Data is not normally distributed. 
+#> Data appears not normally distributed. 
 #> 
-#> OUTLIERS (row indices): 92, 93, 95, 96, 74, 209, 274, 141, 210, 49, 227, 139, 129, 262, 226, 51, 50, 140, 229, 263, 35, 115, 230, 54, 52, 53, 75, 228, 231, 264, 34, 87, 86, 82, 246, 174, 130, 149, 159, 265
+#> OUTLIERS (row indices): 202, 241, 242, 238, 78, 210, 295, 234, 230, 209, 261, 96, 97, 177, 287, 29, 257, 269, 168, 260, 254, 187, 270, 259, 161, 149, 229, 247, 268, 31, 231, 115, 150, 189, 253, 35, 117, 98, 255, 278, 38, 69, 170, 277, 39, 171, 6, 299, 46, 165, 192, 263, 291, 128, 164, 198, 197, 27, 92
 ```
 
 <img src="man/figures/README-unnamed-chunk-11-2.png" width="100%" />
@@ -302,7 +302,7 @@ missing_values(clinical_df)
 #> Missing Value Analysis
 #> 
 #> n: 300, variables: 8
-#> Complete cases: 257 / 300 (85.7%)
+#> Complete cases: 255 / 300 (85.0%)
 #> Missing cells: 45 / 2400 (1.9%)
 #> 
 #> Variables with missing values: 3 of 8 (37.5%)
@@ -322,7 +322,7 @@ missing_values(clinical_df, all = TRUE)
 #> Missing Value Analysis
 #> 
 #> n: 300, variables: 8
-#> Complete cases: 257 / 300 (85.7%)
+#> Complete cases: 255 / 300 (85.0%)
 #> Missing cells: 45 / 2400 (1.9%)
 #> 
 #> Variables with missing values: 3 of 8 (37.5%)
@@ -368,10 +368,10 @@ outliers(clinical_df$biomarker)
 #> n: 900
 #> Missing: 0 (0.0%)
 #> Method: Tukey's IQR x 1.5
-#> Bounds: [22.17, 75.72]
-#> Outliers detected: 8 (0.9%)
+#> Bounds: [21.30, 74.28]
+#> Outliers detected: 3 (0.3%)
 #> 
-#> Outlier indices: 15, 103, 185, 350, 464, 775, 818, 877
+#> Outlier indices: 252, 627, 770
 ```
 
 <img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
@@ -659,21 +659,21 @@ result <- omnibus(data = clinical_df,
 #> Assumption Testing Results:
 #> 
 #>   Normality (Shapiro-Wilk Test):
-#>   A: W = 0.9963, p = 0.262
-#>   B: W = 0.9979, p = 0.613
-#>   C: W = 0.9967, p = 0.236
+#>   A: W = 0.9987, p = 0.955
+#>   B: W = 0.9987, p = 0.928
+#>   C: W = 0.9952, p = 0.069
 #>   Overall result: Normal distribution assumed.
 #> 
 #>   Homogeneity of Variance (Bartlett Test):
-#>   Chi-squared(2) = 3.5715, p = 0.168
-#>   Effect size (Cramer's V) = 0.0315
+#>   Chi-squared(2) = 2.2644, p = 0.322
+#>   Effect size (Cramer's V) = 0.0251
 #>   Result: Homogeneous variances.
 #> 
 #> Test Results:
 #> 
 #>   Formula: biomarker ~ treatment
 #>   alpha: 0.05
-#>   F(2,1797) = 48.977, p = <0.001
+#>   F(2,1797) = 55.292, p = <0.001
 #>   Result: significant
 #> 
 #> Post-hoc Multiple Comparisons
@@ -681,11 +681,11 @@ result <- omnibus(data = clinical_df,
 #> Tukey Honest Significant Differences (alpha: 0.050):
 #> Comparison               Diff    Lower    Upper    p-adj
 #> ------------------------------------------------------------ 
-#> B - A                  -2.158   -3.506   -0.809   <0.001*
-#> C - A                  -5.636   -6.996   -4.276   <0.001*
-#> C - B                  -3.478   -4.769   -2.188   <0.001*
+#> B - A                  -3.185   -4.564   -1.805   <0.001*
+#> C - A                  -6.370   -7.791   -4.949   <0.001*
+#> C - B                  -3.186   -4.550   -1.822   <0.001*
 #> 
-#> Sample sizes across groups are unequal - unbalanced design.
+#> The study groups show a moderately unbalanced distribution of sample sizes (Δn = 0.220).
 ```
 
 ``` r
@@ -696,38 +696,41 @@ clinical_df_A <- clinical_df[clinical_df$treatment == "A", ]
 result <- omnibus(y = "biomarker", 
                   x = "visit", 
                   data = clinical_df_A, 
-                  paired_var = "subject_id")
+                  paired_by = "subject_id")
 #> 
 #> Omnibus Test: Friedman
 #> 
 #> Assumption Testing Results:
 #> 
 #>   Sphericity (Mauchly Test):
-#>   Effect size (W) = 0.8216
-#>   Result: Sphericity assumed.
+#>   Effect size (W) = 0.7475
+#>   Result: Sphericity violated.
 #> 
 #>   Normality (Shapiro-Wilk Test):
-#>   1: W = 0.9711, p = 0.046
-#>   2: W = 0.9882, p = 0.612
-#>   3: W = 0.9865, p = 0.497
-#>   4: W = 0.9898, p = 0.727
-#>   5: W = 0.9774, p = 0.126
-#>   6: W = 0.9798, p = 0.187
-#>   Overall result: Non-normal distribution detected.
+#>   1: W = 0.9894, p = 0.664
+#>   2: W = 0.9801, p = 0.167
+#>   3: W = 0.9903, p = 0.736
+#>   4: W = 0.9786, p = 0.131
+#>   5: W = 0.9877, p = 0.537
+#>   6: W = 0.9876, p = 0.531
+#>   Overall result: Normal distribution assumed.
 #> 
-#>   Homogeneity of Variance (Levene Test):
-#>   F(5,522) = 0.4063, p = 0.845
-#>   Effect size (eta-squared) = 0.0039
+#>   Homogeneity of Variance (Bartlett Test):
+#>   Chi-squared(5) = 3.5238, p = 0.620
+#>   Effect size (Cramer's V) = 0.0355
 #>   Result: Homogeneous variances.
 #> 
 #> Test Results:
 #> 
 #>   Formula: biomarker ~ visit | subject_id
 #>   alpha: 0.05
-#>   Chi-squared(5) = 9.357, p = 0.096
+#>   Chi-squared(5) = 3.291, p = 0.655
 #>   Result: not significant
 #> 
 #> Post-hoc tests not performed (results not significant).
+#> 
+#> 
+#> The study groups show a moderately unbalanced distribution of sample sizes (Δn = 0.199).
 ```
 
 #### **effect_measures()**
@@ -977,10 +980,6 @@ clinical_df <- clinical_data(visit = 10)
 
 # Barplot of age by sex and treatment
 plot_box(clinical_df, x = "sex", y = "age", group = "treatment", y_limits = c(0,80))
-#> Warning: Removed 10 rows containing non-finite outside the scale range
-#> (`stat_boxplot()`).
-#> Warning: Removed 10 rows containing non-finite outside the scale range
-#> (`stat_summary()`).
 ```
 
 <img src="man/figures/README-unnamed-chunk-27-1.png" width="100%" />
