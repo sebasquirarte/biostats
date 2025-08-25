@@ -4,16 +4,15 @@
 #' multiple visits, treatment groups with different effects, numerical and
 #' categorical variables, as well as optional missing data and dropout rates.
 #'
-#' @param n integer. Number of subjects (1-999). Default: 100.
-#' @param visits integer. Number of visits including baseline. Default: 3.
-#' @param arms character vector. Treatment arm names. Default: c("Placebo", "Treatment").
-#' @param dropout numeric. Proportion of subjects who dropout (0-1). Default: 0.
-#' @param missing numeric. Overall proportion (0-1) of missing values to be introduced 
-#'   across numeric variables with fixed proportions (biomarker = 15%, weight = 25%, 
-#'   response = 60%). Default: 0.
+#' @param n Integer indicating the number of subjects (1-999). Default: 100.
+#' @param visits Integer indicating the umber of visits including baseline. Default: 3.
+#' @param arms Character vector of treatment arm names. Default: c("Placebo", "Treatment").
+#' @param dropout Numeric parameter indicating the proportion of subjects who dropout (0-1). Default: 0.
+#' @param missing numeric parameter indicating the overall proportion (0-1) of missing values to be introduced 
+#'   across numeric variables with fixed proportions (biomarker = 15%, weight = 25%, response = 60%). Default: 0.
 #'   
-#' @return Dataframe with columns: subject_id, visit, sex, treatment, age, weight, 
-#'   biomarker, and response in long format.
+#' @return Dataframe with columns: subject_id, visit, sex, treatment, age, 
+#'   weight, biomarker, and response in long format.
 #'   
 #' @examples
 #' # Basic dataset

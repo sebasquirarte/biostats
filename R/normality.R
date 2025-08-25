@@ -6,9 +6,9 @@
 #' detects outliers and provides comprehensive visual and statistical assessment.
 #'
 #' @param data Dataframe containing the variables to be summarized.
-#' @param x character Name of the variable to be analyzed.
-#' @param outside logical If TRUE, displays all row indices of values outside 95%CI. Default: FALSE.
-#' @param color character Color for plots. Default: "#79E1BE".
+#' @param x Character string indicating the variable to be analyzed.
+#' @param outside Logical parameter that displays all row indices of values outside 95%CI. Default: FALSE.
+#' @param color Character string indicatig color for plots. Default: "#79E1BE".
 #'
 #' @return
 #' Prints results to console and invisibly returns a list with normality statistics and ggplot objects.

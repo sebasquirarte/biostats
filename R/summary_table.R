@@ -6,11 +6,11 @@
 #' and inferential tests for single-group summaries or two-group comparisons.
 #'
 #' @param data Dataframe containing the variables to be summarized.
-#' @param group_by character. Name of the grouping variable for two-group comparisons. Default: NULL.
-#' @param normality_test character. Normality test to use: 'S-W' for Shapiro-Wilk or 'K-S' for Kolmogorov-Smirnov. Default: 'S-W'.
-#' @param all_stats logical. If TRUE, provides detailed statistical summary. Default: FALSE.
-#' @param effect_size logical. If TRUE, includes effect size estimates. Default: FALSE.
-#' @param exclude character vector. Variable names to exclude from the summary. Default: NULL.
+#' @param group_by Character string indicating the name of the grouping variable for two-group comparisons. Default: NULL.
+#' @param normality_test Character string indicating the ormality test to use: 'S-W' for Shapiro-Wilk or 'K-S' for Kolmogorov-Smirnov. Default: 'S-W'.
+#' @param all_stats Logical parameter that shows all calculated statistics. Default: FALSE.
+#' @param effect_size Logical parameter that includes effect size estimates. Default: FALSE.
+#' @param exclude Character vector of variable names to exclude from the summary. Default: NULL.
 #'
 #' @return A gt table object with formatted summary statistics.
 #'
