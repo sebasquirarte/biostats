@@ -6,7 +6,7 @@
 #' @param color Character string indicating the color for missing values. Default: "#79E1BE"
 #' @param all Logical parameter that shows all variables including those without missing values. Default: FALSE.
 #'
-#' @return 
+#' @return
 #' Prints results to console and invisibly returns a list with descriptive statistics and ggplot objects.
 #'
 #' @examples
@@ -29,16 +29,20 @@ missing_values <- function(data,
                            color = "#79E1BE", 
                            all = FALSE) {
   
-  # Package requirements and input validation
+  # Package requirements
   required_pkgs <- c("ggplot2", "gridExtra")
   missing_pkgs <- required_pkgs[!sapply(required_pkgs, requireNamespace, quietly = TRUE)]
   if (length(missing_pkgs) > 0) {
     stop("Required packages not installed: ", paste(missing_pkgs, collapse = ", "), ".", call. = FALSE)
   }
-  if (!is.data.frame(data) || nrow(data) == 0 || ncol(data) == 0) stop("'data' must be a non-empty dataframe.", call. = FALSE)
-  if (!is.character(color) || length(color) != 1) stop("'color' must be a single character string.", call. = FALSE)
-  if (!is.logical(all) || length(all) != 1) stop("'all' must be a single logical value.", call. = FALSE)
-  
+  # Input validation
+  if (!is.data.frame(data)) stop("'data' must be a dataframe.", call. = FALSE)
+  if (nrow(data) == 0) stop("'data' must have at least one row.", call. = FALSE)
+  if (ncol(data) == 0) stop("'data' must have at least one column.", call. = FALSE)
+  if (!is.character(color)) stop("'color' must be a character string.", call. = FALSE)
+  if (length(color) != 1) stop("'color' must be a single character string.", call. = FALSE)
+  if (!is.logical(all)) stop("'all' must be a logical value.", call. = FALSE)
+
   # Calculate statistics
   n_missing <- colSums(is.na(data))
   missing_stats <- data.frame(

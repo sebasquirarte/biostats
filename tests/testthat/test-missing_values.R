@@ -57,11 +57,12 @@ test_that("missing_values 'all' parameter and no missing data scenarios", {
 test_that("missing_values input validation works", {
   test_df <- data.frame(a = c(1, NA, 3))
   
-  expect_error(missing_values(NULL), "non-empty dataframe")
-  expect_error(missing_values(data.frame()), "non-empty dataframe")
-  expect_error(missing_values(test_df, color = 123), "single character string")
-  expect_error(missing_values(test_df, all = "TRUE"), "single logical value")
-  expect_error(missing_values(test_df, color = c("red", "blue")), "single character string")
+  expect_error(missing_values(NULL), "'data' must be a dataframe")
+  expect_error(missing_values(data.frame()), "'data' must have at least one row")
+  expect_error(missing_values(test_df, color = 123), "'color' must be a character string")
+  expect_error(missing_values(test_df, all = "TRUE"), "'all' must be a logical value")
+  expect_error(missing_values(test_df, color = c("red", "blue")), "'color' must be a single character string")
+  
 })
 
 test_that("missing_values handles data types, colors, and edge cases", {

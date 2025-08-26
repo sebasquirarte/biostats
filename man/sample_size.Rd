@@ -2,7 +2,7 @@
 % Please edit documentation in R/sample_size.R
 \name{sample_size}
 \alias{sample_size}
-\title{Sample size calculation for clinical trials}
+\title{Sample Size Calculation for Clinical Trials}
 \usage{
 sample_size(
   sample = c("one-sample", "two-sample"),
@@ -15,102 +15,62 @@ sample_size(
   x2 = NULL,
   SD = NULL,
   delta = NULL,
-  dropout_rate = 0,
+  dropout = 0,
   k = 1
 )
 }
 \arguments{
-\item{sample}{Character string. Whether one or two samples need to be calculated
-("one-sample" or "two-sample").}
+\item{sample}{Character string indicating whether one or two samples need to be calculated.
+Options: "one-sample" or "two-sample".}
 
-\item{design}{Character string. Study design when sample = "two-sample".
-Options: "parallel" or "crossover". Default is NULL for one-sample tests.}
+\item{design}{Character string indicatin study design when sample = "two-sample".
+Options: "parallel" or "crossover". Default: NULL for one-sample tests.}
 
-\item{outcome}{Character string. Type of outcome variable ("mean" or "proportion").}
+\item{outcome}{Character string indicating the type of outcome variable.
+Options: "mean" or "proportion".}
 
-\item{type}{Character string. Type of hypothesis test ("equality", "equivalence",
-"non-inferiority", or "superiority").}
+\item{type}{Character string indicating the type of hypothesis test.
+Options: "equality", "equivalence", "non-inferiority", or "superiority".}
 
-\item{alpha}{Numeric. Type I error rate (significance level). Default is 0.05.}
+\item{alpha}{Numeric parameter indicating the Type I error rate (significance level). Default: 0.05.}
 
-\item{beta}{Numeric. Type II error rate (1 - power). Default is 0.20.}
+\item{beta}{Numeric parameter indicating the Type II error rate (1 - power). Default: 0.20.}
 
-\item{x1}{Numeric. Value of the mean or proportion for group 1 (treatment group).}
+\item{x1}{Numeric value of the mean or proportion for group 1 (treatment group).}
 
-\item{x2}{Numeric. Value of the mean or proportion for group 2 (control group
-or reference value).}
+\item{x2}{Numeric value of the mean or proportion for group 2 (control group or reference value).}
 
-\item{SD}{Numeric. Standard deviation. Required for mean outcomes and crossover
-designs with proportion outcomes. Default is NULL.}
+\item{SD}{Numeric value indicating the standard deviation. Required for mean outcomes and crossover
+designs with proportion outcomes. Default: NULL.}
 
-\item{delta}{Numeric. Margin of clinical interest. Required for non-equality tests.
-Must be negative for non-inferiority and positive for superiority/equivalence.
-Default is NULL.}
+\item{delta}{Numeric value indicating the margin of clinical interest. Required for non-equality tests.
+Must be negative for non-inferiority and positive for superiority/equivalence. Default: NULL.}
 
-\item{dropout_rate}{Numeric. Study discontinuation rate expected in the study. Default is 0.}
+\item{dropout}{Numeric value indicating the discontinuation rate expected in the study.
+Must be between 0 and 1. Default: 0.}
 
-\item{k}{Numeric. Allocation ratio (n1/n2) for two-sample tests. Default is 1.}
+\item{k}{Numeric value indicating the allocation ratio (n1/n2) for two-sample tests. Default: 1.}
 }
 \value{
-Invisibly returns a list containing:
-\item{n1}{Integer. Sample size for group 1 (or total sample size for one-sample tests).}
-\item{n2}{Integer. Sample size for group 2 (same as n for crossover designs).}
-\item{total}{Integer. Total sample size across all groups.}
-\item{sample}{Character string. Type of sampling method used ("one-sample" or "two-sample").}
-\item{design}{Character string. Study design for two-sample tests, such as "parallel" or "crossover".}
-\item{outcome}{Character string. Type of outcome variable ("mean" or "proportion").}
-\item{type}{Character string. Type of hypothesis test ("equality", "equivalence", "non-inferiority", or "superiority").}
-\item{alpha}{Numeric. Type I error rate (significance level).}
-\item{beta}{Numeric. Type II error rate (1 - power).}
-\item{x1}{Numeric. Value of the mean or proportion for group 1 (treatment group).}
-\item{x2}{Numeric. Value of the mean or proportion for group 2 (control group or reference value).}
-\item{SD}{Numeric. Standard deviation.}
-\item{delta}{Numeric. Margin of clinical interest.}
-\item{dropout_rate}{Numeric. Study discontinuation rate expected in the study.}
-\item{k}{Numeric. Allocation ratio (n1/n2) for two-sample tests.}
-\item{z_alpha}{Numeric. Z-score corresponding to the significance level alpha.}
-\item{z_beta}{Numeric. Z-score corresponding to the Type II error rate beta.}
-\item{zscore}{Numeric. Squared sum of z_alpha and z_beta, used for sample size calculation.}
+Prints calculation summary to console and invisibly returns a list containing
+sample size statistics, study parameters, and calculated z-scores.
 }
 \description{
 Calculates the sample size needed in a clinical trial based on study design
-and statistical parameters.
+and statistical parameters using standard formulas for hypothesis testing (Chow, S. 2008).
 }
 \examples{
 # One-sample equivalence test for means
-sample_size(sample = 'one-sample',
-            outcome = 'mean',
-            type = 'equivalence',
-            x1 = 0,
-            x2 = 0,
-            SD = 0.1,
-            delta = 0.05,
-            alpha = 0.05,
-            beta = 0.20)
-# Two-sample parallel non-inferiority test for proportions w/ 10\% dropout rate
-sample_size(sample = 'two-sample',
-            design = "parallel",
-            outcome = 'proportion',
-            type = 'non-inferiority',
-            x1 = 0.85,
-            x2 = 0.65,
-            alpha = 0.05,
-            beta = 0.20,
-            delta = -0.1,
-            dropout_rate = 0.1)
-# Two-sample crossover non-inferiority test for means
-sample_size(sample = 'two-sample',
-            design = "crossover",
-            outcome = 'mean',
-            type = 'non-inferiority',
-            x1 = -0.10,
-            x2 = 0,
-            SD = 0.20,
-            delta = -0.20,
-            alpha = 0.05,
-            beta = 0.20)
+sample_size(sample = "one-sample", outcome = "mean", type = "equivalence",
+            x1 = 0, x2 = 0, SD = 0.1, delta = 0.05)
+
+# Two-sample parallel non-inferiority test for means with 10\% expected dropout
+sample_size(sample = 'two-sample', design = 'parallel', outcome = 'mean',
+            type = 'non-inferiority', x1 = 5.0, x2 = 5.0, 
+            SD = 0.1, delta = -0.05, k = 1, dropout = 0.1)
+
 }
 \references{
-Chow, S., Shao, J., & Wang, H. (2008). Sample Size Calculations in
-Clinical Research (2nd ed.). Chapman & Hall/CRC.
+Chow, S., Shao, J., & Wang, H. (2017). Sample Size Calculations in
+Clinical Research (3rd ed.). Chapman & Hall/CRC.
 }
