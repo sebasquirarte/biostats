@@ -146,27 +146,22 @@ test_that("Return object structure is correct", { # Verified
   
   # Test that all expected elements are present
   expected_elements <- c("formula", "summary", "statistic", "p_value",
-                         "n_groups", "significant", "alpha", "model",
-                         "data", "post_hoc", "name")
+                         "model", "post_hoc", "name")
   expect_true(all(expected_elements %in% names(result)))
   
   # Test element types
   expect_s3_class(result$formula, "formula")
+  expect_type(result$model, "list")
+  expect_type(result$summary, "list")
+  expect_type(result$name, "character")
   expect_type(result$statistic, "double")
   expect_type(result$p_value, "double")
-  expect_type(result$n_groups, "integer")
-  expect_type(result$significant, "logical")
-  expect_type(result$alpha, "double")
-  expect_s3_class(result$data, "data.frame")
-  expect_type(result$name, "character")
+  expect_type(result$post_hoc, "list")
   
   # Test value ranges
   expect_gte(result$statistic, 0)
   expect_gte(result$p_value, 0)
   expect_lte(result$p_value, 1)
-  expect_gte(result$n_groups, 3)
-  expect_gte(result$alpha, 0)
-  expect_lte(result$alpha, 1)
 })
 
 test_that("Different p_methods work correctly", { # Verified
@@ -185,24 +180,8 @@ test_that("Different p_methods work correctly", { # Verified
   }
 })
 
-test_that("Factor conversion works correctly", { # Verified
-  
-  # Test with character independent variable (should be converted to factor)
-  char_data <- normal_equal_var_data
-  char_data$group <- as.character(char_data$group)
-  
-  expect_no_error(capture.output(
-    result <- omnibus(
-      y = "score",
-      x = "group",
-      data = char_data
-    )))
-  
-  expect_s3_class(result$data$group, "factor")
-})
-
 test_that("Alpha parameter affects significance determination", { # Verified
-  
+
   # Create data where we expect a specific p-value range
   capture.output(result_strict <- omnibus(
     y = "score",
@@ -218,10 +197,8 @@ test_that("Alpha parameter affects significance determination", { # Verified
     alpha = 0.5
   ))
   
-  expect_equal(result_strict$alpha, 0.001)
-  expect_equal(result_lenient$alpha, 0.5)
-  expect_equal(result_strict$significant, result_strict$p_value < 0.001)
-  expect_equal(result_lenient$significant, result_lenient$p_value < 0.5)
+  expect_equal(TRUE, result_strict$p_value < 0.001)
+  expect_equal(TRUE, result_lenient$p_value < 0.5)
 })
 
 test_that("Post-hoc tests are performed when significant", { # Verified
@@ -238,7 +215,7 @@ test_that("Post-hoc tests are performed when significant", { # Verified
     data = significant_data
   ))
   
-  if (result$significant) {
+  if (result$p_value < 0.05) {
     expect_false(is.null(result$post_hoc))
   } else {
     expect_null(result$post_hoc)
@@ -281,15 +258,13 @@ test_that("Edge cases are handled correctly", { # Verified
     group = factor(rep(c("A", "B", "C"), c(10, 10, 10)))
   )
   
-  capture.output({
+  expect_no_error(capture.output({
     result <- omnibus(
       y = "score",
       x = "group",
       data = min_groups_data
     )
-  })
-  
-  expect_equal(result$n_groups, 3)
+  }))
   
   # Test with many groups
   many_groups_data <- data.frame(
@@ -297,15 +272,13 @@ test_that("Edge cases are handled correctly", { # Verified
     group = factor(rep(LETTERS[1:10], each = 10))
   )
   
-  capture.output({
+  expect_no_error(capture.output({
     result <- omnibus(
       y = "score",
       x = "group",
       data = many_groups_data
     )
-  })
-  
-  expect_equal(result$n_groups, 10)
+  }))
 })
 
 test_that("Different na.action options work correctly", { # Verified

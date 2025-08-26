@@ -7,35 +7,33 @@
 #' Friedman test. Performs comprehensive assumption checking (normality, homogeneity
 #' of variance, sphericity) and post-hoc testing when significant results are detected.
 #'
-#' @param data Dataframe containing the variables to be analyzed.
-#' @param y character string. Dependent variable (outcome).
-#' @param x character string. Independent variable (group or within-subject variable).
-#' @param paired_by character string or NULL. Source of repeated measurements. If 
-#'   provided, a repeated measures design is assumed. Data should be in long format 
-#'   with one row per observation. If NULL, independent groups design is assumed.
-#' @param alpha numeric. Significance level for hypothesis tests. Default: 0.05.
-#' @param p_method character string. Method for p-value adjustment in post-hoc multiple
+#' @param data Dataframe containing the variables to be analyzed. Data must be in long format 
+#'   with one row per observation.
+#' @param y Character string indicating the dependent variable (outcome).
+#' @param x Character string indicating the independent variable (group or within-subject variable).
+#' @param paired_by Character string indicating the source of repeated measurements. If 
+#'   provided, a repeated measures design is assumed. If NULL, independent groups design is assumed. 
+#'   Default: NULL.
+#' @param alpha Numeric value indicating the significance level for hypothesis tests. Default: 0.05.
+#' @param p_method Character string indicating the method for p-value adjustment in post-hoc multiple
 #'   comparisons to control for Type I error inflation. Options: "holm" (Holm), 
 #'   "hochberg" (Hochberg), "hommel" (Hommel), "bonferroni" (Bonferroni), "BH" 
 #'   (Benjamini-Hochberg), "BY" (Benjamini-Yekutieli), "none" (no adjustment). Default: "holm".
-#' @param na.action character string. Action to take if NAs are present ("na.omit" 
+#' @param na.action Character string indicating the action to take if NAs are present ("na.omit" 
 #'   or "na.exclude"). Default: "na.omit"
 #'
-#' @return A list containing:
-#' \item{formula}{The modelled formula used for the test.}
-#' \item{summary}{Summary object of the model or test.}
-#' \item{statistic}{Test statistic value (F or Chi-squared).}
-#' \item{p_value}{p-value observed in the omnibus test.}
-#' \item{n_groups}{Number of groups in the independent variable.}
-#' \item{significant}{Logical indicating whether the test was significant at the alpha level.}
-#' \item{alpha}{Significance level used.}
-#' \item{model}{The fitted model or test object.}
-#' \item{data}{Input data frame.}
-#' \item{post_hoc}{List of post-hoc test results if omnibus test was significant, otherwise NULL.}
-#' \item{name}{Name of the test performed (e.g., "One-way ANOVA", "Kruskal-Wallis test", etc.).}
-#'
+#' @return
+#' Prints results to console and invisibly returns a list including the formula, model,
+#' statistic summary, name of the test performed, the value of the test statistic,
+#' resulting p value and the results of the post_hoc test.
+#' 
+#' @references
+#' Blanca, M., Alarcón, R., Arnau, J. et al. Effect of variance ratio on ANOVA robustness: Might 1.5 be the limit?. 
+#' Behav Res. 2017 Jun 22; 50:937–962. https://doi.org/10.3758/s13428-017-0918-2
+#' Field, A. P. Discovering Statistics Using R and RStudio. 1st ed. London: SAGE Publications; 2025.
+#' 
 #' @examples
-#' # Simulated clinical data with multiple tratment arms and visits
+#' # Simulated clinical data with multiple treatment arms and visits
 #' clinical_df <- clinical_data(n = 300, visits = 6, arms = c("A", "B", "C"))
 #' 
 #' # Compare numerical variable across treatments
@@ -56,9 +54,9 @@
 #' @importFrom graphics pairs
 #' @export
 
-omnibus <- function(data = NULL,
-                    y = NULL,
-                    x = NULL,
+omnibus <- function(data,
+                    y,
+                    x,
                     paired_by = NULL,
                     alpha = 0.05,
                     p_method = "holm",
@@ -70,9 +68,7 @@ omnibus <- function(data = NULL,
   if (missing(data)) stop("'data' must be specified.", call. = FALSE)
   if (!(y %in% names(data))) stop("The dependent variable ('y') was not found in the dataframe.", call. = FALSE)
   if (!(x %in% names(data))) stop("The independent variable ('x') was not found in the dataframe.", call. = FALSE)
-  if (!is.null(paired_by) && !(paired_by %in% names(data))) {
-    stop("'paired_by' variable not found in data", call. = FALSE)
-  }
+  if (!is.null(paired_by) && !(paired_by %in% names(data))) stop("'paired_by' variable not found in data", call. = FALSE)
   data[[y]] <- as.numeric(data[[y]])
   data[[x]] <- as.factor(data[[x]])
   if (!is.null(paired_by)) data[[paired_by]] <- as.factor(data[[paired_by]])
@@ -85,9 +81,7 @@ omnibus <- function(data = NULL,
   if (alpha <= 0 || alpha >= 1) stop("'alpha' must be between 0 and 1.", call. = FALSE)
   num_levels <- length(levels(data[[x]]))
   if (num_levels < 3) stop("The independent variable ('x') must have at least 3 levels.", call. = FALSE)
-  if (!(p_method %in% c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "none"))) {
-    stop("Invalid p-value adjustment method.", call. = FALSE)
-  }
+  if (!(p_method %in% c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "none"))) stop("Invalid p-value adjustment method.", call. = FALSE)
   if (!(length(na.action) == 1)) stop("Only one 'na.action' can be selected at a time.", call. = FALSE)
   if (!(na.action %in% c("na.omit", "na.exclude"))) stop("Invalid 'na.action'.", call. = FALSE)
   
@@ -184,7 +178,7 @@ omnibus <- function(data = NULL,
   
   total.SD <- by(data[[y]], data[[x]], function(v) sd(v, na.rm = TRUE))
   total.mean <- by(data[[y]], data[[x]], function(v) mean(v, na.rm = TRUE))
-  coef_ssvar <- sum(total.SD) / sum(total.mean) # From Blanca, M. et al (2018), "Effect of variance ratio on ANOVA robustness: Might 1.5 be the limit?"
+  coef_ssvar <- sum(total.SD) / sum(total.mean)
   
   if (coef_ssvar > 0 && coef_ssvar <= 0.16) {
     unbalance <- "well balanced (low variability)"
@@ -200,14 +194,11 @@ omnibus <- function(data = NULL,
   ))
   
   invisible(list(formula = formula,
+                 model = model,
                  summary = summary,
+                 name = name,
                  statistic = stat,
                  p_value = p_value,
-                 n_groups = num_levels,
-                 significant = p_value < alpha,
-                 alpha = alpha,
-                 model = model,
-                 data = data,
-                 post_hoc = post_hoc,
-                 name = name))
+                 post_hoc = post_hoc
+                 ))
 }
