@@ -55,11 +55,11 @@ test_that("clinical_data handles dropout and missing data.", {
 
 test_that("clinical_data validates inputs correctly.", {
   # Test boundary conditions and invalid inputs
-  expect_error(clinical_data(n = 0), "'n' must be an integer between 1 and 999.")
-  expect_error(clinical_data(n = 1000), "'n' must be an integer between 1 and 999.")
-  expect_error(clinical_data(n = 1.5), "'n' must be an integer between 1 and 999.")
-  expect_error(clinical_data(visits = 0), "'visits' must be a positive integer.")
-  expect_error(clinical_data(visits = 1.5), "'visits' must be a positive integer.")
+  expect_error(clinical_data(n = 0), "'n' must be a single integer between 1 and 999.")
+  expect_error(clinical_data(n = 1000), "'n' must be a single integer between 1 and 999.")
+  expect_error(clinical_data(n = 1.5), "'n' must be a single integer between 1 and 999.")
+  expect_error(clinical_data(visits = 0), "'visits' must be a single positive integer.")
+  expect_error(clinical_data(visits = 1.5), "'visits' must be a single positive integer.")
   expect_error(clinical_data(arms = character(0)), "'arms' must be a character vector with at least one element.")
   expect_error(clinical_data(dropout = -0.1), "'dropout' must be between 0 and 1.")
   expect_error(clinical_data(dropout = 1.1), "'dropout' must be between 0 and 1.")
