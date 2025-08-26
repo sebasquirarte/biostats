@@ -60,14 +60,14 @@ Calculates the sample size needed in a clinical trial based on study design
 and statistical parameters using standard formulas for hypothesis testing (Chow, S. 2008).
 }
 \examples{
-# One-sample equivalence test for means
-sample_size(sample = "one-sample", outcome = "mean", type = "equivalence",
-            x1 = 0, x2 = 0, SD = 0.1, delta = 0.05)
-
 # Two-sample parallel non-inferiority test for means with 10\% expected dropout
 sample_size(sample = 'two-sample', design = 'parallel', outcome = 'mean',
             type = 'non-inferiority', x1 = 5.0, x2 = 5.0, 
             SD = 0.1, delta = -0.05, k = 1, dropout = 0.1)
+            
+# One-sample equivalence test for means
+sample_size(sample = "one-sample", outcome = "mean", type = "equivalence",
+            x1 = 0, x2 = 0, SD = 0.1, delta = 0.05)
 
 }
 \references{

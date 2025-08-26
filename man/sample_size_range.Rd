@@ -7,27 +7,23 @@
 sample_size_range(x1_range = c(0.5, 1.5), x2 = 0, step = 0.1, ...)
 }
 \arguments{
-\item{x1_range}{Numeric vector of length 2. Range of values to evaluate for
-the treatment group mean or proportion (\code{x1}).}
+\item{x1_range}{Numeric vector of length 2 specifying the range of values to
+evaluate for the treatment group mean or proportion (\code{x1}).}
 
-\item{x2}{Numeric. Fixed reference value for the control group.}
+\item{x2}{Numeric value for the control group mean or proportion (reference value).}
 
-\item{step}{Numeric. Step size to increment across the \code{x1_range}. Default is 0.1.}
+\item{step}{Numeric value indicating the step size to increment across the
+\code{x1_range}. Default: 0.1.}
 
-\item{...}{Additional arguments passed to \code{sample_size()}, such as \code{sample},
-\code{design}, \code{outcome}, \code{type}, \code{SD}, \code{alpha}, etc.}
+\item{...}{Additional arguments passed to \code{sample_size()}, such as
+\code{sample}, \code{design}, \code{outcome}, \code{type}, \code{SD},
+\code{alpha}, etc.}
 }
 \value{
-Invisibly returns a data frame with the following columns:
-\describe{
-\item{power}{Power level in percent (70, 80, 90).}
-\item{x1}{Value of the treatment effect evaluated.}
-\item{x2}{Fixed value for the control group.}
-\item{n1}{Sample size for group 1 (treatment).}
-\item{n2}{Sample size for group 2 (control).}
-\item{total}{Total sample size (n1 + n2 or total per design).}
-}
-A plot is also printed to visualize how total sample size changes across \code{x1}.
+Prints range analysis summary to console and invisibly returns a list containing
+the data frame of sample size calculations and the ggplot object. A plot is also
+generated to visualize the relationship between treatment effects and required
+sample sizes.
 }
 \description{
 Calculates required sample sizes for specified power levels (70\%, 80\%, 90\%)
@@ -36,32 +32,20 @@ group value (\code{x2}) fixed. Internally calls \code{sample_size()} and generat
 plot to visualize how total sample size changes with varying \code{x1}.
 }
 \examples{
+#' # Two-sample parallel non-inferiority test for proportions with 10\% dropout
+sample_size_range(x1_range = c(0.65, 0.75), x2 = 0.65, step = 0.01,
+                  sample = "two-sample", design = "parallel", outcome = "proportion",
+                  type = "non-inferiority", delta = -0.1, dropout = 0.1)
+                  
 # One-sample equivalence test for means
-result <- sample_size_range(x1_range = c(-0.01, 0.01),
-                            x2 = 0,
-                            step = 0.005,
-                            sample = "one-sample",
-                            outcome = "mean",
-                            type = "equivalence",
-                            SD = 0.1,
-                            delta = 0.05,
-                            alpha = 0.05)
-# Two-sample parallel non-inferiority test for proportions w/ 10\% dropout rate
-result <- sample_size_range(x1_range = c(0.65, 0.75),
-                            x2 = 0.65,
-                            step = 0.01,
-                            sample = "two-sample",
-                            design = "parallel",
-                            outcome = "proportion",
-                            type = "non-inferiority",
-                            delta = -0.1,
-                            alpha = 0.05,
-                            dropout_rate = 0.1)
+sample_size_range(x1_range = c(-0.01, 0.01), x2 = 0, step = 0.005,
+                  sample = "one-sample", outcome = "mean", type = "equivalence",
+                  SD = 0.1, delta = 0.05, alpha = 0.05)
 
 }
 \references{
-Chow, S., Shao, J., & Wang, H. (2008). \emph{Sample Size Calculations in
-Clinical Research} (2nd ed.). Chapman & Hall/CRC.
+Chow, S., Shao, J., & Wang, H. (2017). \emph{Sample Size Calculations in
+Clinical Research} (3rd ed.). Chapman & Hall/CRC.
 }
 \seealso{
 \code{\link{sample_size}}

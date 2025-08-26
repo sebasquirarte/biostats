@@ -32,14 +32,14 @@
 #' Clinical Research (3rd ed.). Chapman & Hall/CRC.
 #'
 #' @examples
-#' # One-sample equivalence test for means
-#' sample_size(sample = "one-sample", outcome = "mean", type = "equivalence",
-#'             x1 = 0, x2 = 0, SD = 0.1, delta = 0.05)
-#'
 #' # Two-sample parallel non-inferiority test for means with 10% expected dropout
 #' sample_size(sample = 'two-sample', design = 'parallel', outcome = 'mean',
 #'             type = 'non-inferiority', x1 = 5.0, x2 = 5.0, 
 #'             SD = 0.1, delta = -0.05, k = 1, dropout = 0.1)
+#'             
+#' # One-sample equivalence test for means
+#' sample_size(sample = "one-sample", outcome = "mean", type = "equivalence",
+#'             x1 = 0, x2 = 0, SD = 0.1, delta = 0.05)
 #'
 #' @importFrom stats qnorm
 #' @export
@@ -148,7 +148,7 @@ sample_size <- function(sample = c("one-sample", "two-sample"),
   if (!is.null(delta)) cat(sprintf("Delta (\u03b4): %.3f\n", delta))
   if (dropout > 0) cat(sprintf("Dropout rate: %.1f%%\n", dropout * 100))
   
-  cat(sprintf("\nRequired Sample Size%s\n", ifelse(dropout > 0, "*", "")))
+  cat("\nRequired Sample Size\n")
   if (sample == "one-sample") {
     cat(sprintf("n = %d\n", total))
   } else {
@@ -157,7 +157,7 @@ sample_size <- function(sample = c("one-sample", "two-sample"),
   cat(sprintf("Total = %d\n", total))
   
   if (dropout > 0) {
-    cat(sprintf("\n*Sample size inflated by %.1f%% to account for potential dropout\n", dropout * 100))
+    cat(sprintf("\nNote: Sample size increased by %.1f%% to account for potential dropouts.\n", dropout * 100))
   }
   cat("\n")
   

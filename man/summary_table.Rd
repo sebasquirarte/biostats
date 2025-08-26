@@ -8,7 +8,7 @@ summary_table(
   data,
   group_by = NULL,
   normality_test = "S-W",
-  all_stats = FALSE,
+  all = FALSE,
   effect_size = FALSE,
   exclude = NULL
 )
@@ -18,9 +18,9 @@ summary_table(
 
 \item{group_by}{Character string indicating the name of the grouping variable for two-group comparisons. Default: NULL.}
 
-\item{normality_test}{Character string indicating the ormality test to use: 'S-W' for Shapiro-Wilk or 'K-S' for Kolmogorov-Smirnov. Default: 'S-W'.}
+\item{normality_test}{Character string indicating the normality test to use: 'S-W' for Shapiro-Wilk or 'K-S' for Kolmogorov-Smirnov. Default: 'S-W'.}
 
-\item{all_stats}{Logical parameter that shows all calculated statistics. Default: FALSE.}
+\item{all}{Logical parameter that shows all calculated statistics. Default: FALSE.}
 
 \item{effect_size}{Logical parameter that includes effect size estimates. Default: FALSE.}
 
@@ -51,7 +51,7 @@ summary_table(clinical_df,
 # Grouped summary by treatment group with all stats and effect size
 summary_table(clinical_df,
               group_by = 'treatment',
-              all_stats = TRUE,
+              all = TRUE,
               effect_size = TRUE,
               exclude = c('subject_id', 'visit'))
               

@@ -33,7 +33,7 @@ test_that("summary_table parameters work correctly", {
   expect_true("effect_size" %in% names(result_with_eff$`_data`))
   
   # All stats
-  result_all <- suppressWarnings(summary_table(df, all_stats = TRUE, exclude = exclude_vars))
+  result_all <- suppressWarnings(summary_table(df, all = TRUE, exclude = exclude_vars))
   expect_s3_class(result_all, "gt_tbl")
 })
 
