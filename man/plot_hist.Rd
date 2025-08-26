@@ -17,57 +17,51 @@ plot_hist(
   xlab = NULL,
   ylab = NULL,
   legend_title = NULL,
-  text_size = 12,
   y_limits = NULL,
   x_limits = NULL,
   stat = NULL
 )
 }
 \arguments{
-\item{data}{A data frame containing the variables to plot}
+\item{data}{A dataframe containing the variables to plot.}
 
-\item{x}{Character string specifying the variable for the histogram}
+\item{x}{Character string specifying the variable for the histogram.}
 
-\item{group}{Optional character string specifying the grouping variable for multiple histograms}
+\item{group}{Character string specifying the grouping variable for multiple histograms. Default: NULL.}
 
-\item{facet}{Optional character string specifying the faceting variable}
+\item{facet}{Character string specifying the faceting variable. Default: NULL.}
 
-\item{bins}{Numeric; number of bins for the histogram (default: 30)}
+\item{bins}{Numeric value indicating the  number of bins for the histogram. Default: 30.}
 
-\item{binwidth}{Numeric; width of the bins (overrides bins if specified)}
+\item{binwidth}{Numeric value indicating the width of the bins (overrides bins if specified). Default: NULL.}
 
-\item{alpha}{Numeric; transparency level for the bars (default: 0.7)}
+\item{alpha}{Numeric value indicating the transparency level for the bars. Default: 0.7.}
 
-\item{colors}{Character vector of colors for bars. If NULL, uses TealGrn color palette}
+\item{colors}{Character vector of colors. If NULL, uses TealGrn palette. Default: NULL.}
 
-\item{title}{Optional character string for the plot title}
+\item{title}{Character string for plot title. Default: NULL.}
 
-\item{xlab}{Optional character string for the x-axis label}
+\item{xlab}{Character string for x-axis label. Default: NULL.}
 
-\item{ylab}{Optional character string for the y-axis label}
+\item{ylab}{Character string for y-axis label. Default: NULL.}
 
-\item{legend_title}{Optional character string for the legend title}
+\item{legend_title}{Character string for legend title. Default: NULL.}
 
-\item{text_size}{Numeric value specifying the base text size (default: 12)}
+\item{y_limits}{Numeric vector of length 2 for y-axis limits. Default: NULL.}
 
-\item{y_limits}{Numeric vector of length 2 specifying y-axis limits (e.g., c(0, 100))}
+\item{x_limits}{Numeric vector of length 2 for x-axis limits. Default: NULL.}
 
-\item{x_limits}{Numeric vector of length 2 specifying x-axis limits (e.g., c(0, 50))}
-
-\item{stat}{Optional character string; adds a dashed line for "mean" or "median" (default: NULL)}
+\item{stat}{Character string that adds line for "mean" or "median". Default: NULL.}
 }
 \value{
-A ggplot2 object that can be further customized
+A ggplot2 object
 }
 \description{
 Generates publication-ready histogram plots with minimal code using ggplot2.
 }
 \examples{
-# Sample clinical data
+# Simulated clinical data
 clinical_df <- clinical_data()
-
-# Simple histogram
-plot_hist(clinical_df, x = "biomarker")
 
 # Mirror histogram for 2 groups with mean lines
 plot_hist(clinical_df, x = "biomarker", group = "treatment", stat = "mean")

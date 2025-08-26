@@ -4,7 +4,7 @@
 \alias{sample_size_range}
 \title{Calculate and visualize sample size across a range of treatment effects}
 \usage{
-sample_size_range(x1_range = c(0.5, 1.5), x2 = 0, step = 0.1, ...)
+sample_size_range(x1_range, x2, step = 0.1, ...)
 }
 \arguments{
 \item{x1_range}{Numeric vector of length 2 specifying the range of values to
@@ -44,8 +44,8 @@ sample_size_range(x1_range = c(-0.01, 0.01), x2 = 0, step = 0.005,
 
 }
 \references{
-Chow, S., Shao, J., & Wang, H. (2017). \emph{Sample Size Calculations in
-Clinical Research} (3rd ed.). Chapman & Hall/CRC.
+Chow, S., Shao, J., & Wang, H. (2017). Sample Size Calculations in
+Clinical Research (3rd ed.). Chapman & Hall/CRC.
 }
 \seealso{
 \code{\link{sample_size}}
