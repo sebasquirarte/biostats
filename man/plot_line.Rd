@@ -32,35 +32,35 @@ plot_line(
 
 \item{y}{Character string specifying the y-axis variable.}
 
-\item{group}{Character string specifying the grouping variable for multiple lines. Default = NULL.}
+\item{group}{Character string specifying the grouping variable for multiple lines. Default: NULL.}
 
-\item{facet}{Character string specifying the faceting variable}
+\item{facet}{Character string specifying the faceting variable. Default: NULL.}
 
-\item{stat}{Character string for statistical aggregation: "mean" or "median"}
+\item{stat}{Character string for statistical aggregation: "mean" or "median".}
 
-\item{error}{Character string for error bars: "se", "sd", "ci", or "none"}
+\item{error}{Character string for error bars: "se", "sd", "ci", or "none". Default: "se".}
 
-\item{error_width}{Numeric; width of error bar caps}
+\item{error_width}{Numeric value indicating the width of error bar caps. Default: 0.2.}
 
-\item{colors}{Character vector of colors. If NULL, uses TealGrn palette}
+\item{colors}{Character vector of colors. If NULL, uses TealGrn palette. Default: NULL.}
 
-\item{title}{Character string for plot title}
+\item{title}{Character string for plot title. Default: NULL.}
 
-\item{xlab}{Character string for x-axis label}
+\item{xlab}{Character string for x-axis label. Default: NULL.}
 
-\item{ylab}{Character string for y-axis label}
+\item{ylab}{Character string for y-axis label. Default: NULL.}
 
-\item{legend_title}{Character string for legend title}
+\item{legend_title}{Character string for legend title. Default: NULL.}
 
-\item{points}{Logical; whether to add points to lines}
+\item{points}{Logical parameter indicating whether to add points to lines. Default: TRUE.}
 
-\item{line_size}{Numeric; thickness of lines}
+\item{line_size}{Numeric value indicating thickness of lines. Default: 1.}
 
-\item{point_size}{Numeric; size of points if shown}
+\item{point_size}{Numeric value indicating size of points if shown. Default: 3.}
 
-\item{y_limits}{Numeric vector of length 2 for y-axis limits}
+\item{y_limits}{Numeric vector of length 2 for y-axis limits. Default: NULL.}
 
-\item{x_limits}{Numeric vector of length 2 for x-axis limits}
+\item{x_limits}{Numeric vector of length 2 for x-axis limits. Default: NULL.}
 }
 \value{
 A ggplot2 object
@@ -69,7 +69,15 @@ A ggplot2 object
 Generates publication-ready line plots with minimal code using ggplot2.
 }
 \examples{
-clinical_df <- clinical_data(visits = 4)
-plot_line(clinical_df, x = "visit", y = "biomarker", group = "treatment", stat = "mean")
+# Simulated clinical data
+clinical_df <- clinical_data(arms = c("A","B","C"), visits = 10)
 
+# Line plot with mean and standard error by treatment
+plot_line(clinical_df, x = "visit", y = "biomarker",
+          group = "treatment", stat = "mean", error = "se")
+
+# Faceted line plots with median and 95\% CI
+plot_line(clinical_df, x = "visit", y = "biomarker", group = "treatment", 
+          facet = "sex", stat = "median", error = "ci", points = FALSE)   
+                 
 }

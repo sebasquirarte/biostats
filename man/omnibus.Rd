@@ -5,9 +5,9 @@
 \title{Omnibus Tests for Comparing Three or More Groups}
 \usage{
 omnibus(
-  data = NULL,
-  y = NULL,
-  x = NULL,
+  data,
+  y,
+  x,
   paired_by = NULL,
   alpha = 0.05,
   p_method = "holm",
@@ -15,39 +15,31 @@ omnibus(
 )
 }
 \arguments{
-\item{data}{Dataframe containing the variables to be analyzed.}
+\item{data}{Dataframe containing the variables to be analyzed. Data must be in long format
+with one row per observation.}
 
-\item{y}{character string. Dependent variable (outcome).}
+\item{y}{Character string indicating the dependent variable (outcome).}
 
-\item{x}{character string. Independent variable (group or within-subject variable).}
+\item{x}{Character string indicating the independent variable (group or within-subject variable).}
 
-\item{paired_by}{character string or NULL. Source of repeated measurements. If
-provided, a repeated measures design is assumed. Data should be in long format
-with one row per observation. If NULL, independent groups design is assumed.}
+\item{paired_by}{Character string indicating the source of repeated measurements. If
+provided, a repeated measures design is assumed. If NULL, independent groups design is assumed.
+Default: NULL.}
 
-\item{alpha}{numeric. Significance level for hypothesis tests. Default: 0.05.}
+\item{alpha}{Numeric value indicating the significance level for hypothesis tests. Default: 0.05.}
 
-\item{p_method}{character string. Method for p-value adjustment in post-hoc multiple
+\item{p_method}{Character string indicating the method for p-value adjustment in post-hoc multiple
 comparisons to control for Type I error inflation. Options: "holm" (Holm),
 "hochberg" (Hochberg), "hommel" (Hommel), "bonferroni" (Bonferroni), "BH"
 (Benjamini-Hochberg), "BY" (Benjamini-Yekutieli), "none" (no adjustment). Default: "holm".}
 
-\item{na.action}{character string. Action to take if NAs are present ("na.omit"
+\item{na.action}{Character string indicating the action to take if NAs are present ("na.omit"
 or "na.exclude"). Default: "na.omit"}
 }
 \value{
-A list containing:
-\item{formula}{The modelled formula used for the test.}
-\item{summary}{Summary object of the model or test.}
-\item{statistic}{Test statistic value (F or Chi-squared).}
-\item{p_value}{p-value observed in the omnibus test.}
-\item{n_groups}{Number of groups in the independent variable.}
-\item{significant}{Logical indicating whether the test was significant at the alpha level.}
-\item{alpha}{Significance level used.}
-\item{model}{The fitted model or test object.}
-\item{data}{Input data frame.}
-\item{post_hoc}{List of post-hoc test results if omnibus test was significant, otherwise NULL.}
-\item{name}{Name of the test performed (e.g., "One-way ANOVA", "Kruskal-Wallis test", etc.).}
+Prints results to console and invisibly returns a list including the formula, model,
+statistic summary, name of the test performed, the value of the test statistic,
+resulting p value and the results of the post_hoc test.
 }
 \description{
 Performs omnibus tests to evaluate overall differences between three or more groups.
@@ -58,7 +50,7 @@ Friedman test. Performs comprehensive assumption checking (normality, homogeneit
 of variance, sphericity) and post-hoc testing when significant results are detected.
 }
 \examples{
-# Simulated clinical data with multiple tratment arms and visits
+# Simulated clinical data with multiple treatment arms and visits
 clinical_df <- clinical_data(n = 300, visits = 6, arms = c("A", "B", "C"))
 
 # Compare numerical variable across treatments
@@ -72,4 +64,9 @@ result <- omnibus(y = "biomarker",
                   data = clinical_df, 
                   paired_by = "subject_id")
 
+}
+\references{
+Blanca, M., Alarcón, R., Arnau, J. et al. Effect of variance ratio on ANOVA robustness: Might 1.5 be the limit?.
+Behav Res. 2017 Jun 22; 50:937–962. https://doi.org/10.3758/s13428-017-0918-2
+Field, A. P. Discovering Statistics Using R and RStudio. 1st ed. London: SAGE Publications; 2025.
 }

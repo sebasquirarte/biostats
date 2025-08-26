@@ -14,33 +14,24 @@ effect_measures(
 )
 }
 \arguments{
-\item{exposed_event}{numeric. Number of events in the exposed group.}
+\item{exposed_event}{Numeric value indicating the number of events in the exposed group.}
 
-\item{exposed_no_event}{numeric. Number of non-events in the exposed group.}
+\item{exposed_no_event}{Numeric value indicating the number of non-events in the exposed group.}
 
-\item{unexposed_event}{numeric. Number of events in the unexposed group.}
+\item{unexposed_event}{Numeric value indicating the number of events in the unexposed group.}
 
-\item{unexposed_no_event}{numeric. Number of non-events in the unexposed group.}
+\item{unexposed_no_event}{Numeric value indicating the number of non-events in the unexposed group.}
 
-\item{alpha}{numeric. Value between 0 and 1 specifying the alpha level for
+\item{alpha}{Numeric value between 0 and 1 specifying the alpha level for
 confidence intervals (CI). Default: 0.05.}
 
-\item{correction}{Logical. If TRUE, a continuity correction (0.5) is applied
+\item{correction}{Logical parameter that indicates whether a continuity correction (0.5) will be applied
 when any cell contains 0. Default: TRUE.}
 }
 \value{
-A list containing:
-\describe{
-\item{contingency_table}{2x2 contingency table with proper labels}
-\item{odds_ratio}{Calculated odds ratio}
-\item{or_ci}{Named vector with lower and upper bounds of OR confidence interval}
-\item{risk_ratio}{Calculated risk ratio}
-\item{rr_ci}{Named vector with lower and upper bounds of RR confidence interval}
-\item{exposed_risk}{Risk in exposed group}
-\item{unexposed_risk}{Risk in unexposed group}
-\item{absolute_risk_diff}{Absolute risk difference}
-\item{nnt_nnh}{Number needed to treat (NNT) or number needed to harm (NNH)}
-}
+Prints results to console and invisibly returns a list including the contingency table generated,
+the effect measures' values (OR, RR, CI, exposed and unexposed risk, absolute risk difference, and the
+Number Needed to Treat or Number Needed to Harm).
 }
 \description{
 Calculates measures of effect: Odds Ratio (OR), Risk Ratio (RR), Risk Reduction (RD)

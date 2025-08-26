@@ -4,14 +4,14 @@
 \alias{normality}
 \title{Statistical and Visual Normality Assessment}
 \usage{
-normality(data, x, outside = FALSE, color = "#79E1BE")
+normality(data, x, all = FALSE, color = "#79E1BE")
 }
 \arguments{
 \item{data}{Dataframe containing the variables to be summarized.}
 
 \item{x}{Character string indicating the variable to be analyzed.}
 
-\item{outside}{Logical parameter that displays all row indices of values outside 95\%CI. Default: FALSE.}
+\item{all}{Logical parameter that displays all row indices of values outside 95\% CI. Default: FALSE.}
 
 \item{color}{Character string indicatig color for plots. Default: "#79E1BE".}
 }
@@ -31,8 +31,8 @@ clinical_df <- clinical_data()
 # Normally distributed variable
 normality(clinical_df, "biomarker")
 
-# Non-normally distributed variable with points outside 95\%CI displayed
-normality(clinical_df, "weight", outside = TRUE)
+# Non-normally distributed variable with points outside 95\% CI displayed
+normality(clinical_df, "weight", all = TRUE)
 
 }
 \references{

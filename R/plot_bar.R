@@ -20,8 +20,16 @@
 #' @return A ggplot2 object
 #'
 #' @examples
-#' clinical_df <- clinical_data()
-#' plot_bar(clinical_df, x = "treatment", group = "response", position = "fill")
+#'# Simulated clinical data
+#'clinical_df <- clinical_data()
+#' 
+#'# Proportion of response by treatment
+#'plot_bar(data = clinical_df, x = "treatment", group = "response", position = "fill", 
+#'         title = "Proportion of response by treatment", values = TRUE)
+#'          
+#'# Grouped barplot of categorical variable by treatment with value labels
+#'plot_bar(data = clinical_df, x = "response", group = "visit", facet = "treatment", 
+#'         title = "Response by visit and treatment",values = TRUE)
 #'
 #' @importFrom stats aggregate as.formula
 #' @importFrom grDevices hcl.colors

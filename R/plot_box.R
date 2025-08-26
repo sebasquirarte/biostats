@@ -22,10 +22,10 @@
 #' clinical_df <- clinical_data(visit = 10)
 #'
 #' # Barplot of age by sex and treatment
-#' plot_box(clinical_df, x = "sex", y = "age", group = "treatment")
+#' plot_box(data = clinical_df, x = "sex", y = "age", group = "treatment")
 #'
 #' # Barplot of bimarker by study visit and treatment
-#' plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment")
+#' plot_box(data = clinical_df, x = "visit", y = "biomarker", group = "treatment")
 #'
 #' @return A ggplot2 object
 #' @import ggplot2

@@ -23,7 +23,7 @@ sample_size(
 \item{sample}{Character string indicating whether one or two samples need to be calculated.
 Options: "one-sample" or "two-sample".}
 
-\item{design}{Character string indicatin study design when sample = "two-sample".
+\item{design}{Character string indicating study design when sample = "two-sample".
 Options: "parallel" or "crossover". Default: NULL for one-sample tests.}
 
 \item{outcome}{Character string indicating the type of outcome variable.

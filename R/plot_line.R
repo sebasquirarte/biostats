@@ -5,29 +5,36 @@
 #' @param data A data frame containing the variables to plot.
 #' @param x Character string specifying the x-axis variable. 
 #' @param y Character string specifying the y-axis variable.
-#' @param group Character string specifying the grouping variable for multiple lines. Default = NULL.
-#' @param facet Character string specifying the faceting variable
-#' @param stat Character string for statistical aggregation: "mean" or "median"
-#' @param error Character string for error bars: "se", "sd", "ci", or "none"
-#' @param error_width Numeric; width of error bar caps
-#' @param colors Character vector of colors. If NULL, uses TealGrn palette
-#' @param title Character string for plot title
-#' @param xlab Character string for x-axis label
-#' @param ylab Character string for y-axis label
-#' @param legend_title Character string for legend title
-#' @param points Logical; whether to add points to lines
-#' @param line_size Numeric; thickness of lines
-#' @param point_size Numeric; size of points if shown
-
-#' @param y_limits Numeric vector of length 2 for y-axis limits
-#' @param x_limits Numeric vector of length 2 for x-axis limits
+#' @param group Character string specifying the grouping variable for multiple lines. Default: NULL.
+#' @param facet Character string specifying the faceting variable. Default: NULL.
+#' @param stat Character string for statistical aggregation: "mean" or "median".
+#' @param error Character string for error bars: "se", "sd", "ci", or "none". Default: "se".
+#' @param error_width Numeric value indicating the width of error bar caps. Default: 0.2.
+#' @param colors Character vector of colors. If NULL, uses TealGrn palette. Default: NULL.
+#' @param title Character string for plot title. Default: NULL.
+#' @param xlab Character string for x-axis label. Default: NULL.
+#' @param ylab Character string for y-axis label. Default: NULL.
+#' @param legend_title Character string for legend title. Default: NULL.
+#' @param points Logical parameter indicating whether to add points to lines. Default: TRUE.
+#' @param line_size Numeric value indicating thickness of lines. Default: 1.
+#' @param point_size Numeric value indicating size of points if shown. Default: 3.
+#' @param y_limits Numeric vector of length 2 for y-axis limits. Default: NULL.
+#' @param x_limits Numeric vector of length 2 for x-axis limits. Default: NULL.
 #'
 #' @return A ggplot2 object
 #'
 #' @examples
-#' clinical_df <- clinical_data(visits = 4)
-#' plot_line(clinical_df, x = "visit", y = "biomarker", group = "treatment", stat = "mean")
-#'
+#' # Simulated clinical data
+#' clinical_df <- clinical_data(arms = c("A","B","C"), visits = 10)
+#' 
+#' # Line plot with mean and standard error by treatment
+#' plot_line(clinical_df, x = "visit", y = "biomarker",
+#'           group = "treatment", stat = "mean", error = "se")
+#' 
+#' # Faceted line plots with median and 95% CI
+#' plot_line(clinical_df, x = "visit", y = "biomarker", group = "treatment", 
+#'           facet = "sex", stat = "median", error = "ci", points = FALSE)   
+#'                  
 #' @importFrom stats aggregate as.formula sd qt quantile
 #' @importFrom grDevices hcl.colors
 #' @importFrom rlang .data
