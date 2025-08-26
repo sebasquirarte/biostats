@@ -8,7 +8,8 @@ Authors@R: c(
            comment = c(ORCID = "0009-0004-2730-4343")),
     person("Angela Carolina", "Montaño-Ruíz", 
            email = "angela.montano@sophia.com.mx", 
-           role = "aut"),
+           role = "aut",
+           comment = c(ORCID = "0009-0009-1705-763X")),
     person("José María", "Torres-Arellano", 
            email = "jose.torres@sophia.com.mx", 
            role = "aut"),
@@ -31,5 +32,4 @@ Imports:
     gridExtra,
     rlang,
     car,
-    emmeans,
     gt
