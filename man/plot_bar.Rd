@@ -18,59 +18,46 @@ plot_bar(
   ylab = NULL,
   legend_title = NULL,
   flip = FALSE,
-  text_size = 12,
   values = FALSE
 )
 }
 \arguments{
 \item{data}{A data frame containing the variables to plot}
 
-\item{x}{Character string specifying the x-axis variable}
+\item{x}{Character string specifying the x-axis variable.}
 
-\item{y}{Optional character string specifying the y-axis variable. If provided,
-values from this column will be used for bar heights. If NULL (default),
-counts will be calculated automatically}
+\item{y}{Character string specifying the y-axis variable. If NULL, counts calculated automatically. Default: NULL.}
 
-\item{group}{Optional character string specifying the grouping variable for fill color}
+\item{group}{Character string specifying the grouping variable for fill color. Default: NULL.}
 
-\item{facet}{Optional character string specifying the faceting variable}
+\item{facet}{Character string specifying the faceting variable. Default: NULL.}
 
-\item{position}{Character string specifying the bar position; one of "dodge" (default),
-"stack", or "fill" (for percentage stacking)}
+\item{position}{Character string specifying bar position: "dodge", "stack", or "fill".}
 
-\item{stat}{Optional character string for statistical aggregation; one of "mean" or "median"}
+\item{stat}{Character string for statistical aggregation: "mean" or "median".}
 
-\item{colors}{Character vector of colors for bars or groups. If NULL, uses
-TealGrn color palette}
+\item{colors}{Character vector of colors. If NULL, uses TealGrn palette. Default: NULL.}
 
-\item{title}{Optional character string for the plot title}
+\item{title}{Character string for plot title. Default: NULL.}
 
-\item{xlab}{Optional character string for the x-axis label}
+\item{xlab}{Character string for x-axis label. Default: NULL.}
 
-\item{ylab}{Optional character string for the y-axis label}
+\item{ylab}{Character string for y-axis label. Default: NULL.}
 
-\item{legend_title}{Optional character string for the legend title}
+\item{legend_title}{Character string for legend title. Default: NULL.}
 
-\item{flip}{Logical; whether to flip the coordinates (horizontal bars)}
+\item{flip}{Logical parameter indicating whether to flip coordinates. Default: FALSE.}
 
-\item{text_size}{Numeric value specifying the base text size (default: 12)}
-
-\item{values}{Logical; whether to display value labels above bars (default: FALSE)}
+\item{values}{Logical parameter indicating whether to display value labels above bars. Default: FALSE.}
 }
 \value{
-A ggplot2 object that can be further customized
+A ggplot2 object
 }
 \description{
 Generates publication-ready bar plots with minimal code using ggplot2.
 }
 \examples{
-# Simulated clinical data
 clinical_df <- clinical_data()
-
-plot_bar(clinical_df, x = "treatment", group = "response",
-        position = "fill", values = TRUE)
-
-# Grouped barplot of categorical variable by treatment with value labels
-plot_bar(clinical_df, x = "response", group = "visit", facet = "treatment", values = TRUE)
+plot_bar(clinical_df, x = "treatment", group = "response", position = "fill")
 
 }
