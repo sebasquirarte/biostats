@@ -21,67 +21,55 @@ plot_line(
   points = TRUE,
   line_size = 1,
   point_size = 3,
-  text_size = 12,
   y_limits = NULL,
   x_limits = NULL
 )
 }
 \arguments{
-\item{data}{A data frame containing the variables to plot}
+\item{data}{A data frame containing the variables to plot.}
 
-\item{x}{Character string specifying the x-axis variable (typically time or ordered)}
+\item{x}{Character string specifying the x-axis variable.}
 
-\item{y}{Character string specifying the y-axis variable (measurement or outcome)}
+\item{y}{Character string specifying the y-axis variable.}
 
-\item{group}{Optional character string specifying the grouping variable for multiple lines}
+\item{group}{Character string specifying the grouping variable for multiple lines. Default = NULL.}
 
-\item{facet}{Optional character string specifying the faceting variable}
+\item{facet}{Character string specifying the faceting variable}
 
-\item{stat}{Optional character string for statistical aggregation; one of "mean" or "median"}
+\item{stat}{Character string for statistical aggregation: "mean" or "median"}
 
-\item{error}{Optional character string for error bars; one of "se" (standard error, default),
-"sd" (standard deviation), "ci" (95\% confidence interval), or "none"}
+\item{error}{Character string for error bars: "se", "sd", "ci", or "none"}
 
-\item{error_width}{Numeric; width of the error bar caps (default: 0.2)}
+\item{error_width}{Numeric; width of error bar caps}
 
-\item{colors}{Character vector of colors for lines. If NULL, uses TealGrn color palette}
+\item{colors}{Character vector of colors. If NULL, uses TealGrn palette}
 
-\item{title}{Optional character string for the plot title}
+\item{title}{Character string for plot title}
 
-\item{xlab}{Optional character string for the x-axis label}
+\item{xlab}{Character string for x-axis label}
 
-\item{ylab}{Optional character string for the y-axis label}
+\item{ylab}{Character string for y-axis label}
 
-\item{legend_title}{Optional character string for the legend title}
+\item{legend_title}{Character string for legend title}
 
-\item{points}{Logical; whether to add points to the lines (default: TRUE)}
+\item{points}{Logical; whether to add points to lines}
 
-\item{line_size}{Numeric; thickness of the lines (default: 1)}
+\item{line_size}{Numeric; thickness of lines}
 
-\item{point_size}{Numeric; size of the points if shown (default: 3)}
+\item{point_size}{Numeric; size of points if shown}
 
-\item{text_size}{Numeric value specifying the base text size (default: 12)}
+\item{y_limits}{Numeric vector of length 2 for y-axis limits}
 
-\item{y_limits}{Numeric vector of length 2 specifying y-axis limits (e.g., c(0, 100))}
-
-\item{x_limits}{Numeric vector of length 2 specifying x-axis limits (e.g., c(1, 10))}
+\item{x_limits}{Numeric vector of length 2 for x-axis limits}
 }
 \value{
-A ggplot2 object that can be further customized
+A ggplot2 object
 }
 \description{
 Generates publication-ready line plots with minimal code using ggplot2.
 }
 \examples{
-# Simulated clinical data
-clinical_df <- clinical_data(visit = 4)
-
-# Line plot with mean and standard error by treatment
-plot_line(clinical_df, x = "visit", y = "biomarker",
-          group = "treatment", stat = "mean", error = "se")
-
-# Faceted line plots with median and 95\% CI
-plot_line(clinical_df, x = "visit", y = "biomarker", group = "treatment", 
-          stat = "median", error = "ci", points = FALSE, facet = "sex")
+clinical_df <- clinical_data(visits = 4)
+plot_line(clinical_df, x = "visit", y = "biomarker", group = "treatment", stat = "mean")
 
 }
