@@ -130,7 +130,7 @@
       }
     } else {
       if (name == "Repeated measures ANOVA") {
-        # Pairwise comparison w/ emmeans
+        # Pairwise comparison w/ pairwise t tests
         post_hoc <- suppressWarnings(pairwise.t.test(data[[y]], 
                                                      data[[x]], 
                                                      paired = FALSE, 

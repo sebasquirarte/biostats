@@ -50,8 +50,6 @@
 #' @importFrom car leveneTest
 #' @importFrom stats aov bartlett.test friedman.test kruskal.test lm mauchly.test shapiro.test as.formula na.action
 #' @importFrom stats TukeyHSD pairwise.t.test pairwise.wilcox.test
-#' @importFrom emmeans emmeans
-#' @importFrom graphics pairs
 #' @export
 
 omnibus <- function(data,

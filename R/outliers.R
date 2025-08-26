@@ -83,39 +83,39 @@ outliers <- function(data,
   )
   
   # Create scatter plot with outlier highlighting
-  scatter_plot <- ggplot2::ggplot(plot_data, ggplot2::aes(x = .data$index, y = .data$value)) +
-    ggplot2::geom_point(ggplot2::aes(color = .data$is_outlier), size = 2, alpha = 0.7) +
-    ggplot2::scale_color_manual(values = c("FALSE" = color, "TRUE" = "red"), guide = "none") +
-    ggplot2::labs(
+  scatter_plot <- ggplot(plot_data, aes(x = .data$index, y = .data$value)) +
+    geom_point(aes(color = .data$is_outlier), size = 2, alpha = 0.7) +
+    scale_color_manual(values = c("FALSE" = color, "TRUE" = "red"), guide = "none") +
+    labs(
       title = "Outlier Detection by Index",
       subtitle = sprintf("Outliers: %d / %d (%.1f%%)", n_outliers, length(clean_values), 
                          round(n_outliers / length(clean_values) * 100, 1)),
       x = "Index", y = x
     ) +
-    ggplot2::theme_minimal()
+    theme_minimal()
   
   # Add labels for outliers if manageable number
   if (n_outliers > 0 && n_outliers <= 10) {
-    scatter_plot <- scatter_plot + ggplot2::geom_text(
+    scatter_plot <- scatter_plot + geom_text(
       data = plot_data[is_outlier, ],
-      ggplot2::aes(label = outlier_indices),
+      aes(label = outlier_indices),
       vjust = -0.8, size = 3, color = "red"
     )
   }
   
   # Create boxplot with custom whiskers
-  box_plot <- ggplot2::ggplot(data.frame(value = clean_values), 
-                              ggplot2::aes(x = "", y = .data$value)) +
-    ggplot2::stat_boxplot(geom = "errorbar", width = 0.1, coef = threshold) +
-    ggplot2::geom_boxplot(outlier.color = "red", fill = color, alpha = 0.7, 
+  box_plot <- ggplot(data.frame(value = clean_values), 
+                              aes(x = "", y = .data$value)) +
+    stat_boxplot(geom = "errorbar", width = 0.1, coef = threshold) +
+    geom_boxplot(outlier.color = "red", fill = color, alpha = 0.7, 
                           coef = threshold, width = 0.5) +
-    ggplot2::labs(
+    labs(
       title = "Distribution with Outliers",
       subtitle = sprintf("Tukey's method (IQR x %.1f)", threshold),
       x = " ", y = x
     ) +
-    ggplot2::theme_minimal() +
-    ggplot2::scale_x_discrete(labels = " ")
+    theme_minimal() +
+    scale_x_discrete(labels = " ")
   
   # Print comprehensive summary
   missing_pct <- round(n_missing / length(x_values) * 100, 1)
@@ -136,7 +136,7 @@ outliers <- function(data,
   }
   
   # Display plots
-  gridExtra::grid.arrange(scatter_plot, box_plot, ncol = 2)
+  grid.arrange(scatter_plot, box_plot, ncol = 2)
   
   # Return essential results
   invisible(list(

@@ -34,17 +34,18 @@
 #' @seealso \code{\link{sample_size}}
 #'
 #' @references
-#' Chow, S., Shao, J., & Wang, H. (2017). \emph{Sample Size Calculations in
-#' Clinical Research} (3rd ed.). Chapman & Hall/CRC.
+#' Chow, S., Shao, J., & Wang, H. (2017). Sample Size Calculations in
+#' Clinical Research (3rd ed.). Chapman & Hall/CRC.
 #'
 #' @importFrom ggplot2 ggplot aes geom_line geom_ribbon geom_point scale_color_manual scale_y_continuous labs theme_minimal expansion
 #' @importFrom utils capture.output
 #'
 #' @export
 
-sample_size_range <- function(x1_range = c(0.5, 1.5), 
-                              x2 = 0, 
-                              step = 0.1, ...) {
+sample_size_range <- function(x1_range, 
+                              x2, 
+                              step = 0.1, 
+                              ...) {
   
   # Input validation
   if (!is.numeric(x1_range) || length(x1_range) != 2) {
