@@ -7,8 +7,8 @@
 #'
 #' @param data Dataframe containing the variables to be summarized.
 #' @param group_by Character string indicating the name of the grouping variable for two-group comparisons. Default: NULL.
-#' @param normality_test Character string indicating the ormality test to use: 'S-W' for Shapiro-Wilk or 'K-S' for Kolmogorov-Smirnov. Default: 'S-W'.
-#' @param all_stats Logical parameter that shows all calculated statistics. Default: FALSE.
+#' @param normality_test Character string indicating the normality test to use: 'S-W' for Shapiro-Wilk or 'K-S' for Kolmogorov-Smirnov. Default: 'S-W'.
+#' @param all Logical parameter that shows all calculated statistics. Default: FALSE.
 #' @param effect_size Logical parameter that includes effect size estimates. Default: FALSE.
 #' @param exclude Character vector of variable names to exclude from the summary. Default: NULL.
 #'
@@ -30,7 +30,7 @@
 #' # Grouped summary by treatment group with all stats and effect size
 #' summary_table(clinical_df,
 #'               group_by = 'treatment',
-#'               all_stats = TRUE,
+#'               all = TRUE,
 #'               effect_size = TRUE,
 #'               exclude = c('subject_id', 'visit'))
 #'               
@@ -41,39 +41,39 @@
 summary_table <- function(data,
                           group_by = NULL,
                           normality_test = 'S-W',
-                          all_stats = FALSE,
+                          all = FALSE,
                           effect_size = FALSE,
                           exclude = NULL) {
   
   # Check for gt package
   if (!requireNamespace("gt", quietly = TRUE)) {
-    stop("Package 'gt' is required. Please install it with install.packages('gt').", call.=FALSE)
+    stop("Package 'gt' is required. Please install it with install.packages('gt').", call. = FALSE)
   }
   # Input validation
-  if (!is.data.frame(data)) stop("'data' must be a dataframe.", call.=FALSE)
-  if (nrow(data) == 0) stop("'data' cannot be empty.", call.=FALSE)
-  if (!is.null(exclude) && !is.character(exclude)) stop("'exclude' must be a character vector.", call.=FALSE)
+  if (!is.data.frame(data)) stop("'data' must be a dataframe.", call. = FALSE)
+  if (nrow(data) == 0) stop("'data' cannot be empty.", call. = FALSE)
+  if (!is.null(exclude) && !is.character(exclude)) stop("'exclude' must be a character vector.", call. = FALSE)
   if (!normality_test %in% c('S-W', 'K-S')) {
-    stop("'normality_test' must be either 'S-W' (Shapiro-Wilk) or 'K-S' (Kolmogorov-Smirnov).", call.=FALSE)
+    stop("'normality_test' must be either 'S-W' (Shapiro-Wilk) or 'K-S' (Kolmogorov-Smirnov).", call. = FALSE)
   }
   use_groups <- !is.null(group_by)
   if (use_groups) {
     if (!group_by %in% names(data)) {
-      stop("The grouping variable '", group_by, "' is not found in the data.", call.=FALSE)
+      stop("The grouping variable '", group_by, "' is not found in the data.", call. = FALSE)
     }
     if (length(unique(data[[group_by]])) != 2) {
-      stop("When using 'group_by', data must have exactly two groups.", call.=FALSE)
+      stop("When using 'group_by', data must have exactly two groups.", call. = FALSE)
     }
   }
   
   # Get variables to analyze
   vars <- setdiff(names(data), c(group_by, exclude))
-  if (length(vars) == 0) stop("No variables remain after applying exclusions.", call.=FALSE)
+  if (length(vars) == 0) stop("No variables remain after applying exclusions.", call. = FALSE)
   
   # Process all variables
   results_list <- lapply(vars, .process_variable,
                          data = data, group_var = group_by,
-                         all_stats = all_stats, effect_size = effect_size,
+                         all = all, effect_size = effect_size,
                          normality_test = normality_test)
   
   # Combine results
@@ -93,6 +93,7 @@ summary_table <- function(data,
   }
   
   # Create and return basic gt table
-  return(gt::gt(result_df) |> gt::opt_align_table_header(align = "center") |>
-           gt::cols_align(align = "center") |> gt::cols_width(normality ~ px(80)))
+  return(gt(result_df) |> opt_align_table_header(align = "center") |>
+           cols_align(align = "center") |> cols_width(normality ~ px(80)))
 }
+

@@ -25,12 +25,12 @@
 }
 
 # Create summary statistics for any variable type
-.create_summary <- function(x, all_stats = FALSE, use_median = FALSE) {
+.create_summary <- function(x, all = FALSE, use_median = FALSE) {
   if (length(x) == 0) return("No data")
   
   if (is.numeric(x)) {
     # Calculate only needed statistics
-    if (all_stats) {
+    if (all) {
       stats <- list(mean = mean(x, na.rm = TRUE), sd = sd(x, na.rm = TRUE))
       q <- quantile(x, c(0.25, 0.5, 0.75), na.rm = TRUE)
       r <- range(x, na.rm = TRUE)
@@ -78,7 +78,7 @@
 }
 
 # Process single variable for analysis
-.process_variable <- function(var, data, group_var = NULL, all_stats = FALSE, 
+.process_variable <- function(var, data, group_var = NULL, all = FALSE, 
                               effect_size = FALSE, normality_test = 'S-W') {
   x <- data[[var]]
   
@@ -95,7 +95,7 @@
     }
     
     data.frame(variable = var, n = length(x), NAs = sum(is.na(x)),
-               summary = .create_summary(clean_x, all_stats, use_median), normality = norm_value,
+               summary = .create_summary(clean_x, all, use_median), normality = norm_value,
                stringsAsFactors = FALSE)
   } else {
     # Group comparison
@@ -116,8 +116,8 @@
     
     # Add group summaries
     grp_labeled <- paste0(grp, c(" (Group A)", " (Group B)"))
-    df_base[[grp_labeled[1]]] <- .create_summary(clean_groups[[1]], all_stats, use_median)
-    df_base[[grp_labeled[2]]] <- .create_summary(clean_groups[[2]], all_stats, use_median)
+    df_base[[grp_labeled[1]]] <- .create_summary(clean_groups[[1]], all, use_median)
+    df_base[[grp_labeled[2]]] <- .create_summary(clean_groups[[2]], all, use_median)
     
     # Add test results
     df_base$normality <- test_results$norm_str
