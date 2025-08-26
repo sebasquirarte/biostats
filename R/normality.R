@@ -7,7 +7,7 @@
 #'
 #' @param data Dataframe containing the variables to be summarized.
 #' @param x Character string indicating the variable to be analyzed.
-#' @param outside Logical parameter that displays all row indices of values outside 95%CI. Default: FALSE.
+#' @param all Logical parameter that displays all row indices of values outside 95% CI. Default: FALSE.
 #' @param color Character string indicatig color for plots. Default: "#79E1BE".
 #'
 #' @return
@@ -25,8 +25,8 @@
 #' # Normally distributed variable
 #' normality(clinical_df, "biomarker")
 #'
-#' # Non-normally distributed variable with points outside 95%CI displayed
-#' normality(clinical_df, "weight", outside = TRUE)
+#' # Non-normally distributed variable with points outside 95% CI displayed
+#' normality(clinical_df, "weight", all = TRUE)
 #'
 #' @importFrom stats shapiro.test ks.test ppoints qnorm dnorm density
 #' @importFrom rlang .data
@@ -36,7 +36,7 @@
 
 normality <- function(data, 
                       x, 
-                      outside = FALSE, 
+                      all = FALSE, 
                       color = "#79E1BE") {
   
   # Package requirements and input validation
@@ -90,7 +90,7 @@ normality <- function(data,
   }
   normal <- !is.na(primary_test$p.value) && primary_test$p.value > 0.05 && skew_kurt_normal
   
-  # Create Q-Q plot data and identify values outside 95%CI
+  # Create Q-Q plot data and identify values outside 95% CI
   y <- scale(x_vals)
   if (is_constant) {
     theoretical <- qnorm(ppoints(n))
@@ -129,22 +129,22 @@ normality <- function(data,
   primary_test_name <- if (n > 50) "Kolmogorov-Smirnov" else "Shapiro-Wilk"
   
   # Create Q-Q Plot
-  qq_plot <- ggplot2::ggplot(qq_data, ggplot2::aes(x = .data$theoretical, y = .data$sample)) +
-    ggplot2::geom_ribbon(ggplot2::aes(ymin = .data$lower, ymax = .data$upper), alpha = 0.2, fill = "grey70") +
-    ggplot2::geom_point(ggplot2::aes(color = .data$is_outside), size = 2, alpha = 0.6) +
-    ggplot2::geom_abline(intercept = 0, slope = 1, color = "red", linetype = "dashed", linewidth = 1) +
-    ggplot2::scale_color_manual(values = c(color, "red"), guide = "none") +
-    ggplot2::labs(title = "Normal Q-Q Plot",
+  qq_plot <- ggplot(qq_data, aes(x = .data$theoretical, y = .data$sample)) +
+    geom_ribbon(aes(ymin = .data$lower, ymax = .data$upper), alpha = 0.2, fill = "grey70") +
+    geom_point(aes(color = .data$is_outside), size = 2, alpha = 0.6) +
+    geom_abline(intercept = 0, slope = 1, color = "red", linetype = "dashed", linewidth = 1) +
+    scale_color_manual(values = c(color, "red"), guide = "none") +
+    labs(title = "Normal Q-Q Plot",
                   subtitle = sprintf("Points outside 95%%CI: %d / %d (%.1f%%)",
                                      sum(qq_data$is_outside), n, 100 * sum(qq_data$is_outside) / n),
                   x = "Theoretical Quantiles", y = "Sample Quantiles") +
-    ggplot2::theme_minimal()
+    theme_minimal()
   
   # Add extreme outside value labels if present
   if (length(extreme_indices) > 0) {
     extreme_data <- qq_data[qq_data$is_extreme, ]
-    qq_plot <- qq_plot + ggplot2::geom_text(
-      data = extreme_data, ggplot2::aes(x = .data$theoretical, y = .data$sample, label = .data$row_num),
+    qq_plot <- qq_plot + geom_text(
+      data = extreme_data, aes(x = .data$theoretical, y = .data$sample, label = .data$row_num),
       vjust = -0.8, size = 3
     )
   }
@@ -153,17 +153,17 @@ normality <- function(data,
   bins <- min(30, max(10, round(n/10)))
   hist_data <- data.frame(x = x_vals)
   
-  hist_plot <- ggplot2::ggplot(hist_data, ggplot2::aes(x = .data$x)) +
-    ggplot2::geom_histogram(ggplot2::aes(y = ggplot2::after_stat(density)),
+  hist_plot <- ggplot(hist_data, aes(x = .data$x)) +
+    geom_histogram(aes(y = after_stat(density)),
                             bins = bins, fill = color, color = "white", alpha = 0.6) +
-    ggplot2::stat_function(fun = dnorm, args = list(mean = basic_stats["mean"], sd = basic_stats["sd"]),
+    stat_function(fun = dnorm, args = list(mean = basic_stats["mean"], sd = basic_stats["sd"]),
                            color = "red", linetype = "dashed", linewidth = 1) +
-    ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0, 0.05))) +
-    ggplot2::labs(title = "Histogram with Normal Distribution",
+    scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
+    labs(title = "Histogram with Normal Distribution",
                   subtitle = sprintf("%s: %s | Skewness: %.2f | Kurtosis: %.2f",
                                      primary_test_name, primary_p_display, skewness, kurtosis),
                   x = x, y = "Density") +
-    ggplot2::theme_minimal()
+    theme_minimal()
   
   # Print results to console
   cat(sprintf("\nNormality Test for '%s' \n\n", x))
@@ -180,17 +180,17 @@ normality <- function(data,
   cat(sprintf("Kurtosis: %.2f (z = %.2f) \n\n", kurtosis, kurtosis_z))
   cat("Data appears", if (normal) "normally distributed." else "not normally distributed.", "\n")
   
-  # Display values outside 95%CI information
+  # Display values outside 95% CI information
   if (length(outside_indices) > 0) {
-    if (outside) {
-      cat("\nVALUES OUTSIDE 95%CI (row indices):", paste(outside_indices, collapse = ", "), "\n\n")
+    if (all) {
+      cat("\nVALUES OUTSIDE 95% CI (row indices):", paste(outside_indices, collapse = ", "), "\n\n")
     } else {
-      cat(sprintf("\n(Use outside = TRUE to see values outside 95%%CI [%d]). \n\n", length(outside_indices)))
+      cat(sprintf("\n(Use all = TRUE to see values outside 95%%CI [%d]). \n\n", length(outside_indices)))
     }
   }
   
   # Display plots and return results
-  gridExtra::grid.arrange(qq_plot, hist_plot, ncol = 2)
+  grid.arrange(qq_plot, hist_plot, ncol = 2)
   invisible(list(normal = normal, outside_95CI = outside_indices,
                  qq_plot = qq_plot, hist_plot = hist_plot))
 }

@@ -61,11 +61,11 @@ test_that("normality outside parameter controls output", {
   df <- data.frame(x = c(rnorm(20), -6, 6, -7, 7))
   
   output_false <- capture.output({
-    result_false <- normality(df, "x", outside = FALSE)
+    result_false <- normality(df, "x", all = FALSE)
   })
   
   output_true <- capture.output({
-    result_true <- normality(df, "x", outside = TRUE)
+    result_true <- normality(df, "x", all = TRUE)
   })
   
   expect_type(result_true[[2]], "integer")
@@ -75,7 +75,7 @@ test_that("normality outside parameter controls output", {
   output_true_text <- paste(output_true, collapse = " ")
   
   if (length(result_true[[2]]) > 0) {
-    expect_true(grepl("Use outside = TRUE", output_false_text))
+    expect_true(grepl("Use all = TRUE", output_false_text))
     expect_true(grepl("VALUES OUTSIDE 95%CI", output_true_text))
   }
   
