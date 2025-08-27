@@ -66,12 +66,14 @@ omnibus <- function(data,
   data[[y]] <- as.numeric(data[[y]])
   data[[x]] <- as.factor(data[[x]])
   if (!is.null(paired_by)) data[[paired_by]] <- as.factor(data[[paired_by]])
+  if (!is.null(paired_by) && !all(table(data[[paired_by]], data[[x]]) == 1)) stop("When analyzing repeated measures, 'data' must have exactly one measurement per subject per level of 'x'.")
   
   data <- .data_organization(data = data, y = y, x = x, paired_by = paired_by)
   
   if (alpha <= 0 || alpha >= 1) stop("'alpha' must be between 0 and 1.", call. = FALSE)
   num_levels <- length(levels(data[[x]]))
   if (num_levels < 3) stop("The independent variable ('x') must have at least 3 levels.", call. = FALSE)
+  if (any(table(data[[x]]) < 3)) stop("Each level in the independent variable ('x') must have at least 3 observations.", call. = FALSE)
   if (!(p_method %in% c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "none"))) stop("Invalid p-value adjustment method.", call. = FALSE)
   if (!(length(na.action) == 1)) stop("Only one 'na.action' can be selected at a time.", call. = FALSE)
   if (!(na.action %in% c("na.omit", "na.exclude"))) stop("Invalid 'na.action'.", call. = FALSE)
@@ -94,35 +96,26 @@ omnibus <- function(data,
   
   if (is.null(paired_by)) {
     if (normality_key == "non_significant" && variance_key == "non_significant") {
+      name <- "One-way ANOVA"
       model <- aov(formula, data = data, na.action = na.action) # One-way ANOVA
       summary <- summary(model)
-      name <- "One-way ANOVA"
     } else {
-      model <- kruskal.test(formula, data = data, na.action = na.action) # Kruskal-Wallis
       name <- "Kruskal-Wallis"
+      model <- kruskal.test(formula, data = data, na.action = na.action) # Kruskal-Wallis
     }
   } else {
     if (normality_key == "non_significant" && variance_key == "non_significant" && sphericity_key == "non_significant") { 
+      name <- "Repeated measures ANOVA"
       formula <- as.formula(paste(y, "~", x, "+ Error(", paired_by, "/", x, ")")) # Repeated measures ANOVA
       model <- aov(formula, data = data, na.action = na.action)
       summary <- summary(model)
-      name <- "Repeated measures ANOVA"
     } else {
       formula <- as.formula(paste(deparse(formula[[2]]), "~", deparse(formula[[3]]), "|", paired_by))
-      
-      # Additional check right before Friedman test
-      tryCatch({
-        model <- friedman.test(formula, data = data, na.action = na.action)
-        name <- "Friedman"
-      }, error = function(e) {
-        if (grepl("not an unreplicated complete block design", e$message)) {
-          stop("Friedman test requires complete, non-duplicated data per subject per time point.", call. = FALSE)
-        } else {
-          stop(e$message, call. = FALSE)
-        }
-      })
+      name <- "Friedman"
+      model <- friedman.test(formula, data = data, na.action = na.action)
     }
   }
+  
   # Extract key statistics
   if (name == "One-way ANOVA") {
     stat <- summary[[1]][1, "F value"]
@@ -171,7 +164,7 @@ omnibus <- function(data,
       data = data
     )
   } else {
-    cat("Post-hoc tests not performed (results not significant).\n\n")
+    cat("Post-hoc tests not performed (results not significant).\n")
     post_hoc <- NULL
   }
   

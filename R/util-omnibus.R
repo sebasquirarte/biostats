@@ -19,8 +19,8 @@
     # Normality assessment using Shapiro-Wilk
     shapiroResults <- lapply(split(data[[y]], data[[x]]), shapiro.test)
     
-    # Calculate effect sizes for normality (W statistic as effect size proxy)
-    normality_effects <- sapply(shapiroResults, function(x) as.numeric(x$statistic))
+    # Calculate effect sizes for normality
+    normality_test.stat <- sapply(shapiroResults, function(x) as.numeric(x$statistic))
     normality_pvals <- sapply(shapiroResults, function(x) x$p.value)
     
     normality_key <- if (any(normality_pvals < alpha)) "significant" else "non_significant"
@@ -65,8 +65,6 @@
       sph_stat <- mauchlyResults$statistic
       sph_pval <- mauchlyResults$p.value
       sph_df <- mauchlyResults$parameter
-      # W statistic itself serves as effect size measure for sphericity
-      sph_effect <- sph_stat
     }
     
     return(list(
@@ -77,7 +75,7 @@
       # Detailed assumption results
       normality_results = list(
         test = "Shapiro-Wilk",
-        statistics = normality_effects,
+        statistics = normality_test.stat,
         p_values = normality_pvals,
         overall_key = normality_key
       ),
@@ -93,7 +91,6 @@
         test = "Mauchly",
         statistic = sph_stat,
         p_value = sph_pval,
-        effect_size = sph_effect,
         df = sph_df,
         key = sphericity_key
       ) else NULL
@@ -102,81 +99,6 @@
   }, # Try catch error
   error = function(e) {
     warning("Assumption evaluation failed: ", e$message)
-  })
-}
-
-# Run post-hoc tests for omnibus_test
-.post_hoc <- function(name, y, x, paired_by, p_method, alpha, model, data) {
-  tryCatch({
-    if(name == "One-way ANOVA") {
-      post_hoc <- TukeyHSD(model, conf.level = 1 - alpha)
-      # Print Tukey results
-      comparisons <- post_hoc[[1]]
-      cat(sprintf("Tukey Honest Significant Differences (alpha: %.3f):\n", alpha))
-      cat(sprintf("%-20s %8s %8s %8s %8s\n",
-                  "Comparison", "Diff", "Lower", "Upper", "p-adj"))
-      cat(strrep("-", 60), "\n")
-      for (i in 1:nrow(comparisons)) {
-        sig_flag <- ifelse(comparisons[i, "p adj"] < alpha, "*", " ")
-        # Format comparison name with spaces around dash
-        comparison_name <- gsub("-", " - ", rownames(comparisons)[i])
-        cat(sprintf("%-20s %8.3f %8.3f %8.3f %8s%s\n",
-                    comparison_name,
-                    comparisons[i, "diff"],
-                    comparisons[i, "lwr"],
-                    comparisons[i, "upr"],
-                    .format_p(comparisons[i, "p adj"]),
-                    sig_flag))
-      }
-    } else {
-      if (name == "Repeated measures ANOVA") {
-        # Pairwise comparison w/ pairwise t tests
-        post_hoc <- suppressWarnings(pairwise.t.test(data[[y]], 
-                                                     data[[x]], 
-                                                     paired = FALSE, 
-                                                     p.adjust.method = p_method))
-      }
-      
-      if (name %in% c("Kruskal-Wallis", "Friedman")) {
-        paired <- if (name == "Friedman") TRUE else FALSE
-        # Pairwise Wilcoxon tests with specified adjustment (paired and unpaired is possible)
-        post_hoc <- suppressWarnings(pairwise.wilcox.test(data[[y]], 
-                                                          data[[x]], 
-                                                          paired = paired, 
-                                                          p.adjust.method = p_method))
-      }
-      
-      if (name == "Friedman") {
-        cat(sprintf("Paired pairwise Wilcoxon-tests (alpha: %.3f) (p_method: %s):\n", alpha, p_method))
-      } else {
-        cat(sprintf("Pairwise Wilcoxon-tests (alpha: %.3f) (p_method: %s):\n", alpha, p_method))
-      }
-      
-      p_matrix <- post_hoc$p.value
-      group_names <- rownames(p_matrix)
-      col_names <- colnames(p_matrix)
-      cat(sprintf("%-12s", ""))
-      for (col in col_names) cat(sprintf("%12s", col))
-      cat("\n")
-      for (i in 1:nrow(p_matrix)) {
-        cat(sprintf("%-12s", group_names[i]))
-        for (j in 1:ncol(p_matrix)) {
-          if (is.na(p_matrix[i, j])) {
-            cat(sprintf("%12s", "-"))
-          } else {
-            p_val <- p_matrix[i, j]
-            sig_flag <- ifelse(p_val < alpha, "*", "")
-            cat(sprintf("%11s%s", .format_p(p_val), sig_flag))
-          }
-        }
-        cat("\n")
-      }
-    }
-    # Return results to main function
-    return(post_hoc)
-  }, # Try catch error
-  error = function(e) {
-    warning("Post-hoc test failed: ", e$message)
   })
 }
 
@@ -190,7 +112,7 @@
     cat(sprintf("  Sphericity (%s Test):\n", sph$test))
     cat(sprintf("  W = %.4f, df = %d, p = %s\n", 
                 sph$statistic, sph$df, .format_p(sph$p_value)))
-    cat(sprintf("  Effect size (W) = %.4f\n", sph$effect_size))
+    cat(sprintf("  Test statistic (W) = %.4f\n", sph$statistic))
     cat(sprintf("  Result: %s\n\n", 
                 ifelse(sph$p_value < alpha, "Sphericity violated.", "Sphericity assumed.")))
   }
@@ -221,4 +143,82 @@
   }
   cat(sprintf("  Result: %s\n\n", 
               ifelse(var$key == "significant", "Heterogeneous variances.", "Homogeneous variances.")))
+}
+
+
+# Run post-hoc tests for omnibus_test
+.post_hoc <- function(name, y, x, paired_by, p_method, alpha, model, data) {
+  tryCatch({
+    if(name == "One-way ANOVA") {
+      post_hoc <- TukeyHSD(model, conf.level = 1 - alpha)
+      # Print Tukey results
+      comparisons <- post_hoc[[1]]
+      cat(sprintf("Tukey Honest Significant Differences (alpha: %.3f):\n", alpha))
+      cat(sprintf("%-20s %8s %8s %8s %8s\n",
+                  "Comparison", "Diff", "Lower", "Upper", "p-adj"))
+      cat(strrep("-", 60), "\n")
+      for (i in 1:nrow(comparisons)) {
+        sig_flag <- ifelse(comparisons[i, "p adj"] < alpha, "*", " ")
+        # Format comparison name with spaces around dash
+        comparison_name <- gsub("-", " - ", rownames(comparisons)[i])
+        cat(sprintf("%-20s %8.3f %8.3f %8.3f %8s%s\n",
+                    comparison_name,
+                    comparisons[i, "diff"],
+                    comparisons[i, "lwr"],
+                    comparisons[i, "upr"],
+                    .format_p(comparisons[i, "p adj"]),
+                    sig_flag))
+      }
+    } else {
+      if (name == "Repeated measures ANOVA") {
+        # Pairwise comparison w/ pairwise t tests
+        post_hoc <- suppressWarnings(pairwise.t.test(data[[y]], 
+                                                     data[[x]], 
+                                                     paired = TRUE, 
+                                                     p.adjust.method = p_method))
+      }
+      
+      if (name %in% c("Kruskal-Wallis", "Friedman")) {
+        paired <- if (name == "Friedman") TRUE else FALSE
+        # Pairwise Wilcoxon tests with specified adjustment (paired and unpaired is possible)
+        post_hoc <- suppressWarnings(pairwise.wilcox.test(data[[y]], 
+                                                          data[[x]], 
+                                                          paired = paired, 
+                                                          p.adjust.method = p_method))
+      }
+      
+      if (name == "Friedman") {
+        cat(sprintf("Paired pairwise Wilcoxon-tests (alpha: %.3f) (p_method: %s):\n", alpha, p_method))
+      } else if (name == "Repeated measures ANOVA") {
+        cat(sprintf("Paired pairwise t-tests (alpha: %.3f) (p_method: %s):\n", alpha, p_method))
+      } else {
+        cat(sprintf("Pairwise Wilcoxon-tests (alpha: %.3f) (p_method: %s):\n", alpha, p_method))
+      }
+      
+      p_matrix <- post_hoc$p.value
+      group_names <- rownames(p_matrix)
+      col_names <- colnames(p_matrix)
+      cat(sprintf("%-12s", ""))
+      for (col in col_names) cat(sprintf("%12s", col))
+      cat("\n")
+      for (i in 1:nrow(p_matrix)) {
+        cat(sprintf("%-12s", group_names[i]))
+        for (j in 1:ncol(p_matrix)) {
+          if (is.na(p_matrix[i, j])) {
+            cat(sprintf("%12s", "-"))
+          } else {
+            p_val <- p_matrix[i, j]
+            sig_flag <- ifelse(p_val < alpha, "*", "")
+            cat(sprintf("%11s%s", .format_p(p_val), sig_flag))
+          }
+        }
+        cat("\n")
+      }
+    }
+    # Return results to main function
+    return(post_hoc)
+  }, # Try catch error
+  error = function(e) {
+    warning("Post-hoc test failed: ", e$message)
+  })
 }
