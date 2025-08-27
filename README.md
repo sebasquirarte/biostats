@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check.yaml](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yaml)
+[![Tests](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/biostats)](https://cran.r-project.org/package=biostats)
 <!-- badges: end -->
@@ -678,7 +680,7 @@ omnibus(y = "biomarker", x = "visit", data = clinical_df, paired_by = "subject_i
 #> Assumption Testing Results:
 #> 
 #>   Sphericity (Mauchly Test):
-#>   Effect size (W) = 0.9881
+#>   Test statistic (W) = 0.9881
 #>   Result: Sphericity assumed.
 #> 
 #>   Normality (Shapiro-Wilk Test):
@@ -701,7 +703,6 @@ omnibus(y = "biomarker", x = "visit", data = clinical_df, paired_by = "subject_i
 #> 
 #> Post-hoc tests not performed (results not significant).
 #> 
-#> 
 #> The study groups show a moderately unbalanced distribution of sample sizes (Δn = 0.203).
 ```
 
@@ -717,7 +718,7 @@ omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "subject
 #> Assumption Testing Results:
 #> 
 #>   Sphericity (Mauchly Test):
-#>   Effect size (W) = 0.9825
+#>   Test statistic (W) = 0.9825
 #>   Result: Sphericity assumed.
 #> 
 #>   Normality (Shapiro-Wilk Test):
@@ -739,7 +740,6 @@ omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "subject
 #>   Result: not significant
 #> 
 #> Post-hoc tests not performed (results not significant).
-#> 
 #> 
 #> The study groups show a moderately unbalanced distribution of sample sizes (Δn = 0.217).
 ```
