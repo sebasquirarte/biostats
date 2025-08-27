@@ -5,10 +5,10 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check.yaml](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yml)
-[![Tests](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yml)
+[![R-CMD-check](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yml)
+[![Tests](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yml)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/biostats)](https://cran.r-project.org/package=biostats)
+status](https://www.r-pkg.org/badges/version/biostats)](https://CRAN.R-project.org/package=biostats)
 <!-- badges: end -->
 
 ## Overview
@@ -46,12 +46,7 @@ library(biostats)
 
 ## Usage
 
-This package comprises 14 functions across four analytical domains and
-features an interactive Shiny application for clinical trial sample size
-calculation supporting superiority, non-inferiority, equivalence, and
-equality designs with customizable parameters for effect sizes, power,
-and clinical significance thresholds, following methodologies
-established by Chow et al. (2017).
+This package comprises 14 functions across four analytical domains:
 
 - [**Descriptive Statistics and Exploratory Data Analysis
   (EDA)**](#descriptive-statistics-and-exploratory-data-analysis-eda)
