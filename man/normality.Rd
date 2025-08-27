@@ -13,7 +13,7 @@ normality(data, x, all = FALSE, color = "#79E1BE")
 
 \item{all}{Logical parameter that displays all row indices of values outside 95\% CI. Default: FALSE.}
 
-\item{color}{Character string indicatig color for plots. Default: "#79E1BE".}
+\item{color}{Character string indicating color for plots. Default: "#79E1BE".}
 }
 \value{
 Prints results to console and invisibly returns a list with normality statistics and ggplot objects.
