@@ -108,10 +108,10 @@ plot_hist <- function(data,
     
     p <- ggplot() +
       do.call(geom_histogram, c(list(data = group1_data, 
-                                     mapping = aes(x = .data[[x]], y = after_stat(count), fill = .data[[group]]),
+                                     mapping = aes(x = .data[[x]], y = after_stat(.data[["count"]]), fill = .data[[group]]),
                                      alpha = 0.7), hist_args)) +
       do.call(geom_histogram, c(list(data = group2_data, 
-                                     mapping = aes(x = .data[[x]], y = -after_stat(count), fill = .data[[group]]),
+                                     mapping = aes(x = .data[[x]], y = -after_stat(.data[["count"]]), fill = .data[[group]]),
                                      alpha = 0.7), hist_args)) +
       geom_hline(yintercept = 0, color = "black", linewidth = 0.5, alpha = 0.7)
     

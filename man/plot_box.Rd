@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_box.R
 \name{plot_box}
 \alias{plot_box}
-\title{Create Simple Professional Box Plots with Mean}
+\title{Create Simple Professional Box Plots}
 \usage{
 plot_box(
   data,
@@ -17,38 +17,38 @@ plot_box(
   legend_title = NULL,
   points = FALSE,
   point_size = 2,
-  text_size = 12,
-  y_limits = NULL
+  y_limits = NULL,
+  show_mean = TRUE
 )
 }
 \arguments{
-\item{data}{A data frame containing the variables to plot}
+\item{data}{A dataframe containing the variables to plot.}
 
-\item{x}{Character string specifying the x-axis variable (categorical or numeric with few unique values)}
+\item{x}{Character string specifying the x-axis variable.}
 
-\item{y}{Character string specifying the y-axis variable (numeric)}
+\item{y}{Character string specifying the y-axis variable.}
 
-\item{group}{Optional character string specifying grouping variable for fill/color}
+\item{group}{Character string specifying grouping variable for fill/color. Default: NULL.}
 
-\item{facet}{Optional character string specifying faceting variable}
+\item{facet}{Character string specifying faceting variable. Default: NULL.}
 
-\item{colors}{Character vector of colors. If NULL, uses TealGrn palette}
+\item{colors}{Character vector of colors. If NULL, uses TealGrn palette. Default: NULL.}
 
-\item{title}{Optional plot title}
+\item{title}{Character string for plot title. Default: NULL.}
 
-\item{xlab}{Optional x-axis label}
+\item{xlab}{Character string for x-axis label. Default: NULL.}
 
-\item{ylab}{Optional y-axis label}
+\item{ylab}{Character string for y-axis label. Default: NULL.}
 
-\item{legend_title}{Optional legend title}
+\item{legend_title}{Character string for legend title. Default: NULL.}
 
-\item{points}{Logical; add jittered points (default: FALSE)}
+\item{points}{Logical parameter indicating if jittered points. Default: FALSE.}
 
-\item{point_size}{Numeric; size of points}
+\item{point_size}{Numeric value indicating the size of points. Default: 2.}
 
-\item{text_size}{Numeric; base text size}
+\item{y_limits}{Numeric vector of length 2 for y-axis limits. Default: NULL.}
 
-\item{y_limits}{Numeric vector of length 2 for y-axis limits}
+\item{show_mean}{Logical parameter indicating if mean should be shown. Default: TRUE.}
 }
 \value{
 A ggplot2 object
@@ -57,13 +57,13 @@ A ggplot2 object
 Generates publication-ready boxplots with optional jittered points and mean overlay.
 }
 \examples{
-# Simulated clinical data
-clinical_df <- clinical_data(visit = 10)
+#Simulated clinical data
+clinical_df <- clinical_data(visits = 10)
 
-# Barplot of age by sex and treatment
-plot_box(data = clinical_df, x = "sex", y = "age", group = "treatment")
+# Boxplot of biomarker by sex and treatment
+plot_box(clinical_df, x = "sex", y = "biomarker", group = "treatment")
 
 # Barplot of bimarker by study visit and treatment
-plot_box(data = clinical_df, x = "visit", y = "biomarker", group = "treatment")
+plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment")
 
 }

@@ -7,60 +7,60 @@
 plot_corr(
   data,
   vars = NULL,
-  method = c("pearson", "spearman", "kendall"),
+  method = c("pearson", "spearman"),
   type = c("full", "upper", "lower"),
-  diag = TRUE,
   colors = NULL,
   title = NULL,
-  text_size = 12,
   show_values = TRUE,
   value_size = 3,
-  show_significance = FALSE,
-  sig_level = 0.05
+  show_sig = FALSE,
+  sig_level = 0.05,
+  sig_only = FALSE,
+  show_legend = TRUE,
+  p_method = "holm"
 )
 }
 \arguments{
-\item{data}{A data frame containing the variables to analyze}
+\item{data}{A dataframe containing the variables to analyze.}
 
-\item{vars}{Optional character vector specifying which variables to include.
-If NULL (default), all numeric variables will be used}
+\item{vars}{Character vector specifying which variables to include. Default: NULL.}
 
-\item{method}{Character string specifying correlation method; one of "pearson" (default),
-"spearman", or "kendall"}
+\item{method}{Character string specifying correlation method: "pearson" or "spearman". Default: "pearson".}
 
-\item{type}{Character string specifying matrix type; one of "full" (default),
-"upper", or "lower"}
+\item{type}{Character string specifying matrix type: "full", "upper", or "lower". Default: "full".}
 
-\item{diag}{Logical; whether to show diagonal (always 1.0) (default: TRUE)}
+\item{colors}{Character vector of 3 colors for negative, neutral, and positive correlations. Default: NULL.}
 
-\item{colors}{Character vector of 3 colors for negative, neutral, and positive correlations.
-If NULL, uses a TealGrn-based palette consistent with other plotting functions}
+\item{title}{Character string for plot title. Default: NULL.}
 
-\item{title}{Optional character string for the plot title}
+\item{show_values}{Logical parameter indicating whether to display correlation values in cells. Default: TRUE.}
 
-\item{text_size}{Numeric value specifying the base text size (default: 12)}
+\item{value_size}{Numeric value indicating size of correlation value text. Default: 3.}
 
-\item{show_values}{Logical; whether to display correlation values in cells (default: TRUE)}
+\item{show_sig}{Logical parameter indicating whether to mark significant correlations. Default: FALSE.}
 
-\item{value_size}{Numeric; size of correlation value text (default: 3)}
+\item{sig_level}{Numeric value indicating significance level for marking. Default: 0.05.}
 
-\item{show_significance}{Logical; whether to mark significant correlations (default: FALSE)}
+\item{sig_only}{Logical parameter indicating whether to show only statistically significant values. Default: FALSE.}
 
-\item{sig_level}{Numeric; significance level for marking (default: 0.05)}
+\item{show_legend}{Logical parameter indicating whether to show legend. Default: TRUE.}
+
+\item{p_method}{Character string indicating the method for p-value adjustment in post-hoc multiple comparisons to
+control for Type I error inflation. Options: "holm" (Holm), "hochberg" (Hochberg), "hommel" (Hommel),
+"bonferroni" (Bonferroni), "BH" (Benjamini-Hochberg), "BY" (Benjamini-Yekutieli), or "none" (no adjustment).
+Default: "holm".}
 }
 \value{
-A ggplot2 object that can be further customized
+A ggplot2 object
 }
 \description{
 Generates publication-ready correlation matrix heatmaps with minimal code using ggplot2.
 }
 \examples{
-# Create clinical data with additional correlated variables
-clinical_df <- clinical_data(n = 100, visits = 8, missing = 0.03, dropout = 0.05)
-clinical_df$height <- 150 + 0.3 * clinical_df$age + rnorm(nrow(clinical_df), 0, 8)
-clinical_df$systolic_bp <- 100 + 0.8 * clinical_df$age + rnorm(nrow(clinical_df), 0, 10)
+# Correlation matrix for base R dataset 'swiss'
+plot_corr(data = swiss)
 
-# Correlation matrix with statistical significance
-plot_corr(clinical_df, type = "upper", show_significance = TRUE)
+# Lower triangle with significance indicators and filtering
+plot_corr(data = swiss, type = "lower", show_sig = TRUE, sig_only = TRUE)
 
 }
