@@ -22,10 +22,10 @@
 #' # Simulated clinical data
 #' clinical_df <- clinical_data()
 #'
-#' # Normally distributed variable
+#' # Normally assesment of numerical variable
 #' normality(clinical_df, "biomarker")
 #'
-#' # Non-normally distributed variable with points outside 95% CI displayed
+#' # Normally assesment of numerical variable with points outside 95% CI displayed
 #' normality(clinical_df, "weight", all = TRUE)
 #'
 #' @import ggplot2
@@ -178,7 +178,7 @@ normality <- function(data,
   cat(sprintf("Shapiro-Wilk: W = %.3f, p = %s \n", sw_test$statistic, format_p(sw_test$p.value)))
   cat(sprintf("Skewness: %.2f (z = %.2f) \n", skewness, skewness_z))
   cat(sprintf("Kurtosis: %.2f (z = %.2f) \n\n", kurtosis, kurtosis_z))
-  cat("Data appears", if (normal) "normally distributed." else "not normally distributed.", "\n")
+  cat("Data appears", if (normal) "normally distributed.\n" else "not normally distributed.\n", "\n")
   
   # Display values outside 95% CI information
   if (length(outside_indices) > 0) {

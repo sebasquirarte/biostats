@@ -28,10 +28,10 @@ detects outliers and provides comprehensive visual and statistical assessment.
 # Simulated clinical data
 clinical_df <- clinical_data()
 
-# Normally distributed variable
+# Normally assesment of numerical variable
 normality(clinical_df, "biomarker")
 
-# Non-normally distributed variable with points outside 95\% CI displayed
+# Normally assesment of numerical variable with points outside 95\% CI displayed
 normality(clinical_df, "weight", all = TRUE)
 
 }
