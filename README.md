@@ -1016,3 +1016,12 @@ plot_corr(data = swiss, type = "lower", show_sig = TRUE, sig_only = TRUE)
 ```
 
 <img src="man/figures/README-unnamed-chunk-26-2.png" width="100%" />
+
+## Contributing & Feedback
+
+This package is still under active development. Features, functions, and
+examples may change as improvements are made.
+
+We welcome feedback, suggestions, and bug reports. You can share your
+thoughts via email (<sebastian.quirarte@sophia.com.mx>) or GitHub
+issues.
