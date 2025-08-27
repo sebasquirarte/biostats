@@ -31,7 +31,7 @@ plot_hist(
 
 \item{facet}{Character string specifying the faceting variable. Default: NULL.}
 
-\item{bins}{Numeric value indicating the  number of bins for the histogram. Default: 30.}
+\item{bins}{Numeric value indicating the number of bins for the histogram. Default: 30.}
 
 \item{binwidth}{Numeric value indicating the width of the bins (overrides bins if specified). Default: NULL.}
 
@@ -63,8 +63,11 @@ Generates publication-ready histogram plots with minimal code using ggplot2.
 # Simulated clinical data
 clinical_df <- clinical_data()
 
-# Mirror histogram for 2 groups with mean lines
-plot_hist(clinical_df, x = "biomarker", group = "treatment", stat = "mean")
+# Basic histogram
+plot_hist(clinical_df, x = "biomarker")
+
+# Grouped histogram
+plot_hist(clinical_df, x = "biomarker", group = "treatment")
 
 # Faceted histogram
 plot_hist(clinical_df, x = "biomarker", facet = "treatment")

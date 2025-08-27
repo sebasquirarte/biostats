@@ -21,7 +21,6 @@
 #' @return A ggplot2 object
 #'
 #' @examples
-#' @examples
 #' # Simulated clinical data
 #' clinical_df <- clinical_data()
 #' 

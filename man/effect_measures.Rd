@@ -34,8 +34,8 @@ the effect measures' values (OR, RR, CI, exposed and unexposed risk, absolute ri
 Number Needed to Treat or Number Needed to Harm).
 }
 \description{
-Calculates measures of effect: Odds Ratio (OR), Risk Ratio (RR), Risk Reduction (RD)
-and either Number Needed to Treat (NNT) or Number Needed to Harm (NNH).
+Calculates measures of effect: Odds Ratio (OR), Risk Ratio (RR), and either
+Number Needed to Treat (NNT) or Number Needed to Harm (NNH).
 }
 \examples{
 effect_measures(exposed_event = 15, 

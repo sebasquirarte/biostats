@@ -114,7 +114,7 @@ sample_size_range <- function(x1_range,
   colors <- c("70" = "#C5F4C1", "80" = "#79E1BE", "90" = "#33BFBC")
   
   p <- ggplot2::ggplot(results, ggplot2::aes(x = x1, y = total, color = factor(power))) +
-    ggplot2::geom_line(size = 1.2, na.rm = TRUE) +
+    ggplot2::geom_line(linewidth = 1.2, na.rm = TRUE) +
     ggplot2::geom_point(size = 2, na.rm = TRUE) +
     ggplot2::scale_color_manual(values = colors, name = "Power (1 - beta)",
                                 labels = c("70%", "80%", "90%"),

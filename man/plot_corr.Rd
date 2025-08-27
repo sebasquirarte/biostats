@@ -45,8 +45,8 @@ plot_corr(
 
 \item{show_legend}{Logical parameter indicating whether to show legend. Default: TRUE.}
 
-\item{p_method}{Character string indicating the method for p-value adjustment in post-hoc multiple comparisons to
-control for Type I error inflation. Options: "holm" (Holm), "hochberg" (Hochberg), "hommel" (Hommel),
+\item{p_method}{Character string specifying the method for p-value adjustment to control
+for multiple comparisons in correlation testing. Options: "holm" (Holm), "hochberg" (Hochberg), "hommel" (Hommel),
 "bonferroni" (Bonferroni), "BH" (Benjamini-Hochberg), "BY" (Benjamini-Yekutieli), or "none" (no adjustment).
 Default: "holm".}
 }
