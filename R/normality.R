@@ -183,7 +183,7 @@ normality <- function(data,
   # Display values outside 95% CI information
   if (length(outside_indices) > 0) {
     if (all) {
-      cat("\nVALUES OUTSIDE 95% CI (row indices):", paste(outside_indices, collapse = ", "), "\n\n")
+      cat("VALUES OUTSIDE 95% CI (row indices):", paste(outside_indices, collapse = ", "), "\n\n")
     } else {
       cat(sprintf("\n(Use all = TRUE to see values outside 95%%CI [%d]). \n\n", length(outside_indices)))
     }
