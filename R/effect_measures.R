@@ -1,7 +1,7 @@
 #' Effect Measures
 #'
-#' Calculates measures of effect: Odds Ratio (OR), Risk Ratio (RR), Risk Reduction (RD)
-#' and either Number Needed to Treat (NNT) or Number Needed to Harm (NNH).
+#' Calculates measures of effect: Odds Ratio (OR), Risk Ratio (RR), and either 
+#' Number Needed to Treat (NNT) or Number Needed to Harm (NNH).
 #'
 #' @param exposed_event Numeric value indicating the number of events in the exposed group.
 #' @param exposed_no_event Numeric value indicating the number of non-events in the exposed group.

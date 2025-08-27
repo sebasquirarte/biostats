@@ -23,9 +23,9 @@ biostatistics and clinical data analysis workflows.
 - Statistical analysis and inference
 - Data visualization
 
-Designed primarily for comparative clinical studies as well as trial
-planning and analysis, this package serves both as an analytical toolkit
-for professional biostatisticians and clinical data analysts and as an
+Designed primarily for comparative clinical studies, trial planning, and
+analysis, this package serves both as an analytical toolkit for
+professional biostatisticians and clinical data analysts and as an
 educational resource for researchers transitioning to R-based
 biostatistics, including professionals from other domains, clinical
 research professionals, and medical practitioners involved in the
@@ -196,14 +196,14 @@ summary_table(clinical_df, exclude = c('subject_id', 'visit'))
 <img src="man/figures/summary_table_example_1.png" height = "250">
 
 ``` r
-# Grouped summary by treatmet group
+# Grouped summary by treatment group
 summary_table(clinical_df, group_by = 'treatment', exclude = c('subject_id', 'visit'))
 ```
 
 <img src="man/figures/summary_table_example_2.png">
 
 ``` r
-# Grouped summary by treatmet group with all stats and effect size
+# Grouped summary by treatment group with all stats and effect size
 summary_table(clinical_df,
               group_by = 'treatment',
               all = TRUE,
@@ -229,7 +229,7 @@ comprehensive visual and statistical assessment.
 |----|----|----|
 | `data` | Dataframe containing the variables to be summarized. | `Required` |
 | `x` | Character string indicating the variable to be analyzed. | `Required` |
-| `all` | Logical parameter that displays all row indices of values outside 95%CI. | `FALSE` |
+| `all` | Logical parameter that displays all row indices of values outside 95% CI. | `FALSE` |
 | `color` | Character string indicating color for plots. | `"#79E1BE"` |
 
 ##### Examples
@@ -260,7 +260,7 @@ normality(data = clinical_df_treat, "biomarker")
 
 ``` r
 
-# Non-normally distributed variable with points outside 95%CI displayed
+# Non-normally distributed variable with points outside 95% CI displayed
 normality(data = clinical_df_treat, "weight", all = TRUE)
 #> 
 #> Normality Test for 'weight' 
@@ -743,9 +743,8 @@ omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "subject
 
 ##### Description
 
-Calculates measures of effect: Odds Ratio (OR), Risk Ratio (RR), Risk
-Reduction (RD) and either Number Needed to Treat (NNT) or Number Needed
-to Harm (NNH).
+Calculates measures of effect: Odds Ratio (OR), Risk Ratio (RR), and
+either Number Needed to Treat (NNT) or Number Needed to Harm (NNH).
 
 ##### Parameters
 
@@ -964,7 +963,7 @@ plot_box(clinical_df, x = "treatment", y = "biomarker", group = "treatment")
 
 ``` r
 
-# Boxplot of bimarker by study visit and treatment
+# Boxplot of biomarker by study visit and treatment
 plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment")
 ```
 
