@@ -30,11 +30,11 @@
 #'# Grouped barplot of categorical variable by treatment with value labels
 #'plot_bar(data = clinical_df, x = "response", group = "visit", facet = "treatment", 
 #'         title = "Response by visit and treatment",values = TRUE)
-#'
+#'         
+#' @import ggplot2
 #' @importFrom stats aggregate as.formula
 #' @importFrom grDevices hcl.colors
 #' @importFrom rlang .data
-#' @import ggplot2
 #' @export
 
 plot_bar <- function(data,

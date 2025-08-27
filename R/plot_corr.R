@@ -28,10 +28,10 @@
 #' # Lower triangle with significance indicators and filtering
 #' plot_corr(data = swiss, type = "lower", show_sig = TRUE, sig_only = TRUE)
 #'
+#' @import ggplot2
 #' @importFrom stats cor cor.test complete.cases p.adjust
 #' @importFrom rlang .data
 #' @importFrom tools toTitleCase
-#' @import ggplot2
 #' @export
 
 plot_corr <- function(data,

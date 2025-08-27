@@ -32,7 +32,7 @@ group value (\code{x2}) fixed. Internally calls \code{sample_size()} and generat
 plot to visualize how total sample size changes with varying \code{x1}.
 }
 \examples{
-#' # Two-sample parallel non-inferiority test for proportions with 10\% dropout
+# Two-sample parallel non-inferiority test for proportions with 10\% dropout
 sample_size_range(x1_range = c(0.65, 0.75), x2 = 0.65, step = 0.01,
                   sample = "two-sample", design = "parallel", outcome = "proportion",
                   type = "non-inferiority", delta = -0.1, dropout = 0.1)

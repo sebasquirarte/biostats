@@ -67,5 +67,5 @@ plot_bar(data = clinical_df, x = "treatment", group = "response", position = "fi
 # Grouped barplot of categorical variable by treatment with value labels
 plot_bar(data = clinical_df, x = "response", group = "visit", facet = "treatment", 
         title = "Response by visit and treatment",values = TRUE)
-
+        
 }

@@ -79,5 +79,5 @@ plot_line(clinical_df, x = "visit", y = "biomarker",
 # Faceted line plots with median and 95\% CI
 plot_line(clinical_df, x = "visit", y = "biomarker", group = "treatment", 
           facet = "sex", stat = "median", error = "ci", points = FALSE)   
-                 
+    
 }

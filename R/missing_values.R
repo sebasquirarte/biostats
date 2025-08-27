@@ -18,10 +18,9 @@
 #' 
 #' # Show all variables including those without missing values
 #' missing_values(clinical_df, all = TRUE)
-#'
+#' 
+#' @import ggplot2
 #' @importFrom stats complete.cases
-#' @importFrom ggplot2 ggplot aes geom_bar geom_text scale_fill_manual coord_flip
-#' @importFrom ggplot2 scale_y_continuous expansion labs theme_minimal element_blank element_text margin
 #' @importFrom gridExtra grid.arrange
 #' @export
 

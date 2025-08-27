@@ -29,10 +29,10 @@
 #' # Barplot of bimarker by study visit and treatment
 #' plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment")
 #'
+#' @import ggplot2
 #' @importFrom stats as.formula
 #' @importFrom grDevices hcl.colors
 #' @importFrom rlang .data
-#' @import ggplot2
 #' @export
 
 plot_box <- function(data,

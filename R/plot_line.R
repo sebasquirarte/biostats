@@ -34,11 +34,11 @@
 #' # Faceted line plots with median and 95% CI
 #' plot_line(clinical_df, x = "visit", y = "biomarker", group = "treatment", 
 #'           facet = "sex", stat = "median", error = "ci", points = FALSE)   
-#'                  
+#'     
+#' @import ggplot2                 
 #' @importFrom stats aggregate as.formula sd qt quantile
 #' @importFrom grDevices hcl.colors
 #' @importFrom rlang .data
-#' @import ggplot2
 #' @export
 
 plot_line <- function(data,

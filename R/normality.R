@@ -28,9 +28,9 @@
 #' # Non-normally distributed variable with points outside 95% CI displayed
 #' normality(clinical_df, "weight", all = TRUE)
 #'
+#' @import ggplot2
 #' @importFrom stats shapiro.test ks.test ppoints qnorm dnorm density
 #' @importFrom rlang .data
-#' @importFrom ggplot2 ggplot aes geom_ribbon geom_point geom_abline scale_color_manual labs theme_minimal geom_histogram stat_function scale_y_continuous expansion geom_text after_stat
 #' @importFrom gridExtra grid.arrange
 #' @export
 

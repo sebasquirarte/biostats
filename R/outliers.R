@@ -21,9 +21,8 @@
 #' # Using custom threshold
 #' outliers(clinical_df, "biomarker", threshold = 1.0)
 #'
+#' @import ggplot2
 #' @importFrom stats quantile
-#' @importFrom ggplot2 ggplot aes geom_point geom_text scale_color_manual
-#' @importFrom ggplot2 labs theme_minimal stat_boxplot geom_boxplot theme element_text element_blank margin
 #' @importFrom gridExtra grid.arrange
 #' @export
 

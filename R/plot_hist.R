@@ -30,10 +30,10 @@
 #' # Faceted histogram
 #' plot_hist(clinical_df, x = "biomarker", facet = "treatment")
 #'
+#' @import ggplot2
 #' @importFrom stats aggregate as.formula median
 #' @importFrom grDevices hcl.colors
 #' @importFrom rlang .data
-#' @import ggplot2
 #' @export
 
 plot_hist <- function(data,

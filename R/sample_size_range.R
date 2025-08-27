@@ -21,7 +21,7 @@
 #' sample sizes.
 #'
 #' @examples
-#' #' # Two-sample parallel non-inferiority test for proportions with 10% dropout
+#' # Two-sample parallel non-inferiority test for proportions with 10% dropout
 #' sample_size_range(x1_range = c(0.65, 0.75), x2 = 0.65, step = 0.01,
 #'                   sample = "two-sample", design = "parallel", outcome = "proportion",
 #'                   type = "non-inferiority", delta = -0.1, dropout = 0.1)
@@ -37,7 +37,7 @@
 #' Chow, S., Shao, J., & Wang, H. (2017). Sample Size Calculations in
 #' Clinical Research (3rd ed.). Chapman & Hall/CRC.
 #'
-#' @importFrom ggplot2 ggplot aes geom_line geom_ribbon geom_point scale_color_manual scale_y_continuous labs theme_minimal expansion
+#' @import ggplot2
 #' @importFrom utils capture.output
 #'
 #' @export
