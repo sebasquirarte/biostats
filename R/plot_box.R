@@ -23,8 +23,8 @@
 #' #Simulated clinical data
 #' clinical_df <- clinical_data(visits = 10)
 #' 
-#' # Boxplot of biomarker by sex and treatment
-#' plot_box(clinical_df, x = "sex", y = "biomarker", group = "treatment")
+#' # Boxplot of biomarker by treatment
+#' plot_box(clinical_df, x = "treatment", y = "biomarker", group = "treatment")
 #' 
 #' # Barplot of bimarker by study visit and treatment
 #' plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment")
