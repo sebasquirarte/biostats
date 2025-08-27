@@ -14,8 +14,8 @@
 #' @param sig_level Numeric value indicating significance level for marking. Default: 0.05.
 #' @param sig_only Logical parameter indicating whether to show only statistically significant values. Default: FALSE.
 #' @param show_legend Logical parameter indicating whether to show legend. Default: TRUE.
-#' @param p_method Character string indicating the method for p-value adjustment in post-hoc multiple comparisons to 
-#'   control for Type I error inflation. Options: "holm" (Holm), "hochberg" (Hochberg), "hommel" (Hommel), 
+#' @param p_method Character string specifying the method for p-value adjustment to control 
+#'   for multiple comparisons in correlation testing. Options: "holm" (Holm), "hochberg" (Hochberg), "hommel" (Hommel), 
 #'   "bonferroni" (Bonferroni), "BH" (Benjamini-Hochberg), "BY" (Benjamini-Yekutieli), or "none" (no adjustment).
 #'   Default: "holm".
 #'
