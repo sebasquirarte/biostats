@@ -4,17 +4,14 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
-)
-```
 ```{r setup, include=FALSE}
 # Set global seed for reproducibility
-set.seed(123)
+set.seed(77)
+
+knitr::opts_chunk$set(collapse = TRUE,
+                      comment = "#>",
+                      fig.path = "man/figures/README-",
+                      out.width = "100%")
 ```
 
 # biostats <a href="https://github.com/sebasquirarte/biostats/blob/main/man/figures/logo.png"><img src="man/figures/logo.png" align="right" height="138" alt="biostats_logo" /></a>
@@ -45,12 +42,10 @@ options(repos = c(CRAN = "https://cran.rstudio.com/"))
 ```
 
 ```{r installation, warning=FALSE, message=FALSE, results='hide'}
+# Install from GitHub
 install.packages("remotes") 
 library(remotes)
-remotes::install_github("sebasquirarte/biostats", 
-                        auth_token = "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",
-                        force = TRUE, 
-                        upgrade = "never")
+remotes::install_github("sebasquirarte/biostats")
 library(biostats)
 ```
 
@@ -67,7 +62,6 @@ This package comprises 14 functions across four analytical domains and features 
 - [**Sample Size and Power Calculation**](#sample-size-and-power-calculation)
   - [sample_size()](#sample_size)
   - [sample_size_range()](#sample_size_range)
-  - [sample_size_calc()](#sample_size_calc) - Shiny App ✨
 - [**Statistical Analysis and Inference**](#statistical-analysis-and-inference)
   - [omnibus()](#omnibus) 
   - [effect_measures())](#effect_measures) 
@@ -90,11 +84,12 @@ Creates a simple simulated clinical trial dataset with subject demographics, mul
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `n` | Number of subjects (1-999) | `100` |
-| `visits` | Number of visits including baseline | `3` |
-| `arms` | Character vector of treatment arms | `c("Placebo", "Treatment")` |
-| `dropout` | Proportion of subjects who dropout (0-1) | `0` |
-| `missing` | Proportion of missing data at random (0-1) | `0` |
+| `n` | Integer indicating the number (1-999) of subjects. | `100` |
+| `visits` | Integer indicating the number of visits including baseline. | `3` |
+| `arms` | Character vector of treatment arm names. | `c("Placebo", "Treatment")` |
+| `dropout` | Numeric parameter indicating the proportion (0-1) of subjects who dropout. | `0` |
+| `missing` | Numeric parameter indicating the proportion (0-1) of missing values to be introduced across numeric variables with fixed proportions (biomarker = 15%, weight = 25%, response = 60%). | `0` |
+
 
 ##### Examples
 
@@ -109,61 +104,58 @@ head(clinical_df, 10)
 ```{r}
 # Simulate more complex clinical data
 clinical_df_full <- clinical_data(n = 300,
-                                  visits = 5,
+                                  visits = 10,
                                   arms = c('A', 'B', 'C'), 
                                   dropout = 0.10,
                                   missing = 0.05)
 
 str(clinical_df_full)
 
-head(clinical_df_full, 10)
+head(clinical_df_full, 20)
 ```
 
 #### **summary_table()**
 
 ##### Description
 
-Generates summary tables for biostatistics and clinical data analysis with automatic statistical test selection and effect size calculations. Handles both numeric and categorical variables, performing appropriate descriptive statistics and inferential tests for single-group summaries or two-group comparisons.
+Generates a summary table for biostatistics and clinical data analysis with automatic normality, effect size, and statistical test calculations. Handles both numeric and categorical variables, performing appropriate descriptive statistics and inferential tests for single-group summaries or two-group comparisons.
 
 ##### Parameters
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `data` | Dataframe containing the variables to be summarized | `Required` |
-| `group_by` | Name of the grouping variable for two-group comparisons | `NULL` |
-| `normality_test` | Normality test: 'S-W' for Shapiro-Wilk or 'K-S' for Kolmogorov-Smirnov | `"S-W"` |
-| `all_stats` | If TRUE, provides detailed statistical summary | `FALSE` |
-| `effect_size` | If TRUE, includes effect size estimates | `FALSE` |
-| `exclude` | Variable names to exclude from the summary | `NULL` |
+| `data` | Dataframe containing the variables to be summarized. | `Required` |
+| `group_by` | Character string indicating the name of the grouping variable for two-group comparisons. | `NULL` |
+| `normality_test` | Character string indicating the normality test to use: 'S-W' for Shapiro-Wilk or 'K-S' for Kolmogorov-Smirnov. | `'S-W'` |
+| `all` | Logical parameter that shows all calculated statistics. | `FALSE` |
+| `effect_size` | Logical parameter that includes effect size estimates. | `FALSE` |
+| `exclude` | Character vector of variable names to exclude from the summary. | `NULL` |
 
 ##### Examples
 
 ```{r eval=FALSE}
 # Overall summary without considering treatment groups
-summary_table(clinical_df,
-              exclude = c('subject_id', 'visit'))
+summary_table(clinical_df, exclude = c('subject_id', 'visit'))
 ```
 ```{r echo=FALSE, message=FALSE}
-clinical_summary <- summary_table(clinical_df, exclude = c('subject_id', 'visit'))
+#clinical_summary <- summary_table(clinical_df, exclude = c('subject_id', 'visit'))
 #Save as PNG image for GitHub
-gt::gtsave(clinical_summary, "man/figures/summary_table_example_1.png", zoom = 3)
+#gt::gtsave(clinical_summary, "man/figures/summary_table_example_1.png", zoom = 3, delay = 2)
 ```
 
 <img src="man/figures/summary_table_example_1.png" height = "250">
 
 ```{r eval=FALSE}
 # Grouped summary by treatmet group
-summary_table(clinical_df,
-              group_by = 'treatment',
-              exclude = c('subject_id', 'visit'))
+summary_table(clinical_df, group_by = 'treatment', exclude = c('subject_id', 'visit'))
 ```
 ```{r message=FALSE, echo=FALSE}
 # Store results to create PNG image
-clinical_summary <- summary_table(clinical_df,
-                                  group_by = 'treatment',
-                                  exclude = c('subject_id', 'visit'))
+#clinical_summary <- summary_table(clinical_df,
+#                                  group_by = 'treatment',
+#                                  exclude = c('subject_id', 'visit'))
 # Save as PNG image for GitHub
-gt::gtsave(clinical_summary, "man/figures/summary_table_example_2.png", zoom = 3, vwidth = 1200)
+#gt::gtsave(clinical_summary, "man/figures/summary_table_example_2.png", zoom = 3, vwidth = 1200)
 ```
 
 <img src="man/figures/summary_table_example_2.png">
@@ -172,19 +164,19 @@ gt::gtsave(clinical_summary, "man/figures/summary_table_example_2.png", zoom = 3
 # Grouped summary by treatmet group with all stats and effect size
 summary_table(clinical_df,
               group_by = 'treatment',
-              all_stats = TRUE,
+              all = TRUE,
               effect_size = TRUE,
               exclude = c('subject_id', 'visit'))
 ```
 ```{r message=FALSE, echo=FALSE}
 # Store results to create PNG image
-clinical_summary <- summary_table(clinical_df,
-                                  group_by = 'treatment',
-                                  all_stats = TRUE,
-                                  effect_size = TRUE,
-                                  exclude = c('subject_id', 'visit'))
+#clinical_summary <- summary_table(clinical_df,
+#                                  group_by = 'treatment',
+#                                  all = TRUE,
+#                                  effect_size = TRUE,
+#                                  exclude = c('subject_id', 'visit'))
 # Save as PNG image for GitHub
-gt::gtsave(clinical_summary, "man/figures/summary_table_example_3.png", zoom = 3, vwidth = 1195)
+#gt::gtsave(clinical_summary, "man/figures/summary_table_example_3.png", zoom = 3, vwidth = 1195)
 ```
 
 <img src="man/figures/summary_table_example_3.png">
@@ -199,68 +191,71 @@ Tests normality using sample size-appropriate methods: Shapiro-Wilk test (n ≤ 
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `data` | Dataframe containing the variables to be summarized | `Required` |
-| `x` | Name of the variable to analyzed | `NULL` |
-| `outliers` | If TRUE, displays all outlier row indices | `FALSE` |
-| `color` | Color for plots | `"#7fcdbb"` |
+| `data` | Dataframe containing the variables to be summarized. | `Required` |
+| `x` | Character string indicating the variable to be analyzed. | `Required` |
+| `all` | Logical parameter that displays all row indices of values outside 95%CI. | `FALSE` |
+| `color` | Character string indicating color for plots. | `"#79E1BE"` |
 
 ##### Examples
 
 ```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
+# Filter clinical data to Placebo arm
+clinical_df_treat <- clinical_df[clinical_df$treatment == "Placebo", ]
+
 # Normally distributed variable
-normality(data = clinical_df, "biomarker")
+normality(data = clinical_df_treat, "biomarker")
 
 # Non-normally distributed variable with points outside 95%CI displayed
-normality(data = clinical_df, "weight", outside = TRUE)
+normality(data = clinical_df_treat, "weight", all = TRUE)
 ```
 
 #### **missing_values()**
 
 ##### Description
 
-Analyzes missing values in a dataframe, providing counts and percentages per
-column with visualizations.
+Provides descriptive statistics and visualizations of missing values in a dataframe.
 
 ##### Parameters
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `df` | A dataframe to analyze for missing values | `Required` |
-| `color` | Character; color for missing values | `"#7fcdbb"` |
-| `max_heatmap_rows` | Logical; if TRUE, shows all variables including those without missing values | `FALSE` |
+| `data` | Dataframe containing the variables to be analyzed. | `Required` |
+| `color` | Character string indicating the color for missing values. | `"#79E1BE"` |
+| `all` | Logical parameter that shows all variables including those without missing values. | `FALSE` |
 
 ##### Examples
 
 ```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
-clinical_df <- clinical_data(missing = 0.05)
-
 # Missing value analysis of only variables with missing values
-missing_values(clinical_df)
+missing_values(clinical_df_full)
+
 # Show all variables including those without missing values
-missing_values(clinical_df, all = TRUE)
+missing_values(clinical_df_full, all = TRUE)
 ```
 
 #### **outliers()**
 
 ##### Description
 
-Identifies outliers using Tukey's interquartile range (IQR) method and provides 
-comprehensive visual assessment through scatter plots and boxplots.
+Identifies outliers using Tukey's interquartile range (IQR) method and provides descriptive statistics and visualizations for outlier assessment in numeric data.
 
 ##### Parameters
 
-| Parameter | Description | Default     |
-|-----------|-------------|-------------|
-| x         | Numeric vector or character string naming a column in `data`. | `Required` |
-| data      | Optional dataframe containing the variable specified in `x`. | `NULL` |
-| threshold | Numeric value multiplying the IQR to define outlier boundaries. | `1.5` |
-| color     | Character string specifying plot color. | `"#7fcdbb"` |
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `data` | Dataframe containing the variables to be analyzed. | `Required` |
+| `x` | Character string indicating the variable to be analyzed. | `Required` |
+| `threshold` | Numeric value multiplying the IQR to define outlier boundaries. | `1.5` |
+| `color` | Character string indicating the color for non-outlier data points. | `"#79E1BE"` |
 
 ##### Examples
 
 ```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
-clinical_df <- clinical_data(n = 300)
-outliers(clinical_df$biomarker)
+# Basic outlier detection
+outliers(clinical_df_full, "biomarker")
+
+# Using custom threshold
+outliers(clinical_df_full, "biomarker", threshold = 1.0)
 ``` 
 
 ### Sample Size and Power Calculation
@@ -269,115 +264,74 @@ outliers(clinical_df$biomarker)
 
 ##### Description
 
-Calculates the sample size needed in a clinical trial based on study design and statistical parameters.
+Calculates the sample size needed in a clinical trial based on study design and statistical parameters using standard formulas for hypothesis testing (Chow, S. 2008).
 
 ##### Parameters
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `sample` | Whether one or two samples need to be calculated (`"one-sample"` or `"two-sample"`). | `Required` |
-| `design` | Study design for two-sample tests. Options: `"parallel"` or `"crossover"`. | `NULL` |
-| `outcome` | Type of outcome variable: `"mean"` or `"proportion"`. | `Required` |
-| `type` | Type of hypothesis test: `"equality"`, `"equivalence"`, `"non-inferiority"`, or `"superiority"`. | `Required` |
-| `alpha` | Type I error rate (significance level). | `0.05` |
-| `beta` | Type II error rate (1 - power). | `0.20` |
-| `x1` | Value of the mean or proportion for group 1 (e.g., treatment). | `Required` |
-| `x2` | Value of the mean or proportion for group 2 (e.g., control or reference). | `Required` |
-| `SD` | Standard deviation (required for mean outcomes and crossover designs with proportions). | `NULL` |
-| `delta` | Margin of clinical interest. Required for non-equality tests. | `NULL` |
-| `k` | Allocation ratio (n₁/n₂) for two-sample tests. |`1` |
-
+| `sample` | Character string indicating whether one or two samples need to be calculated. Options: `"one-sample"` or `"two-sample"`. | `Required` |
+| `design` | Character string indicating study design when `sample = "two-sample"`. Options: `"parallel"` or `"crossover"`. | `NULL` (for one-sample tests) |
+| `outcome` | Character string indicating the type of outcome variable. Options: `"mean"` or `"proportion"`. | `Required` |
+| `type` | Character string indicating the type of hypothesis test. Options: `"equality"`, `"equivalence"`, `"non-inferiority"`, or `"superiority"`. | `Required` |
+| `alpha` | Numeric parameter indicating the Type I error rate (significance level). | `0.05` |
+| `beta` | Numeric parameter indicating the Type II error rate (1 - power). | `0.20` |
+| `x1` | Numeric value of the mean or proportion for group 1 (treatment group). | `Required` |
+| `x2` | Numeric value of the mean or proportion for group 2 (control group or reference value). | `Required` |
+| `SD` | Numeric value indicating the standard deviation. Required for mean outcomes and crossover designs with proportion outcomes. | `NULL` |
+| `delta` | Numeric value indicating the margin of clinical interest. Required for non-equality tests. Must be negative for non-inferiority and positive for superiority/equivalence. | `NULL` |
+| `dropout` | Numeric value indicating the discontinuation rate expected in the study. Must be between 0 and 1. | `0` |
+| `k` | Numeric value indicating the allocation ratio (`n1/n2`) for two-sample tests. | `1` |
 
 ##### Examples
 
 ```{r}
+# Two-sample parallel non-inferiority test for means with 10% expected dropout
+sample_size(sample = 'two-sample', design = 'parallel', outcome = 'mean',
+            type = 'non-inferiority', x1 = 5.0, x2 = 5.0, 
+            SD = 0.1, delta = -0.05, k = 1, dropout = 0.1)
+```
+```{r}
 # One-sample equivalence test for means
-sample_size(sample = 'one-sample',
-            outcome = 'mean',
-            type = 'equivalence', 
-            x1 = 0,
-            x2 = 0,
-            SD = 0.1,
-            delta = 0.05,
-            alpha = 0.05,
-            beta = 0.20)
-```
-```{r}
-# Two-sample parallel non-inferiority test for means
-sample_size(sample = 'two-sample',
-            design = 'parallel',
-            outcome = 'mean',
-            type = 'non-inferiority',
-            x1 = 5.0,
-            x2 = 5.0,
-            SD = 0.1,
-            delta = -0.05,
-            k = 1)
-```
-```{r}
-# Two-sample crossover non-inferiority test for means
-sample_size(sample = 'two-sample', 
-            design = "crossover",
-            outcome = 'mean',
-            type = 'non-inferiority', 
-            x1 = -0.10, 
-            x2 = 0,
-            SD = 0.20,
-            delta = -0.20,
-            alpha = 0.05, 
-            beta = 0.20)
-
+sample_size(sample = "one-sample", outcome = "mean", type = "equivalence",
+            x1 = 0, x2 = 0, SD = 0.1, delta = 0.05)
 ```
 
 #### **sample_size_range()**
 
 ##### Description
 
-Calculates required sample sizes for specified power levels (70%, 80%, 90%) across a range of treatment effect values (`x1`), while keeping the control group value (`x2`) fixed. Internally calls `sample_size()` and generates a plot to visualize how total sample size changes with varying `x1`.
+Calculates required sample sizes for specified power levels (70%, 80%, 90%) across a range of treatment effect values (\code{x1}), while keeping the control group value (\code{x2}) fixed. Internally calls \code{sample_size()} and generates a plot to visualize how total sample size changes with varying \code{x1}.
 
 ##### Parameters
 
-| Parameter   | Description | Default |
-|-------------|-------------|---------|
-| `x1_range`  | Numeric vector of length 2. Range of values to evaluate for the treatment group mean or proportion (`x1`). | `Required` |
-| `x2`        | Fixed reference value for the control group. | `Required` |
-| `step`      | Step size to increment across the `x1_range`. | `0.1` |
-| `...`       | Additional arguments passed to `sample_size()`, such as `sample`, `design`, `outcome`, `type`, `SD`, `alpha`, etc. | `—` |
-
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `x1_range` | Numeric vector of length 2 specifying the range of values to evaluate for the treatment group mean or proportion (`x1`). | `Required` |
+| `x2` | Numeric value for the control group mean or proportion (reference value). | `Required` |
+| `step` | Numeric value indicating the step size to increment across the `x1_range`. | `0.1` |
+| `...` | Additional arguments passed to `sample_size()`, such as `sample`, `design`, `outcome`, `type`, `SD`, `alpha`, etc. | `Required` |
 
 ##### Examples
 
 ```{r, fig.width=7, fig.height=5, dpi=300, out.width="75%"}
-# One-sample equivalence test for means
-result <- sample_size_range(x1_range = c(-0.01, 0.01),
-                            x2 = 0,
-                            step = 0.005,
-                            sample = "one-sample",
-                            outcome = "mean",
-                            type = "equivalence",
-                            SD = 0.1,
-                            delta = 0.05,
-                            alpha = 0.05)
+# Two-sample parallel non-inferiority test for proportions with 10% dropout
+result <- sample_size_range(x1_range = c(0.65, 0.75), x2 = 0.65, step = 0.01,
+                            sample = "two-sample", design = "parallel", outcome = "proportion",
+                            type = "non-inferiority", delta = -0.1, dropout = 0.1)
 ```
 ```{r, echo=FALSE, results='asis'}
-knitr::kable(result, format = "markdown")
+knitr::kable(result$data, format = "markdown")
 ```
 
 ```{r, fig.width=7, fig.height=5, dpi=300, out.width="75%"}
-# Two-sample parallel non-inferiority test for proportions w/ 10% dropout rate
-result <- sample_size_range(x1_range = c(0.65, 0.75),
-                            x2 = 0.65,
-                            step = 0.02,
-                            sample = "two-sample",
-                            design = "parallel",
-                            outcome = "proportion",
-                            type = "non-inferiority",
-                            delta = -0.1,
-                            alpha = 0.05,
-                            dropout = 0.1)
+# One-sample equivalence test for means
+result <- sample_size_range(x1_range = c(-0.01, 0.01), x2 = 0, step = 0.005,
+                            sample = "one-sample", outcome = "mean", type = "equivalence",
+                            SD = 0.1, delta = 0.05, alpha = 0.05)
 ```
 ```{r, echo=FALSE, results='asis'}
-knitr::kable(result, format = "markdown")
+knitr::kable(result$data, format = "markdown")
 ```
 
 ### Statistical Analysis and Inference
@@ -392,35 +346,30 @@ Performs omnibus tests to evaluate overall differences between three or more gro
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `data` | Dataframe containing the variables to be analyzed. | `Required` |
-| `y` | Character string. Dependent variable (outcome). | `Required` |
-| `x` | Character string. Independent variable (group or within-subject variable). | `Required` |
-| `paired_var` | Character string or NULL. Source of repeated measurements. If provided, a repeated measures design is assumed. Data should be in long format with one row per observation. If NULL, independent groups design is assumed. | `NULL` |
-| `alpha` | Numeric. Significance level for hypothesis tests. | `0.05` |
-| `p_method` | Character string. Method for p-value adjustment in post-hoc multiple comparisons to control for Type I error inflation. | `"holm"` |
-| `na.action` | Character string. Action to take if NAs are present ("na.omit" or "na.exclude"). | `"na.omit"` |
+| `data` | Dataframe containing the variables to be analyzed. Data must be in long format with one row per observation. | `Required` |
+| `y` | Character string indicating the dependent variable (outcome). | `Required` |
+| `x` | Character string indicating the independent variable (group or within-subject variable). | `Required` |
+| `paired_by` | Character string indicating the source of repeated measurements. If provided, a repeated measures design is assumed. If `NULL`, independent groups design is assumed. | `NULL` |
+| `alpha` | Numeric value indicating the significance level for hypothesis tests. | `0.05` |
+| `p_method` | Character string indicating the method for p-value adjustment in post-hoc multiple comparisons to control for Type I error inflation. Options: `"holm"`, `"hochberg"`, `"hommel"`, `"bonferroni"`, `"BH"`, `"BY"`, `"none"`. | `"holm"` |
+| `na.action` | Character string indicating the action to take if NAs are present (`"na.omit"` or `"na.exclude"`). | `"na.omit"` |
 
 ##### Examples
 
 ```{r}
-# Simulated clinical data with multiple tratment arms and visits
-clinical_df <- clinical_data(n = 300, visits = 6, arms = c("A", "B", "C"))
- 
 # Compare numerical variable across treatments
-result <- omnibus(data = clinical_df,
-                  y = "biomarker", 
-                  x = "treatment")
+omnibus(data = clinical_df_full, y = "biomarker", x = "treatment")
+ 
+# Compare numerical variable changes across visits 
+omnibus(y = "biomarker", x = "visit", data = clinical_df, paired_by = "subject_id")
 ```
 
 ```{r}
 # Filter simulated data to just one treatment
-clinical_df_A <- clinical_df[clinical_df$treatment == "A", ]
+clinical_df_A <- clinical_df[clinical_df$treatment == "Treatment", ]
 
 # Compare numerical variable changes across visits 
-result <- omnibus(y = "biomarker", 
-                  x = "visit", 
-                  data = clinical_df_A, 
-                  paired_by = "subject_id")
+omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "subject_id")
 ```
 
 #### **effect_measures()**
@@ -433,12 +382,12 @@ Calculates measures of effect: Odds Ratio (OR), Risk Ratio (RR), Risk Reduction 
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `exposed_event` | Numeric. Number of events in the exposed group. | `Required` |
-| `exposed_no_event` | Numeric. Number of non-events in the exposed group. | `Required` |
-| `unexposed_event` | Numeric. Number of events in the unexposed group. | `Required` |
-| `unexposed_no_event` | Numeric. Number of non-events in the unexposed group. | `Required` |
-| `alpha` | Numeric. Value between 0 and 1 specifying the alpha level for confidence intervals (CI). | `0.05` |
-| `correction` | Logical. If TRUE, a continuity correction (0.5) is applied when any cell contains 0. | `TRUE` |
+| `exposed_event` | Numeric value indicating the number of events in the exposed group. | `Required` |
+| `exposed_no_event` | Numeric value indicating the number of non-events in the exposed group. | `Required` |
+| `unexposed_event` | Numeric value indicating the number of events in the unexposed group. | `Required` |
+| `unexposed_no_event` | Numeric value indicating the number of non-events in the unexposed group. | `Required` |
+| `alpha` | Numeric value between 0 and 1 specifying the alpha level for confidence intervals (CI). | `0.05` |
+| `correction` | Logical parameter that indicates whether a continuity correction (0.5) will be applied when any cell contains 0. | `TRUE` |
 
 ##### Examples
 
@@ -459,22 +408,22 @@ Generates publication-ready bar plots with minimal code using ggplot2.
 
 ##### Parameters
 
-|Parameter|Description|Default|
-|---|---|---|
-|`data`|A data frame containing the variables to plot|`Required`|
-|`x`|Character string specifying the x-axis variable|`Required`|
-|`y`|Optional character string specifying the y-axis variable. If provided, values from this column will be used for bar heights. If `NULL`, counts will be calculated automatically|`NULL`|
-|`group`|Optional character string specifying the grouping variable for fill color|`NULL`|
-|`facet`|Optional character string specifying the faceting variable|`NULL`|
-|`position`|Character string specifying the bar position; one of `"dodge"` (default), `"stack"`, or `"fill"` (for percentage stacking)|`"dodge"`|
-|`stat`|Optional character string for statistical aggregation; one of `"mean"` or `"median"`|`NULL`|
-|`colors`|Character vector of colors for bars or groups. If `NULL`, uses TealGrn color palette|`NULL`|
-|`title`|Optional character string for the plot title|`NULL`|
-|`xlab`|Optional character string for the x-axis label|`NULL`|
-|`ylab`|Optional character string for the y-axis label|`NULL`|
-|`legend_title`|Optional character string for the legend title|`NULL`|
-|`flip`|Logical; whether to flip the coordinates (horizontal bars)|`NULL`|
-|`text_size`|Numeric value specifying the base text size|`12`|
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `data` | A data frame containing the variables to plot. | `Required` |
+| `x` | Character string specifying the x-axis variable. | `Required` |
+| `y` | Character string specifying the y-axis variable. If `NULL`, counts calculated automatically. | `NULL` |
+| `group` | Character string specifying the grouping variable for fill color. | `NULL` |
+| `facet` | Character string specifying the faceting variable. | `NULL` |
+| `position` | Character string specifying bar position: `"dodge"`, `"stack"`, or `"fill"`. | `Required` |
+| `stat` | Character string for statistical aggregation: `"mean"` or `"median"`. | `Required` |
+| `colors` | Character vector of colors. If `NULL`, uses TealGrn palette. | `NULL` |
+| `title` | Character string for plot title. | `NULL` |
+| `xlab` | Character string for x-axis label. | `NULL` |
+| `ylab` | Character string for y-axis label. | `NULL` |
+| `legend_title` | Character string for legend title. | `NULL` |
+| `flip` | Logical parameter indicating whether to flip coordinates. | `FALSE` |
+| `values` | Logical parameter indicating whether to display value labels above bars. | `FALSE` |
 
 ##### Examples
 
@@ -483,20 +432,12 @@ Generates publication-ready bar plots with minimal code using ggplot2.
 clinical_df <- clinical_data()
 
 # Proportion of response by treatment
-plot_bar(clinical_df, 
-         x = "treatment", 
-         group = "response",
-         position = "fill", 
-         title = "Proportion of response by treatment", 
-         values = TRUE)
+plot_bar(data = clinical_df, x = "treatment", group = "response", position = "fill", 
+         title = "Proportion of response by treatment", values = TRUE)
 
 # Grouped barplot of categorical variable by treatment with value labels
-plot_bar(clinical_df, 
-         x = "response", 
-         group = "visit", 
-         facet = "treatment", 
-         title = "Response by visit and treatment",
-         values = TRUE)
+plot_bar(data = clinical_df, x = "response", group = "visit", facet = "treatment", 
+         title = "Response by visit and treatment",values = TRUE)
 ```
 
 #### **plot_line()**
@@ -509,47 +450,35 @@ Generates publication-ready line plots with minimal code using ggplot2.
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `data` | A data frame containing the variables to plot | `Required` |
-| `x` | Character string specifying the x-axis variable (typically time or ordered) | `Required` |
-| `y` | Character string specifying the y-axis variable (measurement or outcome) | `Required` |
-| `group` | Optional character string specifying the grouping variable for multiple lines | `NULL` |
-| `facet` | Optional character string specifying the faceting variable | `NULL` |
-| `stat` | Optional character string for statistical aggregation; one of `"mean"` or `"median"` | `NULL` |
-| `error` | Optional character string for error bars; one of `"se"` (standard error, default), `"sd"`, `"ci"`, or `"none"` | `"se"` |
-| `error_width` | Numeric; width of the error bar caps | `0.2` |
-| `colors` | Character vector of colors for lines. If `NULL`, uses TealGrn color palette | `NULL` |
-| `title` | Optional character string for the plot title | `NULL` |
-| `xlab` | Optional character string for the x-axis label | `NULL` |
-| `ylab` | Optional character string for the y-axis label | `NULL` |
-| `legend_title` | Optional character string for the legend title | `NULL` |
-| `points` | Logical; whether to add points to the lines | `TRUE` |
-| `line_size` | Numeric; thickness of the lines | `1` |
-| `point_size` | Numeric; size of the points if shown | `3` |
-| `text_size` | Numeric value specifying the base text size | `12` |
+| `data` | A data frame containing the variables to plot. | `Required` |
+| `x` | Character string specifying the x-axis variable. | `Required` |
+| `y` | Character string specifying the y-axis variable. | `Required` |
+| `group` | Character string specifying the grouping variable for multiple lines. | `NULL` |
+| `facet` | Character string specifying the faceting variable. | `NULL` |
+| `stat` | Character string for statistical aggregation: `"mean"` or `"median"`. | `Required` |
+| `error` | Character string for error bars: `"se"`, `"sd"`, `"ci"`, or `"none"`. | `"se"` |
+| `error_width` | Numeric value indicating the width of error bar caps. | `0.2` |
+| `colors` | Character vector of colors. If `NULL`, uses TealGrn palette. | `NULL` |
+| `title` | Character string for plot title. | `NULL` |
+| `xlab` | Character string for x-axis label. | `NULL` |
+| `ylab` | Character string for y-axis label. | `NULL` |
+| `legend_title` | Character string for legend title. | `NULL` |
+| `points` | Logical parameter indicating whether to add points to lines. | `TRUE` |
+| `line_size` | Numeric value indicating thickness of lines. | `1` |
+| `point_size` | Numeric value indicating size of points if shown. | `3` |
+| `y_limits` | Numeric vector of length 2 for y-axis limits. | `NULL` |
+| `x_limits` | Numeric vector of length 2 for x-axis limits. | `NULL` |
 
 ##### Examples
 
 ```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
-# Simulated clinical data
-clinical_df <- clinical_data(arms = c("A","B","C"), visits = 10)
-
 # Line plot with mean and standard error by treatment
-plot_line(clinical_df, 
-          x = "visit", 
-          y = "biomarker",
-          group = "treatment", 
-          stat = "mean", 
-          error = "se")
+plot_line(data = clinical_df_full, x = "visit", y = "biomarker",
+          group = "treatment", stat = "mean", error = "se")
 
-# Faceted line plots with median and 95% CI
-plot_line(clinical_df, 
-          x = "visit", 
-          y = "biomarker", 
-          group = "treatment", 
-          facet = "sex",
-          stat = "median", 
-          error = "ci", 
-          points = FALSE)
+# Faceted line plots with median and no error bars
+plot_line(data = clinical_df_full, x = "visit", y = "biomarker", group = "treatment", 
+          facet = "sex", stat = "median", error = "none", points = FALSE)  
 ```
 
 #### **plot_hist()**
@@ -564,29 +493,25 @@ Generates publication-ready histogram plots with minimal code using ggplot2.
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `data` | A data frame containing the variables to plot | - |
-| `x` | Character string specifying the variable for the histogram | - |
-| `group` | Optional character string specifying the grouping variable for multiple histograms | - |
-| `facet` | Optional character string specifying the faceting variable | - |
-| `bins` | Numeric; number of bins for the histogram | 30 |
-| `binwidth` | Numeric; width of the bins (overrides bins if specified) | - |
-| `alpha` | Numeric; transparency level for the bars | 0.7 |
-| `colors` | Character vector of colors for bars. If NULL, uses TealGrn color palette | NULL |
-| `title` | Optional character string for the plot title | - |
-| `xlab` | Optional character string for the x-axis label | - |
-| `ylab` | Optional character string for the y-axis label | - |
-| `legend_title` | Optional character string for the legend title | - |
-| `text_size` | Numeric value specifying the base text size | 12 |
-| `y_limits` | Numeric vector of length 2 specifying y-axis limits (e.g., c(0, 100)) | - |
-| `x_limits` | Numeric vector of length 2 specifying x-axis limits (e.g., c(0, 50)) | - |
-| `stat` | Optional character string; adds a dashed line for "mean" or "median" | NULL |
+| `data` | A dataframe containing the variables to plot. | `Required` |
+| `x` | Character string specifying the variable for the histogram. | `Required` |
+| `group` | Character string specifying the grouping variable for multiple histograms. | `NULL` |
+| `facet` | Character string specifying the faceting variable. | `NULL` |
+| `bins` | Numeric value indicating the number of bins for the histogram. | `30` |
+| `binwidth` | Numeric value indicating the width of the bins (overrides `bins` if specified). | `NULL` |
+| `alpha` | Numeric value indicating the transparency level for the bars. | `0.7` |
+| `colors` | Character vector of colors. If `NULL`, uses TealGrn palette. | `NULL` |
+| `title` | Character string for plot title. | `NULL` |
+| `xlab` | Character string for x-axis label. | `NULL` |
+| `ylab` | Character string for y-axis label. | `NULL` |
+| `legend_title` | Character string for legend title. | `NULL` |
+| `y_limits` | Numeric vector of length 2 for y-axis limits. | `NULL` |
+| `x_limits` | Numeric vector of length 2 for x-axis limits. | `NULL` |
+| `stat` | Character string that adds line for `"mean"` or `"median"`. | `NULL` |
 
 ##### Examples
 
 ```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
-# Sample clinical data
-clinical_df <- clinical_data()
-
 # Mirror histogram for 2 groups with mean lines
 plot_hist(clinical_df, x = "biomarker", group = "treatment", stat = "mean")
 
@@ -598,38 +523,35 @@ plot_hist(clinical_df, x = "biomarker", facet = "treatment")
 
 ##### Description
 
-Generates publication-ready boxplots with optional jittered points and mean overlay.
+Generates publication-ready boxplots with minimal code using ggplot2.
 
 ##### Parameters
 
-|Parameter|Description|Default|
-|---------|-----------|-------|
-|`data`|A data frame containing the variables to plot|`Required`|
-|`x`|Character string specifying the x-axis variable (categorical or numeric with few unique values)|`Required`|
-|`y`|Character string specifying the y-axis variable (numeric)|`Required`|
-|`group`|Optional character string specifying grouping variable for fill/color|`NULL`|
-|`facet`|Optional character string specifying faceting variable|`NULL`|
-|`colors`|Character vector of colors. If `NULL`, uses TealGrn palette|`NULL`|
-|`title`|Optional plot title|`NULL`|
-|`xlab`|Optional x-axis label|`NULL`|
-|`ylab`|Optional y-axis label|`NULL`|
-|`legend_title`|Optional legend title|`NULL`|
-|`points`|Logical; add jittered points|`FALSE`|
-|`point_size`|Numeric; size of points|—|
-|`text_size`|Numeric; base text size|—|
-|`y_limits`|Numeric vector of length 2 for y-axis limits|`NULL`|
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `data` | A dataframe containing the variables to plot. | `Required` |
+| `x` | Character string specifying the x-axis variable. | `Required` |
+| `y` | Character string specifying the y-axis variable. | `Required` |
+| `group` | Character string specifying grouping variable for fill/color. | `NULL` |
+| `facet` | Character string specifying faceting variable. | `NULL` |
+| `colors` | Character vector of colors. If `NULL`, uses TealGrn palette. | `NULL` |
+| `title` | Character string for plot title. | `NULL` |
+| `xlab` | Character string for x-axis label. | `NULL` |
+| `ylab` | Character string for y-axis label. | `NULL` |
+| `legend_title` | Character string for legend title. | `NULL` |
+| `points` | Logical parameter indicating if jittered points should be shown. | `FALSE` |
+| `point_size` | Numeric value indicating the size of points. | `2` |
+| `y_limits` | Numeric vector of length 2 for y-axis limits. | `NULL` |
+| `show_mean` | Logical parameter indicating if mean should be shown. | `TRUE` |
 
 ##### Examples
 
 ```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
-# Simulated clinical data
-clinical_df <- clinical_data(visit = 10)
+# Boxplot of biomarker by treatment
+plot_box(clinical_df, x = "treatment", y = "biomarker", group = "treatment")
 
-# Barplot of age by sex and treatment
-plot_box(clinical_df, x = "sex", y = "age", group = "treatment", y_limits = c(0,80))
-
-# Barplot of bimarker by study visit and treatment
-plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment", y_limits = c(0,80))
+# Boxplot of bimarker by study visit and treatment
+plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment")
 ```
 
 #### **plot_corr()**
@@ -642,25 +564,27 @@ Generates publication-ready correlation matrix heatmaps with minimal code using 
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `data` | A data frame containing the variables to analyze | Required |
-| `vars` | Optional character vector specifying which variables to include. If NULL, all numeric variables will be used | `NULL` |
-| `method` | Character string specifying correlation method; one of "pearson", "spearman", or "kendall" | `"pearson"` |
-| `type` | Character string specifying matrix type; one of "full", "upper", or "lower" | `"full"` |
-| `diag` | Logical; whether to show diagonal (always 1.0) | `TRUE` |
-| `colors` | Character vector of 3 colors for negative, neutral, and positive correlations. If NULL, uses a TealGrn-based palette | `NULL` |
-| `title` | Optional character string for the plot title | `NULL` |
-| `text_size` | Numeric value specifying the base text size | `12` |
-| `show_values` | Logical; whether to display correlation values in cells | `TRUE` |
-| `value_size` | Numeric; size of correlation value text | `3` |
-| `show_significance` | Logical; whether to mark significant correlations | `FALSE` |
-| `sig_level` | Numeric; significance level for marking | `0.05` |
+| `data` | A dataframe containing the variables to analyze. | `Required` |
+| `vars` | Character vector specifying which variables to include. | `NULL` |
+| `method` | Character string specifying correlation method: `"pearson"` or `"spearman"`. | `"pearson"` |
+| `type` | Character string specifying matrix type: `"full"`, `"upper"`, or `"lower"`. | `"full"` |
+| `colors` | Character vector of 3 colors for negative, neutral, and positive correlations. | `NULL` |
+| `title` | Character string for plot title. | `NULL` |
+| `show_values` | Logical parameter indicating whether to display correlation values in cells. | `TRUE` |
+| `value_size` | Numeric value indicating size of correlation value text. | `3` |
+| `show_sig` | Logical parameter indicating whether to mark significant correlations. | `FALSE` |
+| `sig_level` | Numeric value indicating significance level for marking. | `0.05` |
+| `sig_only` | Logical parameter indicating whether to show only statistically significant values. | `FALSE` |
+| `show_legend` | Logical parameter indicating whether to show legend. | `TRUE` |
+| `p_method` | Character string indicating the method for p-value adjustment in post-hoc multiple comparisons to control for Type I error inflation. Options: `"holm"`, `"hochberg"`, `"hommel"`, `"bonferroni"`, `"BH"`, `"BY"`, or `"none"`. | `"holm"` |
 
 ##### Examples
 
 ```{r, fig.width=10, fig.height=8, dpi=300, out.width="100%"}
-# Sample data
-cars_df <- mtcars
+# Correlation matrix for base R dataset 'swiss'
+plot_corr(data = swiss)
 
-# Correlation matrix with statistical significance
-plot_corr(cars_df, type = "upper", show_significance = TRUE)
+# Lower triangle with significance indicators and filtering
+plot_corr(data = swiss, type = "lower", show_sig = TRUE, sig_only = TRUE)
 ```
+
