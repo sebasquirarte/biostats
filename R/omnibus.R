@@ -1,11 +1,10 @@
 #' Omnibus Tests for Comparing Three or More Groups
 #'
-#' Performs omnibus tests to evaluate overall differences between three or more groups.
-#' Automatically selects the appropriate statistical test based on data characteristics
-#' and assumption testing. Supports both independent groups and repeated measures designs.
-#' Tests include one-way ANOVA, repeated measures ANOVA, Kruskal-Wallis test, and
-#' Friedman test. Performs comprehensive assumption checking (normality, homogeneity
-#' of variance, sphericity) and post-hoc testing when significant results are detected.
+#' Performs omnibus tests to evaluate overall differences between three or more groups. Automatically 
+#' selects the appropriate statistical test based on data characteristics and assumption testing. 
+#' Supports both independent groups and repeated measures designs. Tests include one-way ANOVA, repeated
+#' measures ANOVA, Kruskal-Wallis test, and Friedman test. Performs comprehensive assumption checking
+#' (normality, homogeneity of variance, sphericity) and post-hoc testing when significant results are detected.
 #'
 #' @param data Dataframe containing the variables to be analyzed. Data must be in long format 
 #'   with one row per observation.
@@ -16,9 +15,9 @@
 #'   Default: NULL.
 #' @param alpha Numeric value indicating the significance level for hypothesis tests. Default: 0.05.
 #' @param p_method Character string indicating the method for p-value adjustment in post-hoc multiple
-#'   comparisons to control for Type I error inflation. Options: "holm" (Holm), 
-#'   "hochberg" (Hochberg), "hommel" (Hommel), "bonferroni" (Bonferroni), "BH" 
-#'   (Benjamini-Hochberg), "BY" (Benjamini-Yekutieli), "none" (no adjustment). Default: "holm".
+#'   comparisons to control for Type I error inflation. Options: "holm" (Holm), "hochberg" (Hochberg), 
+#'   "hommel" (Hommel), "bonferroni" (Bonferroni), "BH" (Benjamini-Hochberg), "BY" (Benjamini-Yekutieli),
+#'   "none" (no adjustment). Default: "holm".
 #' @param na.action Character string indicating the action to take if NAs are present ("na.omit" 
 #'   or "na.exclude"). Default: "na.omit"
 #'
@@ -37,15 +36,12 @@
 #' clinical_df <- clinical_data(n = 300, visits = 6, arms = c("A", "B", "C"))
 #' 
 #' # Compare numerical variable across treatments
-#' result <- omnibus(data = clinical_df,
-#'                   y = "biomarker", 
-#'                   x = "treatment")
+#' omnibus(data = clinical_df, y = "biomarker", x = "treatment")
 #' 
+#' # Filter simulated data to just one treatment
+#' clinical_df_A <- clinical_df[clinical_df$treatment == "A", ]
 #' # Compare numerical variable changes across visits 
-#' result <- omnibus(y = "biomarker", 
-#'                   x = "visit", 
-#'                   data = clinical_df, 
-#'                   paired_by = "subject_id")
+#' omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "subject_id")
 #'
 #' @importFrom car leveneTest
 #' @importFrom stats aov bartlett.test friedman.test kruskal.test lm mauchly.test shapiro.test as.formula na.action
@@ -71,10 +67,7 @@ omnibus <- function(data,
   data[[x]] <- as.factor(data[[x]])
   if (!is.null(paired_by)) data[[paired_by]] <- as.factor(data[[paired_by]])
   
-  data <- .data_organization(data = data,
-                             y = y,
-                             x = x,
-                             paired_by = paired_by)
+  data <- .data_organization(data = data, y = y, x = x, paired_by = paired_by)
   
   if (alpha <= 0 || alpha >= 1) stop("'alpha' must be between 0 and 1.", call. = FALSE)
   num_levels <- length(levels(data[[x]]))
@@ -116,11 +109,20 @@ omnibus <- function(data,
       name <- "Repeated measures ANOVA"
     } else {
       formula <- as.formula(paste(deparse(formula[[2]]), "~", deparse(formula[[3]]), "|", paired_by))
-      model <- friedman.test(formula, data = data, na.action = na.action) # Friedman test
-      name <- "Friedman"
+      
+      # Additional check right before Friedman test
+      tryCatch({
+        model <- friedman.test(formula, data = data, na.action = na.action)
+        name <- "Friedman"
+      }, error = function(e) {
+        if (grepl("not an unreplicated complete block design", e$message)) {
+          stop("Friedman test requires complete, non-duplicated data per subject per time point.", call. = FALSE)
+        } else {
+          stop(e$message, call. = FALSE)
+        }
+      })
     }
   }
-  
   # Extract key statistics
   if (name == "One-way ANOVA") {
     stat <- summary[[1]][1, "F value"]
@@ -155,7 +157,6 @@ omnibus <- function(data,
   }
   cat(sprintf("  Result: %s\n\n", ifelse(p_value < alpha, "significant", "not significant")))
   
-  
   # Perform post-hoc tests if significant
   if (p_value < alpha) {
     cat("Post-hoc Multiple Comparisons\n\n")
@@ -186,10 +187,7 @@ omnibus <- function(data,
     unbalance <- "highly unbalanced"
   }
   
-  cat(sprintf(
-    "\nThe study groups show a %s distribution of sample sizes (\u0394n = %.3f).\n\n",
-    unbalance, coef_ssvar
-  ))
+  cat(sprintf("\nThe study groups show a %s distribution of sample sizes (\u0394n = %.3f).\n\n", unbalance, coef_ssvar))
   
   invisible(list(formula = formula,
                  model = model,
@@ -197,6 +195,5 @@ omnibus <- function(data,
                  name = name,
                  statistic = stat,
                  p_value = p_value,
-                 post_hoc = post_hoc
-                 ))
+                 post_hoc = post_hoc))
 }

@@ -29,9 +29,9 @@ Default: NULL.}
 \item{alpha}{Numeric value indicating the significance level for hypothesis tests. Default: 0.05.}
 
 \item{p_method}{Character string indicating the method for p-value adjustment in post-hoc multiple
-comparisons to control for Type I error inflation. Options: "holm" (Holm),
-"hochberg" (Hochberg), "hommel" (Hommel), "bonferroni" (Bonferroni), "BH"
-(Benjamini-Hochberg), "BY" (Benjamini-Yekutieli), "none" (no adjustment). Default: "holm".}
+comparisons to control for Type I error inflation. Options: "holm" (Holm), "hochberg" (Hochberg),
+"hommel" (Hommel), "bonferroni" (Bonferroni), "BH" (Benjamini-Hochberg), "BY" (Benjamini-Yekutieli),
+"none" (no adjustment). Default: "holm".}
 
 \item{na.action}{Character string indicating the action to take if NAs are present ("na.omit"
 or "na.exclude"). Default: "na.omit"}
@@ -42,27 +42,23 @@ statistic summary, name of the test performed, the value of the test statistic,
 resulting p value and the results of the post_hoc test.
 }
 \description{
-Performs omnibus tests to evaluate overall differences between three or more groups.
-Automatically selects the appropriate statistical test based on data characteristics
-and assumption testing. Supports both independent groups and repeated measures designs.
-Tests include one-way ANOVA, repeated measures ANOVA, Kruskal-Wallis test, and
-Friedman test. Performs comprehensive assumption checking (normality, homogeneity
-of variance, sphericity) and post-hoc testing when significant results are detected.
+Performs omnibus tests to evaluate overall differences between three or more groups. Automatically
+selects the appropriate statistical test based on data characteristics and assumption testing.
+Supports both independent groups and repeated measures designs. Tests include one-way ANOVA, repeated
+measures ANOVA, Kruskal-Wallis test, and Friedman test. Performs comprehensive assumption checking
+(normality, homogeneity of variance, sphericity) and post-hoc testing when significant results are detected.
 }
 \examples{
 # Simulated clinical data with multiple treatment arms and visits
 clinical_df <- clinical_data(n = 300, visits = 6, arms = c("A", "B", "C"))
 
 # Compare numerical variable across treatments
-result <- omnibus(data = clinical_df,
-                  y = "biomarker", 
-                  x = "treatment")
+omnibus(data = clinical_df, y = "biomarker", x = "treatment")
 
+# Filter simulated data to just one treatment
+clinical_df_A <- clinical_df[clinical_df$treatment == "A", ]
 # Compare numerical variable changes across visits 
-result <- omnibus(y = "biomarker", 
-                  x = "visit", 
-                  data = clinical_df, 
-                  paired_by = "subject_id")
+omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "subject_id")
 
 }
 \references{
