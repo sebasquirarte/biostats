@@ -217,10 +217,10 @@ summary_table(clinical_df,
 ##### Description
 
 Tests normality using sample size-appropriate methods: Shapiro-Wilk test
-(n ≤ 50) or Kolmogorov-Smirnov test (n \> 50) with Q-Q plots and
-histograms. Evaluates skewness and kurtosis using z-score criteria based
-on sample size. Automatically detects outliers and provides
-comprehensive visual and statistical assessment.
+(n less than or equal to 50) or Kolmogorov-Smirnov test (n greater than
+50) with Q-Q plots and histograms. Evaluates skewness and kurtosis using
+z-score criteria based on sample size. Automatically detects outliers
+and provides comprehensive visual and statistical assessment.
 
 ##### Parameters
 

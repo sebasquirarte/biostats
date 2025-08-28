@@ -19,9 +19,9 @@ normality(data, x, all = FALSE, color = "#79E1BE")
 Prints results to console and invisibly returns a list with normality statistics and ggplot objects.
 }
 \description{
-Tests normality using sample size-appropriate methods: Shapiro-Wilk test (n ≤ 50)
-or Kolmogorov-Smirnov test (n > 50) with Q-Q plots and histograms. Evaluates
-skewness and kurtosis using z-score criteria based on sample size. Automatically
+Tests normality using sample size-appropriate methods: Shapiro-Wilk test (n less than or
+equal to 50) or Kolmogorov-Smirnov test (n greater than 50) with Q-Q plots and histograms.
+Evaluates skewness and kurtosis using z-score criteria based on sample size. Automatically
 detects outliers and provides comprehensive visual and statistical assessment.
 }
 \examples{
