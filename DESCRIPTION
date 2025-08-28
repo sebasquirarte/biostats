@@ -34,3 +34,5 @@ Imports:
     rlang,
     car,
     gt
+URL: https://github.com/sebasquirarte/biostats
+BugReports: https://github.com/sebasquirarte/biostats/issues
