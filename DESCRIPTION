@@ -15,11 +15,8 @@ Authors@R: c(
            role = "aut"),
     person("Laboratorios Sophia S.A. de C.V.", 
            role = c("cph", "fnd")))
-Description: Provides comprehensive tools for biostatistics and clinical data 
-    analysis including summary statistics, exploratory data analysis (EDA), 
-    sample size calculation, statistical tests, data cleaning, transformation, 
-    and visualization. Developed by the biostatistics team at Laboratorios 
-    Sophia S.A. de C.V.
+Description: R package with tools for biostatistics and clinical data analysis. 
+  Developed by the biostatistics team at Laboratorios Sophia S.A. de C.V.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
