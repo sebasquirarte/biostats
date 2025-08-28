@@ -7,8 +7,7 @@
 
 [![R-CMD-check](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yml)
 [![Tests](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yml)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/biostats)](https://CRAN.R-project.org/package=biostats)
+![CRAN status](https://www.r-pkg.org/badges/version/biostats)
 <!-- badges: end -->
 
 ## Overview
@@ -32,7 +31,7 @@ research professionals, and medical practitioners involved in the
 development of clinical trials.
 
 *Developed by the biostatistics team at [Laboratorios Sophia S.A. de
-C.V.](https://sophialab.com/en/).*
+C.V.](https://sophialab.com/en/)*
 
 ## Installation
 

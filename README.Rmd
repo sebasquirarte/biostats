@@ -19,7 +19,7 @@ knitr::opts_chunk$set(collapse = TRUE,
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yml)
 [![Tests](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yml)
-[![CRAN status](https://www.r-pkg.org/badges/version/biostats)](https://CRAN.R-project.org/package=biostats)
+![CRAN status](https://www.r-pkg.org/badges/version/biostats)
 <!-- badges: end -->
 
 ## Overview
@@ -34,7 +34,7 @@ _**biostats**_ is an R package that functions as a toolbox to streamline biostat
 
 Designed primarily for comparative clinical studies, trial planning, and analysis, this package serves both as an analytical toolkit for professional biostatisticians and clinical data analysts and as an educational resource for researchers transitioning to R-based biostatistics, including professionals from other domains, clinical research professionals, and medical practitioners involved in the development of clinical trials. 
 
-*Developed by the biostatistics team at [Laboratorios Sophia S.A. de C.V.](https://sophialab.com/en/).*
+*Developed by the biostatistics team at [Laboratorios Sophia S.A. de C.V.](https://sophialab.com/en/)*
 
 ## Installation
 

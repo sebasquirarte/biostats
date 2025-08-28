@@ -15,8 +15,11 @@ Authors@R: c(
            role = "aut"),
     person("Laboratorios Sophia S.A. de C.V.", 
            role = c("cph", "fnd")))
-Description: R package with tools for biostatistics and clinical data analysis. 
-  Developed by the biostatistics team at Laboratorios Sophia S.A. de C.V.
+Description: Toolkit to streamline biostatistics and clinical data analysis 
+    workflows, covering aspects of descriptive statistics and exploratory data 
+    analysis, sample size and power calculations, statistical analysis and 
+    inference, and data visualization. Developed by the biostatistics team at 
+    Laboratorios Sophia S.A. de C.V.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
