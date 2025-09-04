@@ -104,44 +104,43 @@
 
 # Assumption output format function
 .print_assumptions <- function(results_assumptions, alpha) {
-  cat("Assumption Testing Results:\n\n")
+  message("Assumption Testing Results:\n")
   
   # Sphericity (if applicable)
   if (!is.null(results_assumptions$sphericity_results)) {
     sph <- results_assumptions$sphericity_results
-    cat(sprintf("  Sphericity (%s Test):\n", sph$test))
-    cat(sprintf("  W = %.4f, df = %d, p = %s\n", 
-                sph$statistic, sph$df, .format_p(sph$p_value)))
-    cat(sprintf("  Test statistic (W) = %.4f\n", sph$statistic))
-    cat(sprintf("  Result: %s\n\n", 
+    message(sprintf("  Sphericity (%s Test):", sph$test))
+    message(sprintf("  W = %.4f, p = %s", 
+                sph$statistic, .format_p(sph$p_value)))
+    message(sprintf("  Result: %s\n", 
                 ifelse(sph$p_value < alpha, "Sphericity violated.", "Sphericity assumed.")))
   }
   
   # Normality
   norm <- results_assumptions$normality_results
-  cat(sprintf("  Normality (%s Test):\n", norm$test))
+  message(sprintf("  Normality (%s Test):", norm$test))
   group_names <- names(norm$statistics)
   for (i in seq_along(group_names)) {
-    cat(sprintf("  %s: W = %.4f, p = %s\n", 
+    message(sprintf("  %s: W = %.4f, p = %s", 
                 group_names[i], norm$statistics[i], .format_p(norm$p_values[i])))
   }
   min_p <- min(norm$p_values)
-  cat(sprintf("  Overall result: %s\n\n", 
+  message(sprintf("  Overall result: %s\n", 
               ifelse(norm$overall_key == "significant", "Non-normal distribution detected.", "Normal distribution assumed.")))
   
   # Homogeneity of variance
   var <- results_assumptions$variance_results
-  cat(sprintf("  Homogeneity of Variance (%s Test):\n", var$test))
+  message(sprintf("  Homogeneity of Variance (%s Test):", var$test))
   if (var$test == "Levene") {
-    cat(sprintf("  F(%d,%d) = %.4f, p = %s\n", 
+    message(sprintf("  F(%d,%d) = %.4f, p = %s", 
                 var$df[1], var$df[2], var$statistic, .format_p(var$p_value)))
-    cat(sprintf("  Effect size (eta-squared) = %.4f\n", var$effect_size))
+    message(sprintf("  Effect size (eta-squared) = %.4f", var$effect_size))
   } else {
-    cat(sprintf("  Chi-squared(%d) = %.4f, p = %s\n",
+    message(sprintf("  Chi-squared(%d) = %.4f, p = %s",
                 var$df, var$statistic, .format_p(var$p_value)))
-    cat(sprintf("  Effect size (Cramer's V) = %.4f\n", var$effect_size))
+    message(sprintf("  Effect size (Cramer's V) = %.4f", var$effect_size))
   }
-  cat(sprintf("  Result: %s\n\n", 
+  message(sprintf("  Result: %s\n", 
               ifelse(var$key == "significant", "Heterogeneous variances.", "Homogeneous variances.")))
 }
 
@@ -153,15 +152,15 @@
       post_hoc <- TukeyHSD(model, conf.level = 1 - alpha)
       # Print Tukey results
       comparisons <- post_hoc[[1]]
-      cat(sprintf("Tukey Honest Significant Differences (alpha: %.3f):\n", alpha))
-      cat(sprintf("%-20s %8s %8s %8s %8s\n",
+      message(sprintf("Tukey Honest Significant Differences (alpha: %.3f):", alpha))
+      message(sprintf("%-20s %8s %8s %8s %8s",
                   "Comparison", "Diff", "Lower", "Upper", "p-adj"))
-      cat(strrep("-", 60), "\n")
+      message(strrep("-", 60), "")
       for (i in 1:nrow(comparisons)) {
         sig_flag <- ifelse(comparisons[i, "p adj"] < alpha, "*", " ")
         # Format comparison name with spaces around dash
         comparison_name <- gsub("-", " - ", rownames(comparisons)[i])
-        cat(sprintf("%-20s %8.3f %8.3f %8.3f %8s%s\n",
+        message(sprintf("%-20s %8.3f %8.3f %8.3f %8s%s",
                     comparison_name,
                     comparisons[i, "diff"],
                     comparisons[i, "lwr"],
@@ -188,33 +187,40 @@
       }
       
       if (name == "Friedman") {
-        cat(sprintf("Paired pairwise Wilcoxon-tests (alpha: %.3f) (p_method: %s):\n", alpha, p_method))
+        message(sprintf("Paired pairwise Wilcoxon-tests (alpha: %.3f) (p_method: %s):\n", alpha, p_method))
       } else if (name == "Repeated measures ANOVA") {
-        cat(sprintf("Paired pairwise t-tests (alpha: %.3f) (p_method: %s):\n", alpha, p_method))
+        message(sprintf("Paired pairwise t-tests (alpha: %.3f) (p_method: %s):\n", alpha, p_method))
       } else {
-        cat(sprintf("Pairwise Wilcoxon-tests (alpha: %.3f) (p_method: %s):\n", alpha, p_method))
+        message(sprintf("Pairwise Wilcoxon-tests (alpha: %.3f) (p_method: %s):\n", alpha, p_method))
       }
       
       p_matrix <- post_hoc$p.value
       group_names <- rownames(p_matrix)
       col_names <- colnames(p_matrix)
-      cat(sprintf("%-12s", ""))
-      for (col in col_names) cat(sprintf("%12s", col))
-      cat("\n")
+      
+      # Header row
+      header <- sprintf("%-12s", "")
+      for (col in col_names) {
+        header <- paste0(header, sprintf("%12s", col))
+      }
+      message(header)
+      
+      # Data rows
       for (i in 1:nrow(p_matrix)) {
-        cat(sprintf("%-12s", group_names[i]))
+        row_string <- sprintf("%-12s", group_names[i])
         for (j in 1:ncol(p_matrix)) {
           if (is.na(p_matrix[i, j])) {
-            cat(sprintf("%12s", "-"))
+            row_string <- paste0(row_string, sprintf("%12s", "-"))
           } else {
             p_val <- p_matrix[i, j]
             sig_flag <- ifelse(p_val < alpha, "*", "")
-            cat(sprintf("%11s%s", .format_p(p_val), sig_flag))
+            row_string <- paste0(row_string, sprintf("%11s%s", .format_p(p_val), sig_flag))
           }
         }
-        cat("\n")
+        message(row_string)
       }
     }
+    
     # Return results to main function
     return(post_hoc)
   }, # Try catch error

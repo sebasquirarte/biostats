@@ -1,5 +1,5 @@
 Package: biostats
-Title: Tools for Biostatistics and Clinical Data Analysis
+Title: Biostatistics and Clinical Data Analysis
 Version: 1.0.0
 Authors@R: c(
     person("Sebastian", "Quirarte-Justo", 
@@ -16,11 +16,15 @@ Authors@R: c(
            comment = c(ORCID = "0000-0003-4632-2243")),
     person("Laboratorios Sophia S.A. de C.V.", 
            role = c("cph", "fnd")))
-Description: Toolkit to streamline biostatistics and clinical data analysis 
-    workflows, covering aspects of descriptive statistics and exploratory data 
+Description: Provides comprehensive biostatistics and clinical data analysis,
+    covering aspects of descriptive statistics and exploratory data 
     analysis, sample size and power calculations, statistical analysis and 
     inference, and data visualization. Developed by the biostatistics team at 
-    Laboratorios Sophia S.A. de C.V.
+    Laboratorios Sophia S.A. de C.V.  For more details see Mishra, P., Pandey, C.M.,
+    Singh, U., Gupta, A., Sahu, C., Keshri, A. (2019) <doi:10.4103/aca.ACA_157_18>, Blanca, M.,
+    Alarcón, R., Arnau, J., Bono, R., Bendayan, R. (2017) <doi:10.3758/s13428-017-0918-2>,
+    Field, A.P., Miles, J., & Field, Z. (2012) <https://uk.sagepub.com/en-gb/eur/discovering-statistics-using-r/book236067>,
+    Chow, S., Shao, J., Wang, H. (2017) <doi:10.1201/9781315183084>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

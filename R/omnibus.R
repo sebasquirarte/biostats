@@ -94,11 +94,12 @@ omnibus <- function(data,
   sphericity_key <- results_assumptions$sphericity_key
   var.test <- results_assumptions$var.test
   
+  stat_summary <- NULL
   if (is.null(paired_by)) {
     if (normality_key == "non_significant" && variance_key == "non_significant") {
       name <- "One-way ANOVA"
       model <- aov(formula, data = data, na.action = na.action) # One-way ANOVA
-      summary <- summary(model)
+      stat_summary <- summary(model)
     } else {
       name <- "Kruskal-Wallis"
       model <- kruskal.test(formula, data = data, na.action = na.action) # Kruskal-Wallis
@@ -108,7 +109,7 @@ omnibus <- function(data,
       name <- "Repeated measures ANOVA"
       formula <- as.formula(paste(y, "~", x, "+ Error(", paired_by, "/", x, ")")) # Repeated measures ANOVA
       model <- aov(formula, data = data, na.action = na.action)
-      summary <- summary(model)
+      stat_summary <- summary(model)
     } else {
       formula <- as.formula(paste(deparse(formula[[2]]), "~", deparse(formula[[3]]), "|", paired_by))
       name <- "Friedman"
@@ -118,17 +119,17 @@ omnibus <- function(data,
   
   # Extract key statistics
   if (name == "One-way ANOVA") {
-    stat <- summary[[1]][1, "F value"]
-    p_value <- summary[[1]][1, "Pr(>F)"]
-    df_between <- summary[[1]][1, "Df"]
-    df_within <- summary[[1]][2, "Df"]
+    stat <- stat_summary[[1]][1, "F value"]
+    p_value <- stat_summary[[1]][1, "Pr(>F)"]
+    df_between <- stat_summary[[1]][1, "Df"]
+    df_within <- stat_summary[[1]][2, "Df"]
   }
   
   if (name == "Repeated measures ANOVA") {
-    stat <- summary[[2]][[1]][x, "F value"]
-    p_value <- summary[[2]][[1]][x, "Pr(>F)"]
-    df_between <- summary[[2]][[1]][x, "Df"]
-    df_within <- summary[[2]][[1]]["Residuals", "Df"]
+    stat <- stat_summary[[2]][[1]][x, "F value"]
+    p_value <- stat_summary[[2]][[1]][x, "Pr(>F)"]
+    df_between <- stat_summary[[2]][[1]][x, "Df"]
+    df_within <- stat_summary[[2]][[1]]["Residuals", "Df"]
   }
   
   if (name %in% c("Friedman", "Kruskal-Wallis")) {
@@ -138,21 +139,21 @@ omnibus <- function(data,
   }
   
   # Print results
-  cat(sprintf("\nOmnibus Test: %s\n\n", name))
+  message(sprintf("\nOmnibus Test: %s\n", name))
   .print_assumptions(results_assumptions, alpha)
-  cat("Test Results:\n\n")
-  cat(sprintf("  Formula: %s\n", deparse(formula)))
-  cat(sprintf("  alpha: %.2f\n", alpha))
+  message("Test Results:\n")
+  message(sprintf("  Formula: %s", deparse(formula)))
+  message(sprintf("  alpha: %.2f", alpha))
   if (grepl("ANOVA", name)) {
-    cat(sprintf("  F(%d,%d) = %.3f, p = %s\n", df_between, df_within, stat, .format_p(p_value)))
+    message(sprintf("  F(%d,%d) = %.3f, p = %s", df_between, df_within, stat, .format_p(p_value)))
   } else {
-    cat(sprintf("  Chi-squared(%d) = %.3f, p = %s\n", df, stat, .format_p(p_value)))
+    message(sprintf("  Chi-squared(%d) = %.3f, p = %s", df, stat, .format_p(p_value)))
   }
-  cat(sprintf("  Result: %s\n\n", ifelse(p_value < alpha, "significant", "not significant")))
+  message(sprintf("  Result: %s\n", ifelse(p_value < alpha, "significant", "not significant")))
   
   # Perform post-hoc tests if significant
   if (p_value < alpha) {
-    cat("Post-hoc Multiple Comparisons\n\n")
+    message("Post-hoc Multiple Comparisons\n")
     post_hoc <- .post_hoc(
       name = name,
       y = y,
@@ -164,7 +165,7 @@ omnibus <- function(data,
       data = data
     )
   } else {
-    cat("Post-hoc tests not performed (results not significant).\n")
+    message("Post-hoc tests not performed (results not significant).")
     post_hoc <- NULL
   }
   
@@ -180,11 +181,11 @@ omnibus <- function(data,
     unbalance <- "highly unbalanced"
   }
   
-  cat(sprintf("\nThe study groups show a %s distribution of sample sizes (\u0394n = %.3f).\n\n", unbalance, coef_ssvar))
+  message(sprintf("\nThe study groups show a %s distribution of sample sizes (\u0394n = %.3f).\n", unbalance, coef_ssvar))
   
   invisible(list(formula = formula,
                  model = model,
-                 summary = summary,
+                 stat_summary = stat_summary,
                  name = name,
                  statistic = stat,
                  p_value = p_value,
