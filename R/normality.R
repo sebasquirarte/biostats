@@ -14,7 +14,7 @@
 #' Prints results to console and invisibly returns a list with normality statistics and ggplot objects.
 #' 
 #' @references
-#' Mishra P, Pandey CM, Singh U, Gupta A, Sahu C, Keshri A. Descriptive statistics 
+#' Mishra P., Pandey C.M., Singh U., Gupta A., Sahu C., and Keshri A. Descriptive statistics 
 #' and normality tests for statistical data. Ann Card Anaesth. 2019 Jan-Mar;22(1):67-72. 
 #' doi: 10.4103/aca.ACA_157_18. PMID: 30648682; PMCID: PMC6350423.
 #'

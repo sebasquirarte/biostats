@@ -28,8 +28,8 @@
 #' sample size statistics, study parameters, and calculated z-scores.
 #'
 #' @references
-#' Chow, S., Shao, J., & Wang, H. (2017). Sample Size Calculations in
-#' Clinical Research (3rd ed.). Chapman & Hall/CRC.
+#' Chow, S.-C., Shao, J., Wang, H., & Lokhnygina, Y. (2017). Sample Size Calculations 
+#' in Clinical Research (3rd ed.). Chapman and Hall/CRC. https://doi.org/10.1201/9781315183084
 #'
 #' @examples
 #' # Two-sample parallel non-inferiority test for means with 10% expected dropout

@@ -16,13 +16,12 @@ Authors@R: c(
            comment = c(ORCID = "0000-0003-4632-2243")),
     person("Laboratorios Sophia S.A. de C.V.", 
            role = c("cph", "fnd")))
-Description: Provides functions for biostatistical and clinical data analysis, 
-    including descriptive statistics, exploratory data analysis, sample size and 
-    power calculations, statistical inference, and data visualization. Normality 
-    tests are implemented following Mishra et al. (2019) <doi:10.4103/aca.ACA_157_18>, 
+Description: Biostatistical and clinical data analysis, including descriptive 
+    statistics, exploratory data analysis, sample size and power calculations, 
+    statistical inference, and data visualization. Normality tests are 
+    implemented following Mishra et al. (2019) <doi:10.4103/aca.ACA_157_18>, 
     omnibus test procedures are based on Blanca et al. (2017) 
-    <doi:10.3758/s13428-017-0918-2> and Field et al. (2012) 
-    <https://uk.sagepub.com/en-gb/eur/discovering-statistics-using-r/book236067>, 
+    <doi:10.3758/s13428-017-0918-2> and Field et al. (2012, ISBN:9781446200469), 
     while sample size and power calculation methods follow Chow et al. (2017) 
     <doi:10.1201/9781315183084>.
 License: MIT + file LICENSE
