@@ -120,10 +120,7 @@ sample_size_range <- function(x1_range,
                                 labels = c("70%", "80%", "90%"),
                                 breaks = c("70", "80", "90")) +
     ggplot2::labs(x = "x1 (Treatment Effect)", y = "Total Sample Size") +
-    ggplot2::theme_minimal() +
-    ggplot2::scale_y_continuous(limits = c(0, NA), 
-                                expand = ggplot2::expansion(mult = c(0, 0.05)))
-  
+    ggplot2::theme_minimal() 
   # Add ribbons
   for (i in seq_len(length(power_levels) - 1)) {
     lower_data <- results[results$power == power_levels[i], ]
