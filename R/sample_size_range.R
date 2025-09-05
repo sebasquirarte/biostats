@@ -16,7 +16,7 @@
 #'
 #' @return 
 #' Prints range analysis summary to console and invisibly returns a list containing 
-#' the data frame of sample size calculations and the ggplot object. A plot is also 
+#' the dataframe of sample size calculations and the ggplot object. A plot is also 
 #' generated to visualize the relationship between treatment effects and required 
 #' sample sizes.
 #'
@@ -86,7 +86,7 @@ sample_size_range <- function(x1_range,
   }
   
   results$x2 <- x2
-  results$x1_minus_x2 <- results$x1 - x2
+  results$diff <- results$x1 - x2
   
   # Print summary
   cat("\nSample Size Range Analysis\n\n")
@@ -141,6 +141,6 @@ sample_size_range <- function(x1_range,
   
   print(p)
   
-  invisible(list(data = results[, c("power", "x1", "x2", "x1_minus_x2", "n1", "n2", "total")],
+  invisible(list(data = results[, c("power", "x1", "x2", "diff", "n1", "n2", "total")],
                  plot = p))
 }
