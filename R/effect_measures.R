@@ -106,6 +106,8 @@ effect_measures <- function(exposed_event, exposed_no_event,
 
 #' @export
 #' @describeIn effect_measures Print method for objects of class "effect_measures".
+#' @param x An object of class "effect_measures".
+#' @param ... Further arguments passed to or from other methods.
 print.effect_measures <- function(x, ...) {
   cat("\nOdds/Risk Ratio Analysis\n\n")
   margined <- addmargins(x$contingency_table)

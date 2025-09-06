@@ -30,6 +30,10 @@ confidence intervals (CI). Default: 0.05.}
 
 \item{correction}{Logical parameter that indicates whether a continuity correction (0.5) will be applied
 when any cell contains 0. Default: TRUE.}
+
+\item{x}{An object of class "effect_measures".}
+
+\item{...}{Further arguments passed to or from other methods.}
 }
 \value{
 An object of class "effect_measures" containing the contingency table and effect measures' values
