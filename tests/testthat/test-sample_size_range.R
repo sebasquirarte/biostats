@@ -25,7 +25,7 @@ test_that("sample_size_range data frame structure", {
   
   df <- res$data
   expect_equal(ncol(df), 7)
-  expect_named(df, c("power", "x1", "x2", "x1_minus_x2", "n1", "n2", "total"))
+  expect_named(df, c("power", "x1", "x2", "diff", "n1", "n2", "total"))
   expect_setequal(unique(df$power), c(70, 80, 90))
   expect_equal(unique(df$x2), 0.20)
   expect_true(all(df$x1 %in% c(0.10, 0.20, 0.30)))
