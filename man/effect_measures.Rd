@@ -2,6 +2,7 @@
 % Please edit documentation in R/effect_measures.R
 \name{effect_measures}
 \alias{effect_measures}
+\alias{print.effect_measures}
 \title{Effect Measures}
 \usage{
 effect_measures(
@@ -12,6 +13,8 @@ effect_measures(
   alpha = 0.05,
   correction = TRUE
 )
+
+\method{print}{effect_measures}(x, ...)
 }
 \arguments{
 \item{exposed_event}{Numeric value indicating the number of events in the exposed group.}
@@ -29,14 +32,19 @@ confidence intervals (CI). Default: 0.05.}
 when any cell contains 0. Default: TRUE.}
 }
 \value{
-Prints results to console and invisibly returns a list including the contingency table generated,
-the effect measures' values (OR, RR, CI, exposed and unexposed risk, absolute risk difference, and the
-Number Needed to Treat or Number Needed to Harm).
+An object of class "effect_measures" containing the contingency table and effect measures' values
+(OR, RR, CI, exposed and unexposed risk, absolute risk difference, and NNT/NNH).
+Prints formatted results when not assigned to a variable.
 }
 \description{
 Calculates measures of effect: Odds Ratio (OR), Risk Ratio (RR), and either
 Number Needed to Treat (NNT) or Number Needed to Harm (NNH).
 }
+\section{Methods (by generic)}{
+\itemize{
+\item \code{print(effect_measures)}: Print method for objects of class "effect_measures".
+
+}}
 \examples{
 effect_measures(exposed_event = 15, 
                 exposed_no_event = 85,

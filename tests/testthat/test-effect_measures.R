@@ -58,7 +58,11 @@ test_that("Basic calculations work with individual parameters", {
   expect_type(result, "list")
   expect_named(result, c("contingency_table", "odds_ratio", "or_ci", 
                          "risk_ratio", "rr_ci", "exposed_risk", 
-                         "unexposed_risk", "absolute_risk_diff", "nnt_nnh"))
+                         "unexposed_risk", "absolute_risk_diff", "nnt_nnh",
+                         "alpha", "problems", "has_zeroes", "correction"))
+  
+  # Test class
+  expect_s3_class(result, "effect_measures")
   
   # Test contingency table
   expected_table <- matrix(c(15, 5, 85, 95), nrow = 2,

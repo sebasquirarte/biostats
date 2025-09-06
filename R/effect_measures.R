@@ -13,9 +13,9 @@
 #'   when any cell contains 0. Default: TRUE.
 #'
 #' @return
-#' Prints results to console and invisibly returns a list including the contingency table generated, 
-#' the effect measures' values (OR, RR, CI, exposed and unexposed risk, absolute risk difference, and the
-#' Number Needed to Treat or Number Needed to Harm).
+#' An object of class "effect_measures" containing the contingency table and effect measures' values 
+#' (OR, RR, CI, exposed and unexposed risk, absolute risk difference, and NNT/NNH). 
+#' Prints formatted results when not assigned to a variable.
 #'
 #' @examples
 #' effect_measures(exposed_event = 15, 
@@ -91,12 +91,24 @@ effect_measures <- function(exposed_event, exposed_no_event,
     exposed_risk = exposed_risk,
     unexposed_risk = unexposed_risk,
     absolute_risk_diff = arr,
-    nnt_nnh = nnt
+    nnt_nnh = nnt,
+    # Store parameters for print method
+    alpha = alpha,
+    problems = problems,
+    has_zeroes = has.zeroes,
+    correction = correction
   )
   
-  # Print summary
+  # Assign class and return
+  class(results) <- "effect_measures"
+  return(results)
+}
+
+#' @export
+#' @describeIn effect_measures Print method for objects of class "effect_measures".
+print.effect_measures <- function(x, ...) {
   cat("\nOdds/Risk Ratio Analysis\n\n")
-  margined <- addmargins(results$contingency_table)
+  margined <- addmargins(x$contingency_table)
   cat("Contingency Table:\n")
   cat(sprintf("%12s %8s %8s %8s\n", "", "Event", "No Event", "Sum"))
   cat(sprintf("%-12s %8g %8g %8.0f\n", "Exposed", margined[1,1], margined[1,2], margined[1,3]))
@@ -104,28 +116,28 @@ effect_measures <- function(exposed_event, exposed_no_event,
   cat(sprintf("%-12s %8.0f %8.0f %8.0f\n", "Sum", margined[3,1], margined[3,2], margined[3,3]))
   cat("\n")
   
-  if ("odds ratio" %in% problems) {
+  if ("odds ratio" %in% x$problems) {
     cat("Odds Ratio cannot be calculated due to zero values.\n")
   } else {
     cat(sprintf("Odds Ratio: %.3f (%.0f%% CI: %.3f - %.3f)\n",
-                or, 100 - (alpha*100), or_ci[1], or_ci[2]))
+                x$odds_ratio, 100 - (x$alpha*100), x$or_ci[1], x$or_ci[2]))
   }
   
   cat(sprintf("Risk Ratio: %.3f (%.0f%% CI: %.3f - %.3f)\n",
-              rr, 100 - (alpha*100), rr_ci[1], rr_ci[2]))
+              x$risk_ratio, 100 - (x$alpha*100), x$rr_ci[1], x$rr_ci[2]))
   
-  cat(sprintf("\nRisk in exposed: %.1f%%\n", exposed_risk*100))
-  cat(sprintf("Risk in unexposed: %.1f%%\n", unexposed_risk*100))
-  cat(sprintf("Absolute risk difference: %.1f%%\n", arr*100))
+  cat(sprintf("\nRisk in exposed: %.1f%%\n", x$exposed_risk*100))
+  cat(sprintf("Risk in unexposed: %.1f%%\n", x$unexposed_risk*100))
+  cat(sprintf("Absolute risk difference: %.1f%%\n", x$absolute_risk_diff*100))
   cat(sprintf("%s: %.1f\n\n",
-              ifelse(arr > 0, "Number needed to harm (NNH)",
+              ifelse(x$absolute_risk_diff > 0, "Number needed to harm (NNH)",
                      "Number needed to treat (NNT)"),
-              abs(nnt)))
+              abs(x$nnt_nnh)))
   
-  if (!has.zeroes && correction) cat("Note: Correction not applied (no zero values).\n")
-  if (has.zeroes && correction) cat("Note: Correction (0.5) applied to all cells.\n")
-  if (has.zeroes && !correction) cat("Note: Correction (0.5) is recommended when zero values are present.\n")
+  if (!x$has_zeroes && x$correction) cat("Note: Correction not applied (no zero values).\n")
+  if (x$has_zeroes && x$correction) cat("Note: Correction (0.5) applied to all cells.\n")
+  if (x$has_zeroes && !x$correction) cat("Note: Correction (0.5) is recommended when zero values are present.\n")
   
   cat("\n")
-  invisible(results)
+  invisible(x)
 }

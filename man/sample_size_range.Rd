@@ -21,7 +21,7 @@ evaluate for the treatment group mean or proportion (\code{x1}).}
 }
 \value{
 Prints range analysis summary to console and invisibly returns a list containing
-the data frame of sample size calculations and the ggplot object. A plot is also
+the dataframe of sample size calculations and the ggplot object. A plot is also
 generated to visualize the relationship between treatment effects and required
 sample sizes.
 }
@@ -44,8 +44,8 @@ sample_size_range(x1_range = c(-0.01, 0.01), x2 = 0, step = 0.005,
 
 }
 \references{
-Chow, S., Shao, J., & Wang, H. (2017). Sample Size Calculations in
-Clinical Research (3rd ed.). Chapman & Hall/CRC.
+Chow, S.-C., Shao, J., Wang, H., & Lokhnygina, Y. (2017). Sample Size Calculations
+in Clinical Research (3rd ed.). Chapman and Hall/CRC. https://doi.org/10.1201/9781315183084
 }
 \seealso{
 \code{\link{sample_size}}

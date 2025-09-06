@@ -64,5 +64,5 @@ omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "subject
 \references{
 Blanca, M., Alarcón, R., Arnau, J. et al. Effect of variance ratio on ANOVA robustness: Might 1.5 be the limit?.
 Behav Res. 2017 Jun 22; 50:937–962. https://doi.org/10.3758/s13428-017-0918-2
-Field, A. P. Discovering Statistics Using R and RStudio. 1st ed. London: SAGE Publications; 2025.
+Field, A., Miles, J., & Field, Z. (2012). Discovering Statistics Using R. London: SAGE Publications.
 }

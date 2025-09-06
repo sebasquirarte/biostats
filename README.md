@@ -529,41 +529,41 @@ result <- sample_size_range(x1_range = c(0.65, 0.75), x2 = 0.65, step = 0.01,
 
 <img src="man/figures/README-unnamed-chunk-15-1.png" width="75%" />
 
-| power |   x1 |   x2 | x1_minus_x2 |  n1 |  n2 | total |
-|------:|-----:|-----:|------------:|----:|----:|------:|
-|    70 | 0.65 | 0.65 |        0.00 | 237 | 237 |   474 |
-|    70 | 0.66 | 0.65 |        0.01 | 194 | 194 |   388 |
-|    70 | 0.67 | 0.65 |        0.02 | 162 | 162 |   324 |
-|    70 | 0.68 | 0.65 |        0.03 | 137 | 137 |   274 |
-|    70 | 0.69 | 0.65 |        0.04 | 117 | 117 |   234 |
-|    70 | 0.70 | 0.65 |        0.05 | 102 | 102 |   204 |
-|    70 | 0.71 | 0.65 |        0.06 |  88 |  88 |   176 |
-|    70 | 0.72 | 0.65 |        0.07 |  77 |  77 |   154 |
-|    70 | 0.73 | 0.65 |        0.08 |  69 |  69 |   138 |
-|    70 | 0.74 | 0.65 |        0.09 |  61 |  61 |   122 |
-|    70 | 0.75 | 0.65 |        0.10 |  54 |  54 |   108 |
-|    80 | 0.65 | 0.65 |        0.00 | 311 | 311 |   622 |
-|    80 | 0.66 | 0.65 |        0.01 | 255 | 255 |   510 |
-|    80 | 0.67 | 0.65 |        0.02 | 213 | 213 |   426 |
-|    80 | 0.68 | 0.65 |        0.03 | 180 | 180 |   360 |
-|    80 | 0.69 | 0.65 |        0.04 | 154 | 154 |   308 |
-|    80 | 0.70 | 0.65 |        0.05 | 134 | 134 |   268 |
-|    80 | 0.71 | 0.65 |        0.06 | 116 | 116 |   232 |
-|    80 | 0.72 | 0.65 |        0.07 | 102 | 102 |   204 |
-|    80 | 0.73 | 0.65 |        0.08 |  91 |  91 |   182 |
-|    80 | 0.74 | 0.65 |        0.09 |  80 |  80 |   160 |
-|    80 | 0.75 | 0.65 |        0.10 |  72 |  72 |   144 |
-|    90 | 0.65 | 0.65 |        0.00 | 429 | 429 |   858 |
-|    90 | 0.66 | 0.65 |        0.01 | 352 | 352 |   704 |
-|    90 | 0.67 | 0.65 |        0.02 | 294 | 294 |   588 |
-|    90 | 0.68 | 0.65 |        0.03 | 249 | 249 |   498 |
-|    90 | 0.69 | 0.65 |        0.04 | 213 | 213 |   426 |
-|    90 | 0.70 | 0.65 |        0.05 | 184 | 184 |   368 |
-|    90 | 0.71 | 0.65 |        0.06 | 160 | 160 |   320 |
-|    90 | 0.72 | 0.65 |        0.07 | 141 | 141 |   282 |
-|    90 | 0.73 | 0.65 |        0.08 | 125 | 125 |   250 |
-|    90 | 0.74 | 0.65 |        0.09 | 110 | 110 |   220 |
-|    90 | 0.75 | 0.65 |        0.10 |  98 |  98 |   196 |
+| power |   x1 |   x2 | diff |  n1 |  n2 | total |
+|------:|-----:|-----:|-----:|----:|----:|------:|
+|    70 | 0.65 | 0.65 | 0.00 | 237 | 237 |   474 |
+|    70 | 0.66 | 0.65 | 0.01 | 194 | 194 |   388 |
+|    70 | 0.67 | 0.65 | 0.02 | 162 | 162 |   324 |
+|    70 | 0.68 | 0.65 | 0.03 | 137 | 137 |   274 |
+|    70 | 0.69 | 0.65 | 0.04 | 117 | 117 |   234 |
+|    70 | 0.70 | 0.65 | 0.05 | 102 | 102 |   204 |
+|    70 | 0.71 | 0.65 | 0.06 |  88 |  88 |   176 |
+|    70 | 0.72 | 0.65 | 0.07 |  77 |  77 |   154 |
+|    70 | 0.73 | 0.65 | 0.08 |  69 |  69 |   138 |
+|    70 | 0.74 | 0.65 | 0.09 |  61 |  61 |   122 |
+|    70 | 0.75 | 0.65 | 0.10 |  54 |  54 |   108 |
+|    80 | 0.65 | 0.65 | 0.00 | 311 | 311 |   622 |
+|    80 | 0.66 | 0.65 | 0.01 | 255 | 255 |   510 |
+|    80 | 0.67 | 0.65 | 0.02 | 213 | 213 |   426 |
+|    80 | 0.68 | 0.65 | 0.03 | 180 | 180 |   360 |
+|    80 | 0.69 | 0.65 | 0.04 | 154 | 154 |   308 |
+|    80 | 0.70 | 0.65 | 0.05 | 134 | 134 |   268 |
+|    80 | 0.71 | 0.65 | 0.06 | 116 | 116 |   232 |
+|    80 | 0.72 | 0.65 | 0.07 | 102 | 102 |   204 |
+|    80 | 0.73 | 0.65 | 0.08 |  91 |  91 |   182 |
+|    80 | 0.74 | 0.65 | 0.09 |  80 |  80 |   160 |
+|    80 | 0.75 | 0.65 | 0.10 |  72 |  72 |   144 |
+|    90 | 0.65 | 0.65 | 0.00 | 429 | 429 |   858 |
+|    90 | 0.66 | 0.65 | 0.01 | 352 | 352 |   704 |
+|    90 | 0.67 | 0.65 | 0.02 | 294 | 294 |   588 |
+|    90 | 0.68 | 0.65 | 0.03 | 249 | 249 |   498 |
+|    90 | 0.69 | 0.65 | 0.04 | 213 | 213 |   426 |
+|    90 | 0.70 | 0.65 | 0.05 | 184 | 184 |   368 |
+|    90 | 0.71 | 0.65 | 0.06 | 160 | 160 |   320 |
+|    90 | 0.72 | 0.65 | 0.07 | 141 | 141 |   282 |
+|    90 | 0.73 | 0.65 | 0.08 | 125 | 125 |   250 |
+|    90 | 0.74 | 0.65 | 0.09 | 110 | 110 |   220 |
+|    90 | 0.75 | 0.65 | 0.10 |  98 |  98 |   196 |
 
 ``` r
 # One-sample equivalence test for means
@@ -584,23 +584,23 @@ result <- sample_size_range(x1_range = c(-0.01, 0.01), x2 = 0, step = 0.005,
 
 <img src="man/figures/README-unnamed-chunk-17-1.png" width="75%" />
 
-| power |     x1 |  x2 | x1_minus_x2 |  n1 |  n2 | total |
-|------:|-------:|----:|------------:|----:|----:|------:|
-|    70 | -0.010 |   0 |      -0.010 |  45 |  45 |    45 |
-|    70 | -0.005 |   0 |      -0.005 |  36 |  36 |    36 |
-|    70 |  0.000 |   0 |       0.000 |  29 |  29 |    29 |
-|    70 |  0.005 |   0 |       0.005 |  36 |  36 |    36 |
-|    70 |  0.010 |   0 |       0.010 |  45 |  45 |    45 |
-|    80 | -0.010 |   0 |      -0.010 |  54 |  54 |    54 |
-|    80 | -0.005 |   0 |      -0.005 |  43 |  43 |    43 |
-|    80 |  0.000 |   0 |       0.000 |  35 |  35 |    35 |
-|    80 |  0.005 |   0 |       0.005 |  43 |  43 |    43 |
-|    80 |  0.010 |   0 |       0.010 |  54 |  54 |    54 |
-|    90 | -0.010 |   0 |      -0.010 |  68 |  68 |    68 |
-|    90 | -0.005 |   0 |      -0.005 |  54 |  54 |    54 |
-|    90 |  0.000 |   0 |       0.000 |  44 |  44 |    44 |
-|    90 |  0.005 |   0 |       0.005 |  54 |  54 |    54 |
-|    90 |  0.010 |   0 |       0.010 |  68 |  68 |    68 |
+| power |     x1 |  x2 |   diff |  n1 |  n2 | total |
+|------:|-------:|----:|-------:|----:|----:|------:|
+|    70 | -0.010 |   0 | -0.010 |  45 |  45 |    45 |
+|    70 | -0.005 |   0 | -0.005 |  36 |  36 |    36 |
+|    70 |  0.000 |   0 |  0.000 |  29 |  29 |    29 |
+|    70 |  0.005 |   0 |  0.005 |  36 |  36 |    36 |
+|    70 |  0.010 |   0 |  0.010 |  45 |  45 |    45 |
+|    80 | -0.010 |   0 | -0.010 |  54 |  54 |    54 |
+|    80 | -0.005 |   0 | -0.005 |  43 |  43 |    43 |
+|    80 |  0.000 |   0 |  0.000 |  35 |  35 |    35 |
+|    80 |  0.005 |   0 |  0.005 |  43 |  43 |    43 |
+|    80 |  0.010 |   0 |  0.010 |  54 |  54 |    54 |
+|    90 | -0.010 |   0 | -0.010 |  68 |  68 |    68 |
+|    90 | -0.005 |   0 | -0.005 |  54 |  54 |    54 |
+|    90 |  0.000 |   0 |  0.000 |  44 |  44 |    44 |
+|    90 |  0.005 |   0 |  0.005 |  54 |  54 |    54 |
+|    90 |  0.010 |   0 |  0.010 |  68 |  68 |    68 |
 
 ### Statistical Analysis and Inference
 
@@ -636,32 +636,25 @@ detected.
 omnibus(data = clinical_df_full, y = "biomarker", x = "treatment")
 #> 
 #> Omnibus Test: One-way ANOVA
-#> 
 #> Assumption Testing Results:
-#> 
 #>   Normality (Shapiro-Wilk Test):
 #>   A: W = 0.9980, p = 0.321
 #>   B: W = 0.9975, p = 0.237
 #>   C: W = 0.9988, p = 0.733
 #>   Overall result: Normal distribution assumed.
-#> 
 #>   Homogeneity of Variance (Bartlett Test):
 #>   Chi-squared(2) = 1.3685, p = 0.504
 #>   Effect size (Cramer's V) = 0.0151
 #>   Result: Homogeneous variances.
-#> 
 #> Test Results:
-#> 
 #>   Formula: biomarker ~ treatment
 #>   alpha: 0.05
 #>   F(2,2783) = 73.252, p = <0.001
 #>   Result: significant
-#> 
 #> Post-hoc Multiple Comparisons
-#> 
 #> Tukey Honest Significant Differences (alpha: 0.050):
 #> Comparison               Diff    Lower    Upper    p-adj
-#> ------------------------------------------------------------ 
+#> ------------------------------------------------------------
 #> B - A                  -3.178   -4.296   -2.060   <0.001*
 #> C - A                  -5.542   -6.618   -4.466   <0.001*
 #> C - B                  -2.364   -3.468   -1.259   <0.001*
@@ -672,31 +665,24 @@ omnibus(data = clinical_df_full, y = "biomarker", x = "treatment")
 omnibus(y = "biomarker", x = "visit", data = clinical_df, paired_by = "subject_id")
 #> 
 #> Omnibus Test: Repeated measures ANOVA
-#> 
 #> Assumption Testing Results:
-#> 
 #>   Sphericity (Mauchly Test):
-#>   Test statistic (W) = 0.9881
+#>   W = 0.9881, p = 0.556
 #>   Result: Sphericity assumed.
-#> 
 #>   Normality (Shapiro-Wilk Test):
 #>   1: W = 0.9848, p = 0.309
 #>   2: W = 0.9926, p = 0.861
 #>   3: W = 0.9884, p = 0.536
 #>   Overall result: Normal distribution assumed.
-#> 
 #>   Homogeneity of Variance (Bartlett Test):
 #>   Chi-squared(2) = 0.5190, p = 0.771
 #>   Effect size (Cramer's V) = 0.0294
 #>   Result: Homogeneous variances.
-#> 
 #> Test Results:
-#> 
 #>   Formula: biomarker ~ visit + Error(subject_id/visit)
 #>   alpha: 0.05
 #>   F(2,198) = 0.497, p = 0.609
 #>   Result: not significant
-#> 
 #> Post-hoc tests not performed (results not significant).
 #> 
 #> The study groups show a moderately unbalanced distribution of sample sizes (Δn = 0.203).
@@ -710,31 +696,24 @@ clinical_df_A <- clinical_df[clinical_df$treatment == "Treatment", ]
 omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "subject_id")
 #> 
 #> Omnibus Test: Repeated measures ANOVA
-#> 
 #> Assumption Testing Results:
-#> 
 #>   Sphericity (Mauchly Test):
-#>   Test statistic (W) = 0.9825
+#>   W = 0.9825, p = 0.672
 #>   Result: Sphericity assumed.
-#> 
 #>   Normality (Shapiro-Wilk Test):
 #>   1: W = 0.9617, p = 0.125
 #>   2: W = 0.9812, p = 0.642
 #>   3: W = 0.9904, p = 0.964
 #>   Overall result: Normal distribution assumed.
-#> 
 #>   Homogeneity of Variance (Bartlett Test):
 #>   Chi-squared(2) = 0.9232, p = 0.630
 #>   Effect size (Cramer's V) = 0.0572
 #>   Result: Homogeneous variances.
-#> 
 #> Test Results:
-#> 
 #>   Formula: biomarker ~ visit + Error(subject_id/visit)
 #>   alpha: 0.05
 #>   F(2,92) = 1.478, p = 0.233
 #>   Result: not significant
-#> 
 #> Post-hoc tests not performed (results not significant).
 #> 
 #> The study groups show a moderately unbalanced distribution of sample sizes (Δn = 0.217).
@@ -1012,7 +991,7 @@ plot_corr(data = swiss, type = "lower", show_sig = TRUE, sig_only = TRUE)
 
 <img src="man/figures/README-unnamed-chunk-26-2.png" width="100%" />
 
-## Contributing & Feedback
+## Contributions & Feedback
 
 This package is still under active development. Features, functions, and
 examples may change as improvements are made.

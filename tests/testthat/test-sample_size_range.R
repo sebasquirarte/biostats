@@ -46,3 +46,4 @@ test_that("sample_size_range plot labels", {
   expect_equal(p$labels$x, "x1 (Treatment Effect)")
   expect_equal(p$labels$y, "Total Sample Size")
 })
+

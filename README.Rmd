@@ -592,7 +592,7 @@ plot_corr(data = swiss)
 plot_corr(data = swiss, type = "lower", show_sig = TRUE, sig_only = TRUE)
 ```
 
-## Contributing & Feedback
+## Contributions & Feedback
 
 This package is still under active development. Features, functions, and examples may change as improvements are made.
 
