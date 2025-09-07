@@ -13,9 +13,8 @@
 #'   when any cell contains 0. Default: TRUE.
 #'
 #' @return
-#' An object of class "effect_measures" containing the contingency table and effect measures' values 
-#' (OR, RR, CI, exposed and unexposed risk, absolute risk difference, and NNT/NNH). 
-#' Prints formatted results when not assigned to a variable.
+#' An object of class "effect_measures" containing the contingency table,
+#' effect size estimates (OR, RR, risk difference, NNT/NNH), and related statistics.
 #'
 #' @examples
 #' effect_measures(exposed_event = 15, 

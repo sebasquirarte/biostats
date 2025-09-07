@@ -36,9 +36,8 @@ when any cell contains 0. Default: TRUE.}
 \item{...}{Further arguments passed to or from other methods.}
 }
 \value{
-An object of class "effect_measures" containing the contingency table and effect measures' values
-(OR, RR, CI, exposed and unexposed risk, absolute risk difference, and NNT/NNH).
-Prints formatted results when not assigned to a variable.
+An object of class "effect_measures" containing the contingency table,
+effect size estimates (OR, RR, risk difference, NNT/NNH), and related statistics.
 }
 \description{
 Calculates measures of effect: Odds Ratio (OR), Risk Ratio (RR), and either
