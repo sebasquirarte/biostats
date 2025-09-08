@@ -11,9 +11,10 @@ test_that("missing_values basic functionality works correctly", {
     })
   })
   
+  expect_s3_class(result, "missing_values")
   expect_type(result, "list")
   expect_named(result, c("missing_stats", "total_missing", "complete_cases",
-                         "complete_pct", "overall_pct", "bar_plot", "heatmap_plot"))
+                         "complete_pct", "overall_pct", "bar_plot", "heatmap_plot", "all"))
   expect_equal(result$total_missing, 3)
   expect_equal(result$complete_cases, 2)  
   expect_equal(result$complete_pct, 40)

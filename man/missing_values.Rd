@@ -2,9 +2,12 @@
 % Please edit documentation in R/missing_values.R
 \name{missing_values}
 \alias{missing_values}
+\alias{print.missing_values}
 \title{Descriptive and Visual Missing Value Assessment}
 \usage{
 missing_values(data, color = "#79E1BE", all = FALSE)
+
+\method{print}{missing_values}(x, ...)
 }
 \arguments{
 \item{data}{Dataframe containing the variables to be analyzed.}
@@ -12,13 +15,22 @@ missing_values(data, color = "#79E1BE", all = FALSE)
 \item{color}{Character string indicating the color for missing values. Default: "#79E1BE"}
 
 \item{all}{Logical parameter that shows all variables including those without missing values. Default: FALSE.}
+
+\item{x}{An object of class "missing_values".}
+
+\item{...}{Further arguments passed to or from other methods.}
 }
 \value{
-Prints results to console and invisibly returns a list with descriptive statistics and ggplot objects.
+An object of class "missing_values" containing descriptive statistics and ggplot objects.
 }
 \description{
 Provides descriptive statistics and visualizations of missing values in a dataframe.
 }
+\section{Methods (by generic)}{
+\itemize{
+\item \code{print(missing_values)}: Print method for objects of class "missing_values".
+
+}}
 \examples{
 # Clinical dataset with missing values
 clinical_df <- clinical_data(dropout = 0.1, missing = 0.05)
