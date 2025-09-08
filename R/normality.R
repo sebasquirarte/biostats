@@ -11,7 +11,7 @@
 #' @param color Character string indicating color for plots. Default: "#79E1BE".
 #'
 #' @return
-#' Prints results to console and invisibly returns a list with normality statistics and ggplot objects.
+#' Returns an object of class "normality" with normality statistics and ggplot objects.
 #' 
 #' @references
 #' Mishra P., Pandey C.M., Singh U., Gupta A., Sahu C., and Keshri A. Descriptive statistics 
@@ -33,7 +33,6 @@
 #' @importFrom rlang .data
 #' @importFrom gridExtra grid.arrange
 #' @export
-
 normality <- function(data, 
                       x, 
                       all = FALSE, 
@@ -135,9 +134,9 @@ normality <- function(data,
     geom_abline(intercept = 0, slope = 1, color = "red", linetype = "dashed", linewidth = 1) +
     scale_color_manual(values = c(color, "red"), guide = "none") +
     labs(title = "Normal Q-Q Plot",
-                  subtitle = sprintf("Points outside 95%%CI: %d / %d (%.1f%%)",
-                                     sum(qq_data$is_outside), n, 100 * sum(qq_data$is_outside) / n),
-                  x = "Theoretical Quantiles", y = "Sample Quantiles") +
+         subtitle = sprintf("Points outside 95%%CI: %d / %d (%.1f%%)",
+                            sum(qq_data$is_outside), n, 100 * sum(qq_data$is_outside) / n),
+         x = "Theoretical Quantiles", y = "Sample Quantiles") +
     theme_minimal()
   
   # Add extreme outside value labels if present
@@ -155,42 +154,75 @@ normality <- function(data,
   
   hist_plot <- ggplot(hist_data, aes(x = .data$x)) +
     geom_histogram(aes(y = after_stat(density)),
-                            bins = bins, fill = color, color = "white", alpha = 0.6) +
+                   bins = bins, fill = color, color = "white", alpha = 0.6) +
     stat_function(fun = dnorm, args = list(mean = basic_stats["mean"], sd = basic_stats["sd"]),
-                           color = "red", linetype = "dashed", linewidth = 1) +
+                  color = "red", linetype = "dashed", linewidth = 1) +
     scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
     labs(title = "Histogram with Normal Distribution",
-                  subtitle = sprintf("%s: %s | Skewness: %.2f | Kurtosis: %.2f",
-                                     primary_test_name, primary_p_display, skewness, kurtosis),
-                  x = x, y = "Density") +
+         subtitle = sprintf("%s: %s | Skewness: %.2f | Kurtosis: %.2f",
+                            primary_test_name, primary_p_display, skewness, kurtosis),
+         x = x, y = "Density") +
     theme_minimal()
   
-  # Print results to console
-  cat(sprintf("\nNormality Test for '%s' \n\n", x))
-  cat(sprintf("n = %d \n", n))
-  cat(sprintf("mean (SD) = %.2f (%.1f) \n", basic_stats["mean"], basic_stats["sd"]))
-  cat(sprintf("median (IQR) = %.2f (%.1f) \n\n", basic_stats["median"], basic_stats["iqr"]))
+  # Create result object
+  result <- list(
+    variable = x,
+    n = n,
+    basic_stats = basic_stats,
+    sw_test = sw_test,
+    ks_test = ks_test,
+    skewness = skewness,
+    kurtosis = kurtosis,
+    skewness_z = skewness_z,
+    kurtosis_z = kurtosis_z,
+    normal = normal,
+    outside_95CI = outside_indices,
+    all = all,
+    primary_test_name = primary_test_name,
+    primary_p_display = primary_p_display,
+    qq_plot = qq_plot,
+    hist_plot = hist_plot
+  )
   
-  # Display test results based on sample size
-  if (n > 50) {
-    cat(sprintf("Kolmogorov-Smirnov: D = %.3f, p = %s \n", ks_test$statistic, format_p(ks_test$p.value)))
-  }
-  cat(sprintf("Shapiro-Wilk: W = %.3f, p = %s \n", sw_test$statistic, format_p(sw_test$p.value)))
-  cat(sprintf("Skewness: %.2f (z = %.2f) \n", skewness, skewness_z))
-  cat(sprintf("Kurtosis: %.2f (z = %.2f) \n\n", kurtosis, kurtosis_z))
-  cat("Data appears", if (normal) "normally distributed.\n" else "not normally distributed.\n", "\n")
-  
-  # Display values outside 95% CI information
-  if (length(outside_indices) > 0) {
-    if (all) {
-      cat("VALUES OUTSIDE 95% CI (row indices):", paste(outside_indices, collapse = ", "), "\n\n")
-    } else {
-      cat(sprintf("\n(Use all = TRUE to see values outside 95%%CI [%d]). \n\n", length(outside_indices)))
-    }
-  }
+  class(result) <- "normality"
   
   # Display plots and return results
   grid.arrange(qq_plot, hist_plot, ncol = 2)
-  invisible(list(normal = normal, outside_95CI = outside_indices,
-                 qq_plot = qq_plot, hist_plot = hist_plot))
+  result
+}
+
+#' Print Method for Normality Assessment
+#'
+#'@describeIn normality Print method for objects of class "normality".
+#' @param x An object of class "normality"
+#' @param ... Additional arguments (not used)
+#' @export
+print.normality <- function(x, ...) {
+  # Format p-values for display
+  format_p <- function(p) if (is.na(p)) "NA" else if (p < 0.001) "< 0.001" else sprintf("%.3f", p)
+  
+  cat(sprintf("\nNormality Test for '%s' \n\n", x$variable))
+  cat(sprintf("n = %d \n", x$n))
+  cat(sprintf("mean (SD) = %.2f (%.1f) \n", x$basic_stats["mean"], x$basic_stats["sd"]))
+  cat(sprintf("median (IQR) = %.2f (%.1f) \n\n", x$basic_stats["median"], x$basic_stats["iqr"]))
+  
+  # Display test results based on sample size
+  if (x$n > 50) {
+    cat(sprintf("Kolmogorov-Smirnov: D = %.3f, p = %s \n", x$ks_test$statistic, format_p(x$ks_test$p.value)))
+  }
+  cat(sprintf("Shapiro-Wilk: W = %.3f, p = %s \n", x$sw_test$statistic, format_p(x$sw_test$p.value)))
+  cat(sprintf("Skewness: %.2f (z = %.2f) \n", x$skewness, x$skewness_z))
+  cat(sprintf("Kurtosis: %.2f (z = %.2f) \n\n", x$kurtosis, x$kurtosis_z))
+  cat("Data appears", if (x$normal) "normally distributed.\n" else "not normally distributed.\n", "\n")
+  
+  # Display values outside 95% CI information
+  if (length(x$outside_95CI) > 0) {
+    if (x$all) {
+      cat("VALUES OUTSIDE 95% CI (row indices):", paste(x$outside_95CI, collapse = ", "), "\n\n")
+    } else {
+      cat(sprintf("(Use all = TRUE to see values outside 95%%CI [%d]). \n\n", length(x$outside_95CI)))
+    }
+  }
+  
+  invisible(x)
 }

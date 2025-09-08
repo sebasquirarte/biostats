@@ -2,21 +2,26 @@
 % Please edit documentation in R/normality.R
 \name{normality}
 \alias{normality}
+\alias{print.normality}
 \title{Statistical and Visual Normality Assessment}
 \usage{
 normality(data, x, all = FALSE, color = "#79E1BE")
+
+\method{print}{normality}(x, ...)
 }
 \arguments{
 \item{data}{Dataframe containing the variables to be summarized.}
 
-\item{x}{Character string indicating the variable to be analyzed.}
+\item{x}{An object of class "normality"}
 
 \item{all}{Logical parameter that displays all row indices of values outside 95\% CI. Default: FALSE.}
 
 \item{color}{Character string indicating color for plots. Default: "#79E1BE".}
+
+\item{...}{Additional arguments (not used)}
 }
 \value{
-Prints results to console and invisibly returns a list with normality statistics and ggplot objects.
+Returns an object of class "normality" with normality statistics and ggplot objects.
 }
 \description{
 Tests normality using sample size-appropriate methods: Shapiro-Wilk test (n less than or
@@ -24,6 +29,11 @@ equal to 50) or Kolmogorov-Smirnov test (n greater than 50) with Q-Q plots and h
 Evaluates skewness and kurtosis using z-score criteria based on sample size. Automatically
 detects outliers and provides comprehensive visual and statistical assessment.
 }
+\section{Methods (by generic)}{
+\itemize{
+\item \code{print(normality)}: Print method for objects of class "normality".
+
+}}
 \examples{
 # Simulated clinical data
 clinical_df <- clinical_data()

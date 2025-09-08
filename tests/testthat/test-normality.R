@@ -1,139 +1,164 @@
-test_that("normality returns correct structure", {
-  df <- data.frame(x = rnorm(50))
-  capture.output({
-    result <- normality(df, "x")
-  })
-  
-  expect_type(result, "list")
-  expect_length(result, 4)
-  expect_named(result, c("normal", "outside_95CI", "qq_plot", "hist_plot"))
-  expect_type(result$normal, "logical")
-  expect_type(result[[2]], "integer")
-  expect_s3_class(result$qq_plot, "ggplot")
-  expect_s3_class(result$hist_plot, "ggplot")
-})
-
-test_that("normality validates inputs correctly", {
-  df <- data.frame(num = rnorm(20), char = letters[1:20])
+test_that("input validation works correctly", {
+  df <- data.frame(x = rnorm(30), y = letters[1:30], z = 1:30)
   
   expect_error(normality("not_df", "x"), "'data' must be a data frame")
   expect_error(normality(df, 123), "'x' must be a character string")
-  expect_error(normality(df, "missing"), "not found in data")
-  expect_error(normality(df, "char"), "must be numeric")
-  
-  small_df <- data.frame(x = c(1, 2, 3))
-  expect_error(normality(small_df, "x"), "Need at least 5 observations")
-  
-  const_df <- data.frame(x = rep(5, 10))
-  expect_error(normality(const_df, "x"), "only constant values")
+  expect_error(normality(df, "missing"), "Variable 'missing' not found")
+  expect_error(normality(df, "y"), "Variable 'y' must be numeric")
+  expect_error(normality(data.frame(x = rep(1, 10)), "x"), "constant values")
+  expect_error(normality(data.frame(x = 1:3), "x"), "at least 5 observations")
 })
 
-test_that("normality handles different sample sizes", {
-  small_df <- data.frame(x = rnorm(25))
-  output_small <- capture.output({
-    result_small <- normality(small_df, "x")
-  })
-  expect_false(any(grepl("Kolmogorov-Smirnov", output_small)))
-  
-  large_df <- data.frame(x = rnorm(75))
-  output_large <- capture.output({
-    result_large <- normality(large_df, "x")
-  })
-  expect_true(any(grepl("Kolmogorov-Smirnov", output_large)))
-  expect_true(any(grepl("Shapiro-Wilk", output_large)))
-})
-
-test_that("normality console output contains key elements", {
+test_that("function returns correct S3 class and structure", {
   df <- data.frame(x = rnorm(30))
-  output <- capture.output({
-    result <- normality(df, "x")
-  })
+  result <- normality(df, "x")
   
-  output_text <- paste(output, collapse = " ")
-  expect_true(grepl("Normality Test", output_text))
-  expect_true(grepl("Skewness:", output_text))
-  expect_true(grepl("Kurtosis:", output_text))
-  expect_true(grepl("normally distributed", output_text))
+  expect_s3_class(result, "normality")
+  expect_type(result, "list")
+  
+  expected_names <- c("variable", "n", "basic_stats", "sw_test", "ks_test", 
+                      "skewness", "kurtosis", "skewness_z", "kurtosis_z", 
+                      "normal", "outside_95CI", "all", "primary_test_name", 
+                      "primary_p_display", "qq_plot", "hist_plot")
+  expect_equal(sort(names(result)), sort(expected_names))
 })
 
-test_that("normality outside parameter controls output", {
-  set.seed(42)
-  df <- data.frame(x = c(rnorm(20), -6, 6, -7, 7))
+test_that("basic statistics are calculated correctly", {
+  x_vals <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+  df <- data.frame(x = x_vals)
+  result <- normality(df, "x")
   
-  output_false <- capture.output({
-    result_false <- normality(df, "x", all = FALSE)
-  })
-  
-  output_true <- capture.output({
-    result_true <- normality(df, "x", all = TRUE)
-  })
-  
-  expect_type(result_true[[2]], "integer")
-  expect_type(result_false[[2]], "integer")
-  
-  output_false_text <- paste(output_false, collapse = " ")
-  output_true_text <- paste(output_true, collapse = " ")
-  
-  if (length(result_true[[2]]) > 0) {
-    expect_true(grepl("Use all = TRUE", output_false_text))
-    expect_true(grepl("VALUES OUTSIDE 95%CI", output_true_text))
-  }
-  
-  expect_equal(result_false[[2]], result_true[[2]])
+  expect_equal(as.numeric(result$basic_stats["mean"]), mean(x_vals))
+  expect_equal(as.numeric(result$basic_stats["sd"]), sd(x_vals))
+  expect_equal(as.numeric(result$basic_stats["median"]), median(x_vals))
+  expect_equal(as.numeric(result$basic_stats["iqr"]), IQR(x_vals))
+  expect_equal(result$n, length(x_vals))
 })
 
-test_that("normality detects extreme values", {
-  df <- data.frame(x = c(rep(0, 30), -5, 5))
+test_that("test selection works based on sample size", {
+  small_df <- data.frame(x = rnorm(20))
+  large_df <- data.frame(x = rnorm(100))
   
-  capture.output({
-    result <- normality(df, "x")
-  })
+  small_result <- normality(small_df, "x")
+  large_result <- normality(large_df, "x")
   
-  expect_type(result[[2]], "integer")
-  expect_true(length(result[[2]]) >= 0)
+  expect_equal(small_result$primary_test_name, "Shapiro-Wilk")
+  expect_equal(large_result$primary_test_name, "Kolmogorov-Smirnov")
+  expect_null(small_result$ks_test)
+  expect_type(large_result$ks_test, "list")
 })
 
-test_that("normality works with custom colors", {
-  df <- data.frame(x = rnorm(25))
+test_that("normality assessment works for known distributions", {
+  set.seed(123)
+  normal_data <- data.frame(x = rnorm(50))
+  uniform_data <- data.frame(x = runif(50, 0, 1))
   
-  capture.output({
-    result <- normality(df, "x", color = "blue")
-  })
+  normal_result <- normality(normal_data, "x")
+  uniform_result <- normality(uniform_data, "x")
+  
+  expect_true(is.logical(normal_result$normal))
+  expect_true(is.logical(uniform_result$normal))
+})
+
+test_that("plots are created successfully", {
+  df <- data.frame(x = rnorm(30))
+  result <- normality(df, "x")
   
   expect_s3_class(result$qq_plot, "ggplot")
   expect_s3_class(result$hist_plot, "ggplot")
 })
 
-test_that("normality produces consistent results with same data", {
-  set.seed(100)
-  df <- data.frame(x = rnorm(40))
+test_that("outlier detection works", {
+  df <- data.frame(x = c(rnorm(25), 10, -10))
+  result <- normality(df, "x")
   
-  capture.output({
-    result1 <- normality(df, "x")
-  })
-  
-  capture.output({
-    result2 <- normality(df, "x")
-  })
-  
-  expect_equal(result1$normal, result2$normal)
-  expect_equal(result1[[2]], result2[[2]])
+  expect_type(result$outside_95CI, "integer")
+  expect_true(length(result$outside_95CI) >= 0)
 })
 
-test_that("normality handles edge cases", {
-  min_df <- data.frame(x = rnorm(5))
-  expect_silent({
-    capture.output({
-      result <- normality(min_df, "x")
-    })
-  })
-  expect_type(result, "list")
+test_that("missing values are handled properly", {
+  df <- data.frame(x = c(rnorm(25), NA, NA))
+  result <- normality(df, "x")
   
-  na_df <- data.frame(x = c(rnorm(15), NA, NA, NA))
-  expect_silent({
-    capture.output({
-      result <- normality(na_df, "x")
-    })
-  })
-  expect_type(result, "list")
+  expect_equal(result$n, 25)
+  expect_false(any(is.na(result$basic_stats)))
+})
+
+test_that("all parameter controls output", {
+  df <- data.frame(x = c(rnorm(25), 5, -5))
+  
+  result_all_false <- normality(df, "x", all = FALSE)
+  result_all_true <- normality(df, "x", all = TRUE)
+  
+  expect_false(result_all_false$all)
+  expect_true(result_all_true$all)
+})
+
+test_that("color parameter is preserved", {
+  df <- data.frame(x = rnorm(30))
+  custom_color <- "#FF5733"
+  result <- normality(df, "x", color = custom_color)
+  
+  expect_s3_class(result$qq_plot, "ggplot")
+  expect_s3_class(result$hist_plot, "ggplot")
+})
+
+test_that("moments calculations are reasonable", {
+  df <- data.frame(x = rnorm(100))
+  result <- normality(df, "x")
+  
+  expect_type(result$skewness, "double")
+  expect_type(result$kurtosis, "double")
+  expect_type(result$skewness_z, "double")
+  expect_type(result$kurtosis_z, "double")
+  expect_true(is.finite(result$skewness))
+  expect_true(is.finite(result$kurtosis))
+})
+
+test_that("print method works without errors", {
+  df <- data.frame(x = rnorm(30))
+  result <- normality(df, "x")
+  
+  expect_output(print(result), "Normality Test")
+  expect_output(print(result), "normally distributed")
+  expect_invisible(print(result))
+})
+
+test_that("different sample sizes work correctly", {
+  sizes <- c(10, 30, 60, 200)
+  
+  for (n in sizes) {
+    df <- data.frame(x = rnorm(n))
+    result <- normality(df, "x")
+    expect_equal(result$n, n)
+    expect_s3_class(result, "normality")
+  }
+})
+
+test_that("edge cases are handled", {
+  tiny_df <- data.frame(x = rnorm(5))
+  result <- normality(tiny_df, "x")
+  expect_equal(result$n, 5)
+  
+  huge_variance <- data.frame(x = rnorm(30, 0, 1000))
+  result2 <- normality(huge_variance, "x")
+  expect_s3_class(result2, "normality")
+})
+
+test_that("statistical test results have proper structure", {
+  df <- data.frame(x = rnorm(50))
+  result <- normality(df, "x")
+  
+  expect_true("statistic" %in% names(result$sw_test))
+  expect_true("p.value" %in% names(result$sw_test))
+  expect_type(result$primary_p_display, "character")
+})
+
+test_that("function handles extreme distributions", {
+  skewed_data <- data.frame(x = rexp(50, 1))
+  result <- normality(skewed_data, "x")
+  
+  expect_s3_class(result, "normality")
+  expect_true(abs(result$skewness) > 0)
+  expect_false(result$normal)
 })

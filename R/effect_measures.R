@@ -23,7 +23,6 @@
 #'                 unexposed_no_event = 95)
 #'
 #' @export
-
 effect_measures <- function(exposed_event, exposed_no_event,
                             unexposed_event, unexposed_no_event,
                             alpha = 0.05, correction = TRUE) {

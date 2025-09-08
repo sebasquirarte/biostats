@@ -2,6 +2,7 @@
 
 S3method(print,effect_measures)
 S3method(print,missing_values)
+S3method(print,normality)
 export(clinical_data)
 export(effect_measures)
 export(missing_values)
