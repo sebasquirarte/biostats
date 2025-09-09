@@ -22,9 +22,9 @@
 #'   or "na.exclude"). Default: "na.omit"
 #'
 #' @return
-#' Prints results to console and invisibly returns a list including the formula, model,
-#' statistic summary, name of the test performed, the value of the test statistic,
-#' resulting p value and the results of the post_hoc test.
+#' Prints results to console when not assigned to a variable and invisibly returns 
+#' a list including the formula, model,statistic summary, name of the test performed, 
+#' the value of the test statistic, resulting p value and the results of the post-hoc test.
 #' 
 #' @references
 #' Blanca, M., Alarcón, R., Arnau, J. et al. Effect of variance ratio on ANOVA robustness: Might 1.5 be the limit?. 
@@ -41,6 +41,7 @@
 #' 
 #' # Filter simulated data to just one treatment
 #' clinical_df_A <- clinical_df[clinical_df$treatment == "A", ]
+#' 
 #' # Compare numerical variable changes across visits 
 #' omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "subject_id")
 #'
@@ -93,7 +94,6 @@ omnibus <- function(data,
   normality_key <- results_assumptions$normality_key
   variance_key <- results_assumptions$variance_key
   sphericity_key <- results_assumptions$sphericity_key
-  var.test <- results_assumptions$var.test
   
   stat_summary <- NULL
   if (is.null(paired_by)) {
@@ -132,29 +132,16 @@ omnibus <- function(data,
     df_between <- stat_summary[[2]][[1]][x, "Df"]
     df_within <- stat_summary[[2]][[1]]["Residuals", "Df"]
   }
-  
+
   if (name %in% c("Friedman", "Kruskal-Wallis")) {
     stat <- unname(model$statistic)
     p_value <- model$p.value
-    df <- unname(model$parameter)
+    one_df <- unname(model$parameter)
   }
-  
-  # Print results
-  message(sprintf("\nOmnibus Test: %s\n", name))
-  .print_assumptions(results_assumptions, alpha)
-  message("Test Results:\n")
-  message(sprintf("  Formula: %s", deparse(formula)))
-  message(sprintf("  alpha: %.2f", alpha))
-  if (grepl("ANOVA", name)) {
-    message(sprintf("  F(%d,%d) = %.3f, p = %s", df_between, df_within, stat, .format_p(p_value)))
-  } else {
-    message(sprintf("  Chi-squared(%d) = %.3f, p = %s", df, stat, .format_p(p_value)))
-  }
-  message(sprintf("  Result: %s\n", ifelse(p_value < alpha, "significant", "not significant")))
   
   # Perform post-hoc tests if significant
+  post_hoc <- NULL
   if (p_value < alpha) {
-    message("Post-hoc Multiple Comparisons\n")
     post_hoc <- .post_hoc(
       name = name,
       y = y,
@@ -165,30 +152,66 @@ omnibus <- function(data,
       model = model,
       data = data
     )
-  } else {
-    message("Post-hoc tests not performed (results not significant).")
-    post_hoc <- NULL
   }
   
   total.SD <- by(data[[y]], data[[x]], function(v) sd(v, na.rm = TRUE))
   total.mean <- by(data[[y]], data[[x]], function(v) mean(v, na.rm = TRUE))
   coef_ssvar <- sum(total.SD) / sum(total.mean)
   
-  if (coef_ssvar > 0 && coef_ssvar <= 0.16) {
+  results <- list(
+    formula = deparse(formula),
+    stat_summary = stat_summary,
+    name = name,
+    statistic = stat,
+    p_value = p_value,
+    alpha = alpha,
+    post_hoc = post_hoc,
+    results_assumptions = results_assumptions,
+    coef_ssvar = coef_ssvar
+  )
+  
+  if (grepl("ANOVA", name)) {
+    results$df_between <- df_between
+    results$df_within <- df_within
+  } else {
+    results$df = one_df
+  }
+  # Assign class and return
+  class(results) <- "omnibus"
+  return(results)
+}
+
+#' @export
+#' @describeIn omnibus Print method for objects of class "omnibus".
+#' @param x An object of class "omnibus".
+#' @param ... Further arguments passed to or from other methods.
+print.omnibus <- function(x, ...) {
+  cat(sprintf("\nOmnibus Test: %s\n\n", x$name))
+  .print_assumptions(x$results_assumptions, x$alpha)
+  cat("Test Results:\n")
+  cat(sprintf("  Formula: %s\n", x$formula))
+  cat(sprintf("  alpha: %.2f\n", x$alpha))
+  if (grepl("ANOVA", x$name)) {
+    cat(sprintf("  F(%d,%d) = %.3f, p = %s\n", x$df_between, x$df_within, x$stat, .format_p(x$p_value)))
+  } else {
+    cat(sprintf("  Chi-squared(%d) = %.3f, p = %s\n", x$df, x$stat, .format_p(x$p_value)))
+  }
+  cat(sprintf("  Result: %s\n", ifelse(x$p_value < x$alpha, "significant", "not significant")))
+  
+  if (x$p_value < x$alpha) {
+    .print_post.hoc(x$post_hoc, x$alpha, x$name, x$post_hoc$p_method)
+  } else {
+    cat("Post-hoc tests not performed (results not significant).\n")
+  }
+  
+  if (x$coef_ssvar > 0 && x$coef_ssvar <= 0.16) {
     unbalance <- "well balanced (low variability)"
-  } else if (coef_ssvar > 0.16 && coef_ssvar <= 0.33) {
+  } else if (x$coef_ssvar > 0.16 && x$coef_ssvar <= 0.33) {
     unbalance <- "moderately unbalanced"
   } else {
     unbalance <- "highly unbalanced"
   }
   
-  message(sprintf("\nThe study groups show a %s distribution of sample sizes (\u0394n = %.3f).\n", unbalance, coef_ssvar))
-  
-  invisible(list(formula = formula,
-                 model = model,
-                 stat_summary = stat_summary,
-                 name = name,
-                 statistic = stat,
-                 p_value = p_value,
-                 post_hoc = post_hoc))
+  cat(sprintf("\nThe study groups show a %s distribution of sample sizes (\u0394n = %.3f).\n\n", unbalance, x$coef_ssvar))
 }
+

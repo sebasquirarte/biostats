@@ -107,14 +107,14 @@ test_that("Input validation works correctly", { # Verified
 test_that("Function runs successfully with valid inputs", { # Verified
   
   # Test independent groups (should trigger One-way ANOVA or Kruskal-Wallis)
-  expect_no_error(suppressMessages(result1 <- omnibus(
+  expect_no_error(capture.output(result1 <- omnibus(
     y = "score",
     x = "group",
     data = normal_equal_var_data
   )))
   
   # Test with non-normal data (should trigger Kruskal-Wallis)
-  suppressMessages(result2 <- omnibus(
+  capture.output(result2 <- omnibus(
     y = "score",
     x = "group",
     data = non_normal_data,
@@ -124,7 +124,7 @@ test_that("Function runs successfully with valid inputs", { # Verified
   expect_equal(result2$name, "Kruskal-Wallis")
   
   # Test paired data (should trigger Repeated measures ANOVA or Friedman)
-  expect_no_error(suppressMessages(result3 <- omnibus(
+  expect_no_error(capture.output(result3 <- omnibus(
     y = "score",
     x = "group",
     data = paired_data,
@@ -135,7 +135,7 @@ test_that("Function runs successfully with valid inputs", { # Verified
 
 test_that("Return object structure is correct", { # Verified
   
-  suppressMessages(result <- omnibus(
+  capture.output(result <- omnibus(
     y = "score",
     x = "group",
     data = normal_equal_var_data
@@ -146,12 +146,11 @@ test_that("Return object structure is correct", { # Verified
   
   # Test that all expected elements are present
   expected_elements <- c("formula", "stat_summary", "statistic", "p_value",
-                         "model", "post_hoc", "name")
+                         "post_hoc", "name")
   expect_true(all(expected_elements %in% names(result)))
   
   # Test element types
-  expect_s3_class(result$formula, "formula")
-  expect_type(result$model, "list")
+  expect_type(result$formula, "character")
   expect_type(result$stat_summary, "list")
   expect_type(result$name, "character")
   expect_type(result$statistic, "double")
@@ -171,7 +170,7 @@ test_that("Different p_methods work correctly", { # Verified
   
   for (p_method in methods_to_test) {
     
-    expect_no_error((suppressMessages(result <- omnibus(
+    expect_no_error((capture.output(result <- omnibus(
       y = "score",
       x = "group",
       data = normal_equal_var_data,
@@ -183,14 +182,14 @@ test_that("Different p_methods work correctly", { # Verified
 test_that("Alpha parameter affects significance determination", { # Verified
 
   # Create data where we expect a specific p-value range
-  suppressMessages(result_strict <- omnibus(
+  capture.output(result_strict <- omnibus(
     y = "score",
     x = "group",
     data = normal_equal_var_data,
     alpha = 0.001
   ))
   
-  suppressMessages(result_lenient <- omnibus(
+  capture.output(result_lenient <- omnibus(
     y = "score",
     x = "group",
     data = normal_equal_var_data,
@@ -209,7 +208,7 @@ test_that("Post-hoc tests are performed when significant", { # Verified
     group = factor(rep(c("A", "B", "C"), each = 20))
   )
   
-  suppressMessages(result <- omnibus(
+  capture.output(result <- omnibus(
     y = "score",
     x = "group",
     data = significant_data
@@ -224,30 +223,36 @@ test_that("Post-hoc tests are performed when significant", { # Verified
 
 test_that("Console output is generated", {
   
-  # Test that the function produces output (captured by expect_message)
-  suppressMessages(expect_message({
-    result <- omnibus(
-      y = "score",
-      x = "group",
-      data = normal_equal_var_data
+  # Test that the function produces output (captured by capture.output)
+  expect_output({
+    results <- omnibus(
+        y = "score",
+        x = "group",
+        data = normal_equal_var_data
     )
-  }, "Formula:"))
+    
+    print(results)
+  }, "Formula:")
   
-  suppressMessages(expect_message({
-    result <- omnibus(
-      y = "score",
-      x = "group",
-      data = normal_equal_var_data
+  expect_output({
+    results <- omnibus(
+        y = "score",
+        x = "group",
+        data = normal_equal_var_data
     )
-  }, "alpha:"))
+    
+    print(results)
+  }, "alpha:")
   
-  suppressMessages(expect_message({
-    result <- omnibus(
-      y = "score",
-      x = "group",
-      data = normal_equal_var_data
+  expect_output({
+      results <- omnibus(
+        y = "score",
+        x = "group",
+        data = normal_equal_var_data
     )
-  }, "Result:"))
+      
+      print(results)
+  }, "Result:")
 })
 
 test_that("Edge cases are handled correctly", { # Verified
@@ -258,7 +263,7 @@ test_that("Edge cases are handled correctly", { # Verified
     group = factor(rep(c("A", "B", "C"), c(10, 10, 10)))
   )
   
-  expect_no_error(suppressMessages({
+  expect_no_error(capture.output({
     result <- omnibus(
       y = "score",
       x = "group",
@@ -272,7 +277,7 @@ test_that("Edge cases are handled correctly", { # Verified
     group = factor(rep(LETTERS[1:10], each = 10))
   )
   
-  expect_no_error(suppressMessages({
+  expect_no_error(capture.output({
     result <- omnibus(
       y = "score",
       x = "group",
@@ -286,7 +291,7 @@ test_that("Different na.action options work correctly", { # Verified
   na_actions <- c("na.omit", "na.exclude")
   
   for (na_action in na_actions) {
-    expect_no_error(suppressMessages(
+    expect_no_error(capture.output(
       result <- omnibus(
         y = "score",
         x = "group",
@@ -296,7 +301,7 @@ test_that("Different na.action options work correctly", { # Verified
   }
   
   # Test na.fail should error with NA data
-  expect_error(suppressMessages(
+  expect_error(capture.output(
     result <- omnibus(
       y = "score",
       x = "group",

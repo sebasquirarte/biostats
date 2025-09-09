@@ -2,6 +2,7 @@
 % Please edit documentation in R/omnibus.R
 \name{omnibus}
 \alias{omnibus}
+\alias{print.omnibus}
 \title{Omnibus Tests for Comparing Three or More Groups}
 \usage{
 omnibus(
@@ -13,6 +14,8 @@ omnibus(
   p_method = "holm",
   na.action = "na.omit"
 )
+
+\method{print}{omnibus}(x, ...)
 }
 \arguments{
 \item{data}{Dataframe containing the variables to be analyzed. Data must be in long format
@@ -20,7 +23,7 @@ with one row per observation.}
 
 \item{y}{Character string indicating the dependent variable (outcome).}
 
-\item{x}{Character string indicating the independent variable (group or within-subject variable).}
+\item{x}{An object of class "omnibus".}
 
 \item{paired_by}{Character string indicating the source of repeated measurements. If
 provided, a repeated measures design is assumed. If NULL, independent groups design is assumed.
@@ -35,11 +38,13 @@ comparisons to control for Type I error inflation. Options: "holm" (Holm), "hoch
 
 \item{na.action}{Character string indicating the action to take if NAs are present ("na.omit"
 or "na.exclude"). Default: "na.omit"}
+
+\item{...}{Further arguments passed to or from other methods.}
 }
 \value{
-Prints results to console and invisibly returns a list including the formula, model,
-statistic summary, name of the test performed, the value of the test statistic,
-resulting p value and the results of the post_hoc test.
+Prints results to console when not assigned to a variable and invisibly returns
+a list including the formula, model,statistic summary, name of the test performed,
+the value of the test statistic, resulting p value and the results of the post-hoc test.
 }
 \description{
 Performs omnibus tests to evaluate overall differences between three or more groups. Automatically
@@ -48,6 +53,11 @@ Supports both independent groups and repeated measures designs. Tests include on
 measures ANOVA, Kruskal-Wallis test, and Friedman test. Performs comprehensive assumption checking
 (normality, homogeneity of variance, sphericity) and post-hoc testing when significant results are detected.
 }
+\section{Methods (by generic)}{
+\itemize{
+\item \code{print(omnibus)}: Print method for objects of class "omnibus".
+
+}}
 \examples{
 # Simulated clinical data with multiple treatment arms and visits
 clinical_df <- clinical_data(n = 300, visits = 6, arms = c("A", "B", "C"))
@@ -57,6 +67,7 @@ omnibus(data = clinical_df, y = "biomarker", x = "treatment")
 
 # Filter simulated data to just one treatment
 clinical_df_A <- clinical_df[clinical_df$treatment == "A", ]
+
 # Compare numerical variable changes across visits 
 omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "subject_id")
 
