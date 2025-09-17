@@ -22,9 +22,9 @@
 #'   or "na.exclude"). Default: "na.omit"
 #'
 #' @return
-#' Prints results to console when not assigned to a variable and invisibly returns 
-#' a list including the formula, model,statistic summary, name of the test performed, 
-#' the value of the test statistic, resulting p value and the results of the post-hoc test.
+#' An object of class "omnibus" containing the formula, model, statistic summary, 
+#' name of the test performed, value of the test statistic, resulting p value and 
+#' the results of the post-hoc test.
 #' 
 #' @references
 #' Blanca, M., Alarcón, R., Arnau, J. et al. Effect of variance ratio on ANOVA robustness: Might 1.5 be the limit?. 

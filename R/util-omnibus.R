@@ -19,7 +19,7 @@
     # Normality assessment using Shapiro-Wilk
     shapiroResults <- lapply(split(data[[y]], data[[x]]), shapiro.test)
     
-    # Calculate effect sizes for normality
+    ## Calculate the test statistic and p value of the present normality
     normality_test.stat <- sapply(shapiroResults, function(x) as.numeric(x$statistic))
     normality_pvals <- sapply(shapiroResults, function(x) x$p.value)
     
@@ -29,6 +29,7 @@
     bartlett_results <- bartlett.test(formula, data = data)
     leveneResults <- leveneTest(formula, data = data)
     
+    ## Calculate the test statistic and p value of the present homogeneity of variances
     if (normality_key == "significant") {
       variance_key <- if (leveneResults$`Pr(>F)`[1] < alpha) "significant" else "non_significant"
       var.test <- "Levene"
@@ -56,6 +57,7 @@
     sph_effect <- NULL
     sph_df <- NULL
     
+    ## Calculate the test statistic and p value of sphericity when possible
     if (!is.null(paired_by)) {
       order_eval <- data[[x]][1:num_levels]
       matrix <- matrix(data[[y]], ncol = num_levels, byrow = TRUE)
@@ -72,7 +74,7 @@
       variance_key = variance_key,
       sphericity_key = sphericity_key,
       var.test = var.test,
-      # Detailed assumption results
+      ### Detailed assumption results
       normality_results = list(
         test = "Shapiro-Wilk",
         statistics = normality_test.stat,
@@ -109,7 +111,7 @@
       post_hoc <- TukeyHSD(model, conf.level = 1 - alpha)
     } else {
       if (name == "Repeated measures ANOVA") {
-        # Pairwise comparison w/ pairwise t tests
+        ## Paired pairwise comparison w/ t tests
         post_hoc <- suppressWarnings(pairwise.t.test(data[[y]], 
                                                      data[[x]], 
                                                      paired = TRUE, 
@@ -118,7 +120,7 @@
       
       if (name %in% c("Kruskal-Wallis", "Friedman")) {
         paired <- if (name == "Friedman") TRUE else FALSE
-        # Pairwise Wilcoxon tests with specified adjustment (paired and unpaired is possible)
+        ## Pairwise Wilcoxon tests with specified adjustment (paired and unpaired is possible)
         post_hoc <- suppressWarnings(pairwise.wilcox.test(data[[y]], 
                                                           data[[x]], 
                                                           paired = paired, 
@@ -139,11 +141,11 @@
   })
 }
 
-# Assumption output format function
+# Assumption output format print function
 .print_assumptions <- function(results_assumptions, alpha) {
   cat("Assumption Testing Results:\n\n")
   
-  # Sphericity (if applicable)
+  ## Sphericity (when applicable)
   if (!is.null(results_assumptions$sphericity_results)) {
     sph <- results_assumptions$sphericity_results
     cat(sprintf("  Sphericity (%s Test):\n", sph$test))
@@ -153,7 +155,7 @@
                 ifelse(sph$p_value < alpha, "Sphericity violated.", "Sphericity assumed.")))
   }
   
-  # Normality
+  ## Normality
   norm <- results_assumptions$normality_results
   cat(sprintf("  Normality (%s Test):\n", norm$test))
   group_names <- names(norm$statistics)
@@ -165,7 +167,7 @@
   cat(sprintf("  Overall result: %s\n\n", 
               ifelse(norm$overall_key == "significant", "Non-normal distribution detected.", "Normal distribution assumed.")))
   
-  # Homogeneity of variance
+  ## Homogeneity of variance
   var <- results_assumptions$variance_results
   cat(sprintf("  Homogeneity of Variance (%s Test):\n", var$test))
   if (var$test == "Levene") {
@@ -181,11 +183,11 @@
               ifelse(var$key == "significant", "Heterogeneous variances.", "Homogeneous variances.")))
 }
       
-# Assumption output format function
+# Assumption output format print function
 .print_post.hoc <- function(post_hoc, alpha, name, p_method) {
   cat("\nPost-hoc Multiple Comparisons\n\n")
   if (name == "One-way ANOVA") {
-    # Print Tukey results
+    ## Print Tukey results
     comparisons <- post_hoc$post_hoc[[1]]
     cat(sprintf("  Tukey Honest Significant Differences (alpha: %.3f):\n", alpha))
     cat(sprintf("  %-20s %8s %8s %8s %8s\n",
@@ -193,7 +195,7 @@
     cat(" ", strrep("-", 57), "\n")
     for (i in 1:nrow(comparisons)) {
       sig_flag <- ifelse(comparisons[i, "p adj"] < alpha, "*", " ")
-      # Format comparison name with spaces around dash
+      ### Format comparison name with spaces around dash
       comparison_name <- gsub("-", " - ", rownames(comparisons)[i])
       cat(sprintf("  %-20s %8.3f %8.3f %8.3f %8s%s\n",
                   comparison_name,

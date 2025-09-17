@@ -42,9 +42,9 @@ or "na.exclude"). Default: "na.omit"}
 \item{...}{Further arguments passed to or from other methods.}
 }
 \value{
-Prints results to console when not assigned to a variable and invisibly returns
-a list including the formula, model,statistic summary, name of the test performed,
-the value of the test statistic, resulting p value and the results of the post-hoc test.
+An object of class "omnibus" containing the formula, model, statistic summary,
+name of the test performed, value of the test statistic, resulting p value and
+the results of the post-hoc test.
 }
 \description{
 Performs omnibus tests to evaluate overall differences between three or more groups. Automatically
