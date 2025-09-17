@@ -15,8 +15,8 @@ test_that("outliers returns expected structure", {
   result <- quiet_outliers(df, "values")
   
   expect_type(result, "list")
-  expect_named(result, c("outliers", "bounds", "stats", "scatter_plot", "boxplot"))
-  expect_s3_class(result$scatter_plot, "gg")
+  expect_named(result, c("data", "missing_data", "outlier_data", "outliers", "bounds", "stats", "scatterplot", "boxplot"))
+  expect_s3_class(result$scatterplot, "gg")
   expect_s3_class(result$boxplot, "gg")
 })
 
@@ -155,11 +155,11 @@ test_that("plots contain expected elements", {
   df <- data.frame(data_points = c(1:10, 50, -20))
   result <- quiet_outliers(df, "data_points")
   
-  expect_true(length(result$scatter_plot$layers) >= 1)
+  expect_true(length(result$scatterplot$layers) >= 1)
   expect_true(length(result$boxplot$layers) >= 2)
   
   # Check plot titles exist
-  expect_false(is.null(result$scatter_plot$labels$title))
+  expect_false(is.null(result$scatterplot$labels$title))
   expect_false(is.null(result$boxplot$labels$title))
 })
 

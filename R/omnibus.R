@@ -22,9 +22,10 @@
 #'   or "na.exclude"). Default: "na.omit"
 #'
 #' @return
-#' An object of class "omnibus" containing the formula, model, statistic summary, 
-#' name of the test performed, value of the test statistic, resulting p value and 
-#' the results of the post-hoc test.
+#' An object of class "omnibus" containing the formula, statistic summary, 
+#' name of the test performed, value of the test statistic, p value, alpha,
+#' the results of the post-hoc test and assumptions, the sample size's 
+#' coefficient of variance, and corresponding degrees of freedom.
 #' 
 #' @references
 #' Blanca, M., Alarcón, R., Arnau, J. et al. Effect of variance ratio on ANOVA robustness: Might 1.5 be the limit?. 

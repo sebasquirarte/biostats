@@ -9,7 +9,7 @@
 #' @param color Character string indicating the color for non-outlier data points. Default: "#79E1BE".
 #'
 #' @return 
-#' Prints results to console and invisibly returns a list with outlier statistics and ggplot objects.
+#' An object of class "outliers" containing a list with outlier statistics and ggplot objects.
 #'
 #' @examples
 #' # Simulated clinical data
@@ -116,33 +116,53 @@ outliers <- function(data,
     theme_minimal() +
     scale_x_discrete(labels = " ")
   
-  # Print comprehensive summary
+  # Calculate percentage of missing data and outliers in data
   missing_pct <- round(n_missing / length(x_values) * 100, 1)
   outlier_pct <- round(n_outliers / length(clean_values) * 100, 1)
   
-  cat(sprintf("\nOutlier Analysis\n\nVariable: '%s'\n", x))
-  cat(sprintf("n: %d\nMissing: %d (%.1f%%)\n", length(clean_values), n_missing, missing_pct))
-  cat(sprintf("Method: Tukey's IQR x %.1f\n", threshold))
-  cat(sprintf("Bounds: [%.3f, %.3f]\n", bounds["lower"], bounds["upper"]))
-  cat(sprintf("Outliers detected: %d (%.1f%%)\n\n", n_outliers, outlier_pct))
-  
-  # Display outlier indices with smart truncation
-  if (n_outliers > 0) {
-    shown_indices <- if (n_outliers <= 20) outlier_indices else outlier_indices[1:10]
-    cat(sprintf("Outlier indices: %s%s\n\n",
-                paste(sort(shown_indices), collapse = ", "),
-                ifelse(n_outliers > 20, " (...)", "")))
-  }
-  
-  # Display plots
-  grid.arrange(scatter_plot, box_plot, ncol = 2)
-  
   # Return essential results
-  invisible(list(
+  results <- list(
+    data = list(
+      name = as.character(x), 
+      threshold = threshold, 
+      clean_values = clean_values
+      ),
+    missing_data = list(
+      n_missing = n_missing,
+      missing_pct = missing_pct
+      ),
+    outlier_data = list(
+      n_outliers = n_outliers, 
+      outlier_pct = outlier_pct),
     outliers = outlier_indices,
     bounds = bounds,
     stats = c(q1 = quartiles[1], q3 = quartiles[2], iqr = iqr_value),
-    scatter_plot = scatter_plot,
+    scatterplot = scatter_plot,
     boxplot = box_plot
-  ))
+    )
+  class(results) <- "outliers"
+  return(results)
+}
+
+#' @export
+#' @describeIn missing_values Print method for objects of class "outliers".
+#' @param x An object of class "outliers".
+#' @param ... Further arguments passed to or from other methods.
+print.outliers <- function(x, ...) {
+  cat(sprintf("\nOutlier Analysis\n\nVariable: '%s'\n", x$data$name))
+  cat(sprintf("n: %d\nMissing: %d (%.1f%%)\n", length(x$data$clean_values), x$missing_data$n_missing, x$missing_data$missing_pct))
+  cat(sprintf("Method: Tukey's IQR x %.1f\n", x$data$threshold))
+  cat(sprintf("Bounds: [%.3f, %.3f]\n", x$bounds["lower"], x$bounds["upper"]))
+  cat(sprintf("Outliers detected: %d (%.1f%%)\n\n", x$outlier_data$n_outliers, x$outlier_data$outlier_pct))
+  
+  # Display outlier indices with smart truncation
+  if (x$outlier_data$n_outliers > 0) {
+    shown_indices <- if (x$outlier_data$n_outliers <= 20) x$outliers else x$outliers[1:10]
+    cat(sprintf("Outlier indices: %s%s\n\n",
+                paste(sort(shown_indices), collapse = ", "),
+                ifelse(x$outlier_data$n_outliers > 20, " (...)", "")))
+  }
+  
+  # Display plots
+  grid.arrange(x$scatterplot, x$boxplot, ncol = 2)
 }

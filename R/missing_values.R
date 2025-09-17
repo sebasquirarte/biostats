@@ -110,7 +110,7 @@ missing_values <- function(data,
       theme_void()
   }
   
-  res <- list(
+  results <- list(
     missing_stats = missing_stats,
     total_missing = total_missing,
     complete_cases = complete_cases,
@@ -120,8 +120,8 @@ missing_values <- function(data,
     heatmap_plot = heatmap_plot,
     all = all
   )
-  class(res) <- "missing_values"
-  return(res)
+  class(results) <- "missing_values"
+  return(results)
 }
 
 #' @export

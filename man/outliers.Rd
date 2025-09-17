@@ -16,7 +16,7 @@ outliers(data, x, threshold = 1.5, color = "#79E1BE")
 \item{color}{Character string indicating the color for non-outlier data points. Default: "#79E1BE".}
 }
 \value{
-Prints results to console and invisibly returns a list with outlier statistics and ggplot objects.
+An object of class "outliers" containing a list with outlier statistics and ggplot objects.
 }
 \description{
 Identifies outliers using Tukey's interquartile range (IQR) method and provides
