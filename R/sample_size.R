@@ -23,9 +23,8 @@
 #'   Must be between 0 and 1. Default: 0.
 #' @param k Numeric value indicating the allocation ratio (n1/n2) for two-sample tests. Default: 1.
 #'
-#' @return 
-#' Prints calculation summary to console and invisibly returns a list containing 
-#' sample size statistics, study parameters, and calculated z-scores.
+#' @return
+#' An object of class "sample_size" containing the calculated sample size and study parameters.
 #'
 #' @references
 #' Chow, S.-C., Shao, J., Wang, H., & Lokhnygina, Y. (2017). Sample Size Calculations 
@@ -131,40 +130,60 @@ sample_size <- function(sample = c("one-sample", "two-sample"),
     stop("Sample size calculation resulted in infinite value. Check delta and group difference.", call. = FALSE)
   }
   
-  # Print results
-  cat(sprintf("\nSample Size Calculation\n\nTest type: %s\n", type))
-  cat(sprintf("Design: %s\n", if (sample == "two-sample") sprintf("%s, %s", design, sample) else sample))
-  cat(sprintf("Outcome: %s\n", outcome))
-  cat(sprintf("Alpha (\u03b1): %.3f\n", alpha))
-  cat(sprintf("Beta (\u03b2): %.3f\n", beta))
-  cat(sprintf("Power: %.1f%%\n\n", (1 - beta) * 100))
+  # Return results
+  results <- list(n1 = n1, 
+                  n2 = n2, 
+                  total = total,
+                  sample = sample, 
+                  design = design,
+                  outcome = outcome, 
+                  type = type, 
+                  alpha = alpha, 
+                  beta = beta,
+                  x1 = x1, 
+                  x2 = x2,
+                  diff = diff,
+                  SD = SD, 
+                  delta = delta, 
+                  dropout = dropout,
+                  k = k)
+  
+  class(results) <- "sample_size"
+  return(results)
+}
+  
+#' @export
+#' @describeIn sample_size Print method for objects of class "sample_size".
+#' @param x An object of class "sample_size".
+#' @param ... Further arguments passed to or from other methods.
+print.sample_size <- function(x, ...) {
+  cat(sprintf("\nSample Size Calculation\n\nTest type: %s\n", x$type))
+  cat(sprintf("Design: %s\n", if (x$sample == "two-sample") sprintf("%s, %s", x$design, x$sample) else x$sample))
+  cat(sprintf("Outcome: %s\n", x$outcome))
+  cat(sprintf("Alpha (\u03b1): %.3f\n", x$alpha))
+  cat(sprintf("Beta (\u03b2): %.3f\n", x$beta))
+  cat(sprintf("Power: %.1f%%\n\n", (1 - x$beta) * 100))
   
   cat("Parameters:\n")
-  cat(sprintf("x1 (treatment): %.3f\n", x1))
-  cat(sprintf("x2 (control/reference): %.3f\n", x2))
-  cat(sprintf("Difference (x1 - x2): %.3f\n", diff))
-  if (!is.null(SD)) cat(sprintf("Standard Deviation (\u03c3): %.3f\n", SD))
-  if (sample == "two-sample" && design == "parallel") cat(sprintf("Allocation Ratio (k): %.2f\n", k))
-  if (!is.null(delta)) cat(sprintf("Delta (\u03b4): %.3f\n", delta))
-  if (dropout > 0) cat(sprintf("Dropout rate: %.1f%%\n", dropout * 100))
+  cat(sprintf("x1 (treatment): %.3f\n", x$x1))
+  cat(sprintf("x2 (control/reference): %.3f\n", x$x2))
+  cat(sprintf("Difference (x1 - x2): %.3f\n", x$diff))
+  if (!is.null(x$SD)) cat(sprintf("Standard Deviation (\u03c3): %.3f\n", x$SD))
+  if (x$sample == "two-sample" && x$design == "parallel") cat(sprintf("Allocation Ratio (k): %.2f\n", x$k))
+  if (!is.null(x$delta)) cat(sprintf("Delta (\u03b4): %.3f\n", x$delta))
+  if (x$dropout > 0) cat(sprintf("Dropout rate: %.1f%%\n", x$dropout * 100))
   
   cat("\nRequired Sample Size\n")
-  if (sample == "one-sample") {
-    cat(sprintf("n = %d\n", total))
+  if (x$sample == "one-sample") {
+    cat(sprintf("n = %d\n", x$total))
   } else {
-    cat(sprintf("n1 = %d\nn2 = %d\n", n1, n2))
+    cat(sprintf("n1 = %d\nn2 = %d\n", x$n1, x$n2))
   }
-  cat(sprintf("Total = %d\n", total))
+  cat(sprintf("Total = %d\n", x$total))
   
-  if (dropout > 0) {
-    cat(sprintf("\nNote: Sample size increased by %.1f%% to account for potential dropouts.\n", dropout * 100))
+  if (x$dropout > 0) {
+    cat(sprintf("\nNote: Sample size increased by %.1f%% to account for potential dropouts.\n", x$dropout * 100))
   }
   cat("\n")
-  
-  # Return results invisibly
-  invisible(list(n1 = n1, n2 = n2, total = total, sample = sample, design = design,
-                 outcome = outcome, type = type, alpha = alpha, beta = beta,
-                 x1 = x1, x2 = x2, SD = SD, delta = delta, dropout = dropout,
-                 k = k, z_alpha = z_alpha, z_beta = z_beta, zscore = zscore
-  ))
+  invisible(x)
 }

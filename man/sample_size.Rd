@@ -2,6 +2,7 @@
 % Please edit documentation in R/sample_size.R
 \name{sample_size}
 \alias{sample_size}
+\alias{print.sample_size}
 \title{Sample Size Calculation for Clinical Trials}
 \usage{
 sample_size(
@@ -18,6 +19,8 @@ sample_size(
   dropout = 0,
   k = 1
 )
+
+\method{print}{sample_size}(x, ...)
 }
 \arguments{
 \item{sample}{Character string indicating whether one or two samples need to be calculated.
@@ -50,15 +53,23 @@ Must be negative for non-inferiority and positive for superiority/equivalence. D
 Must be between 0 and 1. Default: 0.}
 
 \item{k}{Numeric value indicating the allocation ratio (n1/n2) for two-sample tests. Default: 1.}
+
+\item{x}{An object of class "sample_size".}
+
+\item{...}{Further arguments passed to or from other methods.}
 }
 \value{
-Prints calculation summary to console and invisibly returns a list containing
-sample size statistics, study parameters, and calculated z-scores.
+An object of class "sample_size" containing the calculated sample size and study parameters.
 }
 \description{
 Calculates the sample size needed in a clinical trial based on study design
 and statistical parameters using standard formulas for hypothesis testing (Chow, S. 2008).
 }
+\section{Methods (by generic)}{
+\itemize{
+\item \code{print(sample_size)}: Print method for objects of class "sample_size".
+
+}}
 \examples{
 # Two-sample parallel non-inferiority test for means with 10\% expected dropout
 sample_size(sample = 'two-sample', design = 'parallel', outcome = 'mean',

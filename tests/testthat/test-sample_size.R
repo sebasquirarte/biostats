@@ -140,9 +140,7 @@ testthat::test_that("return list structure", {
   capture.output(result <- sample_size(sample = "one-sample", outcome = "mean", 
                                        type = "equality", x1 = 1, x2 = 2, SD = 0.5))
   
-  expected_names <- c("n1", "n2", "total", "sample", "design", "outcome",
-                      "type", "alpha", "beta", "x1", "x2", "SD", "delta", 
-                      "dropout", "k", "z_alpha", "z_beta", "zscore")
+  expected_names <- c('n1', 'n2', 'total', 'sample', 'design', 'outcome', 'type', 'alpha', 'beta', 'x1', 'x2', 'diff', 'SD', 'delta', 'dropout', 'k')
   
   expect_named(result, expected_names)
   expect_gt(result$n2, 0)

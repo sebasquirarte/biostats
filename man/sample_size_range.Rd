@@ -2,9 +2,12 @@
 % Please edit documentation in R/sample_size_range.R
 \name{sample_size_range}
 \alias{sample_size_range}
+\alias{print.sample_size_range}
 \title{Calculate and visualize sample size across a range of treatment effects}
 \usage{
 sample_size_range(x1_range, x2, step = 0.1, ...)
+
+\method{print}{sample_size_range}(x, ...)
 }
 \arguments{
 \item{x1_range}{Numeric vector of length 2 specifying the range of values to
@@ -15,15 +18,14 @@ evaluate for the treatment group mean or proportion (\code{x1}).}
 \item{step}{Numeric value indicating the step size to increment across the
 \code{x1_range}. Default: 0.1.}
 
-\item{...}{Additional arguments passed to \code{sample_size()}, such as
-\code{sample}, \code{design}, \code{outcome}, \code{type}, \code{SD},
-\code{alpha}, etc.}
+\item{...}{Further arguments passed to or from other methods.}
+
+\item{x}{An object of class "sample_size_range".}
 }
 \value{
-Prints range analysis summary to console and invisibly returns a list containing
-the dataframe of sample size calculations and the ggplot object. A plot is also
-generated to visualize the relationship between treatment effects and required
-sample sizes.
+An object of class "sample_size_range" containing the dataframe of sample size calculations
+and the ggplot object. A plot is also generated to visualize the relationship between treatment
+effects and required sample sizes.
 }
 \description{
 Calculates required sample sizes for specified power levels (70\%, 80\%, 90\%)
@@ -31,6 +33,11 @@ across a range of treatment effect values (\code{x1}), while keeping the control
 group value (\code{x2}) fixed. Internally calls \code{sample_size()} and generates a
 plot to visualize how total sample size changes with varying \code{x1}.
 }
+\section{Methods (by generic)}{
+\itemize{
+\item \code{print(sample_size_range)}: Print method for objects of class "sample_size_range".
+
+}}
 \examples{
 # Two-sample parallel non-inferiority test for proportions with 10\% dropout
 sample_size_range(x1_range = c(0.65, 0.75), x2 = 0.65, step = 0.01,

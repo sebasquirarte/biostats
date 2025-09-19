@@ -14,11 +14,10 @@
 #'   \code{sample}, \code{design}, \code{outcome}, \code{type}, \code{SD}, 
 #'   \code{alpha}, etc.
 #'
-#' @return 
-#' Prints range analysis summary to console and invisibly returns a list containing 
-#' the dataframe of sample size calculations and the ggplot object. A plot is also 
-#' generated to visualize the relationship between treatment effects and required 
-#' sample sizes.
+#' @return
+#' An object of class "sample_size_range" containing the dataframe of sample size calculations
+#' and the ggplot object. A plot is also generated to visualize the relationship between treatment
+#' effects and required sample sizes.
 #'
 #' @examples
 #' # Two-sample parallel non-inferiority test for proportions with 10% dropout
@@ -88,28 +87,6 @@ sample_size_range <- function(x1_range,
   results$x2 <- x2
   results$diff <- results$x1 - x2
   
-  # Print summary
-  cat("\nSample Size Range Analysis\n\n")
-  cat(sprintf("Treatment range (x1): %.3f to %.3f\n", x1_range[1], x1_range[2]))
-  cat(sprintf("Control/Reference (x2): %.3f\n", x2))
-  cat(sprintf("Step size: %.3f\n\n", step))
-  
-  for (pwr in power_levels) {
-    valid_totals <- results$total[results$power == pwr & !is.na(results$total)]
-    if (length(valid_totals) > 0) {
-      cat(sprintf("%d%% Power: Total n = %d to %d\n", pwr, min(valid_totals), 
-                  max(valid_totals)))
-    } else {
-      cat(sprintf("%d%% Power: Total n = NA (no valid calculations)\n", pwr))
-    }
-  }
-  
-  if (dropout_rate > 0) {
-    cat(sprintf("\nSample size increased by %.1f%% to account for potential dropouts.\n", 
-                dropout_rate * 100))
-  }
-  cat("\n")
-  
   # Create plot
   colors <- c("70" = "#C5F4C1", "80" = "#79E1BE", "90" = "#33BFBC")
   
@@ -139,8 +116,40 @@ sample_size_range <- function(x1_range,
     }
   }
   
-  print(p)
+  # Return results
+  results <- list(data = results[, c("power", "x1", "x2", "diff", "n1", "n2", "total")],
+                  dropout = dropout_rate,
+                  step = step,
+                  plot = p)
   
-  invisible(list(data = results[, c("power", "x1", "x2", "diff", "n1", "n2", "total")],
-                 plot = p))
+  class(results) <- "sample_size_range"
+  return(results)
+}
+  
+#' @export
+#' @describeIn sample_size_range Print method for objects of class "sample_size_range".
+#' @param x An object of class "sample_size_range".
+#' @param ... Further arguments passed to or from other methods.
+print.sample_size_range <- function(x, ...) {
+  cat("\nSample Size Range Analysis\n\n")
+  cat(sprintf("Treatment range (x1): %.3f to %.3f\n", x$data$x1[1], x$data$x1[2]))
+  cat(sprintf("Control/Reference (x2): %.3f\n", x$data$x2[1]))
+  cat(sprintf("Step size: %.3f\n\n", x$step))
+  
+  for (pwr in c(70, 80, 90)) {
+    valid_totals <- x$data$total[x$data$power == pwr & !is.na(x$data$total)]
+    if (length(valid_totals) > 0) {
+      cat(sprintf("%d%% Power: Total n = %d to %d\n", pwr, min(valid_totals), 
+                  max(valid_totals)))
+    } else {
+      cat(sprintf("%d%% Power: Total n = NA (no valid calculations)\n", pwr))
+    }
+  }
+  
+  if (x$dropout > 0) {
+    cat(sprintf("\nSample size increased by %.1f%% to account for potential dropouts.\n", 
+                x$dropout * 100))
+  }
+  cat("\n")
+  invisible(x)
 }

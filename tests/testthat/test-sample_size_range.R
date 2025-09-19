@@ -9,7 +9,7 @@ test_that("sample_size_range basic functionality", {
   }, file = NULL)
   
   expect_type(res, "list")
-  expect_named(res, c("data", "plot"))
+  expect_named(res, c("data", "dropout", "step", "plot"))
   expect_s3_class(res$data, "data.frame")
   expect_s3_class(res$plot, "ggplot")
 })

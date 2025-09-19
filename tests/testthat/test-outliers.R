@@ -15,7 +15,8 @@ test_that("outliers returns expected structure", {
   result <- quiet_outliers(df, "values")
   
   expect_type(result, "list")
-  expect_named(result, c("data", "missing_data", "outlier_data", "outliers", "bounds", "stats", "scatterplot", "boxplot"))
+  expect_named(result, c('name', 'threshold', 'clean_values', 'n_missing', 'missing_pct', 'n_outliers', 
+                         'outlier_pct', 'outliers', 'bounds', 'stats', 'scatterplot', 'boxplot'))
   expect_s3_class(result$scatterplot, "gg")
   expect_s3_class(result$boxplot, "gg")
 })

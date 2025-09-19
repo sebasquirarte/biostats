@@ -121,25 +121,19 @@ outliers <- function(data,
   outlier_pct <- round(n_outliers / length(clean_values) * 100, 1)
   
   # Return essential results
-  results <- list(
-    data = list(
-      name = as.character(x), 
-      threshold = threshold, 
-      clean_values = clean_values
-      ),
-    missing_data = list(
-      n_missing = n_missing,
-      missing_pct = missing_pct
-      ),
-    outlier_data = list(
-      n_outliers = n_outliers, 
-      outlier_pct = outlier_pct),
-    outliers = outlier_indices,
-    bounds = bounds,
-    stats = c(q1 = quartiles[1], q3 = quartiles[2], iqr = iqr_value),
-    scatterplot = scatter_plot,
-    boxplot = box_plot
-    )
+  results <- list(name = as.character(x), 
+                  threshold = threshold, 
+                  clean_values = clean_values,
+                  n_missing = n_missing,
+                  missing_pct = missing_pct,
+                  n_outliers = n_outliers, 
+                  outlier_pct = outlier_pct,
+                  outliers = outlier_indices,
+                  bounds = bounds,
+                  stats = c(q1 = quartiles[1], q3 = quartiles[2], iqr = iqr_value),
+                  scatterplot = scatter_plot,
+                  boxplot = box_plot)
+
   class(results) <- "outliers"
   return(results)
 }
@@ -149,18 +143,18 @@ outliers <- function(data,
 #' @param x An object of class "outliers".
 #' @param ... Further arguments passed to or from other methods.
 print.outliers <- function(x, ...) {
-  cat(sprintf("\nOutlier Analysis\n\nVariable: '%s'\n", x$data$name))
-  cat(sprintf("n: %d\nMissing: %d (%.1f%%)\n", length(x$data$clean_values), x$missing_data$n_missing, x$missing_data$missing_pct))
-  cat(sprintf("Method: Tukey's IQR x %.1f\n", x$data$threshold))
+  cat(sprintf("\nOutlier Analysis\n\nVariable: '%s'\n", x$name))
+  cat(sprintf("n: %d\nMissing: %d (%.1f%%)\n", length(x$clean_values), x$n_missing, x$missing_pct))
+  cat(sprintf("Method: Tukey's IQR x %.1f\n", x$threshold))
   cat(sprintf("Bounds: [%.3f, %.3f]\n", x$bounds["lower"], x$bounds["upper"]))
-  cat(sprintf("Outliers detected: %d (%.1f%%)\n\n", x$outlier_data$n_outliers, x$outlier_data$outlier_pct))
+  cat(sprintf("Outliers detected: %d (%.1f%%)\n\n", x$n_outliers, x$outlier_pct))
   
   # Display outlier indices with smart truncation
-  if (x$outlier_data$n_outliers > 0) {
-    shown_indices <- if (x$outlier_data$n_outliers <= 20) x$outliers else x$outliers[1:10]
+  if (x$n_outliers > 0) {
+    shown_indices <- if (x$n_outliers <= 20) x$outliers else x$outliers[1:10]
     cat(sprintf("Outlier indices: %s%s\n\n",
                 paste(sort(shown_indices), collapse = ", "),
-                ifelse(x$outlier_data$n_outliers > 20, " (...)", "")))
+                ifelse(x$n_outliers > 20, " (...)", "")))
   }
   
   # Display plots
