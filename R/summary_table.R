@@ -20,19 +20,19 @@
 #' 
 #' # Overall summary without considering treatment groups
 #' summary_table(clinical_df,
-#'               exclude = c('subject_id', 'visit'))
+#'               exclude = c('participant_id', 'visit'))
 #' 
 #' # Grouped summary by treatment group
 #' summary_table(clinical_df,
 #'               group_by = 'treatment',
-#'               exclude = c('subject_id', 'visit'))
+#'               exclude = c('participant_id', 'visit'))
 #' 
 #' # Grouped summary by treatment group with all stats and effect size
 #' summary_table(clinical_df,
 #'               group_by = 'treatment',
 #'               all = TRUE,
 #'               effect_size = TRUE,
-#'               exclude = c('subject_id', 'visit'))
+#'               exclude = c('participant_id', 'visit'))
 #'               
 #' @importFrom stats IQR chisq.test fisher.test median quantile sd shapiro.test ks.test t.test var wilcox.test na.omit setNames addmargins
 #' @importFrom gt gt opt_align_table_header cols_align cols_width px

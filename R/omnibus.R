@@ -44,7 +44,7 @@
 #' clinical_df_A <- clinical_df[clinical_df$treatment == "A", ]
 #' 
 #' # Compare numerical variable changes across visits 
-#' omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "subject_id")
+#' omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "participant_id")
 #'
 #' @importFrom car leveneTest
 #' @importFrom stats aov bartlett.test friedman.test kruskal.test lm mauchly.test shapiro.test as.formula na.action

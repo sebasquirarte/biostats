@@ -3,13 +3,13 @@ test_that("summary_table basic functionality works", {
   df <- clinical_data(n = 50, visits = 1)
   
   # Without grouping
-  result1 <- suppressWarnings(summary_table(df, exclude = c("subject_id", "visit")))
+  result1 <- suppressWarnings(summary_table(df, exclude = c("participant_id", "visit")))
   expect_s3_class(result1, "gt_tbl")
   result1_data <- result1$`_data`
   expect_true("variable" %in% names(result1_data))
   
   # With grouping
-  result2 <- suppressWarnings(summary_table(df, group_by = "treatment", exclude = c("subject_id", "visit")))
+  result2 <- suppressWarnings(summary_table(df, group_by = "treatment", exclude = c("participant_id", "visit")))
   expect_s3_class(result2, "gt_tbl")
   result2_data <- result2$`_data`
   expect_true("p_value" %in% names(result2_data))
@@ -18,7 +18,7 @@ test_that("summary_table basic functionality works", {
 test_that("summary_table parameters work correctly", {
   set.seed(123)
   df <- clinical_data(n = 40, visits = 1)
-  exclude_vars <- c("subject_id", "visit")
+  exclude_vars <- c("participant_id", "visit")
   
   # Normality tests
   result_sw <- suppressWarnings(summary_table(df, group_by = "treatment", normality_test = "S-W", exclude = exclude_vars))
@@ -60,15 +60,15 @@ test_that("summary_table handles edge cases", {
   
   # Small sample
   small_df <- clinical_data(n = 5, visits = 1)
-  result_small <- suppressWarnings(summary_table(small_df, exclude = c("subject_id", "visit")))
+  result_small <- suppressWarnings(summary_table(small_df, exclude = c("participant_id", "visit")))
   expect_s3_class(result_small, "gt_tbl")
   
   # Missing data cleanup
   df_clean <- clinical_data(n = 30, visits = 1, missing = 0)
   df_missing <- clinical_data(n = 30, visits = 2, missing = 0.1)
   
-  result_clean <- suppressWarnings(summary_table(df_clean, group_by = "treatment", exclude = c("subject_id", "visit")))
-  result_missing <- suppressWarnings(summary_table(df_missing, group_by = "treatment", exclude = c("subject_id", "visit")))
+  result_clean <- suppressWarnings(summary_table(df_clean, group_by = "treatment", exclude = c("participant_id", "visit")))
+  result_missing <- suppressWarnings(summary_table(df_missing, group_by = "treatment", exclude = c("participant_id", "visit")))
   
   expect_false("NAs" %in% names(result_clean$`_data`))
   expect_true("NAs" %in% names(result_missing$`_data`))
