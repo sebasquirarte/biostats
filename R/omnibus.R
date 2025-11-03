@@ -197,7 +197,9 @@ print.omnibus <- function(x, ...) {
   } else {
     cat(sprintf("  Chi-squared(%d) = %.3f, p = %s\n", x$df, x$stat, .format_p(x$p_value)))
   }
-  cat(sprintf("  Result: %s\n", ifelse(x$p_value < x$alpha, "significant", "not significant")))
+  cat(sprintf("  Result: %s (p = %s)\n",
+              if (x$p_value < x$alpha) "significant" else "not significant",
+              .format_p(x$p_value)))
   
   if (x$p_value < x$alpha) {
     .print_post.hoc(x$post_hoc, x$alpha, x$name, x$post_hoc$p_method)
@@ -215,4 +217,3 @@ print.omnibus <- function(x, ...) {
   
   cat(sprintf("\nThe study groups show a %s distribution of sample sizes (\u0394n = %.3f).\n\n", unbalance, x$coef_ssvar))
 }
-
