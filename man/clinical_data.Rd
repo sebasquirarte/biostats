@@ -25,7 +25,7 @@ clinical_data(
 across numeric variables with fixed proportions (biomarker = 15\%, weight = 25\%, response = 60\%). Default: 0.}
 }
 \value{
-Dataframe with columns: subject_id, visit, sex, treatment, age,
+Dataframe with columns: participant_id, visit, sex, treatment, age,
 weight, biomarker, and response in long format.
 }
 \description{

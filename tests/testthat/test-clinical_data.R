@@ -4,11 +4,11 @@ test_that("clinical_data creates basic dataset correctly.", {
   # Check structure and dimensions
   expect_s3_class(result, "data.frame")
   expect_equal(nrow(result), 300)  # 100 subjects * 3 visits
-  expect_named(result, c("subject_id", "visit", "sex", "treatment",
+  expect_named(result, c("participant_id", "visit", "sex", "treatment",
                          "age", "weight", "biomarker", "response"))
 
   # Check data types and factor levels
-  expect_type(result$subject_id, "character")
+  expect_type(result$participant_id, "character")
   expect_s3_class(result$sex, "factor")
   expect_equal(levels(result$sex), c("Male", "Female"))
   expect_s3_class(result$treatment, "factor")
@@ -20,7 +20,7 @@ test_that("clinical_data creates basic dataset correctly.", {
 test_that("clinical_data handles different parameters correctly.", {
   result <- clinical_data(n = 10, visits = 5, arms = c("A", "B", "C"))
   
-  expect_equal(length(unique(result$subject_id)), 10)
+  expect_equal(length(unique(result$participant_id)), 10)
   expect_equal(nlevels(result$visit), 5)
   expect_equal(nrow(result), 50)  # 10 subjects * 5 visits
   expect_equal(levels(result$treatment), c("A", "B", "C"))
@@ -71,14 +71,14 @@ test_that("clinical_data maintains data integrity and shows treatment effects.",
   result <- clinical_data(n = 50, visits = 3, arms = c("Placebo", "Low", "High"))
 
   # Check value ranges and format
-  expect_true(all(nchar(result$subject_id) == 3))
-  expect_true(all(grepl("^\\d{3}$", result$subject_id)))
+  expect_true(all(nchar(result$participant_id) == 3))
+  expect_true(all(grepl("^\\d{3}$", result$participant_id)))
   expect_true(all(result$age >= 18 & result$age <= 85))
   expect_true(all(result$weight >= 45 & result$weight <= 120))
 
   # Check visit sequence for first subject
-  subj_visits <- as.numeric(result$visit[result$subject_id == "001"])
-  expect_equal(subj_visits, 1:3)
+  part_visits <- as.numeric(result$visit[result$participant_id == "001"])
+  expect_equal(part_visits, 1:3)
 
   # Verify treatment effects (biomarker should decrease with treatment)
   biomarker_means <- aggregate(biomarker ~ treatment,
@@ -93,7 +93,7 @@ test_that("clinical_data works with edge cases.", {
   # Single subject, single visit
   result_minimal <- clinical_data(n = 1, visits = 1)
   expect_equal(nrow(result_minimal), 1)
-  expect_equal(result_minimal$subject_id, "001")
+  expect_equal(result_minimal$participant_id, "001")
 
   # Maximum n
   expect_silent(clinical_data(n = 999, visits = 1))

@@ -11,7 +11,7 @@
 #' @param missing Numeric parameter indicating the proportion (0-1) of missing values to be introduced 
 #'   across numeric variables with fixed proportions (biomarker = 15%, weight = 25%, response = 60%). Default: 0.
 #'   
-#' @return Dataframe with columns: subject_id, visit, sex, treatment, age, 
+#' @return Dataframe with columns: participant_id, visit, sex, treatment, age, 
 #'   weight, biomarker, and response in long format.
 #'   
 #' @examples
@@ -50,7 +50,7 @@ clinical_data <- function(n = 100,
   
   # Create clinical trial dataframe
   clinical_df <- data.frame(
-    subject_id = rep(sprintf("%03d", seq_len(n)), each = visits),
+    participant_id = rep(sprintf("%03d", seq_len(n)), each = visits),
     visit = factor(rep(seq_len(visits), times = n), levels = seq_len(visits)),
     sex = factor(rep(sample(c("Male", "Female"), n, replace = TRUE), each = visits),
                  levels = c("Male", "Female")),
@@ -73,10 +73,10 @@ clinical_data <- function(n = 100,
   
   # Apply dropout
   if (dropout > 0) {
-    dropout_subjects <- sample(unique(clinical_df$subject_id), round(n * dropout))
-    for (subj in dropout_subjects) {
+    dropout_subjects <- sample(unique(clinical_df$participant_id), round(n * dropout))
+    for (part in dropout_subjects) {
       dropout_visit <- sample(2:visits, 1)
-      clinical_df[clinical_df$subject_id == subj & 
+      clinical_df[clinical_df$participant_id == part & 
                     as.numeric(clinical_df$visit) >= dropout_visit, 
                   c("weight", "biomarker", "response")] <- NA
     }
