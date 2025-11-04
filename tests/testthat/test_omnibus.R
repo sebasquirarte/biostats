@@ -23,10 +23,15 @@ paired_data <- data.frame(
 # Paired data with NAs introduced
 data_with_na <- normal_equal_var_data
 data_with_na$score[c(1,21,41)] <- NA
+
 two_groups_data <- data.frame(
   score = c(rnorm(20,10,2), rnorm(20,12,2)),
   group = factor(rep(c("A","B"), each = 20))
 )
+
+rm_data <- two_groups_data 
+rm_data$visit <- rep((1:2), times = 10, each = 2)
+rm_data$subject <- rep(sample(1:20, replace = F), each = 2)
 
 test_that("Input validation works correctly", { # Verified
   # Missing parameters
@@ -41,6 +46,8 @@ test_that("Input validation works correctly", { # Verified
                "The dependent variable ('y') was not found in the dataframe.", fixed = TRUE)
   expect_error(omnibus(y = "score", x = "nonexistent", data = normal_equal_var_data),
                "The independent variable ('x') was not found in the dataframe.", fixed = TRUE)
+  expect_error(omnibus(y = "score", x = "group", paired_by = "nonexistent", data = normal_equal_var_data),
+               "'paired_by' variable not found in data.", fixed = TRUE)
   
   # Alpha validation
   for(a in c(0,1,-0.1,1.1)) {
@@ -58,7 +65,11 @@ test_that("Input validation works correctly", { # Verified
   expect_error(omnibus(y = "score", x = "group", data = normal_equal_var_data, na.action = c("na.omit","na.exclude")),
                "Only one 'na.action' can be selected", fixed = TRUE)
   expect_error(omnibus(y = "score", x = "group", data = normal_equal_var_data, na.action = "invalid_action"),
-               "Invalid 'na.action'", fixed = TRUE)
+               "Invalid 'na.action'.", fixed = TRUE)
+  
+  # Repeated measures
+  expect_error(omnibus(y = "score", x = "visit", data = rm_data[rm_data$group == "A", ], paired_by = "subject"),
+               "When analyzing repeated measures, 'data' must have exactly one measurement per subject and per level of 'x'.", fixed = TRUE)
 })
 
 test_that("Return object structure is correct", { # Verified
@@ -100,6 +111,17 @@ test_that("Post-hoc tests are performed when significant", {
   
   # Are post-hoc tests performed ?
   if(result$p_value < 0.05) expect_false(is.null(result$post_hoc)) else expect_null(result$post_hoc)
+
+  # Create data that is exactly the same
+  non_sig_data <- data.frame(
+    score = sample(8:10),
+    group = factor(rep(c("A","B","C"), each = 20))
+  )
+  
+  result <- omnibus(y = "score", x = "group", data = non_sig_data)
+  
+  # Are post-hoc tests performed ?
+  if(result$p_value > 0.05) expect_null(result$post_hoc) else expect_false(is.null(result$post_hoc))
 })
 
 test_that("Console output is generated", {
@@ -138,14 +160,14 @@ test_that("util-omnibus is working", {
 
 test_that("Sphericity evaluation works", {
   # .assumptions
-  res <- .assumptions(formula = score ~ group, y = "score", x = "group", data = paired_data, paired_by = "subject", alpha = 0.05,
+  result <- .assumptions(formula = score ~ group, y = "score", x = "group", data = paired_data, paired_by = "subject", alpha = 0.05,
                       num_levels = length(levels(paired_data$group)))
   
   # When paired sphericity can not be NULL
-  expect_true(!is.null(res$sphericity_results))
+  expect_true(!is.null(result$sphericity_results))
   
   # Evaluate the existing elements
-  sph <- res$sphericity_results
+  sph <- result$sphericity_results
   expect_named(sph, c("test","statistic","p_value","df","key"))
   expect_type(sph$test,"character")
   expect_type(sph$statistic,"double")
@@ -167,3 +189,34 @@ test_that("Post-hoc result structure is valid", {
   expect_true(all(rownames(p_matrix) %in% levels(paired_data$group)))
   expect_true(all(colnames(p_matrix) %in% levels(paired_data$group)))
 })
+
+test_that("Group imbalance is coherent", {
+  # Low variability / group imbalance
+  low_sample <- data.frame(
+    score = c(rnorm(20, 10, 0.5), rnorm(20, 11, 0.5), rnorm(20, 10, 0)),
+    group = rep(c("A", "B", "C"), times = 20)
+  )
+
+  low_var <- capture.output(omnibus(y = "score", x = "group", data = low_sample))[23]
+  expect_match(low_var, "low")
+  
+  # Moderate variability / group imbalance
+  mod_sample <- data.frame(
+    score = c(rnorm(20, 12, 3), rnorm(20, 11, 0.5), rnorm(20, 12, 2)),
+    group = rep(c("A", "B", "C"), times = 20)
+  )
+  
+  mod_var <- capture.output(omnibus(y = "score", x = "group", data = mod_sample))[23]
+  expect_match(mod_var, "moderately")
+  
+  
+  # High variability / group imbalance
+  high_sample <- data.frame(
+    score = c(rnorm(20, 16, 0), rnorm(20, 20, 5), rnorm(20, 5, 0)),
+    group = rep(c("A", "B", "C"), times = 20)
+  )
+  
+  high_var <- capture.output(omnibus(y = "score", x = "group", data = high_sample))[23]
+  expect_match(high_var, "highly")
+})
+

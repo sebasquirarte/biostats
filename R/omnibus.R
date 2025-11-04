@@ -65,11 +65,11 @@ omnibus <- function(data,
   if (missing(data)) stop("'data' must be specified.", call. = FALSE)
   if (!(y %in% names(data))) stop("The dependent variable ('y') was not found in the dataframe.", call. = FALSE)
   if (!(x %in% names(data))) stop("The independent variable ('x') was not found in the dataframe.", call. = FALSE)
-  if (!is.null(paired_by) && !(paired_by %in% names(data))) stop("'paired_by' variable not found in data", call. = FALSE)
+  if (!is.null(paired_by) && !(paired_by %in% names(data))) stop("'paired_by' variable not found in data.", call. = FALSE)
   data[[y]] <- as.numeric(data[[y]])
   data[[x]] <- as.factor(data[[x]])
   if (!is.null(paired_by)) data[[paired_by]] <- as.factor(data[[paired_by]])
-  if (!is.null(paired_by) && !all(table(data[[paired_by]], data[[x]]) == 1)) stop("When analyzing repeated measures, 'data' must have exactly one measurement per subject per level of 'x'.")
+  if (!is.null(paired_by) && !all(table(data[[paired_by]], data[[x]]) == 1)) stop("When analyzing repeated measures, 'data' must have exactly one measurement per subject and per level of 'x'.")
   
   data <- .data_organization(data = data, y = y, x = x, paired_by = paired_by)
   
@@ -208,12 +208,12 @@ print.omnibus <- function(x, ...) {
   }
   
   if (x$coef_ssvar > 0 && x$coef_ssvar <= 0.16) {
-    unbalance <- "well balanced (low variability)"
+    imbalance <- "well balanced (low variability)"
   } else if (x$coef_ssvar > 0.16 && x$coef_ssvar <= 0.33) {
-    unbalance <- "moderately unbalanced"
+    imbalance <- "moderately imbalanced"
   } else {
-    unbalance <- "highly unbalanced"
+    imbalance <- "highly imbalanced"
   }
   
-  cat(sprintf("\nThe study groups show a %s distribution of sample sizes (\u0394n = %.3f).\n\n", unbalance, x$coef_ssvar))
+  cat(sprintf("\nThe study groups show a %s distribution of sample sizes (\u0394n = %.3f).\n\n", imbalance, x$coef_ssvar))
 }
