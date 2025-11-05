@@ -94,3 +94,22 @@ test_that("Plot labels", {
   expect_equal(p$labels$x, "x1 (Treatment Effect)")
   expect_equal(p$labels$y, "Total Sample Size")
 })
+
+# Behaviour when test produces NAs
+test_that("NAs are handled well when needed", {
+result <- NULL
+
+output <- capture.output({
+  result <- sample_size_range(
+    x1_range = c(0, 8), x2 = 9, step = 8,
+    sample = "two-sample", design = "parallel",
+    outcome = "proportion", type = "non-inferiority", delta = -0.1
+  )
+  print(result)
+}, file = NULL)
+
+expect_match(output[8], "70% Power: Total n = NA (no valid calculations)", fixed = TRUE)
+expect_match(output[9], "80% Power: Total n = NA (no valid calculations)", fixed = TRUE)
+expect_match(output[10], "90% Power: Total n = NA (no valid calculations)", fixed = TRUE)
+
+})
