@@ -86,7 +86,7 @@ missing_values <- function(data,
     coord_flip() + scale_y_continuous(expand = expansion(mult = c(0, 0)),
                                       limits = c(0, 100), labels = NULL) +
     labs(title = "Missing Values by Variable",
-         subtitle = sprintf("Complete cases: %d / %d (%.1f%%)", complete_cases, nrow(data), complete_pct),
+         subtitle = sprintf("Complete rows: %d / %d (%.1f%%)", complete_cases, nrow(data), complete_pct),
          x = "", y = "") + theme_clean +
     theme(axis.text.y = element_text(hjust = 1), axis.text.x = element_blank())
   
@@ -130,7 +130,7 @@ missing_values <- function(data,
 #' @param ... Further arguments passed to or from other methods.
 print.missing_values <- function(x, ...) {
   cat("\nMissing Value Analysis\n\n")
-  cat(sprintf("Complete cases: %d (%.1f%%)\n", x$complete_cases, x$complete_pct))
+  cat(sprintf("Complete rows: %d (%.1f%%)\n", x$complete_cases, x$complete_pct))
   cat(sprintf("Missing cells: %d (%.1f%%)\n\n", x$total_missing, x$overall_pct))
   
   print(if (x$all) x$missing_stats[, c("n_missing", "pct_missing")] else
