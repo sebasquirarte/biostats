@@ -119,7 +119,7 @@ plot_bar <- function(data,
           )
         } else if (position == "stack") {
           p <- p + geom_text(
-            aes(label = after_stat(count), group = .data[[group]]),
+            aes(label = after_stat(.data[["count"]]), group = .data[[group]]),
             stat = "count",
             position = position_stack(vjust = 0.5),
             size = 4
