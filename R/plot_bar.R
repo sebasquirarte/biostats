@@ -111,7 +111,7 @@ plot_bar <- function(data,
       if (values) {
         if (position == "fill") {
           p <- p + geom_text(
-            aes(label = after_stat(paste0(round(100 * (count / tapply(count, x, sum)[x]), 1), "%")),
+            aes(label = after_stat(paste0(round(100 * (.data[["count"]] / tapply(.data[["count"]], x, sum)[x]), 1), "%")),
                 group = .data[[group]]),
             stat = "count",
             position = position_fill(vjust = 0.5),
