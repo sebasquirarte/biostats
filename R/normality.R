@@ -185,10 +185,7 @@ normality <- function(data,
   )
   
   class(result) <- "normality"
-  
-  # Display plots and return results
-  grid.arrange(qq_plot, hist_plot, ncol = 2)
-  result
+  return(result)
 }
 
 #' Print Method for Normality Assessment
@@ -224,5 +221,6 @@ print.normality <- function(x, ...) {
     }
   }
   
-  invisible(x)
+  # Display plots
+  grid.arrange(qq_plot, hist_plot, ncol = 2)
 }

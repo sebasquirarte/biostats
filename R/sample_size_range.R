@@ -151,5 +151,5 @@ print.sample_size_range <- function(x, ...) {
                 x$dropout * 100))
   }
   cat("\n")
-  invisible(x)
+  print(x$plot)
 }
