@@ -222,5 +222,5 @@ print.normality <- function(x, ...) {
   }
   
   # Display plots
-  grid.arrange(qq_plot, hist_plot, ncol = 2)
+  grid.arrange(x$qq_plot, x$hist_plot, ncol = 2)
 }
