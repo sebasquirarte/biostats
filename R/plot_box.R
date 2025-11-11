@@ -126,9 +126,12 @@ plot_box <- function(data,
          fill = if (!is.null(legend_title)) legend_title else group,
          color = if (!is.null(legend_title)) legend_title else group) +
     theme_minimal() +
-    theme(plot.title = element_text(hjust = 0.5),
+    theme(plot.title = element_text(size = 20, hjust = 0.5, margin = margin(b = 20)),
           legend.position = if (single_color) "none" else "right",
-          strip.text = element_text())
+          strip.text = element_text(),
+          axis.title.x = element_text(size = 14, margin = margin(t = 10)),
+          axis.title.y = element_text(size = 14, margin = margin(r = 10)),
+          axis.text = element_text(size = 12))
   
   return(p)
 }

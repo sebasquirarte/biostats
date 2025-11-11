@@ -163,9 +163,13 @@ plot_hist <- function(data, x, group = NULL, facet = NULL, bins = 30, binwidth =
   
   p <- p + labs(title = title, x = xlab %||% x, y = ylab %||% "Count", fill = legend_title %||% group %||% facet) +
     theme_minimal() +
-    theme(plot.title = element_text(hjust = 0.5), panel.grid.minor = element_blank(), 
+    theme(plot.title = element_text(size = 20, hjust = 0.5, margin = margin(b = 20)), 
+          panel.grid.minor = element_blank(), 
           panel.grid.major.x = element_blank(),
-          legend.position = if (is.null(group) && is.null(facet)) "none" else "right")
+          legend.position = if (is.null(group) && is.null(facet)) "none" else "right",
+          axis.title.x = element_text(size = 14, margin = margin(t = 10)),
+          axis.title.y = element_text(size = 14, margin = margin(r = 10)),
+          axis.text = element_text(size = 12))
   
   return(p)
 }

@@ -109,16 +109,22 @@ plot_bar <- function(data,
       p <- p + geom_bar(aes(fill = .data[[group]]), position = position, color = NA, alpha = 0.8) +
         scale_fill_manual(values = colors)
       if (values) {
-        text_aes <- switch(position,
-                           fill = aes(label = after_stat(paste0(round(100 * .data[["prop"]], 1), "%")), group = .data[[group]]),
-                           aes(label = after_stat(.data[["count"]]), group = .data[[group]]))
-        text_pos <- switch(position,
-                           fill = position_fill(vjust = 0.5),
-                           stack = position_stack(vjust = 0.5),
-                           position_dodge(width = 0.9))
-        text_vjust <- if (position == "dodge") -0.5 else 0.5
-        p <- p + geom_text(text_aes, stat = "count", position = text_pos,
-                           vjust = text_vjust, size = 4)
+        if (position == "fill") {
+          p <- p + geom_text(
+            aes(label = after_stat(paste0(round(100 * (count / tapply(count, x, sum)[x]), 1), "%")),
+                group = .data[[group]]),
+            stat = "count",
+            position = position_fill(vjust = 0.5),
+            size = 4
+          )
+        } else if (position == "stack") {
+          p <- p + geom_text(
+            aes(label = after_stat(count), group = .data[[group]]),
+            stat = "count",
+            position = position_stack(vjust = 0.5),
+            size = 4
+          )
+        }
       }
     }
     if (is.null(ylab)) ylab <- if (position == "fill") "Percentage" else "Count"
@@ -164,9 +170,12 @@ plot_bar <- function(data,
     labs(title = title, x = if (!is.null(xlab)) xlab else x, y = ylab,
          fill = if (!is.null(legend_title)) legend_title else group) +
     theme_minimal() +
-    theme(plot.title = element_text(hjust = 0.5),
+    theme(plot.title = element_text(size = 20, hjust = 0.5, margin = margin(b = 20)),
           panel.grid.minor = element_blank(),
-          legend.position = if (single_color) "none" else "right")
+          legend.position = if (single_color) "none" else "right",
+          axis.title.x = element_text(size = 14, margin = margin(t = 10)),
+          axis.title.y = element_text(size = 14, margin = margin(r = 10)),
+          axis.text = element_text(size = 12))
   
   if (flip) p <- p + coord_flip()
   return(p)
