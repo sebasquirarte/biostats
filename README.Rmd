@@ -323,6 +323,11 @@ Calculates required sample sizes for specified power levels (70%, 80%, 90%) acro
 result <- sample_size_range(x1_range = c(0.65, 0.75), x2 = 0.65, step = 0.01,
                             sample = "two-sample", design = "parallel", outcome = "proportion",
                             type = "non-inferiority", delta = -0.1, dropout = 0.1)
+
+print(result)
+```
+```{r, eval=FALSE}
+result$data
 ```
 ```{r, echo=FALSE, results='asis'}
 knitr::kable(result$data, format = "markdown")
@@ -333,6 +338,11 @@ knitr::kable(result$data, format = "markdown")
 result <- sample_size_range(x1_range = c(-0.01, 0.01), x2 = 0, step = 0.005,
                             sample = "one-sample", outcome = "mean", type = "equivalence",
                             SD = 0.1, delta = 0.05, alpha = 0.05)
+
+print(result)
+```
+```{r, eval=FALSE}
+result$data
 ```
 ```{r, echo=FALSE, results='asis'}
 knitr::kable(result$data, format = "markdown")
@@ -594,4 +604,4 @@ plot_corr(data = swiss, type = "lower", show_sig = TRUE, sig_only = TRUE)
 
 This package is still under active development. Features, functions, and examples may change as improvements are made.
 
-We welcome feedback, suggestions, and bug reports. You can share your thoughts via email (sebastian.quirarte@sophia.com.mx) or GitHub issues. 
+We welcome feedback, suggestions, and bug reports. You can share your thoughts via email (sebastian.quirarte@sophia.com.mx) or [GitHub issues](https://github.com/sebasquirarte/biostats/issues). 

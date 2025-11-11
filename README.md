@@ -241,45 +241,46 @@ clinical_df_treat <- clinical_df[clinical_df$treatment == "Placebo", ]
 
 # Normally distributed variable
 normality(data = clinical_df_treat, "biomarker")
+#> 
+#> Normality Test for 'biomarker' 
+#> 
+#> n = 159 
+#> mean (SD) = 49.44 (9.2) 
+#> median (IQR) = 50.38 (13.1) 
+#> 
+#> Kolmogorov-Smirnov: D = 0.054, p = 0.740 
+#> Shapiro-Wilk: W = 0.992, p = 0.546 
+#> Skewness: 0.06 (z = 0.30) 
+#> Kurtosis: -0.03 (z = -0.08) 
+#> 
+#> Data appears normally distributed.
+#> 
 ```
 
 <img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
 
-    #> 
-    #> Normality Test for 'biomarker' 
-    #> 
-    #> n = 159 
-    #> mean (SD) = 49.44 (9.2) 
-    #> median (IQR) = 50.38 (13.1) 
-    #> 
-    #> Kolmogorov-Smirnov: D = 0.054, p = 0.740 
-    #> Shapiro-Wilk: W = 0.992, p = 0.546 
-    #> Skewness: 0.06 (z = 0.30) 
-    #> Kurtosis: -0.03 (z = -0.08) 
-    #> 
-    #> Data appears normally distributed.
-    #> 
+``` r
 
-    # Non-normally distributed variable with points outside 95% CI displayed
-    normality(data = clinical_df_treat, "weight", all = TRUE)
+# Non-normally distributed variable with points outside 95% CI displayed
+normality(data = clinical_df_treat, "weight", all = TRUE)
+#> 
+#> Normality Test for 'weight' 
+#> 
+#> n = 159 
+#> mean (SD) = 72.56 (12.9) 
+#> median (IQR) = 69.20 (21.1) 
+#> 
+#> Kolmogorov-Smirnov: D = 0.125, p = 0.014 
+#> Shapiro-Wilk: W = 0.951, p = < 0.001 
+#> Skewness: 0.28 (z = 1.45) 
+#> Kurtosis: -1.09 (z = -2.85) 
+#> 
+#> Data appears not normally distributed.
+#>  
+#> VALUES OUTSIDE 95% CI (row indices): 40, 41, 47, 22, 3, 16, 71, 105, 125, 72, 90, 89, 129, 34, 93, 103, 69, 65, 59, 2, 66, 109, 114, 107, 110, 95, 111, 58, 70, 1, 106, 113, 152, 32, 112, 115, 57, 20, 84, 29, 142, 21, 55, 102, 143, 56, 86, 144, 83
+```
 
 <img src="man/figures/README-unnamed-chunk-10-2.png" width="100%" />
-
-    #> 
-    #> Normality Test for 'weight' 
-    #> 
-    #> n = 159 
-    #> mean (SD) = 72.56 (12.9) 
-    #> median (IQR) = 69.20 (21.1) 
-    #> 
-    #> Kolmogorov-Smirnov: D = 0.125, p = 0.014 
-    #> Shapiro-Wilk: W = 0.951, p = < 0.001 
-    #> Skewness: 0.28 (z = 1.45) 
-    #> Kurtosis: -1.09 (z = -2.85) 
-    #> 
-    #> Data appears not normally distributed.
-    #>  
-    #> VALUES OUTSIDE 95% CI (row indices): 40, 41, 47, 22, 3, 16, 71, 105, 125, 72, 90, 89, 129, 34, 93, 103, 69, 65, 59, 2, 66, 109, 114, 107, 110, 95, 111, 58, 70, 1, 106, 113, 152, 32, 112, 115, 57, 20, 84, 29, 142, 21, 55, 102, 143, 56, 86, 144, 83
 
 #### **missing_values()**
 
@@ -506,6 +507,26 @@ visualize how total sample size changes with varying .
 result <- sample_size_range(x1_range = c(0.65, 0.75), x2 = 0.65, step = 0.01,
                             sample = "two-sample", design = "parallel", outcome = "proportion",
                             type = "non-inferiority", delta = -0.1, dropout = 0.1)
+
+print(result)
+#> 
+#> Sample Size Range Analysis
+#> 
+#> Treatment range (x1): 0.650 to 0.660
+#> Control/Reference (x2): 0.650
+#> Step size: 0.010
+#> 
+#> 70% Power: Total n = 108 to 474
+#> 80% Power: Total n = 144 to 622
+#> 90% Power: Total n = 196 to 858
+#> 
+#> Sample size increased by 10.0% to account for potential dropouts.
+```
+
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="75%" />
+
+``` r
+result$data
 ```
 
 | power |   x1 |   x2 | diff |  n1 |  n2 | total |
@@ -549,6 +570,24 @@ result <- sample_size_range(x1_range = c(0.65, 0.75), x2 = 0.65, step = 0.01,
 result <- sample_size_range(x1_range = c(-0.01, 0.01), x2 = 0, step = 0.005,
                             sample = "one-sample", outcome = "mean", type = "equivalence",
                             SD = 0.1, delta = 0.05, alpha = 0.05)
+
+print(result)
+#> 
+#> Sample Size Range Analysis
+#> 
+#> Treatment range (x1): -0.010 to -0.005
+#> Control/Reference (x2): 0.000
+#> Step size: 0.005
+#> 
+#> 70% Power: Total n = 29 to 45
+#> 80% Power: Total n = 35 to 54
+#> 90% Power: Total n = 44 to 68
+```
+
+<img src="man/figures/README-unnamed-chunk-18-1.png" width="75%" />
+
+``` r
+result$data
 ```
 
 | power |     x1 |  x2 |   diff |  n1 |  n2 | total |
@@ -782,7 +821,7 @@ plot_bar(data = clinical_df, x = "treatment", group = "response", position = "fi
          title = "Proportion of response by treatment", values = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-22-1.png" width="75%" />
+<img src="man/figures/README-unnamed-chunk-24-1.png" width="75%" />
 
 ``` r
 
@@ -791,7 +830,7 @@ plot_bar(data = clinical_df, x = "response", group = "visit", facet = "treatment
          title = "Response by visit and treatment",values = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-22-2.png" width="75%" />
+<img src="man/figures/README-unnamed-chunk-24-2.png" width="75%" />
 
 #### **plot_line()**
 
@@ -830,7 +869,7 @@ plot_line(data = clinical_df_full, x = "visit", y = "biomarker",
           group = "treatment", stat = "mean", error = "se")
 ```
 
-<img src="man/figures/README-unnamed-chunk-23-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-25-1.png" width="100%" />
 
 ``` r
 
@@ -839,7 +878,7 @@ plot_line(data = clinical_df_full, x = "visit", y = "biomarker", group = "treatm
           facet = "sex", stat = "median", error = "none", points = FALSE)  
 ```
 
-<img src="man/figures/README-unnamed-chunk-23-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-25-2.png" width="100%" />
 
 #### **plot_hist()**
 
@@ -875,7 +914,7 @@ ggplot2.
 plot_hist(clinical_df, x = "biomarker", group = "treatment", stat = "mean")
 ```
 
-<img src="man/figures/README-unnamed-chunk-24-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-26-1.png" width="100%" />
 
 ``` r
 
@@ -883,7 +922,7 @@ plot_hist(clinical_df, x = "biomarker", group = "treatment", stat = "mean")
 plot_hist(clinical_df, x = "biomarker", facet = "treatment")
 ```
 
-<img src="man/figures/README-unnamed-chunk-24-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-26-2.png" width="100%" />
 
 #### **plot_box()**
 
@@ -919,7 +958,7 @@ plot_box(clinical_df, x = "treatment", y = "biomarker", group = "treatment")
 #> • colour : "treatment"
 ```
 
-<img src="man/figures/README-unnamed-chunk-25-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-27-1.png" width="100%" />
 
 ``` r
 
@@ -929,7 +968,7 @@ plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment")
 #> • colour : "treatment"
 ```
 
-<img src="man/figures/README-unnamed-chunk-25-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-27-2.png" width="100%" />
 
 #### **plot_corr()**
 
@@ -963,7 +1002,7 @@ code using ggplot2.
 plot_corr(data = swiss)
 ```
 
-<img src="man/figures/README-unnamed-chunk-26-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-28-1.png" width="100%" />
 
 ``` r
 
@@ -971,7 +1010,7 @@ plot_corr(data = swiss)
 plot_corr(data = swiss, type = "lower", show_sig = TRUE, sig_only = TRUE)
 ```
 
-<img src="man/figures/README-unnamed-chunk-26-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-28-2.png" width="100%" />
 
 ## Contributions & Feedback
 
@@ -979,5 +1018,5 @@ This package is still under active development. Features, functions, and
 examples may change as improvements are made.
 
 We welcome feedback, suggestions, and bug reports. You can share your
-thoughts via email (<sebastian.quirarte@sophia.com.mx>) or GitHub
-issues.
+thoughts via email (<sebastian.quirarte@sophia.com.mx>) or [GitHub
+issues](https://github.com/sebasquirarte/biostats/issues).
