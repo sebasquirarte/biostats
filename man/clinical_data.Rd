@@ -13,13 +13,13 @@ clinical_data(
 )
 }
 \arguments{
-\item{n}{Integer indicating the number (1-999) of subjects. Default: 100.}
+\item{n}{Integer indicating the number (1-999) of participants. Default: 100.}
 
 \item{visits}{Integer indicating the number of visits including baseline. Default: 3.}
 
 \item{arms}{Character vector of treatment arm names. Default: c("Placebo", "Treatment").}
 
-\item{dropout}{Numeric parameter indicating the proportion (0-1) of subjects who dropout. Default: 0.}
+\item{dropout}{Numeric parameter indicating the proportion (0-1) of participants. who dropout. Default: 0.}
 
 \item{missing}{Numeric parameter indicating the proportion (0-1) of missing values to be introduced
 across numeric variables with fixed proportions (biomarker = 15\%, weight = 25\%, response = 60\%). Default: 0.}
@@ -29,7 +29,7 @@ Dataframe with columns: participant_id, visit, sex, treatment, age,
 weight, biomarker, and response in long format.
 }
 \description{
-Creates a simple simulated clinical trial dataset with subject demographics,
+Creates a simple simulated clinical trial dataset with participant demographics,
 multiple visits, treatment groups with different effects, numerical and
 categorical variables, as well as optional missing data and dropout rates.
 }

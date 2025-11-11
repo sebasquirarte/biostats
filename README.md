@@ -63,7 +63,7 @@ This package comprises 14 functions across four analytical domains:
 - [**Statistical Analysis and
   Inference**](#statistical-analysis-and-inference)
   - [omnibus()](#omnibus)
-  - [effect_measures())](#effect_measures)
+  - [effect_measures()](#effect_measures)
 - [**Data Visualization**](#data-visualization)
   - [plot_bar()](#plot_bar)
   - [plot_line()](#plot_line)
@@ -100,27 +100,27 @@ clinical_df <- clinical_data()
 
 str(clinical_df)
 #> 'data.frame':    300 obs. of  8 variables:
-#>  $ subject_id: chr  "001" "001" "001" "002" ...
-#>  $ visit     : Factor w/ 3 levels "1","2","3": 1 2 3 1 2 3 1 2 3 1 ...
-#>  $ sex       : Factor w/ 2 levels "Male","Female": 1 1 1 1 1 1 1 1 1 1 ...
-#>  $ treatment : Factor w/ 2 levels "Placebo","Treatment": 2 2 2 1 1 1 1 1 1 1 ...
-#>  $ age       : num  35 35 35 21 21 21 47 47 47 35 ...
-#>  $ weight    : num  55.4 60.3 58.1 68.3 66.3 64 76 77.6 74.9 61.7 ...
-#>  $ biomarker : num  42.2 44.7 44.9 56.5 51 ...
-#>  $ response  : Factor w/ 3 levels "Complete","Partial",..: 1 3 2 3 3 3 3 2 3 3 ...
+#>  $ participant_id: chr  "001" "001" "001" "002" ...
+#>  $ visit         : Factor w/ 3 levels "1","2","3": 1 2 3 1 2 3 1 2 3 1 ...
+#>  $ sex           : Factor w/ 2 levels "Male","Female": 1 1 1 1 1 1 1 1 1 1 ...
+#>  $ treatment     : Factor w/ 2 levels "Placebo","Treatment": 2 2 2 1 1 1 1 1 1 1 ...
+#>  $ age           : num  35 35 35 21 21 21 47 47 47 35 ...
+#>  $ weight        : num  55.4 60.3 58.1 68.3 66.3 64 76 77.6 74.9 61.7 ...
+#>  $ biomarker     : num  42.2 44.7 44.9 56.5 51 ...
+#>  $ response      : Factor w/ 3 levels "Complete","Partial",..: 1 3 2 3 3 3 3 2 3 3 ...
 
 head(clinical_df, 10)
-#>    subject_id visit  sex treatment age weight biomarker response
-#> 1         001     1 Male Treatment  35   55.4     42.22 Complete
-#> 2         001     2 Male Treatment  35   60.3     44.70     None
-#> 3         001     3 Male Treatment  35   58.1     44.85  Partial
-#> 4         002     1 Male   Placebo  21   68.3     56.51     None
-#> 5         002     2 Male   Placebo  21   66.3     51.03     None
-#> 6         002     3 Male   Placebo  21   64.0     39.59     None
-#> 7         003     1 Male   Placebo  47   76.0     24.92     None
-#> 8         003     2 Male   Placebo  47   77.6     49.99  Partial
-#> 9         003     3 Male   Placebo  47   74.9     60.69     None
-#> 10        004     1 Male   Placebo  35   61.7     50.58     None
+#>    participant_id visit  sex treatment age weight biomarker response
+#> 1             001     1 Male Treatment  35   55.4     42.22 Complete
+#> 2             001     2 Male Treatment  35   60.3     44.70     None
+#> 3             001     3 Male Treatment  35   58.1     44.85  Partial
+#> 4             002     1 Male   Placebo  21   68.3     56.51     None
+#> 5             002     2 Male   Placebo  21   66.3     51.03     None
+#> 6             002     3 Male   Placebo  21   64.0     39.59     None
+#> 7             003     1 Male   Placebo  47   76.0     24.92     None
+#> 8             003     2 Male   Placebo  47   77.6     49.99  Partial
+#> 9             003     3 Male   Placebo  47   74.9     60.69     None
+#> 10            004     1 Male   Placebo  35   61.7     50.58     None
 ```
 
 ``` r
@@ -133,37 +133,37 @@ clinical_df_full <- clinical_data(n = 300,
 
 str(clinical_df_full)
 #> 'data.frame':    3000 obs. of  8 variables:
-#>  $ subject_id: chr  "001" "001" "001" "001" ...
-#>  $ visit     : Factor w/ 10 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
-#>  $ sex       : Factor w/ 2 levels "Male","Female": 1 1 1 1 1 1 1 1 1 1 ...
-#>  $ treatment : Factor w/ 3 levels "A","B","C": 3 3 3 3 3 3 3 3 3 3 ...
-#>  $ age       : num  25 25 25 25 25 25 25 25 25 25 ...
-#>  $ weight    : num  64.7 65.1 64.2 62.3 62.1 NA NA 61.8 63.7 64.1 ...
-#>  $ biomarker : num  48.2 22.2 51.2 43.4 44.5 ...
-#>  $ response  : Factor w/ 3 levels "Complete","Partial",..: 1 1 3 1 3 1 3 3 NA 1 ...
+#>  $ participant_id: chr  "001" "001" "001" "001" ...
+#>  $ visit         : Factor w/ 10 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
+#>  $ sex           : Factor w/ 2 levels "Male","Female": 1 1 1 1 1 1 1 1 1 1 ...
+#>  $ treatment     : Factor w/ 3 levels "A","B","C": 3 3 3 3 3 3 3 3 3 3 ...
+#>  $ age           : num  25 25 25 25 25 25 25 25 25 25 ...
+#>  $ weight        : num  64.7 65.1 64.2 62.3 62.1 NA NA 61.8 63.7 64.1 ...
+#>  $ biomarker     : num  48.2 22.2 51.2 43.4 44.5 ...
+#>  $ response      : Factor w/ 3 levels "Complete","Partial",..: 1 1 3 1 3 1 3 3 NA 1 ...
 
 head(clinical_df_full, 20)
-#>    subject_id visit    sex treatment age weight biomarker response
-#> 1         001     1   Male         C  25   64.7     48.24 Complete
-#> 2         001     2   Male         C  25   65.1     22.17 Complete
-#> 3         001     3   Male         C  25   64.2     51.21     None
-#> 4         001     4   Male         C  25   62.3     43.38 Complete
-#> 5         001     5   Male         C  25   62.1     44.52     None
-#> 6         001     6   Male         C  25     NA     24.25 Complete
-#> 7         001     7   Male         C  25     NA     49.55     None
-#> 8         001     8   Male         C  25   61.8     47.78     None
-#> 9         001     9   Male         C  25   63.7     23.65     <NA>
-#> 10        001    10   Male         C  25   64.1     45.97 Complete
-#> 11        002     1 Female         B  72   71.1     34.18     None
-#> 12        002     2 Female         B  72   70.7     65.47     None
-#> 13        002     3 Female         B  72   71.2     34.29     None
-#> 14        002     4 Female         B  72     NA        NA     <NA>
-#> 15        002     5 Female         B  72     NA        NA     <NA>
-#> 16        002     6 Female         B  72     NA        NA     <NA>
-#> 17        002     7 Female         B  72     NA        NA     <NA>
-#> 18        002     8 Female         B  72     NA        NA     <NA>
-#> 19        002     9 Female         B  72     NA        NA     <NA>
-#> 20        002    10 Female         B  72     NA        NA     <NA>
+#>    participant_id visit    sex treatment age weight biomarker response
+#> 1             001     1   Male         C  25   64.7     48.24 Complete
+#> 2             001     2   Male         C  25   65.1     22.17 Complete
+#> 3             001     3   Male         C  25   64.2     51.21     None
+#> 4             001     4   Male         C  25   62.3     43.38 Complete
+#> 5             001     5   Male         C  25   62.1     44.52     None
+#> 6             001     6   Male         C  25     NA     24.25 Complete
+#> 7             001     7   Male         C  25     NA     49.55     None
+#> 8             001     8   Male         C  25   61.8     47.78     None
+#> 9             001     9   Male         C  25   63.7     23.65     <NA>
+#> 10            001    10   Male         C  25   64.1     45.97 Complete
+#> 11            002     1 Female         B  72   71.1     34.18     None
+#> 12            002     2 Female         B  72   70.7     65.47     None
+#> 13            002     3 Female         B  72   71.2     34.29     None
+#> 14            002     4 Female         B  72     NA        NA     <NA>
+#> 15            002     5 Female         B  72     NA        NA     <NA>
+#> 16            002     6 Female         B  72     NA        NA     <NA>
+#> 17            002     7 Female         B  72     NA        NA     <NA>
+#> 18            002     8 Female         B  72     NA        NA     <NA>
+#> 19            002     9 Female         B  72     NA        NA     <NA>
+#> 20            002    10 Female         B  72     NA        NA     <NA>
 ```
 
 #### **summary_table()**
@@ -241,46 +241,45 @@ clinical_df_treat <- clinical_df[clinical_df$treatment == "Placebo", ]
 
 # Normally distributed variable
 normality(data = clinical_df_treat, "biomarker")
-#> 
-#> Normality Test for 'biomarker' 
-#> 
-#> n = 159 
-#> mean (SD) = 49.44 (9.2) 
-#> median (IQR) = 50.38 (13.1) 
-#> 
-#> Kolmogorov-Smirnov: D = 0.054, p = 0.740 
-#> Shapiro-Wilk: W = 0.992, p = 0.546 
-#> Skewness: 0.06 (z = 0.30) 
-#> Kurtosis: -0.03 (z = -0.08) 
-#> 
-#> Data appears normally distributed.
-#> 
 ```
 
 <img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
 
-``` r
+    #> 
+    #> Normality Test for 'biomarker' 
+    #> 
+    #> n = 159 
+    #> mean (SD) = 49.44 (9.2) 
+    #> median (IQR) = 50.38 (13.1) 
+    #> 
+    #> Kolmogorov-Smirnov: D = 0.054, p = 0.740 
+    #> Shapiro-Wilk: W = 0.992, p = 0.546 
+    #> Skewness: 0.06 (z = 0.30) 
+    #> Kurtosis: -0.03 (z = -0.08) 
+    #> 
+    #> Data appears normally distributed.
+    #> 
 
-# Non-normally distributed variable with points outside 95% CI displayed
-normality(data = clinical_df_treat, "weight", all = TRUE)
-#> 
-#> Normality Test for 'weight' 
-#> 
-#> n = 159 
-#> mean (SD) = 72.56 (12.9) 
-#> median (IQR) = 69.20 (21.1) 
-#> 
-#> Kolmogorov-Smirnov: D = 0.125, p = 0.014 
-#> Shapiro-Wilk: W = 0.951, p = < 0.001 
-#> Skewness: 0.28 (z = 1.45) 
-#> Kurtosis: -1.09 (z = -2.85) 
-#> 
-#> Data appears not normally distributed.
-#>  
-#> VALUES OUTSIDE 95% CI (row indices): 40, 41, 47, 22, 3, 16, 71, 105, 125, 72, 90, 89, 129, 34, 93, 103, 69, 65, 59, 2, 66, 109, 114, 107, 110, 95, 111, 58, 70, 1, 106, 113, 152, 32, 112, 115, 57, 20, 84, 29, 142, 21, 55, 102, 143, 56, 86, 144, 83
-```
+    # Non-normally distributed variable with points outside 95% CI displayed
+    normality(data = clinical_df_treat, "weight", all = TRUE)
 
 <img src="man/figures/README-unnamed-chunk-10-2.png" width="100%" />
+
+    #> 
+    #> Normality Test for 'weight' 
+    #> 
+    #> n = 159 
+    #> mean (SD) = 72.56 (12.9) 
+    #> median (IQR) = 69.20 (21.1) 
+    #> 
+    #> Kolmogorov-Smirnov: D = 0.125, p = 0.014 
+    #> Shapiro-Wilk: W = 0.951, p = < 0.001 
+    #> Skewness: 0.28 (z = 1.45) 
+    #> Kurtosis: -1.09 (z = -2.85) 
+    #> 
+    #> Data appears not normally distributed.
+    #>  
+    #> VALUES OUTSIDE 95% CI (row indices): 40, 41, 47, 22, 3, 16, 71, 105, 125, 72, 90, 89, 129, 34, 93, 103, 69, 65, 59, 2, 66, 109, 114, 107, 110, 95, 111, 58, 70, 1, 106, 113, 152, 32, 112, 115, 57, 20, 84, 29, 142, 21, 55, 102, 143, 56, 86, 144, 83
 
 #### **missing_values()**
 
@@ -305,11 +304,8 @@ missing_values(clinical_df_full)
 #> 
 #> Missing Value Analysis
 #> 
-#> n: 3000, Variables: 8
-#> Complete cases: 2452 / 3000 (81.7%)
-#> Missing cells: 868 / 24000 (3.6%)
-#> 
-#> Variables with missing values: 3 of 8 (37.5%)
+#> Complete rows: 2452 (81.7%)
+#> Missing cells: 868 (3.6%)
 #> 
 #>           n_missing pct_missing
 #> response        403       13.43
@@ -326,21 +322,18 @@ missing_values(clinical_df_full, all = TRUE)
 #> 
 #> Missing Value Analysis
 #> 
-#> n: 3000, Variables: 8
-#> Complete cases: 2452 / 3000 (81.7%)
-#> Missing cells: 868 / 24000 (3.6%)
+#> Complete rows: 2452 (81.7%)
+#> Missing cells: 868 (3.6%)
 #> 
-#> Variables with missing values: 3 of 8 (37.5%)
-#> 
-#>            n_missing pct_missing
-#> response         403       13.43
-#> weight           251        8.37
-#> biomarker        214        7.13
-#> subject_id         0        0.00
-#> visit              0        0.00
-#> sex                0        0.00
-#> treatment          0        0.00
-#> age                0        0.00
+#>                n_missing pct_missing
+#> response             403       13.43
+#> weight               251        8.37
+#> biomarker            214        7.13
+#> participant_id         0        0.00
+#> visit                  0        0.00
+#> sex                    0        0.00
+#> treatment              0        0.00
+#> age                    0        0.00
 ```
 
 <img src="man/figures/README-unnamed-chunk-11-2.png" width="100%" />
@@ -513,21 +506,7 @@ visualize how total sample size changes with varying .
 result <- sample_size_range(x1_range = c(0.65, 0.75), x2 = 0.65, step = 0.01,
                             sample = "two-sample", design = "parallel", outcome = "proportion",
                             type = "non-inferiority", delta = -0.1, dropout = 0.1)
-#> 
-#> Sample Size Range Analysis
-#> 
-#> Treatment range (x1): 0.650 to 0.750
-#> Control/Reference (x2): 0.650
-#> Step size: 0.010
-#> 
-#> 70% Power: Total n = 108 to 474
-#> 80% Power: Total n = 144 to 622
-#> 90% Power: Total n = 196 to 858
-#> 
-#> Sample size increased by 10.0% to account for potential dropouts.
 ```
-
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="75%" />
 
 | power |   x1 |   x2 | diff |  n1 |  n2 | total |
 |------:|-----:|-----:|-----:|----:|----:|------:|
@@ -570,19 +549,7 @@ result <- sample_size_range(x1_range = c(0.65, 0.75), x2 = 0.65, step = 0.01,
 result <- sample_size_range(x1_range = c(-0.01, 0.01), x2 = 0, step = 0.005,
                             sample = "one-sample", outcome = "mean", type = "equivalence",
                             SD = 0.1, delta = 0.05, alpha = 0.05)
-#> 
-#> Sample Size Range Analysis
-#> 
-#> Treatment range (x1): -0.010 to 0.010
-#> Control/Reference (x2): 0.000
-#> Step size: 0.005
-#> 
-#> 70% Power: Total n = 29 to 45
-#> 80% Power: Total n = 35 to 54
-#> 90% Power: Total n = 44 to 68
 ```
-
-<img src="man/figures/README-unnamed-chunk-17-1.png" width="75%" />
 
 | power |     x1 |  x2 |   diff |  n1 |  n2 | total |
 |------:|-------:|----:|-------:|----:|----:|------:|
@@ -636,56 +603,38 @@ detected.
 omnibus(data = clinical_df_full, y = "biomarker", x = "treatment")
 #> 
 #> Omnibus Test: One-way ANOVA
+#> 
 #> Assumption Testing Results:
+#> 
 #>   Normality (Shapiro-Wilk Test):
 #>   A: W = 0.9980, p = 0.321
 #>   B: W = 0.9975, p = 0.237
 #>   C: W = 0.9988, p = 0.733
 #>   Overall result: Normal distribution assumed.
+#> 
 #>   Homogeneity of Variance (Bartlett Test):
 #>   Chi-squared(2) = 1.3685, p = 0.504
 #>   Effect size (Cramer's V) = 0.0151
 #>   Result: Homogeneous variances.
+#> 
 #> Test Results:
 #>   Formula: biomarker ~ treatment
 #>   alpha: 0.05
-#>   F(2,2783) = 73.252, p = <0.001
-#>   Result: significant
-#> Post-hoc Multiple Comparisons
-#> Tukey Honest Significant Differences (alpha: 0.050):
-#> Comparison               Diff    Lower    Upper    p-adj
-#> ------------------------------------------------------------
-#> B - A                  -3.178   -4.296   -2.060   <0.001*
-#> C - A                  -5.542   -6.618   -4.466   <0.001*
-#> C - B                  -2.364   -3.468   -1.259   <0.001*
+#>   Result: significant (p = <0.001)
 #> 
-#> The study groups show a moderately unbalanced distribution of sample sizes (Δn = 0.214).
+#> Post-hoc Multiple Comparisons
+#> 
+#>   Tukey Honest Significant Differences (alpha: 0.050):
+#>   Comparison               Diff    Lower    Upper    p-adj
+#>   --------------------------------------------------------- 
+#>   B - A                  -3.178   -4.296   -2.060   <0.001*
+#>   C - A                  -5.542   -6.618   -4.466   <0.001*
+#>   C - B                  -2.364   -3.468   -1.259   <0.001*
+#> 
+#> The study groups show a moderately imbalanced distribution of sample sizes (Δn = 0.214).
  
 # Compare numerical variable changes across visits 
-omnibus(y = "biomarker", x = "visit", data = clinical_df, paired_by = "subject_id")
-#> 
-#> Omnibus Test: Repeated measures ANOVA
-#> Assumption Testing Results:
-#>   Sphericity (Mauchly Test):
-#>   W = 0.9881, p = 0.556
-#>   Result: Sphericity assumed.
-#>   Normality (Shapiro-Wilk Test):
-#>   1: W = 0.9848, p = 0.309
-#>   2: W = 0.9926, p = 0.861
-#>   3: W = 0.9884, p = 0.536
-#>   Overall result: Normal distribution assumed.
-#>   Homogeneity of Variance (Bartlett Test):
-#>   Chi-squared(2) = 0.5190, p = 0.771
-#>   Effect size (Cramer's V) = 0.0294
-#>   Result: Homogeneous variances.
-#> Test Results:
-#>   Formula: biomarker ~ visit + Error(subject_id/visit)
-#>   alpha: 0.05
-#>   F(2,198) = 0.497, p = 0.609
-#>   Result: not significant
-#> Post-hoc tests not performed (results not significant).
-#> 
-#> The study groups show a moderately unbalanced distribution of sample sizes (Δn = 0.203).
+#omnibus(y = "biomarker", x = "visit", data = clinical_df, paired_by = "participant_id")
 ```
 
 ``` r
@@ -693,30 +642,7 @@ omnibus(y = "biomarker", x = "visit", data = clinical_df, paired_by = "subject_i
 clinical_df_A <- clinical_df[clinical_df$treatment == "Treatment", ]
 
 # Compare numerical variable changes across visits 
-omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "subject_id")
-#> 
-#> Omnibus Test: Repeated measures ANOVA
-#> Assumption Testing Results:
-#>   Sphericity (Mauchly Test):
-#>   W = 0.9825, p = 0.672
-#>   Result: Sphericity assumed.
-#>   Normality (Shapiro-Wilk Test):
-#>   1: W = 0.9617, p = 0.125
-#>   2: W = 0.9812, p = 0.642
-#>   3: W = 0.9904, p = 0.964
-#>   Overall result: Normal distribution assumed.
-#>   Homogeneity of Variance (Bartlett Test):
-#>   Chi-squared(2) = 0.9232, p = 0.630
-#>   Effect size (Cramer's V) = 0.0572
-#>   Result: Homogeneous variances.
-#> Test Results:
-#>   Formula: biomarker ~ visit + Error(subject_id/visit)
-#>   alpha: 0.05
-#>   F(2,92) = 1.478, p = 0.233
-#>   Result: not significant
-#> Post-hoc tests not performed (results not significant).
-#> 
-#> The study groups show a moderately unbalanced distribution of sample sizes (Δn = 0.217).
+#omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "subject_id")
 ```
 
 #### **effect_measures()**
@@ -870,8 +796,6 @@ ggplot2.
 
 ##### Parameters
 
-## Parameters
-
 | Parameter | Description | Default |
 |----|----|----|
 | `data` | A dataframe containing the variables to plot. | `Required` |
@@ -937,6 +861,8 @@ Generates publication-ready boxplots with minimal code using ggplot2.
 ``` r
 # Boxplot of biomarker by treatment
 plot_box(clinical_df, x = "treatment", y = "biomarker", group = "treatment")
+#> Ignoring unknown labels:
+#> • colour : "treatment"
 ```
 
 <img src="man/figures/README-unnamed-chunk-25-1.png" width="100%" />
@@ -945,6 +871,8 @@ plot_box(clinical_df, x = "treatment", y = "biomarker", group = "treatment")
 
 # Boxplot of biomarker by study visit and treatment
 plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment")
+#> Ignoring unknown labels:
+#> • colour : "treatment"
 ```
 
 <img src="man/figures/README-unnamed-chunk-25-2.png" width="100%" />

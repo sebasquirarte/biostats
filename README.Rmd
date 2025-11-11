@@ -68,7 +68,7 @@ This package comprises 14 functions across four analytical domains:
   - [sample_size_range()](#sample_size_range)
 - [**Statistical Analysis and Inference**](#statistical-analysis-and-inference)
   - [omnibus()](#omnibus) 
-  - [effect_measures())](#effect_measures) 
+  - [effect_measures()](#effect_measures) 
 - [**Data Visualization**](#data-visualization)
   - [plot_bar()](#plot_bar)
   - [plot_line()](#plot_line)
@@ -202,7 +202,7 @@ Tests normality using sample size-appropriate methods: Shapiro-Wilk test (n less
 
 ##### Examples
 
-```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
+```{r, fig.width=10, fig.height=5, dpi=120, out.width="100%"}
 # Filter clinical data to Placebo arm
 clinical_df_treat <- clinical_df[clinical_df$treatment == "Placebo", ]
 
@@ -229,7 +229,7 @@ Provides descriptive statistics and visualizations of missing values in a datafr
 
 ##### Examples
 
-```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
+```{r, fig.width=10, fig.height=5, dpi=120, out.width="100%"}
 # Missing value analysis of only variables with missing values
 missing_values(clinical_df_full)
 
@@ -254,7 +254,7 @@ Identifies outliers using Tukey's interquartile range (IQR) method and provides 
 
 ##### Examples
 
-```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
+```{r, fig.width=10, fig.height=5, dpi=120, out.width="100%"}
 # Basic outlier detection
 outliers(clinical_df_full, "biomarker")
 
@@ -318,7 +318,7 @@ Calculates required sample sizes for specified power levels (70%, 80%, 90%) acro
 
 ##### Examples
 
-```{r, fig.width=7, fig.height=5, dpi=300, out.width="75%"}
+```{r, fig.width=7, fig.height=5, dpi=120, out.width="75%"}
 # Two-sample parallel non-inferiority test for proportions with 10% dropout
 result <- sample_size_range(x1_range = c(0.65, 0.75), x2 = 0.65, step = 0.01,
                             sample = "two-sample", design = "parallel", outcome = "proportion",
@@ -328,7 +328,7 @@ result <- sample_size_range(x1_range = c(0.65, 0.75), x2 = 0.65, step = 0.01,
 knitr::kable(result$data, format = "markdown")
 ```
 
-```{r, fig.width=7, fig.height=5, dpi=300, out.width="75%"}
+```{r, fig.width=7, fig.height=5, dpi=120, out.width="75%"}
 # One-sample equivalence test for means
 result <- sample_size_range(x1_range = c(-0.01, 0.01), x2 = 0, step = 0.005,
                             sample = "one-sample", outcome = "mean", type = "equivalence",
@@ -365,7 +365,7 @@ Performs omnibus tests to evaluate overall differences between three or more gro
 omnibus(data = clinical_df_full, y = "biomarker", x = "treatment")
  
 # Compare numerical variable changes across visits 
-omnibus(y = "biomarker", x = "visit", data = clinical_df, paired_by = "subject_id")
+#omnibus(y = "biomarker", x = "visit", data = clinical_df, paired_by = "participant_id")
 ```
 
 ```{r}
@@ -373,7 +373,7 @@ omnibus(y = "biomarker", x = "visit", data = clinical_df, paired_by = "subject_i
 clinical_df_A <- clinical_df[clinical_df$treatment == "Treatment", ]
 
 # Compare numerical variable changes across visits 
-omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "subject_id")
+#omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "subject_id")
 ```
 
 #### **effect_measures()**
@@ -431,7 +431,7 @@ Generates publication-ready bar plots with minimal code using ggplot2.
 
 ##### Examples
 
-```{r, fig.width=7, fig.height=5, dpi=300, out.width="75%"}
+```{r, fig.width=7, fig.height=5, dpi=120, out.width="75%"}
 # Simulated clinical data
 clinical_df <- clinical_data()
 
@@ -475,7 +475,7 @@ Generates publication-ready line plots with minimal code using ggplot2.
 
 ##### Examples
 
-```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
+```{r, fig.width=10, fig.height=5, dpi=120, out.width="100%"}
 # Line plot with mean and standard error by treatment
 plot_line(data = clinical_df_full, x = "visit", y = "biomarker",
           group = "treatment", stat = "mean", error = "se")
@@ -492,8 +492,6 @@ plot_line(data = clinical_df_full, x = "visit", y = "biomarker", group = "treatm
 Generates publication-ready histogram plots with minimal code using ggplot2.
 
 ##### Parameters
-
-## Parameters
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
@@ -515,7 +513,7 @@ Generates publication-ready histogram plots with minimal code using ggplot2.
 
 ##### Examples
 
-```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
+```{r, fig.width=10, fig.height=5, dpi=120, out.width="100%"}
 # Mirror histogram for 2 groups with mean lines
 plot_hist(clinical_df, x = "biomarker", group = "treatment", stat = "mean")
 
@@ -550,7 +548,7 @@ Generates publication-ready boxplots with minimal code using ggplot2.
 
 ##### Examples
 
-```{r, fig.width=10, fig.height=5, dpi=300, out.width="100%"}
+```{r, fig.width=10, fig.height=5, dpi=120, out.width="100%"}
 # Boxplot of biomarker by treatment
 plot_box(clinical_df, x = "treatment", y = "biomarker", group = "treatment")
 
@@ -584,7 +582,7 @@ Generates publication-ready correlation matrix heatmaps with minimal code using 
 
 ##### Examples
 
-```{r, fig.width=10, fig.height=8, dpi=300, out.width="100%"}
+```{r, fig.width=10, fig.height=8, dpi=120, out.width="100%"}
 # Correlation matrix for base R dataset 'swiss'
 plot_corr(data = swiss)
 
