@@ -634,7 +634,34 @@ omnibus(data = clinical_df_full, y = "biomarker", x = "treatment")
 #> The study groups show a moderately imbalanced distribution of sample sizes (Δn = 0.214).
  
 # Compare numerical variable changes across visits 
-#omnibus(y = "biomarker", x = "visit", data = clinical_df, paired_by = "participant_id")
+omnibus(y = "biomarker", x = "visit", data = clinical_df, paired_by = "participant_id")
+#> 
+#> Omnibus Test: Repeated measures ANOVA
+#> 
+#> Assumption Testing Results:
+#> 
+#>   Sphericity (Mauchly Test):
+#>   W = 0.9881, p = 0.556
+#>   Result: Sphericity assumed.
+#> 
+#>   Normality (Shapiro-Wilk Test):
+#>   1: W = 0.9848, p = 0.309
+#>   2: W = 0.9926, p = 0.861
+#>   3: W = 0.9884, p = 0.536
+#>   Overall result: Normal distribution assumed.
+#> 
+#>   Homogeneity of Variance (Bartlett Test):
+#>   Chi-squared(2) = 0.5190, p = 0.771
+#>   Effect size (Cramer's V) = 0.0294
+#>   Result: Homogeneous variances.
+#> 
+#> Test Results:
+#>   Formula: biomarker ~ visit + Error(participant_id/visit)
+#>   alpha: 0.05
+#>   Result: not significant (p = 0.609)
+#> Post-hoc tests not performed (results not significant).
+#> 
+#> The study groups show a moderately imbalanced distribution of sample sizes (Δn = 0.203).
 ```
 
 ``` r
@@ -642,7 +669,34 @@ omnibus(data = clinical_df_full, y = "biomarker", x = "treatment")
 clinical_df_A <- clinical_df[clinical_df$treatment == "Treatment", ]
 
 # Compare numerical variable changes across visits 
-#omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "subject_id")
+omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "participant_id")
+#> 
+#> Omnibus Test: Repeated measures ANOVA
+#> 
+#> Assumption Testing Results:
+#> 
+#>   Sphericity (Mauchly Test):
+#>   W = 0.9825, p = 0.672
+#>   Result: Sphericity assumed.
+#> 
+#>   Normality (Shapiro-Wilk Test):
+#>   1: W = 0.9617, p = 0.125
+#>   2: W = 0.9812, p = 0.642
+#>   3: W = 0.9904, p = 0.964
+#>   Overall result: Normal distribution assumed.
+#> 
+#>   Homogeneity of Variance (Bartlett Test):
+#>   Chi-squared(2) = 0.9232, p = 0.630
+#>   Effect size (Cramer's V) = 0.0572
+#>   Result: Homogeneous variances.
+#> 
+#> Test Results:
+#>   Formula: biomarker ~ visit + Error(participant_id/visit)
+#>   alpha: 0.05
+#>   Result: not significant (p = 0.233)
+#> Post-hoc tests not performed (results not significant).
+#> 
+#> The study groups show a moderately imbalanced distribution of sample sizes (Δn = 0.217).
 ```
 
 #### **effect_measures()**

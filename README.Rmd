@@ -365,7 +365,7 @@ Performs omnibus tests to evaluate overall differences between three or more gro
 omnibus(data = clinical_df_full, y = "biomarker", x = "treatment")
  
 # Compare numerical variable changes across visits 
-#omnibus(y = "biomarker", x = "visit", data = clinical_df, paired_by = "participant_id")
+omnibus(y = "biomarker", x = "visit", data = clinical_df, paired_by = "participant_id")
 ```
 
 ```{r}
@@ -373,7 +373,7 @@ omnibus(data = clinical_df_full, y = "biomarker", x = "treatment")
 clinical_df_A <- clinical_df[clinical_df$treatment == "Treatment", ]
 
 # Compare numerical variable changes across visits 
-#omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "subject_id")
+omnibus(y = "biomarker", x = "visit", data = clinical_df_A, paired_by = "participant_id")
 ```
 
 #### **effect_measures()**

@@ -87,7 +87,7 @@ normality <- function(data,
     z_thresh <- if (n < 50) 1.96 else 3.29
     (!is.na(skewness_z) && abs(skewness_z) <= z_thresh) && (!is.na(kurtosis_z) && abs(kurtosis_z) <= z_thresh)
   }
-  normal <- !is.na(primary_test$p.value) && primary_test$p.value > 0.05 && skew_kurt_normal
+  normal <- !is.na(primary_test$p.value) && primary_test$p.value >= 0.05 && skew_kurt_normal
   
   # Create Q-Q plot data and identify values outside 95% CI
   y <- scale(x_vals)
