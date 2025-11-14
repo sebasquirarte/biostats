@@ -8,7 +8,8 @@
 [![R-CMD-check](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yml)
 [![Tests](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yml)
 [![codecov](https://codecov.io/gh/sebasquirarte/biostats/branch/main/graph/badge.svg)](https://app.codecov.io/gh/sebasquirarte/biostats)
-![CRAN status](https://www.r-pkg.org/badges/version/biostats)
+![CRAN status](https://www.r-pkg.org/badges/version/biostats) [![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/biostats)](https://cran.r-project.org/package=biostats)
 
 <!-- badges: end -->
 
@@ -38,14 +39,19 @@ C.V.](https://sophialab.com/en/)*
 ## Installation
 
 ``` r
-# Install from GitHub
-install.packages("remotes") 
-library(remotes)
-remotes::install_github("sebasquirarte/biostats")
-library(biostats)
+# Install latest CRAN release:
+install.packages("biostats") 
+
+# Or install developer version from GitHub:
+#install.packages("pak")
+pak::pak("sebasquirarte/biostats")
 ```
 
 ## Usage
+
+``` r
+library(biostats)
+```
 
 This package comprises 14 functions across four analytical domains:
 
