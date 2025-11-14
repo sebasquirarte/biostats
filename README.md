@@ -8,15 +8,13 @@
 [![R-CMD-check](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yml)
 [![Tests](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yml)
 [![codecov](https://codecov.io/gh/sebasquirarte/biostats/branch/main/graph/badge.svg)](https://app.codecov.io/gh/sebasquirarte/biostats)
-![CRAN status](https://www.r-pkg.org/badges/version/biostats) [![CRAN
-downloads](https://cranlogs.r-pkg.org/badges/grand-total/biostats)](https://cran.r-project.org/package=biostats)
-
+![CRAN status](https://www.r-pkg.org/badges/version/biostats)
 <!-- badges: end -->
 
 ## Overview
 
-***biostats*** is an R package that functions as a toolbox to streamline
-biostatistics and clinical data analysis workflows.
+***biostats*** is an R package that functions as a toolbox to aid in
+biostatistics and clinical data analysis tasks and workflows.
 
 #### Key features
 
