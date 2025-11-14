@@ -197,14 +197,14 @@ single-group summaries or two-group comparisons.
 
 ``` r
 # Overall summary without considering treatment groups
-summary_table(clinical_df, exclude = c('subject_id', 'visit'))
+summary_table(clinical_df, exclude = c('participant_id', 'visit'))
 ```
 
 <img src="man/figures/summary_table_example_1.png" height = "250">
 
 ``` r
 # Grouped summary by treatment group
-summary_table(clinical_df, group_by = 'treatment', exclude = c('subject_id', 'visit'))
+summary_table(clinical_df, group_by = 'treatment', exclude = c('participant_id', 'visit'))
 ```
 
 <img src="man/figures/summary_table_example_2.png">
@@ -215,7 +215,7 @@ summary_table(clinical_df,
               group_by = 'treatment',
               all = TRUE,
               effect_size = TRUE,
-              exclude = c('subject_id', 'visit'))
+              exclude = c('participant_id', 'visit'))
 ```
 
 <img src="man/figures/summary_table_example_3.png">
@@ -960,8 +960,6 @@ Generates publication-ready boxplots with minimal code using ggplot2.
 ``` r
 # Boxplot of biomarker by treatment
 plot_box(clinical_df, x = "treatment", y = "biomarker", group = "treatment")
-#> Ignoring unknown labels:
-#> • colour : "treatment"
 ```
 
 <img src="man/figures/README-unnamed-chunk-27-1.png" width="100%" />
@@ -970,8 +968,6 @@ plot_box(clinical_df, x = "treatment", y = "biomarker", group = "treatment")
 
 # Boxplot of biomarker by study visit and treatment
 plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment")
-#> Ignoring unknown labels:
-#> • colour : "treatment"
 ```
 
 <img src="man/figures/README-unnamed-chunk-27-2.png" width="100%" />

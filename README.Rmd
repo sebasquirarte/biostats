@@ -146,10 +146,10 @@ Generates a summary table for biostatistics and clinical data analysis with auto
 
 ```{r eval=FALSE}
 # Overall summary without considering treatment groups
-summary_table(clinical_df, exclude = c('subject_id', 'visit'))
+summary_table(clinical_df, exclude = c('participant_id', 'visit'))
 ```
 ```{r echo=FALSE, message=FALSE}
-#clinical_summary <- summary_table(clinical_df, exclude = c('subject_id', 'visit'))
+#clinical_summary <- summary_table(clinical_df, exclude = c('participant_id', 'visit'))
 #Save as PNG image for GitHub
 #gt::gtsave(clinical_summary, "man/figures/summary_table_example_1.png", zoom = 3, delay = 2)
 ```
@@ -158,13 +158,13 @@ summary_table(clinical_df, exclude = c('subject_id', 'visit'))
 
 ```{r eval=FALSE}
 # Grouped summary by treatment group
-summary_table(clinical_df, group_by = 'treatment', exclude = c('subject_id', 'visit'))
+summary_table(clinical_df, group_by = 'treatment', exclude = c('participant_id', 'visit'))
 ```
 ```{r message=FALSE, echo=FALSE}
 # Store results to create PNG image
 #clinical_summary <- summary_table(clinical_df,
 #                                  group_by = 'treatment',
-#                                  exclude = c('subject_id', 'visit'))
+#                                  exclude = c('participant_id', 'visit'))
 # Save as PNG image for GitHub
 #gt::gtsave(clinical_summary, "man/figures/summary_table_example_2.png", zoom = 3, vwidth = 1200)
 ```
@@ -177,7 +177,7 @@ summary_table(clinical_df,
               group_by = 'treatment',
               all = TRUE,
               effect_size = TRUE,
-              exclude = c('subject_id', 'visit'))
+              exclude = c('participant_id', 'visit'))
 ```
 ```{r message=FALSE, echo=FALSE}
 # Store results to create PNG image
@@ -185,7 +185,7 @@ summary_table(clinical_df,
 #                                  group_by = 'treatment',
 #                                  all = TRUE,
 #                                  effect_size = TRUE,
-#                                  exclude = c('subject_id', 'visit'))
+#                                  exclude = c('participant_id', 'visit'))
 # Save as PNG image for GitHub
 #gt::gtsave(clinical_summary, "man/figures/summary_table_example_3.png", zoom = 3, vwidth = 1195)
 ```
@@ -565,7 +565,7 @@ Generates publication-ready boxplots with minimal code using ggplot2.
 
 ##### Examples
 
-```{r, fig.width=10, fig.height=5, dpi=120, out.width="100%"}
+```{r, fig.width=10, fig.height=5, dpi=120, out.width="100%", message=FALSE}
 # Boxplot of biomarker by treatment
 plot_box(clinical_df, x = "treatment", y = "biomarker", group = "treatment")
 
