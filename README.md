@@ -5,10 +5,14 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yml)
-[![Tests](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/test-coverage.yml)
-[![codecov](https://codecov.io/gh/sebasquirarte/biostats/branch/main/graph/badge.svg)](https://app.codecov.io/gh/sebasquirarte/biostats)
 ![CRAN status](https://www.r-pkg.org/badges/version/biostats)
+[![R-CMD-check](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/sebasquirarte/biostats/actions/workflows/R-CMD-check.yml)
+[![codecov](https://codecov.io/gh/sebasquirarte/biostats/branch/main/graph/badge.svg)](https://app.codecov.io/gh/sebasquirarte/biostats)
+[![Total
+Downloads](https://cranlogs.r-pkg.org/badges/grand-total/biostats)](https://cranlogs.r-pkg.org/)
+[![Downloads per
+Month](https://cranlogs.r-pkg.org/badges/biostats)](https://cranlogs.r-pkg.org/)
+
 <!-- badges: end -->
 
 ## Overview
@@ -1013,9 +1017,6 @@ plot_corr(data = swiss, type = "lower", show_sig = TRUE, sig_only = TRUE)
 <img src="man/figures/README-unnamed-chunk-28-2.png" width="100%" />
 
 ## Contributions & Feedback
-
-This package is still under active development. Features, functions, and
-examples may change as improvements are made.
 
 We welcome feedback, suggestions, and bug reports. You can share your
 thoughts via email (<sebastian.quirarte@sophia.com.mx>) or [GitHub
