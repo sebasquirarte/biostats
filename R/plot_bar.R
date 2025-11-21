@@ -124,6 +124,14 @@ plot_bar <- function(data,
             position = position_stack(vjust = 0.5),
             size = 4
           )
+        } else {
+            p <- p + geom_text(
+            aes(label = after_stat(.data[["count"]]), group = .data[[group]]),
+            stat = "count",
+            position = position_dodge(width = 0.9),
+            vjust = -0.5,
+            size = 4
+          )
         }
       }
     }
