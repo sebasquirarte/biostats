@@ -13,8 +13,8 @@
       if (length(x_clean) > 5000) return(NA)
       shapiro.test(x_clean)$p.value
     } else if (test == 'K-S') {
-      # K-S test against theoretical normal CDF
-      ks.test(x_clean, "pnorm", mean(x_clean), sd(x_clean))$p.value
+      # K-S with Lilliefors' correction for estimated parameters
+      nortest::lillie.test(x_clean)$p.value
     } else NA
   }, error = function(e) NA)
 }

@@ -7,7 +7,7 @@
 #'
 #' @param data Dataframe containing the variables to be summarized.
 #' @param group_by Character string indicating the name of the grouping variable for two-group comparisons. Default: NULL.
-#' @param normality_test Character string indicating the normality test to use: 'S-W' for Shapiro-Wilk or 'K-S' for Kolmogorov-Smirnov. Default: 'S-W'.
+#' @param normality_test Character string indicating the normality test to use: 'S-W' for Shapiro-Wilk or 'K-S' for Kolmogorov-Smirnov with Lilliefors' correction. Default: 'S-W'.
 #' @param all Logical parameter that shows all calculated statistics. Default: FALSE.
 #' @param effect_size Logical parameter that includes effect size estimates. Default: FALSE.
 #' @param exclude Character vector of variable names to exclude from the summary. Default: NULL.
@@ -34,7 +34,8 @@
 #'               effect_size = TRUE,
 #'               exclude = c('participant_id', 'visit'))
 #'               
-#' @importFrom stats IQR chisq.test fisher.test median quantile sd shapiro.test ks.test t.test var wilcox.test na.omit setNames addmargins
+#' @importFrom stats IQR chisq.test fisher.test median quantile sd shapiro.test t.test var wilcox.test na.omit setNames addmargins
+#' @importFrom nortest lillie.test
 #' @importFrom gt gt opt_align_table_header cols_align cols_width px
 #' @export
 
@@ -54,7 +55,7 @@ summary_table <- function(data,
   if (nrow(data) == 0) stop("'data' cannot be empty.", call. = FALSE)
   if (!is.null(exclude) && !is.character(exclude)) stop("'exclude' must be a character vector.", call. = FALSE)
   if (!normality_test %in% c('S-W', 'K-S')) {
-    stop("'normality_test' must be either 'S-W' (Shapiro-Wilk) or 'K-S' (Kolmogorov-Smirnov).", call. = FALSE)
+    stop("'normality_test' must be either 'S-W' (Shapiro-Wilk) or 'K-S' (Kolmogorov-Smirnov with Lilliefors' correction).", call. = FALSE)
   }
   use_groups <- !is.null(group_by)
   if (use_groups) {

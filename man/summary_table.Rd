@@ -18,7 +18,7 @@ summary_table(
 
 \item{group_by}{Character string indicating the name of the grouping variable for two-group comparisons. Default: NULL.}
 
-\item{normality_test}{Character string indicating the normality test to use: 'S-W' for Shapiro-Wilk or 'K-S' for Kolmogorov-Smirnov. Default: 'S-W'.}
+\item{normality_test}{Character string indicating the normality test to use: 'S-W' for Shapiro-Wilk or 'K-S' for Kolmogorov-Smirnov with Lilliefors' correction. Default: 'S-W'.}
 
 \item{all}{Logical parameter that shows all calculated statistics. Default: FALSE.}
 
