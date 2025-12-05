@@ -43,7 +43,7 @@ test_that("test selection works based on sample size", {
   large_result <- normality(large_df, "x")
   
   expect_equal(small_result$primary_test_name, "Shapiro-Wilk")
-  expect_equal(large_result$primary_test_name, "Kolmogorov-Smirnov")
+  expect_equal(large_result$primary_test_name, "K-S (Lilliefors)")
   expect_null(small_result$ks_test)
   expect_type(large_result$ks_test, "list")
 })

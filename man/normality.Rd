@@ -25,7 +25,7 @@ Returns an object of class "normality" with normality statistics and ggplot obje
 }
 \description{
 Tests normality using sample size-appropriate methods: Shapiro-Wilk test (n less than or
-equal to 50) or Kolmogorov-Smirnov test (n greater than 50) with Q-Q plots and histograms.
+equal to 50) or Kolmogorov-Smirnov test with Lilliefors' correction (n greater than 50) with Q-Q plots and histograms.
 Evaluates skewness and kurtosis using z-score criteria based on sample size. Automatically
 detects outliers and provides comprehensive visual and statistical assessment.
 }
@@ -49,4 +49,12 @@ normality(clinical_df, "weight", all = TRUE)
 Mishra P., Pandey C.M., Singh U., Gupta A., Sahu C., and Keshri A. Descriptive statistics
 and normality tests for statistical data. Ann Card Anaesth. 2019 Jan-Mar;22(1):67-72.
 doi: 10.4103/aca.ACA_157_18. PMID: 30648682; PMCID: PMC6350423.
+
+Lilliefors, H.W. (1967). On the Kolmogorov-Smirnov test for normality with mean
+and variance unknown. Journal of the American Statistical Association, 62(318),
+399-402. doi: 10.1080/01621459.1967.10482916
+
+Dallal, G.E. and Wilkinson, L. (1986). An analytic approximation to the
+distribution of Lilliefors' test for normality. The American Statistician,
+40(4), 294-296. doi: 10.1080/00031305.1986.10475419
 }

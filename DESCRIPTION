@@ -39,6 +39,7 @@ Imports:
     gridExtra,
     rlang,
     car,
-    gt
+    gt,
+    nortest
 URL: https://github.com/sebasquirarte/biostats
 BugReports: https://github.com/sebasquirarte/biostats/issues

@@ -1,7 +1,7 @@
 #' Statistical and Visual Normality Assessment 
 #'
 #' Tests normality using sample size-appropriate methods: Shapiro-Wilk test (n less than or 
-#' equal to 50) or Kolmogorov-Smirnov test (n greater than 50) with Q-Q plots and histograms. 
+#' equal to 50) or Kolmogorov-Smirnov test with Lilliefors' correction (n greater than 50) with Q-Q plots and histograms. 
 #' Evaluates skewness and kurtosis using z-score criteria based on sample size. Automatically 
 #' detects outliers and provides comprehensive visual and statistical assessment.
 #'
@@ -18,6 +18,14 @@
 #' and normality tests for statistical data. Ann Card Anaesth. 2019 Jan-Mar;22(1):67-72. 
 #' doi: 10.4103/aca.ACA_157_18. PMID: 30648682; PMCID: PMC6350423.
 #'
+#' Lilliefors, H.W. (1967). On the Kolmogorov-Smirnov test for normality with mean 
+#' and variance unknown. Journal of the American Statistical Association, 62(318), 
+#' 399-402. doi: 10.1080/01621459.1967.10482916
+#' 
+#' Dallal, G.E. and Wilkinson, L. (1986). An analytic approximation to the 
+#' distribution of Lilliefors' test for normality. The American Statistician, 
+#' 40(4), 294-296. doi: 10.1080/00031305.1986.10475419
+#' 
 #' @examples
 #' # Simulated clinical data
 #' clinical_df <- clinical_data()
@@ -29,8 +37,9 @@
 #' normality(clinical_df, "weight", all = TRUE)
 #'
 #' @import ggplot2
-#' @importFrom stats shapiro.test ks.test ppoints qnorm dnorm density
+#' @importFrom stats shapiro.test ppoints qnorm dnorm density
 #' @importFrom rlang .data
+#' @importFrom nortest lillie.test
 #' @importFrom gridExtra grid.arrange
 #' @export
 normality <- function(data, 
@@ -63,8 +72,8 @@ normality <- function(data,
   })
   
   ks_test <- if (n > 50) {
-    tryCatch(suppressWarnings(ks.test(x_vals, "pnorm", mean = basic_stats["mean"], sd = basic_stats["sd"])),
-             error = function(e) list(statistic = NA, p.value = NA, method = "Kolmogorov-Smirnov test", data.name = "x"))
+    tryCatch(nortest::lillie.test(x_vals),
+             error = function(e) list(statistic = NA, p.value = NA, method = "Lilliefors test", data.name = "x"))
   } else NULL
   
   # Calculate moments using standard formulas
@@ -123,9 +132,9 @@ normality <- function(data,
   }
   
   # Format p-values for display
-  format_p <- function(p) if (is.na(p)) "NA" else if (p < 0.001) "< 0.001" else sprintf("%.3f", p)
+  format_p <- function(p) if (is.na(p)) "p = NA" else if (p < 0.001) "p < 0.001" else sprintf("p = %.3f", p)
   primary_p_display <- format_p(primary_test$p.value)
-  primary_test_name <- if (n > 50) "Kolmogorov-Smirnov" else "Shapiro-Wilk"
+  primary_test_name <- if (n > 50) "K-S (Lilliefors)" else "Shapiro-Wilk"
   
   # Create Q-Q Plot
   qq_plot <- ggplot(qq_data, aes(x = .data$theoretical, y = .data$sample)) +
@@ -196,7 +205,7 @@ normality <- function(data,
 #' @export
 print.normality <- function(x, ...) {
   # Format p-values for display
-  format_p <- function(p) if (is.na(p)) "NA" else if (p < 0.001) "< 0.001" else sprintf("%.3f", p)
+  format_p <- function(p) if (is.na(p)) "p = NA" else if (p < 0.001) "p < 0.001" else sprintf("p = %.3f", p)
   
   cat(sprintf("\nNormality Test for '%s' \n\n", x$variable))
   cat(sprintf("n = %d \n", x$n))
@@ -205,9 +214,9 @@ print.normality <- function(x, ...) {
   
   # Display test results based on sample size
   if (x$n > 50) {
-    cat(sprintf("Kolmogorov-Smirnov: D = %.3f, p = %s \n", x$ks_test$statistic, format_p(x$ks_test$p.value)))
+    cat(sprintf("Kolmogorov-Smirnov (Lilliefors): D = %.3f, %s \n", x$ks_test$statistic, format_p(x$ks_test$p.value)))
   }
-  cat(sprintf("Shapiro-Wilk: W = %.3f, p = %s \n", x$sw_test$statistic, format_p(x$sw_test$p.value)))
+  cat(sprintf("Shapiro-Wilk: W = %.3f, %s \n", x$sw_test$statistic, format_p(x$sw_test$p.value)))
   cat(sprintf("Skewness: %.2f (z = %.2f) \n", x$skewness, x$skewness_z))
   cat(sprintf("Kurtosis: %.2f (z = %.2f) \n\n", x$kurtosis, x$kurtosis_z))
   cat("Data appears", if (x$normal) "normally distributed.\n" else "not normally distributed.\n", "\n")
