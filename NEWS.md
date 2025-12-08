@@ -1,3 +1,11 @@
+# biostats 1.1.1
+
+## Improvements
+
+* Minor change to sample_size function for better readability. 
+
+---
+
 # biostats 1.1.0
 
 ## New Features
