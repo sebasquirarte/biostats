@@ -496,9 +496,10 @@ sample_size(sample = "one-sample", outcome = "mean", type = "equivalence",
 ##### Description
 
 Calculates required sample sizes for specified power levels (70%, 80%,
-90%) across a range of treatment effect values (), while keeping the
-control group value () fixed. Internally calls and generates a plot to
-visualize how total sample size changes with varying .
+90%) across a range of treatment effect values (*x1*), while keeping the
+control group value (*x2*) fixed. Internally calls *sample_size()* and
+generates a plot to visualize how total sample size changes with varying
+*x1*.
 
 ##### Parameters
 
