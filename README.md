@@ -412,7 +412,7 @@ outliers(clinical_df_full, "biomarker", threshold = 1.0)
 
 Calculates the sample size needed in a clinical trial based on study
 design and statistical parameters using standard formulas for hypothesis
-testing (Chow, S. 2008).
+testing (Chow, S. 2017).
 
 ##### Parameters
 

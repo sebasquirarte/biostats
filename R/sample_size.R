@@ -1,7 +1,7 @@
 #' Sample Size Calculation for Clinical Trials
 #'
 #' Calculates the sample size needed in a clinical trial based on study design
-#' and statistical parameters using standard formulas for hypothesis testing (Chow, S. 2008).
+#' and statistical parameters using standard formulas for hypothesis testing (Chow, S. 2017).
 #'
 #' @param sample Character string indicating whether one or two samples need to be calculated.
 #'   Options: "one-sample" or "two-sample".
@@ -102,7 +102,7 @@ sample_size <- function(sample = c("one-sample", "two-sample"),
   margin <- switch(type,
                    equality = diff^2,
                    equivalence = (delta - abs(diff))^2,
-                   `non-inferiority` = ,
+                   `non-inferiority` = (diff - delta)^2,
                    superiority = (diff - delta)^2)
   if (sample == "two-sample" && design == "crossover") margin <- margin * 2
   
