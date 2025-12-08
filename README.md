@@ -227,10 +227,11 @@ summary_table(clinical_df,
 ##### Description
 
 Tests normality using sample size-appropriate methods: Shapiro-Wilk test
-(n less than or equal to 50) or Kolmogorov-Smirnov test (n greater than
-50) with Q-Q plots and histograms. Evaluates skewness and kurtosis using
-z-score criteria based on sample size. Automatically detects outliers
-and provides comprehensive visual and statistical assessment.
+(n less than or equal to 50) or Kolmogorov-Smirnov test with Lilliefors’
+correction (n greater than 50) with Q-Q plots and histograms. Evaluates
+skewness and kurtosis using z-score criteria based on sample size.
+Automatically detects outliers and provides comprehensive visual and
+statistical assessment.
 
 ##### Parameters
 
@@ -256,7 +257,7 @@ normality(data = clinical_df_treat, "biomarker")
 #> mean (SD) = 49.44 (9.2) 
 #> median (IQR) = 50.38 (13.1) 
 #> 
-#> Kolmogorov-Smirnov: D = 0.054, p = 0.740 
+#> Kolmogorov-Smirnov (Lilliefors): D = 0.054, p = 0.305 
 #> Shapiro-Wilk: W = 0.992, p = 0.546 
 #> Skewness: 0.06 (z = 0.30) 
 #> Kurtosis: -0.03 (z = -0.08) 
@@ -278,8 +279,8 @@ normality(data = clinical_df_treat, "weight", all = TRUE)
 #> mean (SD) = 72.56 (12.9) 
 #> median (IQR) = 69.20 (21.1) 
 #> 
-#> Kolmogorov-Smirnov: D = 0.125, p = 0.014 
-#> Shapiro-Wilk: W = 0.951, p = < 0.001 
+#> Kolmogorov-Smirnov (Lilliefors): D = 0.125, p < 0.001 
+#> Shapiro-Wilk: W = 0.951, p < 0.001 
 #> Skewness: 0.28 (z = 1.45) 
 #> Kurtosis: -1.09 (z = -2.85) 
 #> 
