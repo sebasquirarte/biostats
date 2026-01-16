@@ -46,6 +46,8 @@ sample_size_range <- function(x1_range,
                               step = 0.1, 
                               ...) {
   
+  dots <- list(...)
+  
   # Input validation
   if (!is.numeric(x1_range) || length(x1_range) != 2) {
     stop("'x1_range' must be a numeric vector of length 2.", call. = FALSE)
@@ -61,36 +63,41 @@ sample_size_range <- function(x1_range,
   }
   
   # Declare variables to avoid R CMD check NOTEs
-  x1 <- total <- power <- ymin <- ymax <- NULL
+  x1 <- total_n <- power <- ymin <- ymax <- NULL
+  sample <- dots$sample
   
   # Setup calculations
   power_levels <- c(70, 80, 90)
-  results <- expand.grid(x1 = seq(x1_range[1], x1_range[2], by = step), 
+  results.temp <- expand.grid(x1 = seq(x1_range[1], x1_range[2], by = step), 
                          power = power_levels)
   dropout_rate <- if ("dropout" %in% names(list(...))) list(...)$dropout else 0
   
   # Calculate sample sizes
-  for (i in seq_len(nrow(results))) {
+  for (i in seq_len(nrow(results.temp))) {
     ss_result <- tryCatch({
       suppressMessages(capture.output({
-        ss <- sample_size(x1 = results$x1[i], x2 = x2, 
-                          beta = 1 - results$power[i] / 100, ...)
+        ss <- sample_size(x1 = results.temp$x1[i], x2 = x2, 
+                          beta = 1 - results.temp$power[i] / 100, ...)
       }))
       ss
     }, error = function(e) list(n1 = NA_real_, n2 = NA_real_, total = NA_real_))
     
-    results$n1[i] <- ss_result$n1
-    results$n2[i] <- ss_result$n2  
-    results$total[i] <- ss_result$total
+    if (sample == "two-sample") {
+      results.temp$n1[i] <- ss_result$n1
+      results.temp$n2[i] <- ss_result$n2  
+      results.temp$total_n[i] <- ss_result$total
+    } else {
+      results.temp$total_n[i] <- ss_result$total
+    }
   }
   
-  results$x2 <- x2
-  results$diff <- results$x1 - x2
+  results.temp$x2 <- x2
+  results.temp$diff <- results.temp$x1 - x2
   
   # Create plot
   colors <- c("70" = "#C5F4C1", "80" = "#79E1BE", "90" = "#33BFBC")
   
-  p <- ggplot2::ggplot(results, ggplot2::aes(x = x1, y = total, color = factor(power))) +
+  p <- ggplot2::ggplot(results.temp, ggplot2::aes(x = x1, y = total_n, color = factor(power))) +
     ggplot2::geom_line(linewidth = 1.2, na.rm = TRUE) +
     ggplot2::geom_point(size = 2, na.rm = TRUE) +
     ggplot2::scale_color_manual(values = colors, name = "Power (1 - beta)",
@@ -100,15 +107,15 @@ sample_size_range <- function(x1_range,
     ggplot2::theme_minimal() 
   # Add ribbons
   for (i in seq_len(length(power_levels) - 1)) {
-    lower_data <- results[results$power == power_levels[i], ]
-    upper_data <- results[results$power == power_levels[i + 1], ]
-    valid_idx <- !is.na(lower_data$total) & !is.na(upper_data$total)
+    lower_data <- results.temp[results.temp$power == power_levels[i], ]
+    upper_data <- results.temp[results.temp$power == power_levels[i + 1], ]
+    valid_idx <- !is.na(lower_data$total_n) & !is.na(upper_data$total_n)
     
     if (any(valid_idx)) {
       p <- p + ggplot2::geom_ribbon(
         data = data.frame(x1 = lower_data$x1[valid_idx],
-                          ymin = upper_data$total[valid_idx],
-                          ymax = lower_data$total[valid_idx]),
+                          ymin = upper_data$total_n[valid_idx],
+                          ymax = lower_data$total_n[valid_idx]),
         ggplot2::aes(x = x1, ymin = ymin, ymax = ymax),
         inherit.aes = FALSE, alpha = 0.2,
         fill = colors[as.character(power_levels[i])]
@@ -117,10 +124,15 @@ sample_size_range <- function(x1_range,
   }
   
   # Return results
-  results <- list(data = results[, c("power", "x1", "x2", "diff", "n1", "n2", "total")],
-                  dropout = dropout_rate,
+  results <- list(dropout = dropout_rate,
                   step = step,
                   plot = p)
+  
+  if (sample == "one-sample") {
+    results$data = results.temp[, c("power", "x1", "x2", "diff", "total_n")]
+  } else {
+    results$data = results.temp[, c("power", "x1", "x2", "diff", "n1", "n2", "total_n")]
+  }
   
   class(results) <- "sample_size_range"
   return(results)
@@ -137,7 +149,7 @@ print.sample_size_range <- function(x, ...) {
   cat(sprintf("Step size: %.3f\n\n", x$step))
   
   for (pwr in c(70, 80, 90)) {
-    valid_totals <- x$data$total[x$data$power == pwr & !is.na(x$data$total)]
+    valid_totals <- x$data$total_n[x$data$power == pwr & !is.na(x$data$total_n)]
     if (length(valid_totals) > 0) {
       cat(sprintf("%d%% Power: Total n = %d to %d\n", pwr, min(valid_totals), 
                   max(valid_totals)))

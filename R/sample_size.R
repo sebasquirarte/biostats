@@ -73,6 +73,8 @@ sample_size <- function(sample = c("one-sample", "two-sample"),
   if (beta <= 0 || beta >= 1) stop("'beta' must be between 0 and 1.", call. = FALSE)
   if (dropout < 0 || dropout >= 1) stop("'dropout' must be between 0 and 1.", call. = FALSE)
   if (k <= 0) stop("'k' must be positive.", call. = FALSE)
+  if (sample == "two-sample" && design == "crossover" && k != 1) stop("For crossover designs k must be equal to 1.", call. = FALSE)
+  if (sample == "one-sample" && k != 1) stop("For one-sample designs k must be equal to 1.", call. = FALSE)
   if (outcome == "proportion" && (x1 < 0 || x1 > 1 || x2 < 0 || x2 > 1)) {
     stop("'x1' and 'x2' must be between 0 and 1 for proportion outcomes.", call. = FALSE)
   }
@@ -117,7 +119,9 @@ sample_size <- function(sample = c("one-sample", "two-sample"),
   }
   
   n2 <- ceiling(zscore * variance / margin)
-  n1 <- if (sample == "two-sample" && design == "parallel") ceiling(k * n2) else n2
+  n1 <- if (sample == "two-sample" && design == "parallel") ceiling(k * n2) 
+        else if (sample == "two-sample" && design == "crossover") n2
+        else NULL
   
   if (dropout > 0) {
     n2 <- ceiling(n2 + (dropout * n2))
@@ -126,14 +130,18 @@ sample_size <- function(sample = c("one-sample", "two-sample"),
   
   total <- if (sample == "one-sample") n2 else if (design == "parallel") n2 + n1 else 2 * n2
   
-  if (!is.finite(n1) || !is.finite(n2) || !is.finite(total)) {
-    stop("Sample size calculation resulted in infinite value. Check delta and group difference.", call. = FALSE)
+  if (sample == "two-sample") {
+    if (!is.finite(n1) || !is.finite(n2) || !is.finite(total)) {
+      stop("Sample size calculation resulted in infinite value. Check delta and group difference.", call. = FALSE)
+    }
+  } else {
+      if (!is.finite(n2) || !is.finite(total)) {
+        stop("Sample size calculation resulted in infinite value. Check delta and group difference.", call. = FALSE)
+      }
   }
   
   # Return results
-  results <- list(n1 = n1, 
-                  n2 = n2, 
-                  total = total,
+  results <- list(total = total,
                   sample = sample, 
                   design = design,
                   outcome = outcome, 
@@ -147,6 +155,11 @@ sample_size <- function(sample = c("one-sample", "two-sample"),
                   delta = delta, 
                   dropout = dropout,
                   k = k)
+  
+  if (grepl("two-sample", sample)) {
+    results$n1 <- n1
+    results$n2 <- n2
+  }
   
   class(results) <- "sample_size"
   return(results)
@@ -187,3 +200,4 @@ print.sample_size <- function(x, ...) {
   cat("\n")
   invisible(x)
 }
+

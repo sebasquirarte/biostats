@@ -31,7 +31,7 @@ test_that("Basic functionality", {
   
   # Confirm output's structure
   expect_type(result, "list")
-  expect_named(result, c("data", "dropout", "step", "plot"))
+  expect_named(result, c("dropout", "step", "plot", "data"))
   expect_s3_class(result$data, "data.frame")
   expect_s3_class(result$plot, "ggplot")
   expect_equal(output[2], "Sample Size Range Analysis")
@@ -54,7 +54,7 @@ test_that("Basic functionality", {
   
   # Confirm output's structure
   expect_type(result, "list")
-  expect_named(result, c("data", "dropout", "step", "plot"))
+  expect_named(result, c("dropout", "step", "plot", "data"))
   expect_true(any(grepl("Sample size increased by 20.0% to account for potential dropouts.",
       output, fixed = TRUE)))
 })
@@ -71,8 +71,8 @@ test_that("Data frame structure", {
   
   # Confirm data frame's structure
   df <- result$data
-  expect_equal(ncol(df), 7)
-  expect_named(df, c("power", "x1", "x2", "diff", "n1", "n2", "total"))
+  expect_equal(ncol(df), 5)
+  expect_named(df, c("power", "x1", "x2", "diff", "total_n"))
   expect_setequal(unique(df$power), c(70, 80, 90))
   expect_equal(unique(df$x2), 0.20)
   expect_true(all(df$x1 %in% c(0.10, 0.20, 0.30)))

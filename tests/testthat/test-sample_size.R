@@ -6,7 +6,6 @@ testthat::test_that("basic function examples work correctly", {
   
   expect_type(result1, "list")
   expect_equal(result1$sample, "one-sample")
-  expect_equal(result1$n2, 35)
   expect_equal(result1$total, 35)
   
   # Two-sample parallel test with dropout
@@ -140,12 +139,10 @@ testthat::test_that("return list structure", {
   capture.output(result <- sample_size(sample = "one-sample", outcome = "mean", 
                                        type = "equality", x1 = 1, x2 = 2, SD = 0.5))
   
-  expected_names <- c('n1', 'n2', 'total', 'sample', 'design', 'outcome', 'type', 'alpha', 'beta', 'x1', 'x2', 'diff', 'SD', 'delta', 'dropout', 'k')
+  expected_names <- c('total', 'sample', 'design', 'outcome', 'type', 'alpha', 'beta', 'x1', 'x2', 'diff', 'SD', 'delta', 'dropout', 'k')
   
   expect_named(result, expected_names)
-  expect_gt(result$n2, 0)
   expect_gt(result$total, 0)
-  expect_true(is.finite(result$n2))
   expect_true(is.finite(result$total))
 })
 
