@@ -49,25 +49,42 @@ long-term maintainability within the R ecosystem.
 
 # Statement of need
 
-`Gala` is an Astropy-affiliated Python package for galactic dynamics. Python
-enables wrapping low-level languages (e.g., C) for speed without losing
-flexibility or ease-of-use in the user-interface. The API for `Gala` was
-designed to provide a class-based and user-friendly interface to fast (C or
-Cython-optimized) implementations of common operations such as gravitational
-potential and force evaluation, orbit integration, dynamical transformations,
-and chaos indicators for nonlinear dynamics. `Gala` also relies heavily on and
-interfaces well with the implementations of physical units and astronomical
-coordinate systems in the `Astropy` package [@astropy] (`astropy.units` and
-`astropy.coordinates`).
+Biostatistics is a fundamental component of clinical research, essential for 
+validating trial designs, methodologies, results, conclusions, as well as 
+supporting submission to regulatory entities (Sagar KP et al., 2023; Ciolino, 
+J. D. et al., 2021; Dwivedi A. K., 2022). In practice, clinical data analysis 
+involves the execution of similar tasks across multiple studies and projects. 
+Typical workflows include the calculation of descriptive statistics and 
+exploratory data analysis, assumption validation, hypothesis testing, primary, 
+secondary, and exploratory statistical analyses, effect size estimation, as well
+as sample size and power calculations.
 
-`Gala` was designed to be used by both astronomical researchers and by
-students in courses on gravitational dynamics or astronomy. It has already been
-used in a number of scientific publications [@Pearson:2017] and has also been
-used in graduate courses on Galactic dynamics to, e.g., provide interactive
-visualizations of textbook material [@Binney:2008]. The combination of speed,
-design, and support for Astropy functionality in `Gala` will enable exciting
-scientific explorations of forthcoming data releases from the *Gaia* mission
-[@gaia] by students and experts alike.
+Popular packages in this field include Hmisc (Harrell Jr F., 2025) and tableone 
+(Yoshida K. & Bartel A., 2022) for descriptive statistics, pwr 
+(Champely S., 2020) for power and sample size calculations, effectsize 
+(Ben-Shachar M. et al., 2020) for effect size estimates, and ggplot2 
+(Wickham H. et al, 2016) for data visualization, among others. While these 
+packages are well-designed and widely used, completing a clinical study workflow
+typically requires combining multiple packages with different syntax conventions
+, output formats, and integration patterns. As a result, analysts frequently 
+develop custom code to connect results, automate recurring tasks, or standardize
+outputs across studies. This fragmentation can lead to inconsistent 
+implementations, duplicated effort, and increased time spent on code development
+, validation, and quality control.
+
+The biostats package addresses these challenges by providing a unified, 
+clinically oriented framework that consolidates commonly used biostatistical 
+procedures into a single, coherent toolkit. While users still retain full 
+flexibility to write custom code tailored to study-specific needs, biostats is 
+designed to streamline repetitive and foundational tasks in biostatistics and 
+clinical data analysis through consistent syntax, harmonized outputs, and 
+functions that reflect standard clinical workflows. Its goal is to deliver a 
+professional-grade toolset for biostatisticians and clinical researchers while 
+remaining accessible to data analysts from other fields. In addition, biostats 
+serves as an educational resource for users transitioning to R or to 
+biostatistics, offering a structured and reproducible approach aligned with 
+contemporary recommendations for transparent and rigorous statistical practice.
+
 
 # Software design
 
