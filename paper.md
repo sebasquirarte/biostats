@@ -29,21 +29,16 @@ bibliography: paper.bib
 ![](figures/logo.png)
 
 _**biostats**_ is an R package (R Core Team, 2025) that provides a cohesive and
-structured set of tools for biostatistics and clinical data analys. It is 
-designed to support common analytical tasks encountered in clinical research, 
-from early-stage exploratory analysis to inferential statistical testing and 
-visualization of study results.
-
-The package includes 14 specialized functions covering descriptive statistics, 
-exploratory data analysis, sample size and power calculations, statistical 
-analysis and inference, and data visualization. These functions aim to offer 
-standardized, well-documented workflows that are frequently required in clinical
-studies and trial planning. By consolidating these capabilities into a single 
+structured set of tools for biostatistics and clinical data analys. The package 
+includes 14 specialized functions covering descriptive statistics, exploratory 
+data analysis, sample size and power calculations, statistical analysis and 
+inference, and data visualization. These functions aim to offer standardized, 
+well-documented workflows that are frequently required in clinical studies, 
+trial planning, and analysis. By consolidating these capabilities into a single
 framework, the package facilitates consistent, transparent, and reproducible 
 analyses across studies.
 
-Designed primarily for comparative clinical studies, trial planning, and 
-analysis, this package serves both as an analytical toolkit for professional 
+This package serves both as an analytical toolkit for professional 
 biostatisticians and clinical data analysts, and as an educational resource for 
 researchers transitioning to R-based biostatistics, including professionals from
 other domains, clinical researchers, and medical practitioners involved in the
