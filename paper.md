@@ -1,54 +1,46 @@
 ---
 title: 'biostats: Biostatistics and Clinical Data Analysis in R'
 tags:
-  - Python
-  - astronomy
-  - dynamics
-  - galactic dynamics
-  - milky way
+  - R
+  - biostatistics
+  - clinical trials
+  - clinical research
+  - data analysis
 authors:
-  - name: Adrian M. Price-Whelan
-    orcid: 0000-0000-0000-0000
-    equal-contrib: true
-    affiliation: "1, 2" # (Multiple affiliations must be quoted)
-  - name: Author Without ORCID
-    equal-contrib: true # (This is how you can denote equal contributions between multiple authors)
-    affiliation: 2
-  - name: Author with no affiliation
-    corresponding: true # (This is how to denote the corresponding author)
-    affiliation: 3
-  - given-names: Ludwig
-    dropping-particle: van
-    surname: Beethoven
-    affiliation: 3
+  - name: Sebastian Quirarte-Justo
+    corresponding: true
+    orcid: 0009-0004-2730-4343
+    affiliation: 1
+  - name: Angela Carolina Montaño-Ruiz
+    orcid: 0009-0009-1705-763X
+    affiliation: 1
+  - name: José M. Torres-Arellano
+    orcid: 0000-0003-4632-2243
+    affiliation: 1
 affiliations:
- - name: Lyman Spitzer, Jr. Fellow, Princeton University, United States
+ - name: Laboratorios Sophia, S.A. de C.V., Zapopan, Jalisco, Mexico.
    index: 1
-   ror: 00hx57361
- - name: Institution Name, Country
-   index: 2
- - name: Independent Researcher, Country
-   index: 3
-date: 13 August 2017
+date: 22 January 2026
 bibliography: paper.bib
-
-# Optional fields if submitting to a AAS journal too, see this blog post:
-# https://blog.joss.theoj.org/2018/12/a-new-collaboration-with-aas-publishing
-aas-doi: 10.3847/xxxxx <- update this with the DOI from AAS once you know it.
-aas-journal: Astrophysical Journal <- The name of the AAS journal.
 ---
 
 # Summary
 
-The forces on stars, galaxies, and dark matter under external gravitational
-fields lead to the dynamical evolution of structures in the universe. The orbits
-of these bodies are therefore key to understanding the formation, history, and
-future state of galaxies. The field of "galactic dynamics," which aims to model
-the gravitating components of galaxies to study their structure and evolution,
-is now well-established, commonly taught, and frequently used in astronomy.
-Aside from toy problems and demonstrations, the majority of problems require
-efficient numerical tools, many of which require the same base code (e.g., for
-performing numerical orbit integration).
+_**biostats**_ is an R package (R Core Team, 2025) that provides a unified set of 
+tools for biostatistics and clinical data analysis tasks and workflows. It 
+includes 14 specialized functions for descriptive statistics and exploratory 
+data analysis, sample size and power calculation, statistical analysis and 
+inference, and data visualization. 
+
+Designed primarily for comparative clinical studies, trial planning, and 
+analysis, this package serves both as an analytical toolkit for professional 
+biostatisticians and clinical data analysts, and as an educational resource for 
+researchers transitioning to R-based biostatistics, including professionals from
+other domains, clinical researchers, and medical practitioners involved in the
+development of clinical trials. _**biostats**_ is available on the Comprehensive R 
+Archive Network (CRAN) and adheres to CRAN standards for documentation, testing, 
+reproducibility, and long-term maintainability within the R ecosystem.
+
 
 # Statement of need
 
