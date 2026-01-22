@@ -26,7 +26,9 @@ bibliography: paper.bib
 
 # Summary
 
+
 ![](figures/logo.png)
+
 
 _**biostats**_ is an R package (R Core Team, 2025) that provides a unified set of 
 tools for biostatistics and clinical data analysis tasks and workflows. It 
@@ -45,7 +47,7 @@ _**biostats**_ is available on the Comprehensive R Archive Network (CRAN) and
 adheres to CRAN standards for documentation, testing, reproducibility, and 
 long-term maintainability within the R ecosystem.
 
-![Figure 1. Functions included in the biostats package.](figures/figure1.png)
+![Functions included in the biostats package.](figures/figure1.png)
 
 # Statement of need
 
