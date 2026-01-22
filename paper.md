@@ -88,72 +88,140 @@ serves as an educational resource for users transitioning to R or to
 biostatistics, offering a structured and reproducible approach aligned with 
 contemporary recommendations for transparent and rigorous statistical practice.
 
+# State of the field
 
-# Software design
+Regarding the specific functions in this package, biostats differs from existing
+packages such as ez (Lawrence, M. A., 2016), rstatix (Kassambara, A., 2025), 
+ggblanket (Hodge, D., 2025), ggpubr (Kassambara, A., 2025), extras (Hill, N. et 
+al, 2025), SampleSize4ClinicalTrials (Qi, H., Zhu, F., 2021), TrialSize (Zhang, 
+E. et al, 2024), TrialSimulator (Zhang, H., 2025) and simtrial (Anderson, K., et
+al, 2025) to name a few, due to its ease of use, consistent syntax, clear and 
+professional presentation of results without unnecessary complexity in 
+interpretation, and thorough, beginner-friendly documentation.
 
-`Gala`'s design philosophy is based on three core principles: (1) to provide a
- user-friendly, modular, object-oriented API, (2) to use community tools and 
- standards (e.g., Astropy for coordinates and units handling), and (3) to use
- low-level code (C/C++/Cython) for performance while keeping the user interface
- in Python. Within each of the main subpackages in `gala` (`gala.potential`, 
- `gala.dynamics`, `gala.integrate`, etc.), we try to maintain a consistent API 
- for classes and functions. For example, all potential classes share a common 
- base class and implement methods for computing the potential, forces, density, 
- and other derived quantities at given positions. This also works for 
- compositions of potentials (i.e., multi-component potential models), which 
- share the potential base class but also act as a dictionary-like container for 
- different potential components. As another example, all integrators implement a 
- common interface for numerically integrating orbits. The integrators and core 
- potential functions are all implemented in C without support for units, but the 
- Python layer handles unit conversions and prepares data to dispatch to the C 
- layer appropriately.Within the coordinates subpackage, we extend Astropy's 
- coordinate classes to add more specialized coordinate frames and 
- transformations that are relevant for Galactic dynamics and Milky Way research.
+The functions sample_size(), sample_size_range(), effect_measures() and 
+normality() propose a composite approach to variable evaluation. In many 
+existing packages these analyses are implemented through separate functions 
+depending on specific statistical tests or methods. For example, normality 
+assessment via distinct tests (e.g., Shapiro–Wilk, Kolmogorov–Smirnov), kurtosis
+measures, or independent graphical analyses, sample size calculations through 
+functions tailored to individual study designs, and effect measures evaluated 
+separately for each type of association. In contrast, the biostats package 
+unifies these analysis within single functions, providing a unified, consistent,
+and streamlined workflow.
 
-# Research impact statement
+The omnibus() function offers an integrated approach to determining whether 
+parametric linear models or non-parametric alternatives are appropriate. It 
+evaluates data using minimally specified parameters, returns the corresponding 
+model’s analysis, reports observed values per each assumption, runs appropriate 
+post-hoc tests, and  presents the results in an clear and easy-to-follow format.  
+The missing_values(), outliers() and summary_table() functions present data and 
+analysis in a clean and organized format with professional visual outputs, as 
+opposed to other alternatives that only return raw values without formatting or 
+graphical complements.
 
-`Gala` has demonstrated significant research impact and grown both its user base 
-and contributor community since its initial release. The package has evolved 
-through contributions from over 18 developers beyond the original core developer 
-(@adrn), with community members adding new features, reporting bugs, and 
-suggesting new features. 
+When compared to other available options, the clinical_data() function offers a 
+simple but realistic and clean dataframe of simulated clinical data, ideal for 
+users who want sample data without highly specialized parameters.
 
-While `Gala` started as a tool primarily to support the core developer's 
-research, it has expanded organically to support a range of applications across 
-domains in astrophysics related to Milky Way and galactic dynamics. The package 
-has been used in over 400 publications (according to Google Scholar) spanning 
-topics in galactic dynamics such as modeling stellar streams [@Pearson:2017], 
-Milky Way mass modeling, and interpreting kinematic and stellar population 
-trends in the Galaxy. `Gala` is integrated within the Astropy ecosystem as an 
-affiliated package and has built functionality that extends the widely-used 
-`astropy.units` and `astropy.coordinates` subpackages. `Gala`'s impact extends 
-beyond citations in research: Because of its focus on usability and user 
-interface design, `Gala` has also been incorporated into graduate-level galactic 
-dynamics curricula at multiple institutions. 
+The ggplot2 wrapper functions included in this package are designed to require 
+minimal code and parameter specifications, while quickly producing professional
+publication-grade visualizations and fully retaining the flexibility to further 
+customize ggplot2 objects.
 
-`Gala` has been downloaded over 100,000 times from PyPI and conda-forge yearly 
-(or ~2,000 downloads per week) over the past few years, demonstrating a broad 
-and active user community. Users span career stages from graduate students to 
-faculty and other established researchers and represent institutions around the 
-world. This broad adoption and active participation validate `Gala`'s role as 
-core community infrastructure for galactic dynamics research.
+# Software Design
 
-# Mathematics
+The biostats package was designed to balance analytical rigor, usability, and 
+reproducibility in applied biostatistics and other analytical fields where these
+tools could also be useful. The structure of the package follows a unified, 
+workflow-oriented design, where each function performs a complete analytical 
+step and returns clear, structured outputs that can be implemented as input for 
+subsequent analysis with other functions. This approach prioritizes transparency
+and auditability, enabling analyses to be inspected, reproduced, and reviewed in
+a stepwise manner. To support chaining, reporting, and downstream reuse, 
+parameters and outputs are standardized across functions.
 
-Single dollars ($) are required for inline mathematics e.g. $f(x) = e^{\pi/x}$
+Visualization functions return native ggplot2 objects rather than static 
+figures. This design enables users to quickly produce professional, 
+publication-grade visualizations with minimal code, while retaining full 
+flexibility to customize aesthetics and formatting to meet specific reporting or
+journal requirements without modifying internal package logic.
 
-Double dollars make self-standing equations:
+Overall, the package aims to emphasizes clarity, consistency, and 
+reproducibility, supporting both analytical workflows and educational use by 
+researchers and professionals transitioning to R-based biostatistics and 
+clinical data analysis.
 
-$$\Theta(x) = \left\{\begin{array}{l}
-0\textrm{ if } x < 0\cr
-1\textrm{ else}
-\end{array}\right.$$
+# Research Impact Statement
 
-You can also use plain \LaTeX for equations
-\begin{equation}\label{eq:fourier}
-\hat f(\omega) = \int_{-\infty}^{\infty} f(x) e^{i\omega x} dx
-\end{equation}
-and refer to \autoref{eq:fourier} from text.
+The biostats package has been released on CRAN (current version: 1.1.1), 
+ensuring standardized installation, long-term availability, and seamless 
+integration within the R ecosystem. It is also publicly available and 
+maintained on GitHub, where it is accompanied by reproducible examples, 
+detailed documentation, and an active issue tracker. Updates have been 
+implemented based on the authors’ real-world use, as well as user feedback, 
+supporting transparency, reproducibility, and community-driven improvement.
+
+Since its release, the software has demonstrated early but meaningful adoption 
+within the biostatistics and broader data analysis communities, reflected by 
+package downloads, GitHub stars, active engagement through comments, shares, 
+and reactions across professional social media platforms. In addition, the 
+authors have received positive feedback and feature suggestions from users 
+across multiple disciplines, including data science, clinical research, 
+healthcare, and applied statistics, indicating relevance beyond a single 
+application domain. 
+
+The package addresses a common challenge in applied research: the fragmentation 
+of statistical workflows across multiple scripts and tools. By providing a 
+unified set of functions for core biostatistical tasks, it promotes reproducible
+and transparent analysis, as well as providing thorough documentation for 
+educational purposes.
+
+# Key features
+
+The biostats package was designed to balance analytical rigor, usability, and 
+reproducibility in applied biostatistics and other analytical fields where these
+tools could also be useful. The structure of the package follows a unified, 
+workflow-oriented design, where each function performs a complete analytical 
+step and returns clear, structured outputs that can be implemented as input for 
+subsequent analysis with other functions. This approach prioritizes transparency
+and auditability, enabling analyses to be inspected, reproduced, and reviewed in
+a stepwise manner. To support chaining, reporting, and downstream reuse, 
+parameters and outputs are standardized across functions.
+
+Visualization functions return native ggplot2 objects rather than static 
+figures. This design enables users to quickly produce professional, 
+publication-grade visualizations with minimal code, while retaining full 
+flexibility to customize aesthetics and formatting to meet specific reporting or
+journal requirements without modifying internal package logic.
+
+Overall, the package aims to emphasizes clarity, consistency, and 
+reproducibility, supporting both analytical workflows and educational use by 
+researchers and professionals transitioning to R-based biostatistics and 
+clinical data analysis.
+
+# Software Design
+
+The biostats package was designed to balance analytical rigor, usability, and 
+reproducibility in applied biostatistics and other analytical fields where these
+tools could also be useful. The structure of the package follows a unified, 
+workflow-oriented design, where each function performs a complete analytical 
+step and returns clear, structured outputs that can be implemented as input for 
+subsequent analysis with other functions. This approach prioritizes transparency
+and auditability, enabling analyses to be inspected, reproduced, and reviewed in
+a stepwise manner. To support chaining, reporting, and downstream reuse, 
+parameters and outputs are standardized across functions.
+
+Visualization functions return native ggplot2 objects rather than static 
+figures. This design enables users to quickly produce professional, 
+publication-grade visualizations with minimal code, while retaining full 
+flexibility to customize aesthetics and formatting to meet specific reporting or
+journal requirements without modifying internal package logic.
+
+Overall, the package aims to emphasizes clarity, consistency, and 
+reproducibility, supporting both analytical workflows and educational use by 
+researchers and professionals transitioning to R-based biostatistics and 
+clinical data analysis.
 
 # Citations
 
