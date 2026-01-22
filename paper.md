@@ -39,10 +39,13 @@ analysis, this package serves both as an analytical toolkit for professional
 biostatisticians and clinical data analysts, and as an educational resource for 
 researchers transitioning to R-based biostatistics, including professionals from
 other domains, clinical researchers, and medical practitioners involved in the
-development of clinical trials. _**biostats**_ is available on the Comprehensive R 
-Archive Network (CRAN) and adheres to CRAN standards for documentation, testing, 
-reproducibility, and long-term maintainability within the R ecosystem.
+development of clinical trials. 
 
+_**biostats**_ is available on the Comprehensive R Archive Network (CRAN) and 
+adheres to CRAN standards for documentation, testing, reproducibility, and 
+long-term maintainability within the R ecosystem.
+
+![Figure 1. Functions included in the biostats package.](figures/figure1.png)
 
 # Statement of need
 
