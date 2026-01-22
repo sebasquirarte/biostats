@@ -29,7 +29,7 @@ bibliography: paper.bib
 ![](figures/logo.png)
 
 _**biostats**_ is an R package (R Core Team, 2025) that provides a cohesive and
-structured set of tools for biostatistics and clinical data analys. The package 
+structured set of tools for biostatistics and clinical data analysis. The package 
 includes 14 specialized functions covering descriptive statistics, exploratory 
 data analysis, sample size and power calculations, statistical analysis and 
 inference, and data visualization. These functions aim to offer standardized, 
@@ -179,26 +179,50 @@ educational purposes.
 
 # Key features
 
-The biostats package was designed to balance analytical rigor, usability, and 
-reproducibility in applied biostatistics and other analytical fields where these
-tools could also be useful. The structure of the package follows a unified, 
-workflow-oriented design, where each function performs a complete analytical 
-step and returns clear, structured outputs that can be implemented as input for 
-subsequent analysis with other functions. This approach prioritizes transparency
-and auditability, enabling analyses to be inspected, reproduced, and reviewed in
-a stepwise manner. To support chaining, reporting, and downstream reuse, 
-parameters and outputs are standardized across functions.
+## Descriptive Statistics and Exploratory Data Analysis
 
-Visualization functions return native ggplot2 objects rather than static 
-figures. This design enables users to quickly produce professional, 
-publication-grade visualizations with minimal code, while retaining full 
-flexibility to customize aesthetics and formatting to meet specific reporting or
-journal requirements without modifying internal package logic.
+*clinical_data()* creates a simulated clinical trial dataset with subject 
+demographics, multiple visits, treatment groups with different effects, 
+numerical and categorical variables, as well as optional missing data and 
+dropout rates. 
 
-Overall, the package aims to emphasizes clarity, consistency, and 
-reproducibility, supporting both analytical workflows and educational use by 
-researchers and professionals transitioning to R-based biostatistics and 
-clinical data analysis.
+*summary_table()* performs descriptive statistics with normality assessment 
+(Shapiro–Wilk or Kolmogorov–Smirnov with Lilliefors’ correction), selects 
+appropriate tests such as Welch’s t-test or Mann–Whitney U for numerical 
+variables and chi-squared or Fisher’s exact tests for categorical variables, and
+computes effect sizes including Cohen’s d, Mann-Whitney U effect size (r), odds 
+ratios, and Cramer’s V.
+
+*missing_values()* visualizes missing data patterns, outliers() identifies extreme
+values using Tukey's method with customizable thresholds, and normality() 
+performs an assessment of distributions with Q-Q plots, histograms, and multiple
+diagnostic tests based on the recommendations mentioned by Mishra P. et al 
+(2019) and methods by Lilliefors, H.W. (1967) and Dallal, G.E. & Wilkinson, L. 
+(1986).
+
+## Sample Size and Power Calculation
+
+*sample_size()* and *sample_size_range()* are specifically focused on sample 
+size calculation for clinical trials based on the equations in Chow et al. 
+(2017), supporting equality, equivalence, and non-inferiority/superiority 
+hypothesis, with parallel or crossover designs, and evaluating outcomes 
+specified in means or proportions.
+
+
+## Statistical Analysis and Inference
+
+*omnibus()* performs multi-group hypothesis testing to evaluate overall 
+differences among three or more groups, with the theory behind this function 
+being influenced by the works of Blanca M. et al. (2017) and Field A. (2012). 
+This function automatically conducts assumption diagnostics and selects the 
+appropriate statistical test based on data characteristics. It supports both 
+independent and repeated-measures designs and applies one-way ANOVA, 
+repeated-measures ANOVA, Kruskal–Wallis test, or Friedman test as appropriate. 
+When significant effects are detected, omnibus() also performs post-hoc 
+comparisons.
+
+![Functions included in the biostats package.](figures/figure2.png)
+
 
 # Software Design
 
