@@ -18,13 +18,15 @@ authors:
     orcid: 0000-0003-4632-2243
     affiliation: 1
 affiliations:
- - name: Laboratorios Sophia, S.A. de C.V., Zapopan, Jalisco, Mexico.
+ - name: Laboratorios Sophia, S.A. de C.V., Jalisco, Mexico.
    index: 1
 date: 22 January 2026
 bibliography: paper.bib
 ---
 
 # Summary
+
+![](figures/logo.png)
 
 _**biostats**_ is an R package (R Core Team, 2025) that provides a unified set of 
 tools for biostatistics and clinical data analysis tasks and workflows. It 
