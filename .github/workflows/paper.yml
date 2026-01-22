@@ -1,0 +1,11 @@
+name: JOSS paper
+on: [push]
+jobs:
+  paper:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: openjournals/openjournals-docker@v1
+        with:
+          journal: joss
+          paper-path: paper.md
