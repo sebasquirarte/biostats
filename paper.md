@@ -221,31 +221,56 @@ repeated-measures ANOVA, Kruskal–Wallis test, or Friedman test as appropriate.
 When significant effects are detected, omnibus() also performs post-hoc 
 comparisons.
 
-![Functions included in the biostats package.](figures/figure2.png)
+![Omnibus function test selection algorithm for multi-group comparisons.](figures/figure2.png)
 
+*effect_measures()* calculates effect measure indices commonly required in 
+clinical research, including odds ratios, risk ratios, and number needed to 
+treat or harm. When one or more values equal 0, a continuity correction can be 
+applied.
 
-# Software Design
+## Data Visualization
 
-The biostats package was designed to balance analytical rigor, usability, and 
-reproducibility in applied biostatistics and other analytical fields where these
-tools could also be useful. The structure of the package follows a unified, 
-workflow-oriented design, where each function performs a complete analytical 
-step and returns clear, structured outputs that can be implemented as input for 
-subsequent analysis with other functions. This approach prioritizes transparency
-and auditability, enabling analyses to be inspected, reproduced, and reviewed in
-a stepwise manner. To support chaining, reporting, and downstream reuse, 
-parameters and outputs are standardized across functions.
+The plotting functions *plot_bar()*, *plot_line()*, *plot_box()*, *plot_hist()*, 
+and *plot_corr()* generate publication-ready ggplot2 visualizations tailored for 
+clinical research. These functions can compute and display optional summary 
+measures such as means, medians, standard errors, standard deviations, and 95 
+percent confidence intervals, and they apply consistent formatting, grouping 
+structures, and labeling to enhance interpretability. Each function returns a 
+fully customizable ggplot2 object, allowing users to refine themes, annotations, 
+scales, and other graphical elements.
 
-Visualization functions return native ggplot2 objects rather than static 
-figures. This design enables users to quickly produce professional, 
-publication-grade visualizations with minimal code, while retaining full 
-flexibility to customize aesthetics and formatting to meet specific reporting or
-journal requirements without modifying internal package logic.
+# Examples
 
-Overall, the package aims to emphasizes clarity, consistency, and 
-reproducibility, supporting both analytical workflows and educational use by 
-researchers and professionals transitioning to R-based biostatistics and 
-clinical data analysis.
+``` r
+# Simulate more complex clinical data
+clinical_df_full <- clinical_data(n = 300,
+                                  visits = 10,
+                                  arms = c('A', 'B', 'C'), 
+                                  dropout = 0.10,
+                                  missing = 0.05)
+
+str(clinical_df_full)
+#> 'data.frame':    3000 obs. of  8 variables:
+#>  $ participant_id: chr  "001" "001" "001" "001" ...
+#>  $ visit         : Factor w/ 10 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
+#>  $ sex           : Factor w/ 2 levels "Male","Female": 1 1 1 1 1 1 1 1 1 1 ...
+#>  $ treatment     : Factor w/ 3 levels "A","B","C": 3 3 3 3 3 3 3 3 3 3 ...
+#>  $ age           : num  25 25 25 25 25 25 25 25 25 25 ...
+#>  $ weight        : num  64.7 65.1 64.2 62.3 62.1 NA NA 61.8 63.7 64.1 ...
+#>  $ biomarker     : num  48.2 22.2 51.2 43.4 44.5 ...
+#>  $ response      : Factor w/ 3 levels "Complete","Partial",..: 1 1 3 1 3 1 3 3 NA 1 ...
+```
+
+# AI usage disclosure
+
+Generative AI tools were used during the development of the biostats R package 
+to assist with code refinement, debugging, automated tests, and the 
+configuration of continuous integration and continuous deployment (CI/CD) 
+workflows within GitHub through GitHub actions. These tools were also used to 
+review and improve the final manuscript. All AI-generated suggestions were 
+carefully reviewed, modified, and validated manually by the authors. The authors
+assume full responsibility and accountability for the reliability, integrity, 
+and maintenance of the software provided.  
 
 # Citations
 
