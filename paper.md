@@ -28,7 +28,7 @@ bibliography: paper.bib
 
 ![](figures/logo.png)
 
-_**biostats**_ is an R package @R that provides a cohesive and
+_**biostats**_ is an R package [@R] that provides a cohesive and
 structured set of tools for biostatistics and clinical data analysis. The package 
 includes 14 specialized functions covering descriptive statistics, exploratory 
 data analysis, sample size and power calculations, statistical analysis and 
