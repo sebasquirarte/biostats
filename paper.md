@@ -54,13 +54,13 @@ long-term maintainability within the R ecosystem.
 
 Biostatistics is a fundamental component of clinical research, essential for 
 validating trial designs, methodologies, results, conclusions, as well as 
-supporting submission to regulatory entities (Sagar KP et al., 2023; Ciolino, 
-J. D. et al., 2021; Dwivedi A. K., 2022). In practice, clinical data analysis 
-involves the execution of similar tasks across multiple studies and projects. 
-Typical workflows include the calculation of descriptive statistics and 
-exploratory data analysis, assumption validation, hypothesis testing, primary, 
-secondary, and exploratory statistical analyses, effect size estimation, as well
-as sample size and power calculations.
+supporting submission to regulatory entities [@Sagar:2023; @Ciolino:2021; 
+@Dwivedi:2022]. In practice, clinical data analysis involves the execution of 
+similar tasks across multiple studies and projects. Typical workflows include 
+the calculation of descriptive statistics and exploratory data analysis, 
+assumption validation, hypothesis testing, primary, secondary, and exploratory 
+statistical analyses, effect size estimation, as wellas sample size and power 
+calculations.
 
 Popular packages in this field include Hmisc (Harrell Jr F., 2025) and tableone 
 (Yoshida K. & Bartel A., 2022) for descriptive statistics, pwr 
@@ -418,6 +418,50 @@ effect_measures(exposed_event = 15,
 #> 
 #> Note: Correction not applied (no zero values).
 ```
+
+``` r
+# Grouped barplot of categorical variable by treatment with value labels
+plot_bar(data = clinical_df, x = "response", group = "visit", facet = "treatment", 
+         title = "Response by visit and treatment",values = TRUE)
+```
+
+![](figures/figure7.png)
+
+``` r
+# Line plot with mean and standard error by treatment
+plot_line(data = clinical_df_full, x = "visit", y = "biomarker",
+          group = "treatment", stat = "mean", error = "se")
+```
+
+![](figures/figure8.png)
+
+``` r
+# Faceted line plots with median and no error bars
+plot_line(data = clinical_df_full, x = "visit", y = "biomarker", group = "treatment", 
+          facet = "sex", stat = "median", error = "none", points = FALSE)  
+```
+
+![](figures/figure9.png)
+
+``` r
+# Faceted histogram
+plot_hist(clinical_df, x = "biomarker", facet = "treatment")
+```
+
+![](figures/figure10.png)
+
+``` r
+# Boxplot of biomarker by study visit and treatment
+plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment")
+```
+
+![](figures/figure11.png)
+
+``` r
+# Lower triangle with significance indicators and filtering for R dataset 'swiss'
+plot_corr(data = swiss, type = "lower", show_sig = TRUE, sig_only = TRUE)
+```
+![](figures/figure12.png)
 
 # AI usage disclosure
 
