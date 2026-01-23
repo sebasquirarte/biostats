@@ -28,7 +28,7 @@ bibliography: paper.bib
 
 ![](figures/logo.png)
 
-_**biostats**_ is an R package [@R] that provides a cohesive and
+_**biostats**_ is an R package [@R:2024] that provides a cohesive and
 structured set of tools for biostatistics and clinical data analysis. The package 
 includes 14 specialized functions covering descriptive statistics, exploratory 
 data analysis, sample size and power calculations, statistical analysis and 
@@ -62,8 +62,8 @@ assumption validation, hypothesis testing, primary, secondary, and exploratory
 statistical analyses, effect size estimation, as wellas sample size and power 
 calculations.
 
-Popular packages in this field include Hmisc (Harrell Jr F., 2025) and tableone 
-(Yoshida K. & Bartel A., 2022) for descriptive statistics, pwr 
+Popular packages in this field include Hmisc [@Hmisc:2026] and tableone 
+[@tableone:2022] for descriptive statistics, pwr 
 (Champely S., 2020) for power and sample size calculations, effectsize 
 (Ben-Shachar M. et al., 2020) for effect size estimates, and ggplot2 
 (Wickham H. et al, 2016) for data visualization, among others. While these 
@@ -391,7 +391,8 @@ omnibus(data = clinical_df_full, y = "biomarker", x = "treatment")
 #>   C - A                  -5.542   -6.618   -4.466   <0.001*
 #>   C - B                  -2.364   -3.468   -1.259   <0.001*
 #> 
-#> The study groups show a moderately imbalanced distribution of sample sizes (Δn = 0.214).
+#> The study groups show a moderately imbalanced distribution 
+#> of sample sizes (Δn = 0.214).
 ``` 
 
 ``` r
@@ -421,8 +422,9 @@ effect_measures(exposed_event = 15,
 
 ``` r
 # Grouped barplot of categorical variable by treatment with value labels
-plot_bar(data = clinical_df, x = "response", group = "visit", facet = "treatment", 
-         title = "Response by visit and treatment",values = TRUE)
+plot_bar(data = clinical_df, x = "response", 
+         group = "visit", facet = "treatment", 
+         title = "Response by visit and treatment", values = TRUE)
 ```
 
 ![](figures/figure7.png)
@@ -436,32 +438,24 @@ plot_line(data = clinical_df_full, x = "visit", y = "biomarker",
 ![](figures/figure8.png)
 
 ``` r
-# Faceted line plots with median and no error bars
-plot_line(data = clinical_df_full, x = "visit", y = "biomarker", group = "treatment", 
-          facet = "sex", stat = "median", error = "none", points = FALSE)  
-```
-
-![](figures/figure9.png)
-
-``` r
 # Faceted histogram
 plot_hist(clinical_df, x = "biomarker", facet = "treatment")
 ```
 
-![](figures/figure10.png)
+![](figures/figure9.png)
 
 ``` r
 # Boxplot of biomarker by study visit and treatment
 plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment")
 ```
 
-![](figures/figure11.png)
+![](figures/figure10.png)
 
 ``` r
 # Lower triangle with significance indicators and filtering for R dataset 'swiss'
 plot_corr(data = swiss, type = "lower", show_sig = TRUE, sig_only = TRUE)
 ```
-![](figures/figure12.png)
+![](figures/figure11.png)
 
 # AI usage disclosure
 
@@ -500,7 +494,7 @@ Figure sizes can be customized by adding an optional second parameter:
 # License and Availability
 
 The biostats package is distributed under an MIT license, with all source code 
-available through GitHub (https://github.com/sebasquirarte/biostats). 
+available through [GitHub](https://github.com/sebasquirarte/biostats). 
 
 # Acknowledgements
 
