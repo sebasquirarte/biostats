@@ -298,6 +298,43 @@ normality(data = clinical_df_treat, "biomarker")
 
 ![](figures/figure4.png)
 
+## Missing value and outlier analysis using missing_values() and outliers() functions.
+
+``` r
+# Missing value analysis of only variables with missing values
+missing_values(clinical_df_full)
+#> 
+#> Missing Value Analysis
+#> 
+#> Complete rows: 2452 (81.7%)
+#> Missing cells: 868 (3.6%)
+#> 
+#>           n_missing pct_missing
+#> response        403       13.43
+#> weight          251        8.37
+#> biomarker       214        7.13
+```
+
+![](figures/figure5.png)
+
+``` r
+# Basic outlier detection
+outliers(clinical_df_full, "biomarker")
+#> 
+#> Outlier Analysis
+#> 
+#> Variable: 'biomarker'
+#> n: 2786
+#> Missing: 214 (7.1%)
+#> Method: Tukey's IQR x 1.5
+#> Bounds: [18.971, 74.761]
+#> Outliers detected: 19 (0.7%)
+#> 
+#> Outlier indices: 27, 223, 440, 559, 795, 931, 973, 1175, 1277, 1346 (...)
+```
+
+![](figures/figure6.png)
+
 # AI usage disclosure
 
 Generative AI tools were used during the development of the biostats R package 
