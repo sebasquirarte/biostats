@@ -224,8 +224,7 @@ comparisons.
 
 *effect_measures()* calculates effect measure indices commonly required in 
 clinical research, including odds ratios, risk ratios, and number needed to 
-treat or harm. When one or more values equal 0, a continuity correction can be 
-applied.
+treat or harm.
 
 ## Data Visualization
 
