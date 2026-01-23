@@ -270,6 +270,38 @@ head(clinical_df, 10)
 #> 10            004     1 Male   Placebo  35   61.7     50.58     None
 ```
 
+``` r
+# Grouped summary by treatment group with all stats and effect size
+summary_table(clinical_df,
+              group_by = 'treatment',
+              all = TRUE,
+              effect_size = TRUE,
+              exclude = c('participant_id', 'visit'))
+```
+![](figures/figure3.png)
+
+``` r
+# Filter clinical data to Placebo arm
+clinical_df_treat <- clinical_df[clinical_df$treatment == "Placebo", ]
+
+# Normally distributed variable
+normality(data = clinical_df_treat, "biomarker")
+#> 
+#> Normality Test for 'biomarker' 
+#> 
+#> n = 159 
+#> mean (SD) = 49.44 (9.2) 
+#> median (IQR) = 50.38 (13.1) 
+#> 
+#> Kolmogorov-Smirnov (Lilliefors): D = 0.054, p = 0.305 
+#> Shapiro-Wilk: W = 0.992, p = 0.546 
+#> Skewness: 0.06 (z = 0.30) 
+#> Kurtosis: -0.03 (z = -0.08) 
+#> 
+#> Data appears normally distributed.
+```
+![](figures/figure4.png)
+
 # AI usage disclosure
 
 Generative AI tools were used during the development of the biostats R package 
