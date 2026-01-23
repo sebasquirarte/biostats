@@ -208,7 +208,6 @@ size calculation for clinical trials based on the equations in Chow et al.
 hypothesis, with parallel or crossover designs, and evaluating outcomes 
 specified in means or proportions.
 
-
 ## Statistical Analysis and Inference
 
 *omnibus()* performs multi-group hypothesis testing to evaluate overall 
@@ -241,20 +240,11 @@ scales, and other graphical elements.
 
 # Examples
 
+## Simulated clinical dataset using the clinical_data() function
+
 ``` r
 # Simulate basic clinical data
 clinical_df <- clinical_data()
-
-str(clinical_df)
-#> 'data.frame':    300 obs. of  8 variables:
-#>  $ participant_id: chr  "001" "001" "001" "002" ...
-#>  $ visit         : Factor w/ 3 levels "1","2","3": 1 2 3 1 2 3 1 2 3 1 ...
-#>  $ sex           : Factor w/ 2 levels "Male","Female": 1 1 1 1 1 1 1 1 1 ...
-#>  $ treatment     : Factor w/ 2 levels "Placebo","Treatment": 2 2 2 1 1 1 ...
-#>  $ age           : num  35 35 35 21 21 21 47 47 47 35 ...
-#>  $ weight        : num  55.4 60.3 58.1 68.3 66.3 64 76 77.6 74.9 61.7 ...
-#>  $ biomarker     : num  42.2 44.7 44.9 56.5 51 ...
-#>  $ response      : Factor w/ 3 levels "Complete","Partial",..: 1 3 2 3 3  ...
 
 head(clinical_df, 10)
 #>    participant_id visit  sex treatment age weight biomarker response
@@ -270,6 +260,8 @@ head(clinical_df, 10)
 #> 10            004     1 Male   Placebo  35   61.7     50.58     None
 ```
 
+## Summary table of clinical data using the summary_table() function
+
 ``` r
 # Grouped summary by treatment group with all stats and effect size
 summary_table(clinical_df,
@@ -278,7 +270,10 @@ summary_table(clinical_df,
               effect_size = TRUE,
               exclude = c('participant_id', 'visit'))
 ```
+
 ![](figures/figure3.png)
+
+## Normality assessment of numerical variable using the normality() function
 
 ``` r
 # Filter clinical data to Placebo arm
@@ -300,6 +295,7 @@ normality(data = clinical_df_treat, "biomarker")
 #> 
 #> Data appears normally distributed.
 ```
+
 ![](figures/figure4.png)
 
 # AI usage disclosure
@@ -336,14 +332,18 @@ and referenced from text using \autoref{fig:example}.
 Figure sizes can be customized by adding an optional second parameter:
 ![Caption for example figure.](figure.png){ width=20% }
 
-# AI usage disclosure
+# License and Availability
 
-No generative AI tools were used in the development of this software, the writing
-of this manuscript, or the preparation of supporting materials.
+The biostats package is distributed under an MIT license, with all source code 
+available through GitHub (https://github.com/sebasquirarte/biostats). 
 
 # Acknowledgements
 
-We acknowledge contributions from Brigitta Sipocz, Syrtis Major, and Semyeong
-Oh, and support from Kathryn Johnston during the genesis of this project.
+The authors wish to acknowledge the R open-source community for their ongoing 
+maintenance of the packages upon which biostats depends, and for their continued
+commitment to transparency and reproducibility in scientific research. Gratitude
+is also extended to Laboratorios Sophia S.A. de C.V. for supporting the authors 
+through salaries and employment, and for fostering an environment that promotes 
+innovation, open-source development, and open science.
 
 # References
