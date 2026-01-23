@@ -63,10 +63,9 @@ statistical analyses, effect size estimation, as wellas sample size and power
 calculations.
 
 Popular packages in this field include Hmisc [@Hmisc:2026] and tableone 
-[@tableone:2022] for descriptive statistics, pwr 
-(Champely S., 2020) for power and sample size calculations, effectsize 
-(Ben-Shachar M. et al., 2020) for effect size estimates, and ggplot2 
-(Wickham H. et al, 2016) for data visualization, among others. While these 
+[@tableone:2022] for descriptive statistics, pwr [@pwr:2020] for power and sample
+size calculations, effectsize [@effectsize:2020] for effect size estimates, and ggplot2 
+[@ggplot2:2016] for data visualization, among others. While these 
 packages are well-designed and widely used, completing a clinical study workflow
 typically requires combining multiple packages with different syntax conventions
 , output formats, and integration patterns. As a result, analysts frequently 
@@ -91,16 +90,16 @@ contemporary recommendations for transparent and rigorous statistical practice.
 # State of the field
 
 Regarding the specific functions in this package, biostats differs from existing
-packages such as ez (Lawrence, M. A., 2016), rstatix (Kassambara, A., 2025), 
-ggblanket (Hodge, D., 2025), ggpubr (Kassambara, A., 2025), extras (Hill, N. et 
-al, 2025), SampleSize4ClinicalTrials (Qi, H., Zhu, F., 2021), TrialSize (Zhang, 
-E. et al, 2024), TrialSimulator (Zhang, H., 2025) and simtrial (Anderson, K., et
-al, 2025) to name a few, due to its ease of use, consistent syntax, clear and 
-professional presentation of results without unnecessary complexity in 
+packages such as ez [@ez:2016], rstatix [@rstatix:2023], ggblanket 
+[@ggblanket:2025], ggpubr [@ggpubr:2025], extras [@extras:2025], 
+SampleSize4ClinicalTrials [@SampleSize4ClinicalTrials:2021], TrialSize 
+[@TrialSize:2024], TrialSimulator [@TrialSimulator:2025] and simtrial 
+[@simtrial:2025] to name a few, due to its ease of use, consistent syntax, clear
+and professional presentation of results without unnecessary complexity in 
 interpretation, and thorough, beginner-friendly documentation.
 
-The functions sample_size(), sample_size_range(), effect_measures() and 
-normality() propose a composite approach to variable evaluation. In many 
+The functions *sample_size()*, *sample_size_range()*, *effect_measures()* and 
+*normality()* propose a composite approach to variable evaluation. In many 
 existing packages these analyses are implemented through separate functions 
 depending on specific statistical tests or methods. For example, normality 
 assessment via distinct tests (e.g., Shapiro–Wilk, Kolmogorov–Smirnov), kurtosis
@@ -110,17 +109,17 @@ separately for each type of association. In contrast, the biostats package
 unifies these analysis within single functions, providing a unified, consistent,
 and streamlined workflow.
 
-The omnibus() function offers an integrated approach to determining whether 
+The *omnibus()* function offers an integrated approach to determining whether 
 parametric linear models or non-parametric alternatives are appropriate. It 
 evaluates data using minimally specified parameters, returns the corresponding 
 model’s analysis, reports observed values per each assumption, runs appropriate 
 post-hoc tests, and  presents the results in an clear and easy-to-follow format.  
-The missing_values(), outliers() and summary_table() functions present data and 
+The *missing_values()*, *outliers()* and *summary_table()* functions present data and 
 analysis in a clean and organized format with professional visual outputs, as 
 opposed to other alternatives that only return raw values without formatting or 
 graphical complements.
 
-When compared to other available options, the clinical_data() function offers a 
+When compared to other available options, the *clinical_data()* function offers a 
 simple but realistic and clean dataframe of simulated clinical data, ideal for 
 users who want sample data without highly specialized parameters.
 
@@ -193,8 +192,8 @@ variables and chi-squared or Fisher’s exact tests for categorical variables, a
 computes effect sizes including Cohen’s d, Mann-Whitney U effect size (r), odds 
 ratios, and Cramer’s V.
 
-*missing_values()* visualizes missing data patterns, outliers() identifies extreme
-values using Tukey's method with customizable thresholds, and normality() 
+*missing_values()* visualizes missing data patterns, *outliers()* identifies extreme
+values using Tukey's method with customizable thresholds, and *normality()* 
 performs an assessment of distributions with Q-Q plots, histograms, and multiple
 diagnostic tests based on the recommendations mentioned by Mishra P. et al 
 (2019) and methods by Lilliefors, H.W. (1967) and Dallal, G.E. & Wilkinson, L. 
@@ -217,7 +216,7 @@ This function automatically conducts assumption diagnostics and selects the
 appropriate statistical test based on data characteristics. It supports both 
 independent and repeated-measures designs and applies one-way ANOVA, 
 repeated-measures ANOVA, Kruskal–Wallis test, or Friedman test as appropriate. 
-When significant effects are detected, omnibus() also performs post-hoc 
+When significant effects are detected, *omnibus()* also performs post-hoc 
 comparisons.
 
 ![Omnibus function test selection algorithm for multi-group comparisons.](figures/figure2.png)
@@ -243,7 +242,7 @@ scales, and other graphical elements.
 # Simulate basic clinical data
 clinical_df <- clinical_data()
 
-head(clinical_df, 10)
+head(clinical_df)
 #>    participant_id visit  sex treatment age weight biomarker response
 #> 1             001     1 Male Treatment  35   55.4     42.22 Complete
 #> 2             001     2 Male Treatment  35   60.3     44.70     None
@@ -251,10 +250,6 @@ head(clinical_df, 10)
 #> 4             002     1 Male   Placebo  21   68.3     56.51     None
 #> 5             002     2 Male   Placebo  21   66.3     51.03     None
 #> 6             002     3 Male   Placebo  21   64.0     39.59     None
-#> 7             003     1 Male   Placebo  47   76.0     24.92     None
-#> 8             003     2 Male   Placebo  47   77.6     49.99  Partial
-#> 9             003     3 Male   Placebo  47   74.9     60.69     None
-#> 10            004     1 Male   Placebo  35   61.7     50.58     None
 ```
 
 ``` r
@@ -427,7 +422,7 @@ plot_bar(data = clinical_df, x = "response",
          title = "Response by visit and treatment", values = TRUE)
 ```
 
-![](figures/figure7.png)
+![](figures/figure7.png){ width=20% }
 
 ``` r
 # Line plot with mean and standard error by treatment
@@ -435,27 +430,27 @@ plot_line(data = clinical_df_full, x = "visit", y = "biomarker",
           group = "treatment", stat = "mean", error = "se")
 ```
 
-![](figures/figure8.png)
+![](figures/figure8.png){ width=20% }
 
 ``` r
 # Faceted histogram
 plot_hist(clinical_df, x = "biomarker", facet = "treatment")
 ```
 
-![](figures/figure9.png)
+![](figures/figure9.png){ width=20% }
 
 ``` r
 # Boxplot of biomarker by study visit and treatment
 plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment")
 ```
 
-![](figures/figure10.png)
+![](figures/figure10.png){ width=20% }
 
 ``` r
 # Lower triangle with significance indicators and filtering for R dataset 'swiss'
 plot_corr(data = swiss, type = "lower", show_sig = TRUE, sig_only = TRUE)
 ```
-![](figures/figure11.png)
+![](figures/figure11.png){ width=20% }
 
 # AI usage disclosure
 
