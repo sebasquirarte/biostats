@@ -28,7 +28,7 @@ bibliography: paper.bib
 
 ![](figures/logo.png)
 
-_**biostats**_ is an R package (R Core Team, 2025) that provides a cohesive and
+_**biostats**_ is an R package [@RCoreTeam:2024] that provides a cohesive and
 structured set of tools for biostatistics and clinical data analysis. The package 
 includes 14 specialized functions covering descriptive statistics, exploratory 
 data analysis, sample size and power calculations, statistical analysis and 
@@ -240,8 +240,6 @@ scales, and other graphical elements.
 
 # Examples
 
-## Simulated clinical dataset using the clinical_data() function
-
 ``` r
 # Simulate basic clinical data
 clinical_df <- clinical_data()
@@ -260,8 +258,6 @@ head(clinical_df, 10)
 #> 10            004     1 Male   Placebo  35   61.7     50.58     None
 ```
 
-## Summary table of clinical data using the summary_table() function
-
 ``` r
 # Grouped summary by treatment group with all stats and effect size
 summary_table(clinical_df,
@@ -272,8 +268,6 @@ summary_table(clinical_df,
 ```
 
 ![](figures/figure3.png)
-
-## Normality assessment of numerical variable using the normality() function
 
 ``` r
 # Filter clinical data to Placebo arm
@@ -297,8 +291,6 @@ normality(data = clinical_df_treat, "biomarker")
 ```
 
 ![](figures/figure4.png)
-
-## Missing value and outlier analysis using missing_values() and outliers() functions.
 
 ``` r
 # Missing value analysis of only variables with missing values
@@ -335,6 +327,99 @@ outliers(clinical_df_full, "biomarker")
 
 ![](figures/figure6.png)
 
+``` r
+# Two-sample parallel non-inferiority test for means with 10% expected dropout
+sample_size(sample = 'two-sample', design = 'parallel', outcome = 'mean',
+            type = 'non-inferiority', x1 = 5.0, x2 = 5.0, 
+            SD = 0.1, delta = -0.05, k = 1, dropout = 0.1)
+#> 
+#> Sample Size Calculation
+#> 
+#> Test type: non-inferiority
+#> Design: parallel, two-sample
+#> Outcome: mean
+#> Alpha (α): 0.050
+#> Beta (β): 0.200
+#> Power: 80.0%
+#> 
+#> Parameters:
+#> x1 (treatment): 5.000
+#> x2 (control/reference): 5.000
+#> Difference (x1 - x2): 0.000
+#> Standard Deviation (σ): 0.100
+#> Allocation Ratio (k): 1.00
+#> Delta (δ): -0.050
+#> Dropout rate: 10.0%
+#> 
+#> Required Sample Size
+#> n1 = 55
+#> n2 = 55
+#> Total = 110
+#> 
+#> Note: Sample size increased by 10.0% to account for potential dropouts.
+```
+
+``` r
+# Compare numerical variable across treatments
+omnibus(data = clinical_df_full, y = "biomarker", x = "treatment")
+#> 
+#> Omnibus Test: One-way ANOVA
+#> 
+#> Assumption Testing Results:
+#> 
+#>   Normality (Shapiro-Wilk Test):
+#>   A: W = 0.9980, p = 0.321
+#>   B: W = 0.9975, p = 0.237
+#>   C: W = 0.9988, p = 0.733
+#>   Overall result: Normal distribution assumed.
+#> 
+#>   Homogeneity of Variance (Bartlett Test):
+#>   Chi-squared(2) = 1.3685, p = 0.504
+#>   Effect size (Cramer's V) = 0.0151
+#>   Result: Homogeneous variances.
+#> 
+#> Test Results:
+#>   Formula: biomarker ~ treatment
+#>   alpha: 0.05
+#>   Result: significant (p = <0.001)
+#> 
+#> Post-hoc Multiple Comparisons
+#> 
+#>   Tukey Honest Significant Differences (alpha: 0.050):
+#>   Comparison               Diff    Lower    Upper    p-adj
+#>   --------------------------------------------------------- 
+#>   B - A                  -3.178   -4.296   -2.060   <0.001*
+#>   C - A                  -5.542   -6.618   -4.466   <0.001*
+#>   C - B                  -2.364   -3.468   -1.259   <0.001*
+#> 
+#> The study groups show a moderately imbalanced distribution of sample sizes (Δn = 0.214).
+``` 
+
+``` r
+effect_measures(exposed_event = 15, 
+                exposed_no_event = 85,
+                unexposed_event = 5,
+                unexposed_no_event = 95)
+#> 
+#> Odds/Risk Ratio Analysis
+#> 
+#> Contingency Table:
+#>                 Event No Event      Sum
+#> Exposed            15       85      100
+#> Unexposed           5       95      100
+#> Sum                20      180      200
+#> 
+#> Odds Ratio: 3.353 (95% CI: 1.169 - 9.616)
+#> Risk Ratio: 3.000 (95% CI: 1.133 - 7.941)
+#> 
+#> Risk in exposed: 15.0%
+#> Risk in unexposed: 5.0%
+#> Absolute risk difference: 10.0%
+#> Number needed to harm (NNH): 10.0
+#> 
+#> Note: Correction not applied (no zero values).
+```
+
 # AI usage disclosure
 
 Generative AI tools were used during the development of the biostats R package 
@@ -358,7 +443,7 @@ citation) then you can do it with the example BibTeX entry below for @fidgit.
 For a quick reference, the following citation commands can be used:
 - `@author:2001`  ->  "Author et al. (2001)"
 - `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
+- `[@author1:2001; @author2:2001]` -> "(Author1 et a l., 2001; Author2 et al., 2002)"
 
 # Figures
 
