@@ -228,13 +228,13 @@ treat or harm.
 ## Data Visualization
 
 The plotting functions *plot_bar()*, *plot_line()*, *plot_box()*, *plot_hist()*, 
-and *plot_corr()* generate publication-ready ggplot2 visualizations tailored for 
-clinical research. These functions can compute and display optional summary 
-measures such as means, medians, standard errors, standard deviations, and 95 
-percent confidence intervals, and they apply consistent formatting, grouping 
-structures, and labeling to enhance interpretability. Each function returns a 
-fully customizable ggplot2 object, allowing users to refine themes, annotations, 
-scales, and other graphical elements.
+and *plot_corr()* generate publication-ready visualizations tailored for 
+clinical research. These functions display summary measures such as means, 
+medians, standard errors, standard deviations, and 95 percent confidence 
+intervals, and they apply consistent formatting, grouping structures, and 
+labeling to enhance interpretability. Each function returns a fully customizable
+ggplot2 object, allowing users to refine themes, annotations, scales, and other 
+graphical elements.
 
 # Examples
 
@@ -242,23 +242,19 @@ scales, and other graphical elements.
 # Simulate basic clinical data
 clinical_df <- clinical_data()
 
-head(clinical_df)
+head(clinical_df, 5)
 #>    participant_id visit  sex treatment age weight biomarker response
 #> 1             001     1 Male Treatment  35   55.4     42.22 Complete
 #> 2             001     2 Male Treatment  35   60.3     44.70     None
 #> 3             001     3 Male Treatment  35   58.1     44.85  Partial
 #> 4             002     1 Male   Placebo  21   68.3     56.51     None
 #> 5             002     2 Male   Placebo  21   66.3     51.03     None
-#> 6             002     3 Male   Placebo  21   64.0     39.59     None
 ```
 
 ``` r
 # Grouped summary by treatment group with all stats and effect size
-summary_table(clinical_df,
-              group_by = 'treatment',
-              all = TRUE,
-              effect_size = TRUE,
-              exclude = c('participant_id', 'visit'))
+summary_table(clinical_df, group_by = 'treatment', all = TRUE,
+              effect_size = TRUE, exclude = c('participant_id', 'visit'))
 ```
 
 ![](figures/figure3.png)
@@ -284,7 +280,7 @@ normality(data = clinical_df_treat, "biomarker")
 #> Data appears normally distributed.
 ```
 
-![](figures/figure4.png)
+![](figures/figure4.png){ width=80% }
 
 ``` r
 # Missing value analysis of only variables with missing values
@@ -301,7 +297,7 @@ missing_values(clinical_df_full)
 #> biomarker       214        7.13
 ```
 
-![](figures/figure5.png)
+![](figures/figure5.png){ width=80% }
 
 ``` r
 # Basic outlier detection
@@ -319,7 +315,7 @@ outliers(clinical_df_full, "biomarker")
 #> Outlier indices: 27, 223, 440, 559, 795, 931, 973, 1175, 1277, 1346 (...)
 ```
 
-![](figures/figure6.png)
+![](figures/figure6.png){ width=80% }
 
 ``` r
 # Two-sample parallel non-inferiority test for means with 10% expected dropout
@@ -422,7 +418,7 @@ plot_bar(data = clinical_df, x = "response",
          title = "Response by visit and treatment", values = TRUE)
 ```
 
-![](figures/figure7.png){ width=20% }
+![](figures/figure7.png){ width=80% }
 
 ``` r
 # Line plot with mean and standard error by treatment
@@ -430,27 +426,27 @@ plot_line(data = clinical_df_full, x = "visit", y = "biomarker",
           group = "treatment", stat = "mean", error = "se")
 ```
 
-![](figures/figure8.png){ width=20% }
+![](figures/figure8.png){ width=80% }
 
 ``` r
 # Faceted histogram
 plot_hist(clinical_df, x = "biomarker", facet = "treatment")
 ```
 
-![](figures/figure9.png){ width=20% }
+![](figures/figure9.png){ width=80% }
 
 ``` r
 # Boxplot of biomarker by study visit and treatment
 plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment")
 ```
 
-![](figures/figure10.png){ width=20% }
+![](figures/figure10.png){ width=80% }
 
 ``` r
 # Lower triangle with significance indicators and filtering for R dataset 'swiss'
 plot_corr(data = swiss, type = "lower", show_sig = TRUE, sig_only = TRUE)
 ```
-![](figures/figure11.png){ width=20% }
+![](figures/figure11.png){ width=80% }
 
 # AI usage disclosure
 
