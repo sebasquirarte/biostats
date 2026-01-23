@@ -114,6 +114,7 @@ parametric linear models or non-parametric alternatives are appropriate. It
 evaluates data using minimally specified parameters, returns the corresponding 
 model’s analysis, reports observed values per each assumption, runs appropriate 
 post-hoc tests, and  presents the results in an clear and easy-to-follow format.  
+
 The *missing_values()*, *outliers()* and *summary_table()* functions present data and 
 analysis in a clean and organized format with professional visual outputs, as 
 opposed to other alternatives that only return raw values without formatting or 
@@ -249,6 +250,7 @@ head(clinical_df, 5)
 #> 3             001     3 Male Treatment  35   58.1     44.85  Partial
 #> 4             002     1 Male   Placebo  21   68.3     56.51     None
 #> 5             002     2 Male   Placebo  21   66.3     51.03     None
+#> 6             002     3 Male   Placebo  21   64.0     39.59     None
 ```
 
 ``` r
@@ -280,7 +282,7 @@ normality(data = clinical_df_treat, "biomarker")
 #> Data appears normally distributed.
 ```
 
-![](figures/figure4.png){ width=80% }
+![](figures/figure4.png){ width=85% }
 
 ``` r
 # Missing value analysis of only variables with missing values
@@ -297,7 +299,7 @@ missing_values(clinical_df_full)
 #> biomarker       214        7.13
 ```
 
-![](figures/figure5.png){ width=80% }
+![](figures/figure5.png){ width=85% }
 
 ``` r
 # Basic outlier detection
@@ -315,7 +317,7 @@ outliers(clinical_df_full, "biomarker")
 #> Outlier indices: 27, 223, 440, 559, 795, 931, 973, 1175, 1277, 1346 (...)
 ```
 
-![](figures/figure6.png){ width=80% }
+![](figures/figure6.png){ width=85% }
 
 ``` r
 # Two-sample parallel non-inferiority test for means with 10% expected dropout
@@ -330,7 +332,7 @@ sample_size(sample = 'two-sample', design = 'parallel', outcome = 'mean',
 #> Outcome: mean
 #> Alpha (α): 0.050
 #> Beta (β): 0.200
-#> Power: 80.0%
+#> Power: 85.0%
 #> 
 #> Parameters:
 #> x1 (treatment): 5.000
@@ -358,7 +360,7 @@ omnibus(data = clinical_df_full, y = "biomarker", x = "treatment")
 #> Assumption Testing Results:
 #> 
 #>   Normality (Shapiro-Wilk Test):
-#>   A: W = 0.9980, p = 0.321
+#>   A: W = 0.9985, p = 0.321
 #>   B: W = 0.9975, p = 0.237
 #>   C: W = 0.9988, p = 0.733
 #>   Overall result: Normal distribution assumed.
@@ -398,7 +400,7 @@ effect_measures(exposed_event = 15,
 #>                 Event No Event      Sum
 #> Exposed            15       85      100
 #> Unexposed           5       95      100
-#> Sum                20      180      200
+#> Sum                20      185      200
 #> 
 #> Odds Ratio: 3.353 (95% CI: 1.169 - 9.616)
 #> Risk Ratio: 3.000 (95% CI: 1.133 - 7.941)
@@ -418,7 +420,7 @@ plot_bar(data = clinical_df, x = "response",
          title = "Response by visit and treatment", values = TRUE)
 ```
 
-![](figures/figure7.png){ width=80% }
+![](figures/figure7.png){ width=85% }
 
 ``` r
 # Line plot with mean and standard error by treatment
@@ -426,27 +428,27 @@ plot_line(data = clinical_df_full, x = "visit", y = "biomarker",
           group = "treatment", stat = "mean", error = "se")
 ```
 
-![](figures/figure8.png){ width=80% }
+![](figures/figure8.png){ width=85% }
 
 ``` r
 # Faceted histogram
 plot_hist(clinical_df, x = "biomarker", facet = "treatment")
 ```
 
-![](figures/figure9.png){ width=80% }
+![](figures/figure9.png){ width=85% }
 
 ``` r
 # Boxplot of biomarker by study visit and treatment
 plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment")
 ```
 
-![](figures/figure10.png){ width=80% }
+![](figures/figure10.png){ width=85% }
 
 ``` r
 # Lower triangle with significance indicators and filtering for R dataset 'swiss'
 plot_corr(data = swiss, type = "lower", show_sig = TRUE, sig_only = TRUE)
 ```
-![](figures/figure11.png){ width=80% }
+![](figures/figure11.png){ width=85% }
 
 # AI usage disclosure
 
