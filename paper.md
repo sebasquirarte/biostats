@@ -450,8 +450,8 @@ plot_corr(data = swiss, type = "lower", show_sig = TRUE, sig_only = TRUE)
 
 # License and Availability
 
-The _**biostats**_ package is distributed under an MIT license, with source code 
-available through [GitHub](https://github.com/sebasquirarte/biostats). 
+The _**biostats**_ package is distributed under an MIT license with source code 
+available on [GitHub](https://github.com/sebasquirarte/biostats). 
 
 # Acknowledgements
 
@@ -464,12 +464,12 @@ innovation, open-source development, and open science.
 
 # AI usage disclosure
 
-Generative AI tools were used during the development of the _**biostats**_ R package 
+Generative AI tools were used during the development of the _**biostats**_ package 
 to assist with code refinement, debugging, automated tests, and the 
 configuration of continuous integration and continuous deployment (CI/CD) 
 workflows through GitHub actions. These tools were also used to 
 review and improve the final manuscript. All AI-generated suggestions were 
-carefully reviewed, modified, and validated manually by the authors. The authors
+carefully reviewed, modified, and validated by the authors. The authors
 assume full responsibility and accountability for the reliability, integrity, 
 and maintenance of the software provided.  
 
