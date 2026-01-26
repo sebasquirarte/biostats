@@ -59,8 +59,8 @@ supporting submission to regulatory entities [@Sagar:2023; @Ciolino:2021;
 similar tasks across multiple studies and projects. Typical workflows include 
 the calculation of descriptive statistics and exploratory data analysis, 
 assumption validation, hypothesis testing, primary, secondary, and exploratory 
-statistical analyses, effect size estimation, as wellas sample size and power 
-calculations.
+statistical analyses, effect size estimation, sample size and power 
+calculations, as well as data visualization.
 
 Popular packages in this field include Hmisc [@Hmisc:2026] and tableone 
 [@tableone:2022] for descriptive statistics, pwr [@pwr:2020] for power and sample
@@ -147,7 +147,7 @@ publication-grade visualizations with minimal code, while retaining full
 flexibility to customize aesthetics and formatting to meet specific reporting or
 journal requirements without modifying internal package logic.
 
-Overall, the package aims to emphasizes clarity, consistency, and 
+Overall, this package aims to emphasizes clarity, consistency, and 
 reproducibility, supporting both analytical workflows and educational use by 
 researchers and professionals transitioning to R-based biostatistics and 
 clinical data analysis.
@@ -283,6 +283,10 @@ normality(data = clinical_df_treat, "biomarker")
 ![](figures/figure4.png){ width=85% }
 
 ``` r
+# Simulate more complex clinical data
+clinical_df_full <- clinical_data(n = 300, visits = 10, arms = c('A', 'B', 'C'), 
+                                  dropout = 0.10, missing = 0.05)
+                                  
 # Missing value analysis of only variables with missing values
 missing_values(clinical_df_full)
 #> 
@@ -297,7 +301,7 @@ missing_values(clinical_df_full)
 #> biomarker       214        7.13
 ```
 
-![](figures/figure5.png){ width=85% }
+![](figures/figure5.png){ width=75% }
 
 ``` r
 # Basic outlier detection
@@ -315,7 +319,7 @@ outliers(clinical_df_full, "biomarker")
 #> Outlier indices: 27, 223, 440, 559, 795, 931, 973, 1175, 1277, 1346 (...)
 ```
 
-![](figures/figure6.png){ width=85% }
+![](figures/figure6.png){ width=75% }
 
 ``` r
 # Two-sample parallel non-inferiority test for means with 10% expected dropout
