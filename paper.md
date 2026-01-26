@@ -418,7 +418,7 @@ plot_bar(data = clinical_df, x = "response",
          title = "Response by visit and treatment", values = TRUE)
 ```
 
-![](figures/figure7.png){ width=70% }
+![](figures/figure7.png){ width=60% }
 
 ``` r
 # Line plot with mean and standard error by treatment
@@ -426,21 +426,21 @@ plot_line(data = clinical_df_full, x = "visit", y = "biomarker",
           group = "treatment", stat = "mean", error = "se")
 ```
 
-![](figures/figure8.png){ width=70% }
+![](figures/figure8.png){ width=60% }
 
 ``` r
 # Faceted histogram
 plot_hist(clinical_df, x = "biomarker", facet = "treatment")
 ```
 
-![](figures/figure9.png){ width=70% }
+![](figures/figure9.png){ width=60% }
 
 ``` r
 # Boxplot of biomarker by study visit and treatment
 plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment")
 ```
 
-![](figures/figure10.png){ width=85% }
+![](figures/figure10.png){ width=80% }
 
 ``` r
 # Lower triangle with significance indicators and filtering for R dataset 'swiss'
