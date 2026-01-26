@@ -440,7 +440,7 @@ plot_hist(clinical_df, x = "biomarker", facet = "treatment")
 plot_box(clinical_df, x = "visit", y = "biomarker", group = "treatment")
 ```
 
-![](figures/figure10.png){ width=80% }
+![](figures/figure10.png){ width=70% }
 
 ``` r
 # Lower triangle with significance indicators and filtering for R dataset 'swiss'
