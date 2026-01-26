@@ -824,8 +824,7 @@ Generates publication-ready bar plots with minimal code using ggplot2.
 clinical_df <- clinical_data()
 
 # Proportion of response by treatment
-plot_bar(data = clinical_df, x = "treatment", group = "response", position = "fill", 
-         title = "Proportion of response by treatment", values = TRUE)
+plot_bar(data = clinical_df, x = "treatment", group = "response", position = "fill", values = TRUE)
 ```
 
 <img src="man/figures/README-unnamed-chunk-24-1.png" width="75%" />
@@ -833,8 +832,7 @@ plot_bar(data = clinical_df, x = "treatment", group = "response", position = "fi
 ``` r
 
 # Grouped barplot of categorical variable by treatment with value labels
-plot_bar(data = clinical_df, x = "response", group = "visit", facet = "treatment", 
-         title = "Response by visit and treatment",values = TRUE)
+plot_bar(data = clinical_df, x = "response", group = "visit", facet = "treatment", values = TRUE)
 ```
 
 <img src="man/figures/README-unnamed-chunk-24-2.png" width="75%" />

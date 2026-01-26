@@ -71,25 +71,25 @@ typically requires combining multiple packages with different syntax conventions
 , output formats, and integration patterns. As a result, analysts frequently 
 develop custom code to connect results, automate recurring tasks, or standardize
 outputs across studies. This fragmentation can lead to inconsistent 
-implementations, duplicated effort, and increased time spent on code development
-, validation, and quality control.
+implementations, duplicated effort, and increased time spent on code development,
+validation, and quality control.
 
-The biostats package addresses these challenges by providing a unified, 
+The _**biostats**_ package addresses these challenges by providing a unified, 
 clinically oriented framework that consolidates commonly used biostatistical 
 procedures into a single, coherent toolkit. While users still retain full 
-flexibility to write custom code tailored to study-specific needs, biostats is 
+flexibility to write custom code tailored to study-specific needs, _**biostats**_ is 
 designed to streamline repetitive and foundational tasks in biostatistics and 
 clinical data analysis through consistent syntax, harmonized outputs, and 
 functions that reflect standard clinical workflows. Its goal is to deliver a 
 professional-grade toolset for biostatisticians and clinical researchers while 
-remaining accessible to data analysts from other fields. In addition, biostats 
+remaining accessible to data analysts from other fields. In addition, _**biostats**_ 
 serves as an educational resource for users transitioning to R or to 
 biostatistics, offering a structured and reproducible approach aligned with 
 contemporary recommendations for transparent and rigorous statistical practice.
 
 # State of the field
 
-Regarding the specific functions in this package, biostats differs from existing
+Regarding the specific functions in this package, _**biostats**_ differs from existing
 packages such as ez [@ez:2016], rstatix [@rstatix:2023], ggblanket 
 [@ggblanket:2025], ggpubr [@ggpubr:2025], extras [@extras:2025], 
 SampleSize4ClinicalTrials [@SampleSize4ClinicalTrials:2021], TrialSize 
@@ -101,11 +101,11 @@ interpretation, and thorough, beginner-friendly documentation.
 The functions *sample_size()*, *sample_size_range()*, *effect_measures()* and 
 *normality()* propose a composite approach to variable evaluation. In many 
 existing packages these analyses are implemented through separate functions 
-depending on specific statistical tests or methods. For example, normality 
-assessment via distinct tests (e.g., Shapiro–Wilk, Kolmogorov–Smirnov), kurtosis
-measures, or independent graphical analyses, sample size calculations through 
-functions tailored to individual study designs, and effect measures evaluated 
-separately for each type of association. In contrast, the biostats package 
+dependent on specific statistical tests or methods. For example, normality 
+assessment via distinct tests (e.g. Shapiro–Wilk, Kolmogorov–Smirnov), kurtosis
+measures, or independent graphical analyses; sample size calculations through 
+functions tailored to individual study designs; and effect measures evaluated 
+separately for each type of association. In contrast, the _**biostats**_ package 
 unifies these analysis within single functions, providing a unified, consistent,
 and streamlined workflow.
 
@@ -115,7 +115,7 @@ evaluates data using minimally specified parameters, returns the corresponding
 model’s analysis, reports observed values per each assumption, runs appropriate 
 post-hoc tests, and  presents the results in an clear and easy-to-follow format.  
 
-The *missing_values()*, *outliers()* and *summary_table()* functions present data and 
+The *missing_values()*, *outliers()*, and *summary_table()* functions present data and 
 analysis in a clean and organized format with professional visual outputs, as 
 opposed to other alternatives that only return raw values without formatting or 
 graphical complements.
@@ -131,7 +131,7 @@ customize ggplot2 objects.
 
 # Software Design
 
-The biostats package was designed to balance analytical rigor, usability, and 
+The _**biostats**_ package was designed to balance analytical rigor, usability, and 
 reproducibility in applied biostatistics and other analytical fields where these
 tools could also be useful. The structure of the package follows a unified, 
 workflow-oriented design, where each function performs a complete analytical 
@@ -154,7 +154,7 @@ clinical data analysis.
 
 # Research Impact Statement
 
-The biostats package has been released on CRAN (current version: 1.1.1), 
+The _**biostats**_ package has been released on CRAN (current version: 1.1.1), 
 ensuring standardized installation, long-term availability, and seamless 
 integration within the R ecosystem. It is also publicly available and 
 maintained on GitHub, where it is accompanied by reproducible examples, 
@@ -196,15 +196,14 @@ ratios, and Cramer’s V.
 *missing_values()* visualizes missing data patterns, *outliers()* identifies extreme
 values using Tukey's method with customizable thresholds, and *normality()* 
 performs an assessment of distributions with Q-Q plots, histograms, and multiple
-diagnostic tests based on the recommendations mentioned by Mishra P. et al 
-(2019) and methods by Lilliefors, H.W. (1967) and Dallal, G.E. & Wilkinson, L. 
-(1986).
+diagnostic tests based on the recommendations mentioned by @Mishra:2019 and 
+methods by @Lilliefors:1967 and @Dallal:1986.
 
 ## Sample Size and Power Calculation
 
 *sample_size()* and *sample_size_range()* are specifically focused on sample 
-size calculation for clinical trials based on the equations in Chow et al. 
-(2017), supporting equality, equivalence, and non-inferiority/superiority 
+size calculation for clinical trials based on the equations in @Chow:2017,
+supporting equality, equivalence, and non-inferiority/superiority 
 hypothesis, with parallel or crossover designs, and evaluating outcomes 
 specified in means or proportions.
 
@@ -212,13 +211,12 @@ specified in means or proportions.
 
 *omnibus()* performs multi-group hypothesis testing to evaluate overall 
 differences among three or more groups, with the theory behind this function 
-being influenced by the works of Blanca M. et al. (2017) and Field A. (2012). 
-This function automatically conducts assumption diagnostics and selects the 
-appropriate statistical test based on data characteristics. It supports both 
-independent and repeated-measures designs and applies one-way ANOVA, 
-repeated-measures ANOVA, Kruskal–Wallis test, or Friedman test as appropriate. 
-When significant effects are detected, *omnibus()* also performs post-hoc 
-comparisons.
+being influenced by the works of @Blanca:2017 and @Field:2012. This function 
+automatically conducts assumption diagnostics and selects the appropriate 
+statistical test based on data characteristics. It supports both independent and
+repeated-measures designs and applies one-way ANOVA, repeated-measures ANOVA, 
+Kruskal–Wallis test, or Friedman test as appropriate. When significant effects 
+are detected, *omnibus()* also performs post-hoc comparisons.
 
 ![Omnibus function test selection algorithm for multi-group comparisons.](figures/figure2.png)
 
@@ -450,52 +448,29 @@ plot_corr(data = swiss, type = "lower", show_sig = TRUE, sig_only = TRUE)
 ```
 ![](figures/figure11.png){ width=60% }
 
-# AI usage disclosure
-
-Generative AI tools were used during the development of the biostats R package 
-to assist with code refinement, debugging, automated tests, and the 
-configuration of continuous integration and continuous deployment (CI/CD) 
-workflows within GitHub through GitHub actions. These tools were also used to 
-review and improve the final manuscript. All AI-generated suggestions were 
-carefully reviewed, modified, and validated manually by the authors. The authors
-assume full responsibility and accountability for the reliability, integrity, 
-and maintenance of the software provided.  
-
-# Citations
-
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
-
-If you want to cite a software repository URL (e.g. something on GitHub without a preferred
-citation) then you can do it with the example BibTeX entry below for @fidgit.
-
-For a quick reference, the following citation commands can be used:
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et a l., 2001; Author2 et al., 2002)"
-
-# Figures
-
-Figures can be included like this:
-![Caption for example figure.\label{fig:example}](figure.png)
-and referenced from text using \autoref{fig:example}.
-
-Figure sizes can be customized by adding an optional second parameter:
-![Caption for example figure.](figure.png){ width=20% }
-
 # License and Availability
 
-The biostats package is distributed under an MIT license, with source code 
+The _**biostats**_ package is distributed under an MIT license, with source code 
 available through [GitHub](https://github.com/sebasquirarte/biostats). 
 
 # Acknowledgements
 
 The authors wish to acknowledge the R open-source community for their ongoing 
-maintenance of the packages upon which biostats depends, and for their continued
+maintenance of the packages upon which _**biostats**_ depends, and for their continued
 commitment to transparency and reproducibility in scientific research. Gratitude
 is also extended to Laboratorios Sophia S.A. de C.V. for supporting the authors 
 through salaries and employment, and for fostering an environment that promotes 
 innovation, open-source development, and open science.
+
+# AI usage disclosure
+
+Generative AI tools were used during the development of the _**biostats**_ R package 
+to assist with code refinement, debugging, automated tests, and the 
+configuration of continuous integration and continuous deployment (CI/CD) 
+workflows through GitHub actions. These tools were also used to 
+review and improve the final manuscript. All AI-generated suggestions were 
+carefully reviewed, modified, and validated manually by the authors. The authors
+assume full responsibility and accountability for the reliability, integrity, 
+and maintenance of the software provided.  
 
 # References
