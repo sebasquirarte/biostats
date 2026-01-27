@@ -237,8 +237,9 @@ graphical elements.
 
 # License and Availability
 
-The _**biostats**_ package is distributed under an MIT license with source code 
-available on [GitHub](https://github.com/sebasquirarte/biostats). 
+The _**biostats**_ package is distributed under an MIT license with source code,
+full documentation, and examples for all functions available on 
+[GitHub](https://github.com/sebasquirarte/biostats). 
 
 # Acknowledgements
 
