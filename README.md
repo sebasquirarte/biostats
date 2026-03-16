@@ -10,6 +10,7 @@
 [![codecov](https://codecov.io/gh/sebasquirarte/biostats/branch/main/graph/badge.svg)](https://app.codecov.io/gh/sebasquirarte/biostats)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/biostats)](https://cranlogs.r-pkg.org/)
+
 <!-- badges: end -->
 
 ## Overview
@@ -187,7 +188,7 @@ single-group summaries or two-group comparisons.
 |----|----|----|
 | `data` | Dataframe containing the variables to be summarized. | `Required` |
 | `group_by` | Character string indicating the name of the grouping variable for two-group comparisons. | `NULL` |
-| `normality_test` | Character string indicating the normality test to use: ‘S-W’ for Shapiro-Wilk or ‘K-S’ for Kolmogorov-Smirnov with Lilliefors’ correction. | `'S-W'` |
+| `normality_test` | Character string indicating the normality test to use: ‘S-W’ for Shapiro-Wilk or ‘K-S’ for Kolmogorov-Smirnov test with Lilliefors’ correction. | `'S-W'` |
 | `all` | Logical parameter that shows all calculated statistics. | `FALSE` |
 | `effect_size` | Logical parameter that includes effect size estimates. | `FALSE` |
 | `exclude` | Character vector of variable names to exclude from the summary. | `NULL` |

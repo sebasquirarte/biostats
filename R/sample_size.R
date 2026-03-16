@@ -60,6 +60,7 @@ sample_size <- function(sample = c("one-sample", "two-sample"),
   sample <- match.arg(sample)
   outcome <- match.arg(outcome)
   type <- match.arg(type)
+  
   if (sample == "two-sample") {
     if (is.null(design)) stop("'design' must be specified for two-sample tests.", call. = FALSE)
     design <- match.arg(design, c("parallel", "crossover"))
@@ -73,14 +74,13 @@ sample_size <- function(sample = c("one-sample", "two-sample"),
   if (beta <= 0 || beta >= 1) stop("'beta' must be between 0 and 1.", call. = FALSE)
   if (dropout < 0 || dropout >= 1) stop("'dropout' must be between 0 and 1.", call. = FALSE)
   if (k <= 0) stop("'k' must be positive.", call. = FALSE)
-  if (sample == "two-sample" && design == "crossover" && k != 1) stop("For crossover designs k must be equal to 1.", call. = FALSE)
   if (sample == "one-sample" && k != 1) stop("For one-sample designs k must be equal to 1.", call. = FALSE)
   if (outcome == "proportion" && (x1 < 0 || x1 > 1 || x2 < 0 || x2 > 1)) {
     stop("'x1' and 'x2' must be between 0 and 1 for proportion outcomes.", call. = FALSE)
   }
-  needs_sd <- !(sample == "two-sample" && design == "parallel" && outcome == "proportion")
-  if (needs_sd && is.null(SD)) stop("'SD' must be specified for this test configuration.", call. = FALSE)
-  if (!needs_sd && !is.null(SD)) warning("'SD' is not needed for this test configuration.", call. = FALSE)
+  needs_sd <- !(outcome == "proportion" & (identical(design, "parallel") | identical(sample, "one-sample")))
+  if (needs_sd && is.null(SD)) { stop("'SD' must be specified for this test configuration.", call. = FALSE) }
+  else if (!needs_sd && !is.null(SD)) { warning("'SD' is not needed for this test configuration.", call. = FALSE) }
   if (!is.null(SD) && (!is.numeric(SD) || length(SD) != 1 || SD <= 0)) {
     stop("'SD' must be a positive single numeric value.", call. = FALSE)
   }
@@ -119,26 +119,19 @@ sample_size <- function(sample = c("one-sample", "two-sample"),
   }
   
   n2 <- ceiling(zscore * variance / margin)
-  n1 <- if (sample == "two-sample" && design == "parallel") ceiling(k * n2) 
-        else if (sample == "two-sample" && design == "crossover") n2
+  n1 <- if (sample == "two-sample") ceiling(k * n2)
         else NULL
   
   if (dropout > 0) {
-    n2 <- ceiling(n2 + (dropout * n2))
-    n1 <- ceiling(n1 + (dropout * n1))
+    n2 <- ceiling(n2 / (1 - dropout))
+    n1 <- ceiling(n1 / (1 - dropout))
   }
   
   total <- if (sample == "one-sample") n2 else if (design == "parallel") n2 + n1 else 2 * n2
   
-  if (sample == "two-sample") {
-    if (!is.finite(n1) || !is.finite(n2) || !is.finite(total)) {
-      stop("Sample size calculation resulted in infinite value. Check delta and group difference.", call. = FALSE)
-    }
-  } else {
-      if (!is.finite(n2) || !is.finite(total)) {
-        stop("Sample size calculation resulted in infinite value. Check delta and group difference.", call. = FALSE)
-      }
-  }
+  check_vals <- if (sample == "two-sample") c(n1, n2, total) else c(n2, total)
+  if (any(!is.finite(check_vals))) {
+    stop(paste("Sample size calculation resulted in infinite value. Check delta and group difference."), call. = FALSE)}
   
   # Return results
   results <- list(total = total,
@@ -200,4 +193,3 @@ print.sample_size <- function(x, ...) {
   cat("\n")
   invisible(x)
 }
-

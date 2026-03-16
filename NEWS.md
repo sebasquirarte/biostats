@@ -1,3 +1,13 @@
+# biostats 1.1.2
+
+## Bug fixes
+
+* `sample_size()`: corrected dropout adjustment from approximate formula
+  `n * (1 + dropout)` to exact formula `n / (1 - dropout)`, preventing
+  underpowered enrollment at higher dropout rates.
+
+---
+
 # biostats 1.1.1
 
 ## Improvements
