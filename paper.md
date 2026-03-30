@@ -113,7 +113,7 @@ The *omnibus()* function offers an integrated approach to determining whether
 parametric linear models or non-parametric alternatives are appropriate. It 
 evaluates data using minimally specified parameters, returns the corresponding 
 model’s analysis, reports observed values per each assumption, runs appropriate 
-post-hoc tests, and  presents the results in adee clear and easy-to-follow format.  
+post-hoc tests, and  presents the results in a clear and easy-to-follow format.  
 
 The *missing_values()*, *outliers()*, and *summary_table()* functions present data and 
 analysis in a clean and organized format with professional visual outputs, as 
