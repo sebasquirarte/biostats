@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# biostats <a href="https://github.com/sebasquirarte/biostats/blob/main/man/figures/logo.png"><img src="man/figures/logo.png" align="right" height="138" alt="biostats_logo" /></a>
+# biostats <a href="https://sebasquirarte.github.io/biostats/"><img src="man/figures/logo.png" align="right" height="120" alt="biostats_logo" /></a>
 
 <!-- badges: start -->
 
