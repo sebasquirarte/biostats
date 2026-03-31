@@ -32,7 +32,9 @@ Depends:
     R (>= 4.1.0)
 Suggests: 
     testthat (>= 3.0.0),
-    covr
+    covr,
+    knitr,
+    rmarkdown
 Config/testthat/edition: 3
 Imports: 
     ggplot2,
@@ -43,3 +45,4 @@ Imports:
     nortest
 URL: https://github.com/sebasquirarte/biostats
 BugReports: https://github.com/sebasquirarte/biostats/issues
+VignetteBuilder: knitr
