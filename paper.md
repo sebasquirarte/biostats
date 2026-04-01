@@ -67,8 +67,8 @@ Popular packages in this field include Hmisc [@Hmisc:2026] and tableone
 size calculations, effectsize [@effectsize:2020] for effect size estimates, and ggplot2 
 [@ggplot2:2016] for data visualization, among others. While these 
 packages are well-designed and widely used, completing a clinical study workflow
-typically requires combining multiple packages with different syntax conventions
-, output formats, and integration patterns. As a result, analysts frequently 
+typically requires combining multiple packages with different syntax conventions,
+output formats, and integration patterns. As a result, analysts frequently 
 develop custom code to connect results, automate recurring tasks, or standardize
 outputs across studies. This fragmentation can lead to inconsistent 
 implementations, duplicated effort, and increased time spent on code development,
@@ -154,7 +154,7 @@ clinical data analysis.
 
 # Research Impact Statement
 
-The _**biostats**_ package has been released on CRAN (current version: 1.1.1), 
+The _**biostats**_ package has been released on CRAN (current version: 1.1.2), 
 ensuring standardized installation, long-term availability, and seamless 
 integration within the R ecosystem. It is also publicly available and 
 maintained on GitHub, where it is accompanied by reproducible examples, 
@@ -239,7 +239,8 @@ graphical elements.
 
 The _**biostats**_ package is distributed under an MIT license with source code,
 full documentation, and examples for all functions available on 
-[GitHub](https://github.com/sebasquirarte/biostats). 
+[GitHub](https://github.com/sebasquirarte/biostats) and
+[GitHub Pages](https://sebasquirarte.github.io/biostats/). 
 
 # Acknowledgements
 
