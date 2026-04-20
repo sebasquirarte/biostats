@@ -28,6 +28,7 @@ To get started, load the biostats package:
 
 ``` r
 library(biostats)
+#> Warning: package 'biostats' was built under R version 4.4.3
 ```
 
 ### Descriptive Statistics and Exploratory Data Analysis (EDA)
@@ -873,7 +874,7 @@ ggplot2.
 plot_hist(clinical_df, x = "biomarker", group = "treatment", stat = "mean")
 ```
 
-![](reference/figures/README-unnamed-chunk-26-1.png)
+![](../reference/figures/README-unnamed-chunk-26-1.png)
 
 ``` r
 

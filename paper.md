@@ -47,7 +47,7 @@ tableone \[@tableone:2022\] for descriptive statistics, pwr
 \[@ggplot2:2016\] for data visualization, among others. While these
 packages are well-designed and widely used, completing a clinical study
 workflow typically requires combining multiple packages with different
-syntax conventions , output formats, and integration patterns. As a
+syntax conventions, output formats, and integration patterns. As a
 result, analysts frequently develop custom code to connect results,
 automate recurring tasks, or standardize outputs across studies. This
 fragmentation can lead to inconsistent implementations, duplicated
@@ -144,7 +144,7 @@ biostatistics and clinical data analysis.
 # Research Impact Statement
 
 The ***biostats*** package has been released on CRAN (current version:
-1.1.1), ensuring standardized installation, long-term availability, and
+1.1.2), ensuring standardized installation, long-term availability, and
 seamless integration within the R ecosystem. It is also publicly
 available and maintained on GitHub, where it is accompanied by
 reproducible examples, detailed documentation, and an active issue
@@ -235,7 +235,8 @@ graphical elements.
 
 The ***biostats*** package is distributed under an MIT license with
 source code, full documentation, and examples for all functions
-available on [GitHub](https://github.com/sebasquirarte/biostats).
+available on [GitHub](https://github.com/sebasquirarte/biostats) and
+[GitHub Pages](https://sebasquirarte.github.io/biostats/).
 
 # Acknowledgements
 
