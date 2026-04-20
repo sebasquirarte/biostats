@@ -886,7 +886,7 @@ ggplot2.
 plot_hist(clinical_df, x = "biomarker", group = "treatment", stat = "mean")
 ```
 
-<img src="man/figures/README-unnamed-chunk-26-1.png" width="100%" />
+<img src="../man/figures/README-unnamed-chunk-26-1.png" width="100%" />
 
 ``` r
 
