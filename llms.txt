@@ -34,6 +34,10 @@ install.packages("biostats")
 pak::pak("sebasquirarte/biostats")
 ```
 
+> **Note for Linux users**: Installing from source may require `cmake`
+> to be installed prior to package installation, as it is needed to
+> build the `nloptr` dependency.
+
 ## Usage
 
 ``` r

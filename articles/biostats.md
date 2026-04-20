@@ -28,7 +28,6 @@ To get started, load the biostats package:
 
 ``` r
 library(biostats)
-#> Warning: package 'biostats' was built under R version 4.4.3
 ```
 
 ### Descriptive Statistics and Exploratory Data Analysis (EDA)
