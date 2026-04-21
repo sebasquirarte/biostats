@@ -58,7 +58,7 @@ pak::pak("sebasquirarte/biostats")
 library(biostats)
 ```
 
-## Contributions & Feedback
+## Feedback
 
 We welcome feedback, suggestions, and bug reports. You can share your
 thoughts via email (<sebastian.quirarte@sophia.com.mx>) or [GitHub
