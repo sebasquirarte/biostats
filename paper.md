@@ -221,7 +221,7 @@ are detected, *omnibus()* also performs post-hoc comparisons.
 ![Omnibus function test selection algorithm for multi-group comparisons.](figures/figure2.png)
 
 *effect_measures()* calculates effect measure indices commonly required in 
-clinical research, including odds ratios, risk ratios, and number needed to 
+clinical research, including odds ratios, risk ratios, and numbers needed to 
 treat or harm.
 
 ## Data Visualization

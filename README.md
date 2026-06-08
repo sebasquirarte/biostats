@@ -58,6 +58,10 @@ pak::pak("sebasquirarte/biostats")
 library(biostats)
 ```
 
+## Documentation
+
+Online documentation for the package is available at: https://sebasquirarte.github.io/biostats/articles/biostats.html.
+
 ## Feedback
 
 We welcome feedback, suggestions, and bug reports. You can share your
