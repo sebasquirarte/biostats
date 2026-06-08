@@ -60,7 +60,8 @@ library(biostats)
 
 ## Documentation
 
-Online documentation for the package is available at: https://sebasquirarte.github.io/biostats/articles/biostats.html.
+Online documentation for this package is available
+[here](https://sebasquirarte.github.io/biostats/articles/biostats.html).
 
 ## Feedback
 
