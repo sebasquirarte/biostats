@@ -91,7 +91,7 @@ contemporary recommendations for transparent and rigorous statistical practice.
 
 Regarding the specific functions in this package, _**biostats**_ differs from existing
 packages such as ez [@ez:2016], rstatix [@rstatix:2023], ggblanket 
-[@ggblanket:2025], ggpubr [@ggpubr:2025], extras [@extras:2025], 
+[@ggblanket:2026], ggpubr [@ggpubr:2025], extras [@extras:2025], 
 SampleSize4ClinicalTrials [@SampleSize4ClinicalTrials:2021], TrialSize 
 [@TrialSize:2024], TrialSimulator [@TrialSimulator:2025] and simtrial 
 [@simtrial:2025] to name a few, due to its ease of use, consistent syntax, clear
