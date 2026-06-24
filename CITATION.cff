@@ -1,0 +1,42 @@
+cff-version: "1.2.0"
+authors:
+- family-names: Quirarte-Justo
+  given-names: Sebastian
+  orcid: "https://orcid.org/0009-0004-2730-4343"
+- family-names: Montaño-Ruiz
+  given-names: Angela Carolina
+  orcid: "https://orcid.org/0009-0009-1705-763X"
+- family-names: Torres-Arellano
+  given-names: José M.
+  orcid: "https://orcid.org/0000-0003-4632-2243"
+contact:
+- family-names: Quirarte-Justo
+  given-names: Sebastian
+  orcid: "https://orcid.org/0009-0004-2730-4343"
+doi: 10.5281/zenodo.20596378
+message: If you use this software, please cite our article in the
+  Journal of Open Source Software.
+preferred-citation:
+  authors:
+  - family-names: Quirarte-Justo
+    given-names: Sebastian
+    orcid: "https://orcid.org/0009-0004-2730-4343"
+  - family-names: Montaño-Ruiz
+    given-names: Angela Carolina
+    orcid: "https://orcid.org/0009-0009-1705-763X"
+  - family-names: Torres-Arellano
+    given-names: José M.
+    orcid: "https://orcid.org/0000-0003-4632-2243"
+  date-published: 2026-06-24
+  doi: 10.21105/joss.10317
+  issn: 2475-9066
+  issue: 122
+  journal: Journal of Open Source Software
+  publisher:
+    name: Open Journals
+  start: 10317
+  title: "biostats: Biostatistics and Clinical Data Analysis in R"
+  type: article
+  url: "https://joss.theoj.org/papers/10.21105/joss.10317"
+  volume: 11
+title: "biostats: Biostatistics and Clinical Data Analysis in R"
