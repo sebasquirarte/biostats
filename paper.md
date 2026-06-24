@@ -91,7 +91,7 @@ contemporary recommendations for transparent and rigorous statistical practice.
 
 Regarding the specific functions in this package, _**biostats**_ differs from existing
 packages such as ez [@ez:2016], rstatix [@rstatix:2023], ggblanket 
-[@ggblanket:2026], ggpubr [@ggpubr:2025], extras [@extras:2025], 
+[@ggblanket:2025], ggpubr [@ggpubr:2025], extras [@extras:2025], 
 SampleSize4ClinicalTrials [@SampleSize4ClinicalTrials:2021], TrialSize 
 [@TrialSize:2024], TrialSimulator [@TrialSimulator:2025] and simtrial 
 [@simtrial:2025] to name a few, due to its ease of use, consistent syntax, clear
@@ -147,7 +147,7 @@ publication-grade visualizations with minimal code, while retaining full
 flexibility to customize aesthetics and formatting to meet specific reporting or
 journal requirements without modifying internal package logic.
 
-Overall, this package aims to emphasizes clarity, consistency, and 
+Overall, this package aims to emphasize clarity, consistency, and 
 reproducibility, supporting both analytical workflows and educational use by 
 researchers and professionals transitioning to R-based biostatistics and 
 clinical data analysis.
@@ -202,9 +202,9 @@ methods by @Lilliefors:1967 and @Dallal:1986.
 ## Sample Size and Power Calculation
 
 *sample_size()* and *sample_size_range()* are specifically focused on sample 
-size calculation for clinical trials based on the equations in @Chow:2017,
+size calculations for clinical trials based on the equations in @Chow:2017,
 supporting equality, equivalence, and non-inferiority/superiority 
-hypothesis, with parallel or crossover designs, and evaluating outcomes 
+hypotheses, with parallel or crossover designs, and evaluating outcomes 
 specified in means or proportions.
 
 ## Statistical Analysis and Inference
@@ -221,8 +221,7 @@ are detected, *omnibus()* also performs post-hoc comparisons.
 ![Omnibus function test selection algorithm for multi-group comparisons.](figures/figure2.png)
 
 *effect_measures()* calculates effect measure indices commonly required in 
-clinical research, including odds ratios, risk ratios, and numbers needed to 
-treat or harm.
+clinical research, including odds ratios, risk ratios, number needed to treat and number needed to harm.
 
 ## Data Visualization
 
@@ -237,7 +236,7 @@ graphical elements.
 
 # License and Availability
 
-The _**biostats**_ package is distributed under an MIT license with source code,
+The _**biostats**_ package is distributed under an MIT License with source code,
 full documentation, and examples for all functions available on 
 [GitHub](https://github.com/sebasquirarte/biostats) and
 [GitHub Pages](https://sebasquirarte.github.io/biostats/). 
@@ -253,13 +252,14 @@ innovation, open-source development, and open science.
 
 # AI usage disclosure
 
-Generative AI tools were used during the development of the _**biostats**_ package 
-to assist with code refinement, debugging, automated tests, and the 
-configuration of continuous integration and continuous deployment (CI/CD) 
-workflows through GitHub actions. These tools were also used to 
-review and improve the final manuscript. All AI-generated suggestions were 
-carefully reviewed, modified, and validated by the authors. The authors
-assume full responsibility and accountability for the reliability, integrity, 
-and maintenance of the software provided.  
+Generative AI tools, specifically Anthropic's Claude (Claude 3.7 Sonnet and 
+Claude Sonnet 4, accessed via the claude.ai web interface), were used during the
+development of the _**biostats**_ package to assist with code refinement, debugging,
+automated tests, and the configuration of continuous integration and continuous 
+deployment (CI/CD) workflows through GitHub Actions. These tools were also used 
+to review and improve the final manuscript. All AI-generated suggestions were
+carefully reviewed, modified, and validated by the authors. The authors assume
+full responsibility and accountability for the reliability, integrity, and
+maintenance of the software provided.  
 
 # References
