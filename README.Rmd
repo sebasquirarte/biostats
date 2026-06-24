@@ -68,6 +68,29 @@ library(biostats)
 
 Online documentation for this package is available   [here](https://sebasquirarte.github.io/biostats/articles/biostats.html).
 
+## Citation
+
+If you use _**biostats**_ in your research, please cite our JOSS paper:
+
+>Quirarte-Justo et al., (2026). biostats: Biostatistics and Clinical Data Analysis in R. Journal of Open Source Software, 11(122), 10317, https://doi.org/10.21105/joss.10317
+
+```bibtex
+@article{Quirarte-Justo2026, 
+  doi = {10.21105/joss.10317}, 
+  url = {https://doi.org/10.21105/joss.10317}, 
+  year = {2026}, 
+  publisher = {The Open Journal}, 
+  volume = {11}, 
+  number = {122}, 
+  pages = {10317}, 
+  author = {Quirarte-Justo, Sebastian and Montaño-Ruiz, Angela Carolina and Torres-Arellano, José M.}, 
+  title = {biostats: Biostatistics and Clinical Data Analysis in R}, 
+  journal = {Journal of Open Source Software} 
+}
+```
+
+Alternatively, you can use the "Cite this repository" widget in the right sidebar of this GitHub repository to copy the citation information directly.
+
 ## Feedback
 
 We welcome feedback, suggestions, and bug reports. You can share your thoughts via email (sebastian.quirarte@sophia.com.mx) or [GitHub issues](https://github.com/sebasquirarte/biostats/issues). 
