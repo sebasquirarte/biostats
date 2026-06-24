@@ -48,10 +48,6 @@ install.packages("biostats")
 pak::pak("sebasquirarte/biostats")
 ```
 
-> **Note for Linux users**: Installing from source may require `cmake`
-> to be installed prior to package installation, as it is needed to
-> build the `nloptr` dependency.
-
 ## Usage
 
 ``` r
@@ -85,10 +81,6 @@ If you use ***biostats*** in your research, please cite our JOSS paper:
   journal = {Journal of Open Source Software} 
 }
 ```
-
-Alternatively, you can use the “Cite this repository” widget in the
-right sidebar of this GitHub repository to copy the citation information
-directly.
 
 ## Feedback
 
